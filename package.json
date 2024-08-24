@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db-migrate": "npx prisma migrate dev",
+    "local-db": "npx prisma studio"
   },
   "dependencies": {
     "next": "14.2.6",

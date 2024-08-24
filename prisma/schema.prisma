@@ -24,6 +24,7 @@ model Asset {
   brand      Brand   @relation(fields: [id], references: [id])
 
   // lifespan
+  // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
   startDate       DateTime
   startPrice      Decimal
   startCurrencyId String
