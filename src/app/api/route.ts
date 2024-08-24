@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { db } from '../lib/db';
+import { db } from '../../lib/db';
+import { ResponseTransformer } from '../../lib/utils';
 
 export async function GET(request: Request) {
   const categoryList = await db.category.findMany({
@@ -10,5 +11,6 @@ export async function GET(request: Request) {
     },
   });
 
-  return NextResponse.json(categoryList);
+  return NextResponse.json(ResponseTransformer(categoryList));
+  // return new Response(, { status: HttpStatusCode.UNPROCESSABLE_ENTITY });
 }
