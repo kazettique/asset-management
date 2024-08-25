@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { CategoryFetcher } from '@/fetcher';
-import { FCreateCategory, FUpdateCategory, Id, NType, VCategory } from '@/type';
+import { FCreateCategory, Id, NType, VCategory } from '@/type';
 
 import CategoryItem from './CategoryItem';
 import CreateCategory from './CreateCategory';
@@ -68,44 +68,38 @@ export default function Page() {
     createCategory.mutate(data);
   };
 
-  const onUpdateSubmit = (data: FUpdateCategory) => {
-    updateCategory.mutate(data);
-  };
-
   return (
-    <div>
-      <div className="font-bold capitalize">category setting page</div>
+    <div className="p-5">
+      <div className="font-bold capitalize text-xl my-2">category setting</div>
       {isPending ? (
         <div>loading...</div>
       ) : (
-        <div className="p-8">
-          <table className="table-fixed border-collapse border border-slate-300 w-full">
-            <thead>
-              <tr>
-                <th className="border border-slate-300">Name</th>
-                <th className="border border-slate-300">名稱</th>
-                <th className="border border-slate-300">名前</th>
-                <th className="border border-slate-300">Comment</th>
-                <th className="border border-slate-300">Action</th>
-              </tr>
-            </thead>
+        <table className="table-fixed border-collapse border border-slate-300 w-full">
+          <thead>
+            <tr>
+              <th className="border border-slate-300">Name</th>
+              <th className="border border-slate-300">名稱</th>
+              <th className="border border-slate-300">名前</th>
+              <th className="border border-slate-300">Comment</th>
+              <th className="border border-slate-300">Action</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {data &&
-                data.data.map((item, _index) => (
-                  <CategoryItem
-                    key={item.id}
-                    category={item}
-                    isEdit={editItem !== null ? item.id === editItem.id : false}
-                    onCancel={() => onItemCancel()}
-                    onEdit={(category) => onItemEdit(category)}
-                    onDelete={(id) => onItemDelete(id)}
-                    onUpdate={(category) => onItemUpdate(category)}
-                  />
-                ))}
-            </tbody>
-          </table>
-        </div>
+          <tbody>
+            {data &&
+              data.data.map((item, _index) => (
+                <CategoryItem
+                  key={item.id}
+                  category={item}
+                  isEdit={editItem !== null ? item.id === editItem.id : false}
+                  onCancel={() => onItemCancel()}
+                  onEdit={(category) => onItemEdit(category)}
+                  onDelete={(id) => onItemDelete(id)}
+                  onUpdate={(category) => onItemUpdate(category)}
+                />
+              ))}
+          </tbody>
+        </table>
       )}
 
       <CreateCategory onSubmit={onCreateSubmit} />

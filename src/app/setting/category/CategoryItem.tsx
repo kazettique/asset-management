@@ -1,5 +1,3 @@
-'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
@@ -22,14 +20,14 @@ export default function CategoryItem(props: Props) {
   });
 
   return (
-    <tr key={props.category.id} data-test-comp={CategoryItem.name}>
+    <tr key={props.category.id} data-test-comp={CategoryItem.name} className="even:bg-slate-100 hover:bg-slate-200">
       {props.isEdit ? (
-        <td colSpan={5} className="border border-slate-300">
+        <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <input {...register('nameEn')} className="bg-slate-200 w-1/5" />
-            <input {...register('nameTw')} className="bg-slate-200 w-1/5" />
-            <input {...register('nameJp')} className="bg-slate-200 w-1/5" />
-            <input {...register('comment')} name="comment" className="bg-slate-200 w-1/5" />
+            <input {...register('nameEn')} className="bg-slate-400 w-1/5" />
+            <input {...register('nameTw')} className="bg-slate-400 w-1/5" />
+            <input {...register('nameJp')} className="bg-slate-400 w-1/5" />
+            <input {...register('comment')} name="comment" className="bg-slate-400 w-1/5" />
             <div className="w-1/5 gap-x-2 flex">
               <button className="bg-slate-500 p-1 rounded-sm text-white">Save</button>
               <button className="bg-slate-300 p-1 rounded-sm text-white" onClick={() => props.onCancel()}>
