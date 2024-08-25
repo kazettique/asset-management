@@ -1,19 +1,22 @@
 import { DEFAULT_NAME } from '@/constant';
-import { DBCreateCategory, MCategory, RCreateCategory, VCategory } from '@/type';
+import { DBCreateCategory, MCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/type';
+import { NameValidator } from '@/validator';
 
 export abstract class CategoryTransformer {
   public static categoryTransformer(raw: MCategory): VCategory {
     const rawName = JSON.parse(JSON.stringify(raw.name));
 
-    const modifiedName: VCategory['name'] = {
-      ...DEFAULT_NAME,
-      ...rawName,
-    };
+    const nameValidation = NameValidator.safeParse(rawName);
 
-    return {
-      ...raw,
-      name: modifiedName,
-    };
+    if (!nameValidation.success) {
+      return { comment: raw.comment, id: raw.id, ...DEFAULT_NAME };
+    } else {
+      return {
+        comment: raw.comment,
+        id: raw.id,
+        ...nameValidation.data,
+      };
+    }
   }
 
   public static createCategoryTransformer(raw: RCreateCategory): DBCreateCategory {
@@ -24,5 +27,16 @@ export abstract class CategoryTransformer {
     };
 
     return { comment: raw.comment, name: modifiedName };
+  }
+
+  // todo: duplicate with createCategoryTransformer, need refactor
+  public static updateCategoryTransformer(raw: RUpdateCategory): MCategory {
+    const modifiedName: DBCreateCategory['name'] = {
+      nameEn: raw.nameEn,
+      nameJp: raw.nameJp,
+      nameTw: raw.nameTw,
+    };
+
+    return { comment: raw.comment, id: raw.id, name: modifiedName };
   }
 }

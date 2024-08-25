@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
 
-import { NString } from '@/type';
+import { Id, NString } from '@/type';
 
 export interface MCategory {
   comment: NString;
-  id: string;
+  id: Id;
   name: Prisma.JsonValue;
 }

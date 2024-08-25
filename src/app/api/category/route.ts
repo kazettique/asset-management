@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { MSG_DIRTY_DATA } from '@/constant';
 import { CategoryRepository } from '@/repository';
 import { CategoryTransformer } from '@/transformer';
 import { DBCreateCategory, HttpStatusCode, MCategory } from '@/type';
@@ -16,7 +17,7 @@ export async function GET(_request: Request) {
   if (dataValidation.success) {
     return NextResponse.json(ResponseTransformer(dataValidation.data));
   } else {
-    return new Response('dirty data', { status: HttpStatusCode.BAD_REQUEST });
+    return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
   }
 }
 

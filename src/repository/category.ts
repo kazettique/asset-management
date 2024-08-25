@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { db } from '@/lib/db';
-import { DBCreateCategory, Id, MCategory, Name, NString, VCategory } from '@/type';
+import { DBCreateCategory, Id, MCategory, Name, NString, NType, VCategory } from '@/type';
 
 export abstract class CategoryRepository {
   public static async getAllCategory(): Promise<MCategory[]> {
@@ -11,6 +11,17 @@ export abstract class CategoryRepository {
         id: true,
         name: true,
       },
+    });
+  }
+
+  public static async getCategory(id: Id): Promise<NType<MCategory>> {
+    return await db.category.findUnique({
+      select: {
+        comment: true,
+        id: true,
+        name: true,
+      },
+      where: { id },
     });
   }
 
@@ -31,13 +42,13 @@ export abstract class CategoryRepository {
     });
   }
 
-  // public static async updateCategory(payload: MCategory) {
-  //   return await db.category.update({
-  //     data: {
-  //       comment: payload.comment,
-  //       name: payload.name,
-  //     },
-  //     where: { id: payload.id },
-  //   });
-  // }
+  public static async updateCategory(payload: MCategory) {
+    return await db.category.update({
+      data: {
+        comment: payload.comment,
+        name: payload.name as Prisma.JsonObject,
+      },
+      where: { id: payload.id },
+    });
+  }
 }

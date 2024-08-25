@@ -1,7 +1,12 @@
-import { MCategory, Name } from '@/type';
+import { Id, MCategory, Name, NString, NType } from '@/type';
 
 export interface RCreateCategory extends Name {
-  comment: string;
+  comment: NString;
 }
 
+export interface RUpdateCategory extends RCreateCategory {
+  id: Id;
+}
+
+// todo: both used in update, create, need rename
 export interface DBCreateCategory extends Pick<MCategory, 'comment' | 'name'> {}

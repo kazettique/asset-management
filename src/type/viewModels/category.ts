@@ -1,7 +1,9 @@
-import { Name, NString } from '@/type';
+import { Id, Name, NString } from '@/type';
 
 export interface VCategory {
   comment: NString;
-  id: string;
-  name: Name;
+  id: Id;
+  nameEn: NString;
+  nameJp: NString;
+  nameTw: NString;
 }

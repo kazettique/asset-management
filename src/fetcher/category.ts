@@ -1,6 +1,6 @@
 'use client';
 
-import { GeneralResponse, Id, MCategory, RCreateCategory, VCategory } from '@/type';
+import { GeneralResponse, Id, MCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/type';
 
 export abstract class CategoryFetcher {
   public static async getAllCategory(): Promise<GeneralResponse<VCategory[]>> {
@@ -23,6 +23,17 @@ export abstract class CategoryFetcher {
   // todo: abstract search params
   public static async deleteCategory(id: Id) {
     const res = await fetch('/api/category/' + id, { method: 'DELETE' });
+
+    const data = (await res.json()) as Promise<GeneralResponse<any>>;
+
+    return data;
+  }
+
+  public static async updateCategory(payload: VCategory) {
+    const res = await fetch('/api/category/' + payload.id, {
+      body: JSON.stringify(payload),
+      method: 'POST',
+    });
 
     const data = (await res.json()) as Promise<GeneralResponse<any>>;
 
