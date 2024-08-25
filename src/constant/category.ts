@@ -1,4 +1,4 @@
-import { FCreateCategory, FUpdateCategory } from '@/type';
+import { FCreateCategory, FUpdateCategory } from '@/types';
 
 export const F_CREATE_CATEGORY_INITIAL_VALUES: FCreateCategory = {
   comment: '',

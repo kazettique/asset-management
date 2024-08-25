@@ -1,5 +1,5 @@
 import { DEFAULT_NAME } from '@/constant';
-import { DBCreateCategory, MCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/type';
+import { DBCreateCategory, MCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/types';
 import { NameValidator } from '@/validator';
 
 export abstract class CategoryTransformer {

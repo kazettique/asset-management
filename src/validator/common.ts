@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { Id, Name } from '@/type';
+import { Id, Name } from '@/types';
 
 export const NameValidator: z.ZodSchema<Name> = z.object({
   nameEn: z.string().nullable(),

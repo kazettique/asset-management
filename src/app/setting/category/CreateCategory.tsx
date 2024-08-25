@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { F_CREATE_CATEGORY_INITIAL_VALUES } from '@/constant';
-import { FCreateCategory } from '@/type';
+import { FCreateCategory } from '@/types';
 import { FCreateCategoryValidator } from '@/validator';
 
 interface Props {

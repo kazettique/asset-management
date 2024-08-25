@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { CategoryFetcher } from '@/fetcher';
-import { FCreateCategory, Id, NType, VCategory } from '@/type';
+import { FCreateCategory, Id, NType, VCategory } from '@/types';
 
 import CategoryItem from './CategoryItem';
 import CreateCategory from './CreateCategory';

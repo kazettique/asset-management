@@ -1,4 +1,4 @@
-import { GeneralResponse } from '@/type';
+import { GeneralResponse } from '@/types';
 
 export function ResponseTransformer<T>(data: T): GeneralResponse<T> {
   return { data };

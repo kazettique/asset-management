@@ -1,4 +1,4 @@
-import { Name } from '@/type';
+import { Name } from '@/types';
 
 export const MSG_DIRTY_DATA: string = 'dirty data';
 

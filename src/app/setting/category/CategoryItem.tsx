@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { FUpdateCategory, VCategory } from '@/type';
+import { FUpdateCategory, VCategory } from '@/types';
 import { FUpdateCategoryValidator } from '@/validator';
 
 interface Props {

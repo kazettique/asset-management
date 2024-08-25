@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { MSG_DIRTY_DATA } from '@/constant';
 import { CategoryRepository } from '@/repository';
 import { CategoryTransformer } from '@/transformer';
-import { DBCreateCategory, HttpStatusCode, Id, MCategory } from '@/type';
+import { DBCreateCategory, HttpStatusCode, Id, MCategory } from '@/types';
 import { ResponseTransformer } from '@/utils';
 import { IdValidator, RUpdateCategoryValidator, VCategoryValidator } from '@/validator';
 

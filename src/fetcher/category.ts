@@ -1,6 +1,6 @@
 'use client';
 
-import { GeneralResponse, Id, MCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/type';
+import { GeneralResponse, Id, MCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/types';
 
 export abstract class CategoryFetcher {
   public static async getAllCategory(): Promise<GeneralResponse<VCategory[]>> {

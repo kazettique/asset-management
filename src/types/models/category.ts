@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-import { Id, NString } from '@/type';
+import { Id, NString } from '@/types';
 
 export interface MCategory {
   comment: NString;

@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { db } from '@/lib/db';
-import { DBCreateCategory, Id, MCategory, Name, NString, NType, VCategory } from '@/type';
+import { DBCreateCategory, Id, MCategory, Name, NString, NType, VCategory } from '@/types';
 
 export abstract class CategoryRepository {
   public static async getAllCategory(): Promise<MCategory[]> {

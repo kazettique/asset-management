@@ -1,4 +1,4 @@
-import { Id, MCategory, Name, NString, NType } from '@/type';
+import { Id, MCategory, Name, NString, NType } from '@/types';
 
 export interface RCreateCategory extends Name {
   comment: NString;

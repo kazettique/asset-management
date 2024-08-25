@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { FCreateCategory, FUpdateCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/type';
+import { FCreateCategory, FUpdateCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/types';
 
 import { NameValidator } from './common';
 
