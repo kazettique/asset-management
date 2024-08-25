@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { db } from '@/lib/db';
-import { DBCreateCategory, MCategory, Name, NString, VCategory } from '@/type';
+import { DBCreateCategory, Id, MCategory, Name, NString, VCategory } from '@/type';
 
 export abstract class CategoryRepository {
   public static async getAllCategory(): Promise<MCategory[]> {
@@ -22,6 +22,12 @@ export abstract class CategoryRepository {
         // ref: https://github.com/prisma/prisma/issues/9247
         name: payload.name as Prisma.JsonObject,
       },
+    });
+  }
+
+  public static async deleteCategory(id: Id) {
+    return await db.category.delete({
+      where: { id },
     });
   }
 

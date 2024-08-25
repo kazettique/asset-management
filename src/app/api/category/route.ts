@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server';
 
 import { CategoryRepository } from '@/repository';
 import { CategoryTransformer } from '@/transformer';
-import { DBCreateCategory, HttpStatusCode } from '@/type';
+import { DBCreateCategory, HttpStatusCode, MCategory } from '@/type';
 import { ResponseTransformer } from '@/utils';
 import { RCreateCategoryValidator, VCategoryValidator } from '@/validator';
 
+// todo: add return type
 export async function GET(_request: Request) {
   const raw = await CategoryRepository.getAllCategory();
 
@@ -19,6 +20,7 @@ export async function GET(_request: Request) {
   }
 }
 
+// todo: add return type
 export async function POST(request: Request) {
   // 1. parse request body
   const requestBody = await request.json();
@@ -34,8 +36,7 @@ export async function POST(request: Request) {
     // 3.2 if passed, fetch repository
     const raw = await CategoryRepository.createCategory(dbCreateCategory);
 
-    // console.log('raw', raw);
-
+    // todo: transform return data, or define return type
     return NextResponse.json(ResponseTransformer(raw));
   }
 }

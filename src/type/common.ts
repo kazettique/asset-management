@@ -10,3 +10,5 @@ export interface Name {
   nameJp: NString;
   nameTw: NString;
 }
+
+export type Id = string;

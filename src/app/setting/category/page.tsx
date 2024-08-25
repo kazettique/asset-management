@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 import { F_CREATE_CATEGORY_INITIAL_VALUES } from '@/constant';
 import { CategoryFetcher } from '@/fetcher';
-import { FCreateCategory, Name, NString, VCategory } from '@/type';
+import { FCreateCategory, Id, Name, NString, VCategory } from '@/type';
 import { FCreateCategoryValidator, NameValidator } from '@/validator';
 
 export default function Page() {
@@ -24,7 +24,7 @@ export default function Page() {
     queryKey: ['categoryList'],
   });
 
-  const mutation = useMutation({
+  const createCategory = useMutation({
     mutationFn: (payload: FCreateCategory) => CategoryFetcher.createCategory(payload),
     onSuccess: () => {
       refetch();
@@ -32,7 +32,24 @@ export default function Page() {
     },
   });
 
-  const onSubmit = (data: FCreateCategory) => mutation.mutate(data);
+  const deleteCategory = useMutation({
+    mutationFn: (id: Id) => {
+      if (confirm('Confirm delete?')) {
+        return CategoryFetcher.deleteCategory(id);
+      } else {
+        throw Error('Deletion terminated.');
+      }
+    },
+    onError: (error) => {
+      console.error('error', error);
+    },
+    onSuccess: () => {
+      refetch();
+      reset();
+    },
+  });
+
+  const onSubmit = (data: FCreateCategory) => createCategory.mutate(data);
 
   return (
     <div>
@@ -46,6 +63,7 @@ export default function Page() {
               <th className="border border-slate-300">Name</th>
               <th className="border border-slate-300">名稱</th>
               <th className="border border-slate-300">名前</th>
+              <th className="border border-slate-300">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -55,9 +73,12 @@ export default function Page() {
                   <td className="border border-slate-300">{item.name.nameEn}</td>
                   <td className="border border-slate-300">{item.name.nameTw}</td>
                   <td className="border border-slate-300">{item.name.nameJp}</td>
-                  <td className="border border-slate-300">
+                  <td className="border border-slate-300 flex gap-x-2">
                     <button onClick={() => setEditItem(item.id)} onBlur={() => setEditItem(null)}>
                       Edit
+                    </button>
+                    <button className="text-red-500 font-bold" onClick={() => deleteCategory.mutate(item.id)}>
+                      Delete
                     </button>
                   </td>
                 </tr>
