@@ -1,0 +1,30 @@
+import { z } from 'zod';
+
+import { FCreateCategory, RCreateCategory, VCategory } from '@/type';
+
+import { NameValidator } from './common';
+
+export const VCategoryValidator: z.ZodSchema<VCategory> = z.object({
+  comment: z.string().nullable(),
+  id: z.string(),
+  name: NameValidator,
+});
+
+export const RCreateCategoryValidator: z.ZodSchema<RCreateCategory> = z
+  .object({
+    comment: z.string(),
+    nameEn: z.string(),
+    nameJp: z.string(),
+    nameTw: z.string(),
+  })
+  .superRefine((values, context) => {
+    const nameEnLength: number = values.nameEn.length;
+    const nameTwLength: number = values.nameTw.length;
+    const nameJpLength: number = values.nameJp.length;
+
+    if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['nameEn'] });
+    }
+  });
+
+export const FCreateCategoryValidator: z.ZodSchema<FCreateCategory> = RCreateCategoryValidator;

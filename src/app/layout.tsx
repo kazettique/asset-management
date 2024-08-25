@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
+import Providers from './providers';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -11,20 +13,20 @@ export const metadata: Metadata = {
   title: 'Create Next App',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="w-full bg-slate-500 p-4 top-0 sticky flex items-center gap-x-4">
-          <Link href="/">Home</Link>
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/setting">Setting</Link>
-        </div>
-        {children}
+        <Providers>
+          <div>
+            <div className="w-full bg-slate-500 p-4 top-0 sticky flex items-center gap-x-4">
+              <Link href="/">Home</Link>
+              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/setting">Setting</Link>
+            </div>
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

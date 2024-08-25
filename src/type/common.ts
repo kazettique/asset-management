@@ -8,5 +8,5 @@ export interface GeneralResponse<T> {
 export interface Name {
   nameEn: NString;
   nameJp: NString;
-  nameTw: string;
+  nameTw: NString;
 }
