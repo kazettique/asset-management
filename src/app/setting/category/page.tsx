@@ -41,7 +41,7 @@ export default function Page() {
       }
     },
     onError: (error) => {
-      console.error('error', error);
+      alert(error.message);
     },
     onSuccess: () => {
       refetch();
