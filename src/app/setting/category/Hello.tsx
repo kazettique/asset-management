@@ -10,7 +10,7 @@ interface Props {
   onSubmit: (data: FCategory) => void;
 }
 
-export default function CreateCategory(props: Props) {
+export default function Hello(props: Props) {
   const { className = '', onSubmit } = props;
 
   const { register, handleSubmit, formState, reset } = useForm<FCategory>({

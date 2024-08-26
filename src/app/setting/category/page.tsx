@@ -7,7 +7,7 @@ import { CategoryFetcher } from '@/fetcher';
 import { FCategory, Id, NType, VCategory } from '@/types';
 
 import CategoryItem from './CategoryItem';
-import CreateCategory from './CreateCategory';
+import CreateCategory from './Hello';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VCategory>>(null);
