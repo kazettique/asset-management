@@ -7,7 +7,7 @@ import { CategoryFetcher } from '@/fetcher';
 import { FCategory, Id, NType, VCategory } from '@/types';
 
 import CategoryItem from './CategoryItem';
-import CreateCategory from './CreateCategory';
+import Create from './Create';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VCategory>>(null);
@@ -103,7 +103,7 @@ export default function Page() {
         </table>
       )}
 
-      <CreateCategory onSubmit={onCreateSubmit} className="w-1/2" />
+      <Create onSubmit={onCreateSubmit} className="w-1/2" />
     </div>
   );
 }
