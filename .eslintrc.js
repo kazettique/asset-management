@@ -26,6 +26,7 @@ module.exports = {
       },
     ],
     'no-console': 'warn',
+    'no-duplicate-imports': 'error',
     'no-unused-vars': 'off',
     'prettier/prettier': 'error',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', 'tsx'] }], //allow jsx syntax in js files (for next.js project), should add ".ts" if typescript project

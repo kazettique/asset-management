@@ -1,10 +1,8 @@
 import { FCategory } from '@/types';
 
-export const F_CREATE_CATEGORY_INITIAL_VALUES: FCategory = {
+import { DEFAULT_NAME } from './common';
+
+export const F_CATEGORY_INITIAL_VALUES: FCategory = {
   comment: '',
-  name: {
-    nameEn: '',
-    nameJp: '',
-    nameTw: '',
-  },
+  name: DEFAULT_NAME,
 };

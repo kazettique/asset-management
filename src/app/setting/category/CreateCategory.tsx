@@ -1,17 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 
-import { F_CREATE_CATEGORY_INITIAL_VALUES } from '@/constant';
+import { F_CATEGORY_INITIAL_VALUES } from '@/constant';
 import { FCategory } from '@/types';
 import { FCreateCategoryValidator } from '@/validator';
 
 interface Props {
-  onSubmit: (_data: FCategory) => void;
+  onSubmit: (data: FCategory) => void;
 }
 
 export default function CreateCategory(props: Props) {
   const { register, handleSubmit, formState, reset } = useForm<FCategory>({
-    defaultValues: F_CREATE_CATEGORY_INITIAL_VALUES,
+    defaultValues: F_CATEGORY_INITIAL_VALUES,
     resolver: zodResolver(FCreateCategoryValidator),
   });
 
