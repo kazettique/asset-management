@@ -1,8 +1,8 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 import Providers from './providers';
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: 'Create Next App',
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <body>

@@ -6,11 +6,11 @@ import { FCategory } from '@/types';
 import { FCreateCategoryValidator } from '@/validator';
 
 interface Props {
-  onSubmit: (data: FCategory) => void;
+  onSubmit: (_data: FCategory) => void;
 }
 
 export default function CreateCategory(props: Props) {
-  const { register, handleSubmit, formState, reset, setValue } = useForm<FCategory>({
+  const { register, handleSubmit, formState, reset } = useForm<FCategory>({
     defaultValues: F_CREATE_CATEGORY_INITIAL_VALUES,
     resolver: zodResolver(FCreateCategoryValidator),
   });

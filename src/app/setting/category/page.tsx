@@ -12,7 +12,7 @@ import CreateCategory from './CreateCategory';
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VCategory>>(null);
 
-  const { data, isPending, isError, refetch } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryFn: () => CategoryFetcher.getAllCategory(),
     queryKey: ['categoryList'],
   });

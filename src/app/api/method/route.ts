@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
-import { ResponseTransformer } from '@/utils';
+import { CommonTransformer } from '@/utils';
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   const categoryList = await db.method.findMany({
     select: {
       comment: true,
@@ -13,5 +13,5 @@ export async function GET(request: Request) {
     },
   });
 
-  return NextResponse.json(ResponseTransformer(categoryList));
+  return NextResponse.json(CommonTransformer.ResponseTransformer(categoryList));
 }

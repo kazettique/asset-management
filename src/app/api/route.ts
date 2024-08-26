@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
-import { ResponseTransformer } from '@/utils';
+import { CommonTransformer } from '@/utils';
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   // return NextResponse.error();
-  return NextResponse.json(ResponseTransformer({ greeting: 'hello world!', name: 'Hikari' }));
+  return NextResponse.json(CommonTransformer.ResponseTransformer({ greeting: 'hello world!', name: 'Hikari' }));
 }
