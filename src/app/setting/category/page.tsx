@@ -103,7 +103,7 @@ export default function Page() {
         </table>
       )}
 
-      <CreateCategory onSubmit={onCreateSubmit} />
+      <CreateCategory onSubmit={onCreateSubmit} className="w-1/2" />
     </div>
   );
 }
