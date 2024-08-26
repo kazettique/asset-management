@@ -1,5 +1,6 @@
 export * from './base';
 export * from './common';
+export * from './dbModels';
 export * from './enum';
 export * from './formModels';
 export * from './http';

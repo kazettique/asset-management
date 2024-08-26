@@ -1,5 +1,3 @@
-import { RCreateCategory, RUpdateCategory } from '@/types';
+import { RCategory } from '@/types';
 
-export interface FCreateCategory extends RCreateCategory {}
-
-export interface FUpdateCategory extends RUpdateCategory {}
+export interface FCategory extends RCategory {}

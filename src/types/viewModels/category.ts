@@ -1,9 +1,3 @@
-import { Id, Name, NString } from '@/types';
+import { MCategory } from '@/types';
 
-export interface VCategory {
-  comment: NString;
-  id: Id;
-  nameEn: NString;
-  nameJp: NString;
-  nameTw: NString;
-}
+export interface VCategory extends MCategory {}

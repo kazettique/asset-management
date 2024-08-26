@@ -1,21 +1,24 @@
-import { Prisma } from '@prisma/client';
-
 import { db } from '@/lib/db';
-import { DBCreateCategory, Id, MCategory, Name, NString, NType, VCategory } from '@/types';
+import { CategoryTransformer } from '@/transformer';
+import { DCategory, Id, MCategory, NType, RCategory } from '@/types';
 
 export abstract class CategoryRepository {
   public static async getAllCategory(): Promise<MCategory[]> {
-    return await db.category.findMany({
+    const rawData: DCategory[] = await db.category.findMany({
       select: {
         comment: true,
         id: true,
         name: true,
       },
     });
+
+    const parsedData = rawData.map((category) => CategoryTransformer.DCategoryTransformer(category));
+
+    return parsedData;
   }
 
   public static async getCategory(id: Id): Promise<NType<MCategory>> {
-    return await db.category.findUnique({
+    const rawData: NType<DCategory> = await db.category.findUnique({
       select: {
         comment: true,
         id: true,
@@ -23,32 +26,51 @@ export abstract class CategoryRepository {
       },
       where: { id },
     });
+
+    if (rawData === null) {
+      return rawData;
+    } else {
+      return CategoryTransformer.DCategoryTransformer(rawData);
+    }
   }
 
-  public static async createCategory(payload: DBCreateCategory) {
-    return await db.category.create({
-      data: {
-        ...payload,
-        // todo: type workaround
-        // ref: https://github.com/prisma/prisma/issues/9247
-        name: payload.name as Prisma.JsonObject,
+  public static async createCategory(payload: RCategory): Promise<MCategory> {
+    const rawData = await db.category.create({
+      data: payload,
+      select: {
+        comment: true,
+        id: true,
+        name: true,
       },
     });
+
+    return CategoryTransformer.DCategoryTransformer(rawData);
   }
 
-  public static async deleteCategory(id: Id) {
-    return await db.category.delete({
+  public static async deleteCategory(id: Id): Promise<MCategory> {
+    const rawData = await db.category.delete({
+      select: {
+        comment: true,
+        id: true,
+        name: true,
+      },
       where: { id },
     });
+
+    return CategoryTransformer.DCategoryTransformer(rawData);
   }
 
-  public static async updateCategory(payload: MCategory) {
-    return await db.category.update({
-      data: {
-        comment: payload.comment,
-        name: payload.name as Prisma.JsonObject,
+  public static async updateCategory(payload: RCategory, id: MCategory['id']): Promise<MCategory> {
+    const rawData = await db.category.update({
+      data: payload,
+      select: {
+        comment: true,
+        id: true,
+        name: true,
       },
-      where: { id: payload.id },
+      where: { id },
     });
+
+    return CategoryTransformer.DCategoryTransformer(rawData);
   }
 }

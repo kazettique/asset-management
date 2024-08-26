@@ -1,16 +1,10 @@
-import { FCreateCategory, FUpdateCategory } from '@/types';
+import { FCategory } from '@/types';
 
-export const F_CREATE_CATEGORY_INITIAL_VALUES: FCreateCategory = {
+export const F_CREATE_CATEGORY_INITIAL_VALUES: FCategory = {
   comment: '',
-  nameEn: '',
-  nameJp: '',
-  nameTw: '',
-};
-
-export const F_UPDATE_CATEGORY_INITIAL_VALUES: FUpdateCategory = {
-  comment: '',
-  id: '',
-  nameEn: '',
-  nameJp: '',
-  nameTw: '',
+  name: {
+    nameEn: '',
+    nameJp: '',
+    nameTw: '',
+  },
 };

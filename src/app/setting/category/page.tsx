@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { CategoryFetcher } from '@/fetcher';
-import { FCreateCategory, Id, NType, VCategory } from '@/types';
+import { FCategory, Id, NType, VCategory } from '@/types';
 
 import CategoryItem from './CategoryItem';
 import CreateCategory from './CreateCategory';
@@ -18,14 +18,15 @@ export default function Page() {
   });
 
   const createCategory = useMutation({
-    mutationFn: (payload: FCreateCategory) => CategoryFetcher.createCategory(payload),
+    mutationFn: (payload: FCategory) => CategoryFetcher.createCategory(payload),
     onSuccess: () => {
       refetch();
     },
   });
 
   const updateCategory = useMutation({
-    mutationFn: (payload: VCategory) => CategoryFetcher.updateCategory(payload),
+    mutationFn: ({ payload, id }: { id: VCategory['id']; payload: FCategory }) =>
+      CategoryFetcher.updateCategory(payload, id),
     onSuccess: () => {
       refetch();
       setEditItem(null);
@@ -52,8 +53,8 @@ export default function Page() {
     setEditItem(category);
   };
 
-  const onItemUpdate = (category: VCategory): void => {
-    updateCategory.mutate(category);
+  const onItemUpdate = (category: FCategory, id: VCategory['id']): void => {
+    updateCategory.mutate({ id, payload: category });
   };
 
   const onItemCancel = (): void => {
@@ -64,7 +65,7 @@ export default function Page() {
     deleteCategory.mutate(id);
   };
 
-  const onCreateSubmit = (data: FCreateCategory) => {
+  const onCreateSubmit = (data: FCategory) => {
     createCategory.mutate(data);
   };
 
@@ -95,7 +96,7 @@ export default function Page() {
                   onCancel={() => onItemCancel()}
                   onEdit={(category) => onItemEdit(category)}
                   onDelete={(id) => onItemDelete(id)}
-                  onUpdate={(category) => onItemUpdate(category)}
+                  onUpdate={(category) => onItemUpdate(category, item.id)}
                 />
               ))}
           </tbody>

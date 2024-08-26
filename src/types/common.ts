@@ -12,3 +12,12 @@ export interface Name {
 }
 
 export type Id = string;
+
+export interface SettingBase {
+  comment: NString;
+  name: {
+    nameEn: NString;
+    nameJp: NString;
+    nameTw: NString;
+  };
+}

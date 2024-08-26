@@ -2,16 +2,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { F_CREATE_CATEGORY_INITIAL_VALUES } from '@/constant';
-import { FCreateCategory } from '@/types';
+import { FCategory } from '@/types';
 import { FCreateCategoryValidator } from '@/validator';
 
 interface Props {
-  onSubmit: (data: FCreateCategory) => void;
+  onSubmit: (data: FCategory) => void;
 }
 
-// todo: combine with UpdateCategory
 export default function CreateCategory(props: Props) {
-  const { register, handleSubmit, formState, reset, setValue } = useForm<FCreateCategory>({
+  const { register, handleSubmit, formState, reset, setValue } = useForm<FCategory>({
     defaultValues: F_CREATE_CATEGORY_INITIAL_VALUES,
     resolver: zodResolver(FCreateCategoryValidator),
   });
@@ -27,16 +26,16 @@ export default function CreateCategory(props: Props) {
         className="flex flex-col gap-y-4"
       >
         <div>
-          <label htmlFor="nameEn">Name: </label>
-          <input {...register('nameEn')} name="nameEn" className="bg-slate-300" />
+          <label htmlFor="name.nameEn">Name: </label>
+          <input {...register('name.nameEn')} name="name.nameEn" className="bg-slate-300" />
         </div>
         <div>
-          <label htmlFor="nameTw">名稱: </label>
-          <input {...register('nameTw')} name="nameTw" className="bg-slate-300" />
+          <label htmlFor="name.nameTw">名稱: </label>
+          <input {...register('name.nameTw')} name="name.nameTw" className="bg-slate-300" />
         </div>
         <div>
-          <label htmlFor="nameTw">名前: </label>
-          <input {...register('nameJp')} name="nameJp" className="bg-slate-300" />
+          <label htmlFor="name.nameJp">名前: </label>
+          <input {...register('name.nameJp')} name="name.nameJp" className="bg-slate-300" />
         </div>
         <div>
           <label htmlFor="comment">Comment: </label>
@@ -46,7 +45,7 @@ export default function CreateCategory(props: Props) {
           Submit
         </button>
       </form>
-      {formState.errors.nameEn && <div className="text-red-500">{formState.errors.nameEn.message}</div>}
+      {formState.errors.name && <div className="text-red-500">{formState.errors.name.message}</div>}
     </div>
   );
 }

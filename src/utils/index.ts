@@ -1,7 +1,9 @@
 import { GeneralResponse } from '@/types';
 
-export function ResponseTransformer<T>(data: T): GeneralResponse<T> {
-  return { data };
+export abstract class CommonTransformer {
+  public static ResponseTransformer<T>(data: T): GeneralResponse<T> {
+    return { data };
+  }
 }
 
 // export function getCircularReplacer() {

@@ -1,51 +1,28 @@
 import { z } from 'zod';
 
-import { FCreateCategory, FUpdateCategory, RCreateCategory, RUpdateCategory, VCategory } from '@/types';
+import { FCategory, MCategory, RCategory, VCategory } from '@/types';
+import { DCategory } from '@/types/dbModels';
 
-import { NameValidator } from './common';
+import { IdValidator, SettingBaseValidator } from './common';
 
-export const VCategoryValidator: z.ZodSchema<VCategory> = z
-  .object({
-    comment: z.string().nullable(),
-    id: z.string(),
-  })
-  .and(NameValidator);
+export const DCategoryValidator: z.ZodSchema<DCategory> = z.object({
+  comment: z.string().nullable(),
+  id: IdValidator,
+  name: z.record(z.string(), z.string()),
+});
 
-export const RCreateCategoryValidator: z.ZodSchema<RCreateCategory> = z
-  .object({
-    comment: z.string(),
-    nameEn: z.string(),
-    nameJp: z.string(),
-    nameTw: z.string(),
-  })
-  .superRefine((values, context) => {
-    const nameEnLength: number = values.nameEn.length;
-    const nameTwLength: number = values.nameTw.length;
-    const nameJpLength: number = values.nameJp.length;
+export const MCategoryValidator: z.ZodSchema<MCategory> = z.object({ id: IdValidator }).and(SettingBaseValidator);
 
-    if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
-      context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['nameEn'] });
-    }
-  });
+export const VCategoryValidator: z.ZodSchema<VCategory> = MCategoryValidator;
 
-export const FCreateCategoryValidator: z.ZodSchema<FCreateCategory> = RCreateCategoryValidator;
+export const RCategoryValidator: z.ZodSchema<RCategory> = SettingBaseValidator.superRefine((values, context) => {
+  const nameEnLength: number = values.name.nameEn?.length || 0;
+  const nameTwLength: number = values.name.nameTw?.length || 0;
+  const nameJpLength: number = values.name.nameJp?.length || 0;
 
-export const RUpdateCategoryValidator: z.ZodSchema<RUpdateCategory> = z
-  .object({
-    comment: z.string().nullable(),
-    id: z.string().uuid(),
-    nameEn: z.string(),
-    nameJp: z.string(),
-    nameTw: z.string(),
-  })
-  .superRefine((values, context) => {
-    const nameEnLength: number = values.nameEn.length;
-    const nameTwLength: number = values.nameTw.length;
-    const nameJpLength: number = values.nameJp.length;
+  if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['name'] });
+  }
+});
 
-    if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
-      context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['name'] });
-    }
-  });
-
-export const FUpdateCategoryValidator: z.ZodSchema<FUpdateCategory> = RUpdateCategoryValidator;
+export const FCreateCategoryValidator: z.ZodSchema<FCategory> = RCategoryValidator;

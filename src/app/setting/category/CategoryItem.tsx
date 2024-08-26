@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { FUpdateCategory, VCategory } from '@/types';
-import { FUpdateCategoryValidator } from '@/validator';
+import { FCategory, VCategory } from '@/types';
+import { FCreateCategoryValidator } from '@/validator';
 
 interface Props {
   category: VCategory;
@@ -10,13 +10,13 @@ interface Props {
   onCancel: () => void;
   onDelete: (id: VCategory['id']) => void;
   onEdit: (category: VCategory) => void;
-  onUpdate: (category: VCategory) => void;
+  onUpdate: (category: FCategory) => void;
 }
 
 export default function CategoryItem(props: Props) {
-  const { register, handleSubmit } = useForm<FUpdateCategory>({
+  const { register, handleSubmit } = useForm<FCategory>({
     defaultValues: props.category,
-    resolver: zodResolver(FUpdateCategoryValidator),
+    resolver: zodResolver(FCreateCategoryValidator),
   });
 
   return (
@@ -24,9 +24,9 @@ export default function CategoryItem(props: Props) {
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <input {...register('nameEn')} className="bg-slate-400 w-1/5" />
-            <input {...register('nameTw')} className="bg-slate-400 w-1/5" />
-            <input {...register('nameJp')} className="bg-slate-400 w-1/5" />
+            <input {...register('name.nameEn')} className="bg-slate-400 w-1/5" />
+            <input {...register('name.nameTw')} className="bg-slate-400 w-1/5" />
+            <input {...register('name.nameJp')} className="bg-slate-400 w-1/5" />
             <input {...register('comment')} name="comment" className="bg-slate-400 w-1/5" />
             <div className="w-1/5 gap-x-2 flex">
               <button className="bg-slate-500 p-1 rounded-sm text-white">Save</button>
@@ -38,9 +38,9 @@ export default function CategoryItem(props: Props) {
         </td>
       ) : (
         <>
-          <td className="border border-slate-300">{props.category.nameEn}</td>
-          <td className="border border-slate-300">{props.category.nameTw}</td>
-          <td className="border border-slate-300">{props.category.nameJp}</td>
+          <td className="border border-slate-300">{props.category.name.nameEn}</td>
+          <td className="border border-slate-300">{props.category.name.nameTw}</td>
+          <td className="border border-slate-300">{props.category.name.nameJp}</td>
           <td className="border border-slate-300">{props.category.comment}</td>
           <td className="border border-slate-300 flex gap-x-2">
             <button className="bg-slate-500 p-1 rounded-sm text-white" onClick={() => props.onEdit(props.category)}>

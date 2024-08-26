@@ -1,9 +1,5 @@
-import { Prisma } from '@prisma/client';
+import { Id, SettingBase } from '@/types';
 
-import { Id, NString } from '@/types';
-
-export interface MCategory {
-  comment: NString;
+export interface MCategory extends SettingBase {
   id: Id;
-  name: Prisma.JsonValue;
 }
