@@ -13,14 +13,14 @@ interface Props {
   onUpdate: (brand: FBrand) => void;
 }
 
-export default function BrandItem(props: Props) {
+export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FBrand>({
     defaultValues: props.item,
     resolver: zodResolver(FBrandValidator),
   });
 
   return (
-    <tr key={props.item.id} data-test-comp={BrandItem.name} className="even:bg-slate-100 hover:bg-slate-200">
+    <tr key={props.item.id} data-test-comp={Item.name} className="even:bg-slate-100 hover:bg-slate-200">
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">

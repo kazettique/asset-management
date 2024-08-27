@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { BrandFetcher } from '@/fetcher';
 import { FBrand, Id, NType, VBrand } from '@/types';
 
-import BrandItem from './BrandItem';
 import Create from './Create';
+import Item from './Item';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VBrand>>(null);
@@ -88,7 +88,7 @@ export default function Page() {
           <tbody>
             {data &&
               data.data.map((item, _index) => (
-                <BrandItem
+                <Item
                   key={item.id}
                   item={item}
                   isEdit={editItem !== null ? item.id === editItem.id : false}

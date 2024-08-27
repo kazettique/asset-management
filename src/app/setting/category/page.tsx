@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { CategoryFetcher } from '@/fetcher';
 import { FCategory, Id, NType, VCategory } from '@/types';
 
-import CategoryItem from './CategoryItem';
 import Create from './Create';
+import Item from './Item';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VCategory>>(null);
@@ -89,7 +89,7 @@ export default function Page() {
           <tbody>
             {data &&
               data.data.map((item, _index) => (
-                <CategoryItem
+                <Item
                   key={item.id}
                   item={item}
                   isEdit={editItem !== null ? item.id === editItem.id : false}

@@ -7,7 +7,7 @@ import { PlaceFetcher } from '@/fetcher';
 import { FPlace, Id, NType, VPlace } from '@/types';
 
 import Create from './Create';
-import PlaceItem from './PlaceItem';
+import Item from './Item';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VPlace>>(null);
@@ -88,7 +88,7 @@ export default function Page() {
           <tbody>
             {data &&
               data.data.map((item, _index) => (
-                <PlaceItem
+                <Item
                   key={item.id}
                   item={item}
                   isEdit={editItem !== null ? item.id === editItem.id : false}
