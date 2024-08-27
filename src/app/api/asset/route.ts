@@ -37,21 +37,11 @@ export async function GET(_request: Request) {
 
   const rawDataValidation = DAssetValidator.array().safeParse(rawData);
 
-  const test = rawData.map((item) => ({
-    name: item.name,
-    startPrice: item.startPrice,
-  }));
-
-  const sum = rawData.reduce((acc, curr) => acc + Number(curr.startPrice), 0);
-
-  const temp1 = new Response(JSON.stringify(rawData), { status: 200 });
-  const temp2 = NextResponse.json(rawData);
-
-  return Response.json({ sum });
-
-  // if (!rawDataValidation.success) {
-  //   return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
-  // } else {
-  //   return NextResponse.json(rawDataValidation.data);
-  // }
+  if (!rawDataValidation.success) {
+    const test = rawDataValidation.error;
+    console.log('test;', test);
+    return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+  } else {
+    return NextResponse.json(rawDataValidation.data);
+  }
 }

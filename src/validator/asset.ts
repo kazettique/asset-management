@@ -6,7 +6,7 @@ import { DAsset } from '@/types';
 import { IdValidator, PriceValidator } from './common';
 
 export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
-  brand: z.object({ name: z.record(z.string(), z.string()) }),
+  brand: z.object({ name: z.record(z.string(), z.string().nullable()) }),
   comment: z.string().nullable(),
   endCurrency: z
     .object({
@@ -17,7 +17,7 @@ export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
   endDate: z.date().nullable(),
   endMethod: z
     .object({
-      name: z.record(z.string(), z.string()),
+      name: z.record(z.string(), z.string().nullable()),
       type: z.nativeEnum(MethodType),
     })
     .nullable(),
@@ -32,7 +32,7 @@ export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
   }),
   startDate: z.date(),
   startMethod: z.object({
-    name: z.record(z.string(), z.string()),
+    name: z.record(z.string(), z.string().nullable()),
     type: z.nativeEnum(MethodType),
   }),
   startPrice: PriceValidator,

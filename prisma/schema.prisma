@@ -25,13 +25,13 @@ model Asset {
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
   startDate       DateTime
-  startPrice      Decimal
+  startPrice      Float
   startCurrencyId String
   startCurrency   Currency  @relation("AssetStartCurrency", fields: [startCurrencyId], references: [id])
   startMethodId   String
   startMethod     Method    @relation("AssetStartMethod", fields: [startMethodId], references: [id])
   endDate         DateTime?
-  endPrice        Decimal?
+  endPrice        Float?
   endCurrencyId   String?
   endCurrency     Currency? @relation("AssetEndCurrency", fields: [endCurrencyId], references: [id])
   endMethodId     String?

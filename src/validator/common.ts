@@ -33,4 +33,4 @@ export const MethodCommonValidator: z.ZodSchema<MethodCommon> = z
   })
   .and(SettingBaseValidator);
 
-export const PriceValidator = z.coerce.number().nonnegative();
+export const PriceValidator = z.number().nonnegative();
