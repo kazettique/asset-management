@@ -8,11 +8,10 @@ export abstract class OwnerTransformer {
     const nameValidation = NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
-      return { comment: src.comment, id: src.id, name: DEFAULT_NAME };
+      return { ...src, name: DEFAULT_NAME };
     } else {
       return {
-        comment: src.comment,
-        id: src.id,
+        ...src,
         name: { ...DEFAULT_NAME, ...nameValidation.data },
       };
     }

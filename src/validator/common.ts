@@ -1,6 +1,7 @@
+import { MethodType } from '@prisma/client';
 import { z } from 'zod';
 
-import { CurrencyCommon, DbBase, Id, Name, SettingBase } from '@/types';
+import { CurrencyCommon, DbBase, Id, MethodCommon, Name, SettingBase } from '@/types';
 
 export const NameValidator: z.ZodSchema<Name> = z.object({
   nameEn: z.string().nullable(),
@@ -25,3 +26,9 @@ export const CurrencyCommonValidator: z.ZodSchema<CurrencyCommon> = z.object({
   name: z.string(),
   symbol: z.string(),
 });
+
+export const MethodCommonValidator: z.ZodSchema<MethodCommon> = z
+  .object({
+    type: z.nativeEnum(MethodType),
+  })
+  .and(SettingBaseValidator);

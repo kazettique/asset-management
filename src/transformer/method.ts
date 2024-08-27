@@ -1,9 +1,9 @@
 import { DEFAULT_NAME } from '@/constant';
-import { DBrand, MBrand, VBrand } from '@/types';
+import { DMethod, MMethod, VMethod } from '@/types';
 import { NameValidator } from '@/validator';
 
-export abstract class BrandTransformer {
-  public static DBrandTransformer(src: DBrand): MBrand {
+export abstract class MethodTransformer {
+  public static DMethodTransformer(src: DMethod): MMethod {
     const nameValidation = NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
@@ -16,7 +16,7 @@ export abstract class BrandTransformer {
     }
   }
 
-  public static MBrandTransformer(src: MBrand): VBrand {
+  public static MMethodTransformer(src: MMethod): VMethod {
     return src;
   }
 }

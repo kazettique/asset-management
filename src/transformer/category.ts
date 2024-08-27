@@ -1,6 +1,5 @@
 import { DEFAULT_NAME } from '@/constant';
-import { MCategory, VCategory } from '@/types';
-import { DCategory } from '@/types/dbModels';
+import { DCategory, MCategory, VCategory } from '@/types';
 import { NameValidator } from '@/validator';
 
 export abstract class CategoryTransformer {
@@ -8,7 +7,7 @@ export abstract class CategoryTransformer {
     const nameValidation = NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
-      return { comment: src.comment, id: src.id, name: DEFAULT_NAME };
+      return { ...src, name: DEFAULT_NAME };
     } else {
       return {
         comment: src.comment,

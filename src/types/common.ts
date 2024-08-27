@@ -1,3 +1,5 @@
+import { MethodType } from '@prisma/client';
+
 import { NString } from './base';
 
 export interface GeneralResponse<T> {
@@ -30,4 +32,8 @@ export interface CurrencyCommon {
   display: string;
   name: string;
   symbol: string;
+}
+
+export interface MethodCommon extends SettingBase {
+  type: MethodType;
 }
