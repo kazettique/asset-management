@@ -32,3 +32,5 @@ export const MethodCommonValidator: z.ZodSchema<MethodCommon> = z
     type: z.nativeEnum(MethodType),
   })
   .and(SettingBaseValidator);
+
+export const PriceValidator = z.coerce.number().nonnegative();
