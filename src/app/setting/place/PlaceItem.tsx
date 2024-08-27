@@ -1,26 +1,26 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { FBrand, VBrand } from '@/types';
-import { FBrandValidator } from '@/validator';
+import { FPlace, VPlace } from '@/types';
+import { FPlaceValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
-  item: VBrand;
+  item: VPlace;
   onCancel: () => void;
-  onDelete: (id: VBrand['id']) => void;
-  onEdit: (brand: VBrand) => void;
-  onUpdate: (brand: FBrand) => void;
+  onDelete: (id: VPlace['id']) => void;
+  onEdit: (category: VPlace) => void;
+  onUpdate: (category: FPlace) => void;
 }
 
-export default function BrandItem(props: Props) {
-  const { register, handleSubmit } = useForm<FBrand>({
+export default function PlaceItem(props: Props) {
+  const { register, handleSubmit } = useForm<FPlace>({
     defaultValues: props.item,
-    resolver: zodResolver(FBrandValidator),
+    resolver: zodResolver(FPlaceValidator),
   });
 
   return (
-    <tr key={props.item.id} data-test-comp={BrandItem.name} className="even:bg-slate-100 hover:bg-slate-200">
+    <tr key={props.item.id} data-test-comp={PlaceItem.name} className="even:bg-slate-100 hover:bg-slate-200">
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">

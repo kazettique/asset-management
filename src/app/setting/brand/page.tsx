@@ -90,7 +90,7 @@ export default function Page() {
               data.data.map((item, _index) => (
                 <BrandItem
                   key={item.id}
-                  brand={item}
+                  item={item}
                   isEdit={editItem !== null ? item.id === editItem.id : false}
                   onCancel={() => onItemCancel()}
                   onEdit={(brand) => onItemEdit(brand)}

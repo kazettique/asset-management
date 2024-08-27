@@ -91,7 +91,7 @@ export default function Page() {
               data.data.map((item, _index) => (
                 <CategoryItem
                   key={item.id}
-                  category={item}
+                  item={item}
                   isEdit={editItem !== null ? item.id === editItem.id : false}
                   onCancel={() => onItemCancel()}
                   onEdit={(category) => onItemEdit(category)}
