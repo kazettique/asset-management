@@ -9,8 +9,8 @@ interface Props {
   item: VBrand;
   onCancel: () => void;
   onDelete: (id: VBrand['id']) => void;
-  onEdit: (brand: VBrand) => void;
-  onUpdate: (brand: FBrand) => void;
+  onEdit: (item: VBrand) => void;
+  onUpdate: (item: FBrand) => void;
 }
 
 export default function Item(props: Props) {

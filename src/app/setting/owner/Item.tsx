@@ -1,22 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { FCategory, VCategory } from '@/types';
-import { FCategoryValidator } from '@/validator';
+import { FOwner, VOwner } from '@/types';
+import { FOwnerValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
-  item: VCategory;
+  item: VOwner;
   onCancel: () => void;
-  onDelete: (id: VCategory['id']) => void;
-  onEdit: (item: VCategory) => void;
-  onUpdate: (item: FCategory) => void;
+  onDelete: (id: VOwner['id']) => void;
+  onEdit: (item: VOwner) => void;
+  onUpdate: (item: FOwner) => void;
 }
 
 export default function Item(props: Props) {
-  const { register, handleSubmit } = useForm<FCategory>({
+  const { register, handleSubmit } = useForm<FOwner>({
     defaultValues: props.item,
-    resolver: zodResolver(FCategoryValidator),
+    resolver: zodResolver(FOwnerValidator),
   });
 
   return (

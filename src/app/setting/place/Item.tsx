@@ -9,8 +9,8 @@ interface Props {
   item: VPlace;
   onCancel: () => void;
   onDelete: (id: VPlace['id']) => void;
-  onEdit: (category: VPlace) => void;
-  onUpdate: (category: FPlace) => void;
+  onEdit: (item: VPlace) => void;
+  onUpdate: (item: FPlace) => void;
 }
 
 export default function Item(props: Props) {
