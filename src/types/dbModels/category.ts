@@ -1,9 +1,8 @@
 import { Prisma } from '@prisma/client';
 
-import { Id, NString } from '@/types';
+import { DbBase, NString } from '@/types';
 
-export interface DCategory {
+export interface DCategory extends DbBase {
   comment: NString;
-  id: Id;
   name: Prisma.JsonValue;
 }

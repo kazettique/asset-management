@@ -3,7 +3,7 @@ import { PlaceTransformer } from '@/transformer';
 import { DPlace, Id, MPlace, NType, RPlace } from '@/types';
 
 export abstract class PlaceRepository {
-  public static async getAllPlace(): Promise<MPlace[]> {
+  public static async getAll(): Promise<MPlace[]> {
     const rawData: DPlace[] = await db.place.findMany({
       select: {
         comment: true,
@@ -17,7 +17,7 @@ export abstract class PlaceRepository {
     return parsedData;
   }
 
-  public static async getPlace(id: Id): Promise<NType<MPlace>> {
+  public static async get(id: Id): Promise<NType<MPlace>> {
     const rawData: NType<DPlace> = await db.place.findUnique({
       select: {
         comment: true,
@@ -34,7 +34,7 @@ export abstract class PlaceRepository {
     }
   }
 
-  public static async createPlace(payload: RPlace): Promise<MPlace> {
+  public static async create(payload: RPlace): Promise<MPlace> {
     const rawData = await db.place.create({
       data: payload,
       select: {
@@ -47,7 +47,7 @@ export abstract class PlaceRepository {
     return PlaceTransformer.DPlaceTransformer(rawData);
   }
 
-  public static async deletePlace(id: Id): Promise<MPlace> {
+  public static async delete(id: Id): Promise<MPlace> {
     const rawData = await db.place.delete({
       select: {
         comment: true,
@@ -60,7 +60,7 @@ export abstract class PlaceRepository {
     return PlaceTransformer.DPlaceTransformer(rawData);
   }
 
-  public static async updatePlace(payload: RPlace, id: MPlace['id']): Promise<MPlace> {
+  public static async update(payload: RPlace, id: MPlace['id']): Promise<MPlace> {
     const rawData = await db.place.update({
       data: payload,
       select: {

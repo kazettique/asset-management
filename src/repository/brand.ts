@@ -3,7 +3,7 @@ import { BrandTransformer } from '@/transformer';
 import { DBrand, Id, MBrand, NType, RBrand } from '@/types';
 
 export abstract class BrandRepository {
-  public static async getAllBrand(): Promise<MBrand[]> {
+  public static async getAll(): Promise<MBrand[]> {
     const rawData: DBrand[] = await db.brand.findMany({
       select: {
         comment: true,
@@ -17,7 +17,7 @@ export abstract class BrandRepository {
     return parsedData;
   }
 
-  public static async getBrand(id: Id): Promise<NType<MBrand>> {
+  public static async get(id: Id): Promise<NType<MBrand>> {
     const rawData: NType<DBrand> = await db.brand.findUnique({
       select: {
         comment: true,
@@ -34,7 +34,7 @@ export abstract class BrandRepository {
     }
   }
 
-  public static async createBrand(payload: RBrand): Promise<MBrand> {
+  public static async create(payload: RBrand): Promise<MBrand> {
     const rawData = await db.brand.create({
       data: payload,
       select: {
@@ -47,7 +47,7 @@ export abstract class BrandRepository {
     return BrandTransformer.DBrandTransformer(rawData);
   }
 
-  public static async deleteBrand(id: Id): Promise<MBrand> {
+  public static async delete(id: Id): Promise<MBrand> {
     const rawData = await db.brand.delete({
       select: {
         comment: true,
@@ -60,7 +60,7 @@ export abstract class BrandRepository {
     return BrandTransformer.DBrandTransformer(rawData);
   }
 
-  public static async updateBrand(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
+  public static async update(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
     const rawData = await db.brand.update({
       data: payload,
       select: {

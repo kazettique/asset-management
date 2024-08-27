@@ -19,7 +19,7 @@ export default function Input<T extends FieldValues>(props: Props<T>) {
           {label}
         </label>
       )}
-      <input {...register(path, { required })} name={path} className={`block bg-slate-300 p-1 ${className}`} />
+      <input {...register(path, { required })} className={`block bg-slate-300 p-1 ${className}`} />
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import { FCategory, GeneralResponse, Id, MCategory, VCategory } from '@/types';
 
 export abstract class CategoryFetcher {
-  public static async getAllCategory(): Promise<GeneralResponse<VCategory[]>> {
+  public static async getAll(): Promise<GeneralResponse<VCategory[]>> {
     const res = await fetch('/api/category');
 
     const data = (await res.json()) as GeneralResponse<VCategory[]>;
@@ -11,7 +11,7 @@ export abstract class CategoryFetcher {
     return data;
   }
 
-  public static async createCategory(payload: FCategory): Promise<GeneralResponse<VCategory>> {
+  public static async create(payload: FCategory): Promise<GeneralResponse<VCategory>> {
     const res = await fetch('/api/category', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VCategory>>;
@@ -19,7 +19,7 @@ export abstract class CategoryFetcher {
     return data;
   }
 
-  public static async deleteCategory(id: Id): Promise<GeneralResponse<VCategory>> {
+  public static async delete(id: Id): Promise<GeneralResponse<VCategory>> {
     const res = await fetch('/api/category/' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VCategory>>;
@@ -27,7 +27,7 @@ export abstract class CategoryFetcher {
     return data;
   }
 
-  public static async updateCategory(payload: FCategory, id: MCategory['id']): Promise<GeneralResponse<VCategory>> {
+  public static async update(payload: FCategory, id: MCategory['id']): Promise<GeneralResponse<VCategory>> {
     const res = await fetch('/api/category/' + id, {
       body: JSON.stringify(payload),
       method: 'POST',

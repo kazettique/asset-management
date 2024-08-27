@@ -3,7 +3,7 @@
 import { FPlace, GeneralResponse, Id, MPlace, VPlace } from '@/types';
 
 export abstract class PlaceFetcher {
-  public static async getAllPlace(): Promise<GeneralResponse<VPlace[]>> {
+  public static async getAll(): Promise<GeneralResponse<VPlace[]>> {
     const res = await fetch('/api/place');
 
     const data = (await res.json()) as GeneralResponse<VPlace[]>;
@@ -11,7 +11,7 @@ export abstract class PlaceFetcher {
     return data;
   }
 
-  public static async createPlace(payload: FPlace): Promise<GeneralResponse<VPlace>> {
+  public static async create(payload: FPlace): Promise<GeneralResponse<VPlace>> {
     const res = await fetch('/api/place', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
@@ -19,7 +19,7 @@ export abstract class PlaceFetcher {
     return data;
   }
 
-  public static async deletePlace(id: Id): Promise<GeneralResponse<VPlace>> {
+  public static async delete(id: Id): Promise<GeneralResponse<VPlace>> {
     const res = await fetch('/api/place/' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
@@ -27,7 +27,7 @@ export abstract class PlaceFetcher {
     return data;
   }
 
-  public static async updatePlace(payload: FPlace, id: MPlace['id']): Promise<GeneralResponse<VPlace>> {
+  public static async update(payload: FPlace, id: MPlace['id']): Promise<GeneralResponse<VPlace>> {
     const res = await fetch('/api/place/' + id, {
       body: JSON.stringify(payload),
       method: 'POST',

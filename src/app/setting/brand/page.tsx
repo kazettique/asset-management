@@ -13,19 +13,19 @@ export default function Page() {
   const [editItem, setEditItem] = useState<NType<VBrand>>(null);
 
   const { data, isPending, refetch } = useQuery({
-    queryFn: () => BrandFetcher.getAllBrand(),
+    queryFn: () => BrandFetcher.getAll(),
     queryKey: ['brandList'],
   });
 
   const createBrand = useMutation({
-    mutationFn: (payload: FBrand) => BrandFetcher.createBrand(payload),
+    mutationFn: (payload: FBrand) => BrandFetcher.create(payload),
     onSuccess: () => {
       refetch();
     },
   });
 
   const updateBrand = useMutation({
-    mutationFn: ({ payload, id }: { id: VBrand['id']; payload: FBrand }) => BrandFetcher.updateBrand(payload, id),
+    mutationFn: ({ payload, id }: { id: VBrand['id']; payload: FBrand }) => BrandFetcher.update(payload, id),
     onSuccess: () => {
       refetch();
       setEditItem(null);
@@ -35,7 +35,7 @@ export default function Page() {
   const deleteBrand = useMutation({
     mutationFn: (id: Id) => {
       if (confirm('Confirm delete?')) {
-        return BrandFetcher.deleteBrand(id);
+        return BrandFetcher.delete(id);
       } else {
         throw Error('Deletion terminated.');
       }

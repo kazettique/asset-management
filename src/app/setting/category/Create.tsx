@@ -31,19 +31,19 @@ export default function Create(props: Props) {
         <div>
           <label htmlFor="name.nameEn">Name: </label>
 
-          <input {...register('name.nameEn')} name="name.nameEn" className="bg-slate-300" />
+          <input {...register('name.nameEn')} className="bg-slate-300" />
         </div>
         <div>
           <label htmlFor="name.nameTw">名稱: </label>
-          <input {...register('name.nameTw')} name="name.nameTw" className="bg-slate-300" />
+          <input {...register('name.nameTw')} className="bg-slate-300" />
         </div>
         <div>
           <label htmlFor="name.nameJp">名前: </label>
-          <input {...register('name.nameJp')} name="name.nameJp" className="bg-slate-300" />
+          <input {...register('name.nameJp')} className="bg-slate-300" />
         </div>
         <div>
           <label htmlFor="comment">Comment: </label>
-          <input {...register('comment')} name="comment" className="bg-slate-300" />
+          <input {...register('comment')} className="bg-slate-300" />
         </div>
         <button type="submit" className="bg-slate-400 hover:bg-slate-500 p-2 m-4 rounded-sm">
           Submit

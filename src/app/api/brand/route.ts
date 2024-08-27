@@ -8,7 +8,7 @@ import { CommonTransformer } from '@/utils';
 import { RBrandValidator, VBrandValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VBrand[]>> | Response> {
-  const raw = await BrandRepository.getAllBrand();
+  const raw = await BrandRepository.getAll();
 
   const transformedData = raw.map((item) => BrandTransformer.DBrandTransformer(item));
   const dataValidation = VBrandValidator.array().safeParse(transformedData);
@@ -32,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await BrandRepository.createBrand(requestValidation.data);
+    const raw = await BrandRepository.create(requestValidation.data);
     const data = BrandTransformer.MBrandTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

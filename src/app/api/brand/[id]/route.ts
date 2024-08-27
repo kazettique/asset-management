@@ -18,7 +18,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await BrandRepository.getBrand(idValidation.data);
+    const raw = await BrandRepository.get(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -44,7 +44,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await BrandRepository.deleteBrand(idValidation.data);
+    const raw = await BrandRepository.delete(idValidation.data);
     const data = BrandTransformer.MBrandTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -65,7 +65,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await BrandRepository.updateBrand(requestValidation.data, idValidation.data);
+    const raw = await BrandRepository.update(requestValidation.data, idValidation.data);
     const data = BrandTransformer.MBrandTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

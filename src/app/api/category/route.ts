@@ -8,7 +8,7 @@ import { CommonTransformer } from '@/utils';
 import { RCategoryValidator, VCategoryValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCategory[]>> | Response> {
-  const raw = await CategoryRepository.getAllCategory();
+  const raw = await CategoryRepository.getAll();
 
   const transformedData = raw.map((item) => CategoryTransformer.DCategoryTransformer(item));
   const dataValidation = VCategoryValidator.array().safeParse(transformedData);
@@ -32,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await CategoryRepository.createCategory(requestValidation.data);
+    const raw = await CategoryRepository.create(requestValidation.data);
     const data = CategoryTransformer.MCategoryTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

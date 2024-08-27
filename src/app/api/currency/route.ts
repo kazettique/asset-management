@@ -1,18 +1,40 @@
 import { NextResponse } from 'next/server';
 
-import { db } from '@/lib/db';
+import { MSG_DIRTY_DATA } from '@/constant';
+import { CurrencyRepository } from '@/repository';
+import { CurrencyTransformer } from '@/transformer';
+import { GeneralResponse, HttpStatusCode, VCurrency } from '@/types';
 import { CommonTransformer } from '@/utils';
+import { RCurrencyValidator, VCurrencyValidator } from '@/validator';
 
-export async function GET(_request: Request) {
-  const categoryList = await db.currency.findMany({
-    select: {
-      comment: true,
-      display: true,
-      id: true,
-      name: true,
-      symbol: true,
-    },
-  });
+export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCurrency[]>> | Response> {
+  const raw = await CurrencyRepository.getAll();
 
-  return NextResponse.json(CommonTransformer.ResponseTransformer(categoryList));
+  const transformedData = raw.map((item) => CurrencyTransformer.DCurrencyTransformer(item));
+  const dataValidation = VCurrencyValidator.array().safeParse(transformedData);
+
+  if (dataValidation.success) {
+    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+  } else {
+    return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+  }
+}
+
+export async function POST(request: Request): Promise<Response | NextResponse<GeneralResponse<VCurrency>>> {
+  // 1. parse request body
+  const requestBody = await request.json();
+
+  // 2. validate request body
+  const requestValidation = RCurrencyValidator.safeParse(requestBody);
+
+  // 3.1 if not passed, throw 400 bad request
+  if (!requestValidation.success) {
+    return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
+  } else {
+    // 3.2 if passed, fetch repository
+    const raw = await CurrencyRepository.create(requestValidation.data);
+    const data = CurrencyTransformer.MCurrencyTransformer(raw);
+
+    return NextResponse.json(CommonTransformer.ResponseTransformer(data));
+  }
 }

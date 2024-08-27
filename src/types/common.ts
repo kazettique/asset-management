@@ -13,6 +13,9 @@ export interface Name {
 
 export type Id = string;
 
+export interface DbBase {
+  id: Id;
+}
 export interface SettingBase {
   comment: NString;
   name: {
@@ -20,4 +23,11 @@ export interface SettingBase {
     nameJp: NString;
     nameTw: NString;
   };
+}
+
+export interface CurrencyCommon {
+  comment: NString;
+  display: string;
+  name: string;
+  symbol: string;
 }

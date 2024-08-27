@@ -8,7 +8,7 @@ import { CommonTransformer } from '@/utils';
 import { ROwnerValidator, VOwnerValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VOwner[]>> | Response> {
-  const raw = await OwnerRepository.getAllOwner();
+  const raw = await OwnerRepository.getAll();
 
   const transformedData = raw.map((item) => OwnerTransformer.DOwnerTransformer(item));
   const dataValidation = VOwnerValidator.array().safeParse(transformedData);
@@ -32,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await OwnerRepository.createOwner(requestValidation.data);
+    const raw = await OwnerRepository.create(requestValidation.data);
     const data = OwnerTransformer.MOwnerTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

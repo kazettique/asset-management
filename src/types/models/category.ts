@@ -1,5 +1,3 @@
-import { Id, SettingBase } from '@/types';
+import { DbBase, SettingBase } from '@/types';
 
-export interface MCategory extends SettingBase {
-  id: Id;
-}
+export interface MCategory extends SettingBase, DbBase {}

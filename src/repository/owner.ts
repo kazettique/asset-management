@@ -3,7 +3,7 @@ import { OwnerTransformer } from '@/transformer';
 import { DOwner, Id, MOwner, NType, ROwner } from '@/types';
 
 export abstract class OwnerRepository {
-  public static async getAllOwner(): Promise<MOwner[]> {
+  public static async getAll(): Promise<MOwner[]> {
     const rawData: DOwner[] = await db.owner.findMany({
       select: {
         comment: true,
@@ -17,7 +17,7 @@ export abstract class OwnerRepository {
     return parsedData;
   }
 
-  public static async getOwner(id: Id): Promise<NType<MOwner>> {
+  public static async get(id: Id): Promise<NType<MOwner>> {
     const rawData: NType<DOwner> = await db.owner.findUnique({
       select: {
         comment: true,
@@ -34,7 +34,7 @@ export abstract class OwnerRepository {
     }
   }
 
-  public static async createOwner(payload: ROwner): Promise<MOwner> {
+  public static async create(payload: ROwner): Promise<MOwner> {
     const rawData = await db.owner.create({
       data: payload,
       select: {
@@ -47,7 +47,7 @@ export abstract class OwnerRepository {
     return OwnerTransformer.DOwnerTransformer(rawData);
   }
 
-  public static async deleteOwner(id: Id): Promise<MOwner> {
+  public static async delete(id: Id): Promise<MOwner> {
     const rawData = await db.owner.delete({
       select: {
         comment: true,
@@ -60,7 +60,7 @@ export abstract class OwnerRepository {
     return OwnerTransformer.DOwnerTransformer(rawData);
   }
 
-  public static async updateOwner(payload: ROwner, id: MOwner['id']): Promise<MOwner> {
+  public static async update(payload: ROwner, id: MOwner['id']): Promise<MOwner> {
     const rawData = await db.owner.update({
       data: payload,
       select: {
