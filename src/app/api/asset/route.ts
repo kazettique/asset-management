@@ -19,7 +19,6 @@ export async function GET(_request: Request) {
       endPrice: true,
       id: true,
       isCensored: true,
-      isUsed: true,
       meta: true,
       name: true,
       startCurrency: {

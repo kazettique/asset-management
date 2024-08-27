@@ -18,7 +18,6 @@ model Asset {
 
   // information
   name       Json
-  isUsed     Boolean @default(false)
   isCensored Boolean @default(false)
   meta       Json
   brand      Brand   @relation(fields: [id], references: [id])
