@@ -15,14 +15,6 @@ export const MCategoryValidator: z.ZodSchema<MCategory> = z.object({ id: IdValid
 
 export const VCategoryValidator: z.ZodSchema<VCategory> = MCategoryValidator;
 
-export const RCategoryValidator: z.ZodSchema<RCategory> = SettingBaseValidator.superRefine((values, context) => {
-  const nameEnLength: number = values.name.nameEn?.length || 0;
-  const nameTwLength: number = values.name.nameTw?.length || 0;
-  const nameJpLength: number = values.name.nameJp?.length || 0;
-
-  if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
-    context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['name'] });
-  }
-});
+export const RCategoryValidator: z.ZodSchema<RCategory> = SettingBaseValidator;
 
 export const FCategoryValidator: z.ZodSchema<FCategory> = RCategoryValidator;

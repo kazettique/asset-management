@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { MethodRepository } from '@/repository';
-import { MethodTransformer } from '@/transformer';
+import { CommonTransformer, MethodTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VMethod } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { RMethodValidator, VMethodValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VMethod[]>> | Response> {

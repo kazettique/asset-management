@@ -1,9 +1,9 @@
 import { MethodType } from '@prisma/client';
 import { z } from 'zod';
 
-import { DAsset } from '@/types';
+import { DAsset, FAsset, MAsset, RAsset, VAsset } from '@/types';
 
-import { IdValidator, PriceValidator } from './common';
+import { AssetCommonValidator, DbBaseValidator, IdValidator, PriceValidator } from './common';
 
 export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
   brand: z.object({ name: z.record(z.string(), z.string().nullable()) }),
@@ -37,3 +37,11 @@ export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
   }),
   startPrice: PriceValidator,
 });
+
+export const MAssetValidator: z.ZodSchema<MAsset> = DbBaseValidator.and(AssetCommonValidator);
+
+export const VAssetValidator: z.ZodSchema<VAsset> = MAssetValidator;
+
+export const RAssetValidator: z.ZodSchema<RAsset> = AssetCommonValidator;
+
+export const FAssetValidator: z.ZodSchema<FAsset> = RAssetValidator;

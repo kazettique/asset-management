@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
-import { CommonTransformer } from '@/utils';
+import { CommonTransformer } from '@/transformer';
 
 export async function GET(_request: Request) {
   const categoryList = await db.ownershipHistory.findMany({

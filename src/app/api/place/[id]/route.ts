@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { PlaceRepository } from '@/repository';
-import { PlaceTransformer } from '@/transformer';
+import { CommonTransformer, PlaceTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VPlace } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { IdValidator, RPlaceValidator, VPlaceValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };

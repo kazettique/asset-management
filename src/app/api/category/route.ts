@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { CategoryRepository } from '@/repository';
-import { CategoryTransformer } from '@/transformer';
+import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCategory } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { RCategoryValidator, VCategoryValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCategory[]>> | Response> {

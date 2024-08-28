@@ -2,14 +2,16 @@ import { db } from '@/lib/db';
 import { OwnerTransformer } from '@/transformer';
 import { DOwner, Id, MOwner, NType, ROwner } from '@/types';
 
+const queryObj = {
+  comment: true,
+  id: true,
+  name: true,
+};
+
 export abstract class OwnerRepository {
   public static async getAll(): Promise<MOwner[]> {
     const rawData: DOwner[] = await db.owner.findMany({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
     });
 
     const parsedData = rawData.map((owner) => OwnerTransformer.DOwnerTransformer(owner));
@@ -19,11 +21,7 @@ export abstract class OwnerRepository {
 
   public static async get(id: Id): Promise<NType<MOwner>> {
     const rawData: NType<DOwner> = await db.owner.findUnique({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
       where: { id },
     });
 
@@ -37,11 +35,7 @@ export abstract class OwnerRepository {
   public static async create(payload: ROwner): Promise<MOwner> {
     const rawData = await db.owner.create({
       data: payload,
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
     });
 
     return OwnerTransformer.DOwnerTransformer(rawData);
@@ -49,11 +43,7 @@ export abstract class OwnerRepository {
 
   public static async delete(id: Id): Promise<MOwner> {
     const rawData = await db.owner.delete({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
       where: { id },
     });
 
@@ -63,11 +53,7 @@ export abstract class OwnerRepository {
   public static async update(payload: ROwner, id: MOwner['id']): Promise<MOwner> {
     const rawData = await db.owner.update({
       data: payload,
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
       where: { id },
     });
 

@@ -2,15 +2,17 @@ import { db } from '@/lib/db';
 import { MethodTransformer } from '@/transformer';
 import { DMethod, Id, MMethod, NType, RMethod } from '@/types';
 
+const queryObj = {
+  comment: true,
+  id: true,
+  name: true,
+  type: true,
+};
+
 export abstract class MethodRepository {
   public static async getAll(): Promise<MMethod[]> {
     const rawData: DMethod[] = await db.method.findMany({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-        type: true,
-      },
+      select: queryObj,
     });
 
     const parsedData = rawData.map((category) => MethodTransformer.DMethodTransformer(category));
@@ -20,12 +22,7 @@ export abstract class MethodRepository {
 
   public static async get(id: Id): Promise<NType<MMethod>> {
     const rawData: NType<DMethod> = await db.method.findUnique({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-        type: true,
-      },
+      select: queryObj,
       where: { id },
     });
 
@@ -39,12 +36,7 @@ export abstract class MethodRepository {
   public static async create(payload: RMethod): Promise<MMethod> {
     const rawData = await db.method.create({
       data: payload,
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-        type: true,
-      },
+      select: queryObj,
     });
 
     return MethodTransformer.DMethodTransformer(rawData);
@@ -52,12 +44,7 @@ export abstract class MethodRepository {
 
   public static async delete(id: Id): Promise<MMethod> {
     const rawData = await db.method.delete({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-        type: true,
-      },
+      select: queryObj,
       where: { id },
     });
 
@@ -67,12 +54,7 @@ export abstract class MethodRepository {
   public static async update(payload: RMethod, id: MMethod['id']): Promise<MMethod> {
     const rawData = await db.method.update({
       data: payload,
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-        type: true,
-      },
+      select: queryObj,
       where: { id },
     });
 

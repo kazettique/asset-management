@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { OwnerRepository } from '@/repository';
-import { OwnerTransformer } from '@/transformer';
+import { CommonTransformer, OwnerTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VOwner } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { ROwnerValidator, VOwnerValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VOwner[]>> | Response> {

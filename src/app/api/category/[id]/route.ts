@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { CategoryRepository } from '@/repository';
-import { CategoryTransformer } from '@/transformer';
+import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VCategory } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { IdValidator, RCategoryValidator, VCategoryValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };

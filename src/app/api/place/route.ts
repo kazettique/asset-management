@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { PlaceRepository } from '@/repository';
-import { PlaceTransformer } from '@/transformer';
+import { CommonTransformer, PlaceTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VPlace } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { RPlaceValidator, VPlaceValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VPlace[]>> | Response> {

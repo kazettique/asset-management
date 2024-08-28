@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { CurrencyRepository } from '@/repository';
-import { CurrencyTransformer } from '@/transformer';
+import { CommonTransformer, CurrencyTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCurrency } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { RCurrencyValidator, VCurrencyValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCurrency[]>> | Response> {

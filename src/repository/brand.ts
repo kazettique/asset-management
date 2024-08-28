@@ -2,14 +2,16 @@ import { db } from '@/lib/db';
 import { BrandTransformer } from '@/transformer';
 import { DBrand, Id, MBrand, NType, RBrand } from '@/types';
 
+const queryObj = {
+  comment: true,
+  id: true,
+  name: true,
+};
+
 export abstract class BrandRepository {
   public static async getAll(): Promise<MBrand[]> {
     const rawData: DBrand[] = await db.brand.findMany({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
     });
 
     const parsedData = rawData.map((brand) => BrandTransformer.DBrandTransformer(brand));
@@ -19,11 +21,7 @@ export abstract class BrandRepository {
 
   public static async get(id: Id): Promise<NType<MBrand>> {
     const rawData: NType<DBrand> = await db.brand.findUnique({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
       where: { id },
     });
 
@@ -37,11 +35,7 @@ export abstract class BrandRepository {
   public static async create(payload: RBrand): Promise<MBrand> {
     const rawData = await db.brand.create({
       data: payload,
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
     });
 
     return BrandTransformer.DBrandTransformer(rawData);
@@ -49,11 +43,7 @@ export abstract class BrandRepository {
 
   public static async delete(id: Id): Promise<MBrand> {
     const rawData = await db.brand.delete({
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
       where: { id },
     });
 
@@ -63,11 +53,7 @@ export abstract class BrandRepository {
   public static async update(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
     const rawData = await db.brand.update({
       data: payload,
-      select: {
-        comment: true,
-        id: true,
-        name: true,
-      },
+      select: queryObj,
       where: { id },
     });
 

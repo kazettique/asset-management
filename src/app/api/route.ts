@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { CommonTransformer } from '@/utils';
+import { CommonTransformer } from '@/transformer';
 
 export async function GET(_request: Request) {
   // return NextResponse.error();

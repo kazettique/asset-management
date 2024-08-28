@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
 import { BrandRepository } from '@/repository';
-import { BrandTransformer } from '@/transformer';
+import { BrandTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VBrand } from '@/types';
-import { CommonTransformer } from '@/utils';
 import { IdValidator, RBrandValidator, VBrandValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
