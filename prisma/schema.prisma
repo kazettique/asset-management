@@ -18,12 +18,14 @@ model Asset {
 
   // information
   name       Json
-  isCensored Boolean @default(false)
+  isCensored Boolean  @default(false)
   meta       Json
   brandId    String
-  brand      Brand   @relation(fields: [brandId], references: [id])
+  brand      Brand    @relation(fields: [brandId], references: [id])
   ownerId    String?
-  owner      Owner?  @relation(fields: [ownerId], references: [id])
+  owner      Owner?   @relation(fields: [ownerId], references: [id])
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
 
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
@@ -98,6 +100,8 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   comment   String?
+
+  Asset Asset[]
 }
 
 model Owner {
@@ -110,7 +114,8 @@ model Owner {
   comment   String?
 
   OwnershipHistory OwnershipHistory[]
-  Asset            Asset[]
+
+  Asset Asset[]
 }
 
 enum MethodType {
