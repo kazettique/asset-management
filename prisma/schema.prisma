@@ -20,22 +20,28 @@ model Asset {
   name       Json
   isCensored Boolean @default(false)
   meta       Json
-  brand      Brand   @relation(fields: [id], references: [id])
+  brandId    String
+  brand      Brand   @relation(fields: [brandId], references: [id])
 
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
   startDate       DateTime
   startPrice      Float
   startCurrencyId String
-  startCurrency   Currency  @relation("AssetStartCurrency", fields: [startCurrencyId], references: [id])
+  startCurrency   Currency @relation("AssetStartCurrency", fields: [startCurrencyId], references: [id])
   startMethodId   String
-  startMethod     Method    @relation("AssetStartMethod", fields: [startMethodId], references: [id])
-  endDate         DateTime?
-  endPrice        Float?
-  endCurrencyId   String?
-  endCurrency     Currency? @relation("AssetEndCurrency", fields: [endCurrencyId], references: [id])
-  endMethodId     String?
-  endMethod       Method?   @relation("AssetEndMethod", fields: [endMethodId], references: [id])
+  startMethod     Method   @relation("AssetStartMethod", fields: [startMethodId], references: [id])
+  startPlaceId    String
+  startPlace      Place    @relation("AssetStartPlace", fields: [startPlaceId], references: [id])
+
+  endDate       DateTime?
+  endPrice      Float?
+  endCurrencyId String?
+  endCurrency   Currency? @relation("AssetEndCurrency", fields: [endCurrencyId], references: [id])
+  endMethodId   String?
+  endMethod     Method?   @relation("AssetEndMethod", fields: [endMethodId], references: [id])
+  endPlaceId    String?
+  endPlace      Place?    @relation("AssetEndPlace", fields: [endPlaceId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -77,6 +83,9 @@ model Place {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   comment   String?
+
+  StartPlace Asset[] @relation("AssetStartPlace")
+  EndPlace   Asset[] @relation("AssetEndPlace")
 }
 
 model Category {
