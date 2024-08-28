@@ -73,26 +73,28 @@ export abstract class AssetRepository {
     }
   }
 
-  public static async test(): Promise<any> {
-    const rawData = await db.asset.create({
-      data: {
-        // brand: '13',
-        endCurrencyId: '123',
-        endDate: new Date('2024-08-28'),
-        endMethodId: '123',
-        endPrice: 500,
-        meta: { color: 'white' },
-        name: { nameEn: 'AirPods Pro' },
-        startCurrencyId: '717b5540-1332-46ff-8b7c-c8e0efbcddb5',
-        startDate: new Date('2024-01-01'),
-        startMethodId: '5d29df8e-7880-4879-a029-aefdb5b53cfe',
-        startPrice: 1000,
-      },
-      select: queryObj,
-    });
+  // public static async test(): Promise<any> {
+  //   const rawData = await db.asset.create({
+  //     data: {
+  //       brandId: 'f6543b54-2786-4cd6-aa47-11e49076211a',
+  //       endCurrencyId: '717b5540-1332-46ff-8b7c-c8e0efbcddb5',
+  //       endDate: new Date('2024-08-28'),
+  //       endMethodId: '5fb5e604-750e-48fc-8070-2e56038c10c4',
+  //       endPlaceId: '4f676996-de03-4c0e-9db6-213ab8623286',
+  //       endPrice: 500,
+  //       meta: { color: 'white' },
+  //       name: { nameEn: 'AirPods Pro' },
+  //       startCurrencyId: '717b5540-1332-46ff-8b7c-c8e0efbcddb5',
+  //       startDate: new Date('2024-01-01'),
+  //       startMethodId: '5d29df8e-7880-4879-a029-aefdb5b53cfe',
+  //       startPlaceId: '4f676996-de03-4c0e-9db6-213ab8623286',
+  //       startPrice: 1000,
+  //     },
+  //     select: queryObj,
+  //   });
 
-    return rawData;
-  }
+  //   return rawData;
+  // }
 
   // public static async create(payload: AssetCommonTest): Promise<MAsset> {
   //   const rawData = await db.asset.create({
