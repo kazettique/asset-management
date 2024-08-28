@@ -2,14 +2,18 @@ import { z } from 'zod';
 
 import { DCurrency, FCurrency, MCurrency, RCurrency, VCurrency } from '@/types';
 
-import { CurrencyCommonValidator, DbBaseValidator } from './common';
+import { CommonValidator } from './common';
 
-export const DCurrencyValidator: z.ZodSchema<DCurrency> = CurrencyCommonValidator.and(DbBaseValidator);
+export abstract class CurrencyValidator {
+  public static readonly DCurrencyValidator: z.ZodSchema<DCurrency> = CommonValidator.CurrencyCommonValidator.and(
+    CommonValidator.DbBaseValidator,
+  );
 
-export const MCurrencyValidator: z.ZodSchema<MCurrency> = DCurrencyValidator;
+  public static readonly MCurrencyValidator: z.ZodSchema<MCurrency> = this.DCurrencyValidator;
 
-export const VCurrencyValidator: z.ZodSchema<VCurrency> = MCurrencyValidator;
+  public static readonly VCurrencyValidator: z.ZodSchema<VCurrency> = this.MCurrencyValidator;
 
-export const RCurrencyValidator: z.ZodSchema<RCurrency> = CurrencyCommonValidator;
+  public static readonly RCurrencyValidator: z.ZodSchema<RCurrency> = CommonValidator.CurrencyCommonValidator;
 
-export const FCurrencyValidator: z.ZodSchema<FCurrency> = RCurrencyValidator;
+  public static readonly FCurrencyValidator: z.ZodSchema<FCurrency> = this.RCurrencyValidator;
+}

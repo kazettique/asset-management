@@ -3,19 +3,23 @@ import { z } from 'zod';
 
 import { DMethod, FMethod, MMethod, RMethod, VMethod } from '@/types';
 
-import { IdValidator, MethodCommonValidator } from './common';
+import { CommonValidator } from './common';
 
-export const DMethodValidator: z.ZodSchema<DMethod> = z.object({
-  comment: z.string().nullable(),
-  id: IdValidator,
-  name: z.record(z.string(), z.string()),
-  type: z.nativeEnum(MethodType),
-});
+export abstract class MethodValidator {
+  public static readonly DMethodValidator: z.ZodSchema<DMethod> = z.object({
+    comment: z.string().nullable(),
+    id: CommonValidator.IdValidator,
+    name: z.record(z.string(), z.string()),
+    type: z.nativeEnum(MethodType),
+  });
 
-export const MMethodValidator: z.ZodSchema<MMethod> = z.object({ id: IdValidator }).and(MethodCommonValidator);
+  public static readonly MMethodValidator: z.ZodSchema<MMethod> = z
+    .object({ id: CommonValidator.IdValidator })
+    .and(CommonValidator.MethodCommonValidator);
 
-export const VMethodValidator: z.ZodSchema<VMethod> = MMethodValidator;
+  public static readonly VMethodValidator: z.ZodSchema<VMethod> = this.MMethodValidator;
 
-export const RMethodValidator: z.ZodSchema<RMethod> = MethodCommonValidator;
+  public static readonly RMethodValidator: z.ZodSchema<RMethod> = CommonValidator.MethodCommonValidator;
 
-export const FMethodValidator: z.ZodSchema<FMethod> = RMethodValidator;
+  public static readonly FMethodValidator: z.ZodSchema<FMethod> = this.RMethodValidator;
+}

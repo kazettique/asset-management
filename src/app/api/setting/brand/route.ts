@@ -4,13 +4,13 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { BrandRepository } from '@/repository';
 import { BrandTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VBrand } from '@/types';
-import { RBrandValidator, VBrandValidator } from '@/validator';
+import { BrandValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VBrand[]>> | Response> {
   const raw = await BrandRepository.getAll();
 
   const transformedData = raw.map((item) => BrandTransformer.DBrandTransformer(item));
-  const dataValidation = VBrandValidator.array().safeParse(transformedData);
+  const dataValidation = BrandValidator.VBrandValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   const requestBody = await request.json();
 
   // 2. validate request body
-  const requestValidation = RBrandValidator.safeParse(requestBody);
+  const requestValidation = BrandValidator.RBrandValidator.safeParse(requestBody);
 
   // 3.1 if not passed, throw 400 bad request
   if (!requestValidation.success) {

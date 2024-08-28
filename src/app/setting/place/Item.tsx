@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { FPlace, VPlace } from '@/types';
-import { FPlaceValidator } from '@/validator';
+import { PlaceValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
@@ -16,7 +16,7 @@ interface Props {
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FPlace>({
     defaultValues: props.item,
-    resolver: zodResolver(FPlaceValidator),
+    resolver: zodResolver(PlaceValidator.FPlaceValidator),
   });
 
   return (

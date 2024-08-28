@@ -4,13 +4,13 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { CategoryRepository } from '@/repository';
 import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCategory } from '@/types';
-import { RCategoryValidator, VCategoryValidator } from '@/validator';
+import { CategoryValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCategory[]>> | Response> {
   const raw = await CategoryRepository.getAll();
 
   const transformedData = raw.map((item) => CategoryTransformer.DCategoryTransformer(item));
-  const dataValidation = VCategoryValidator.array().safeParse(transformedData);
+  const dataValidation = CategoryValidator.VCategoryValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   const requestBody = await request.json();
 
   // 2. validate request body
-  const requestValidation = RCategoryValidator.safeParse(requestBody);
+  const requestValidation = CategoryValidator.RCategoryValidator.safeParse(requestBody);
 
   // 3.1 if not passed, throw 400 bad request
   if (!requestValidation.success) {

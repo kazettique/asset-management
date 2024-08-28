@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import Select from '@/components/Select';
 import { F_CATEGORY_INITIAL_VALUES } from '@/constant';
 import { FMethod } from '@/types';
-import { FMethodValidator } from '@/validator';
+import { MethodValidator } from '@/validator';
 
 interface Props {
   className?: string;
@@ -17,7 +17,7 @@ export default function Create(props: Props) {
 
   const { register, handleSubmit, formState, reset } = useForm<FMethod>({
     defaultValues: F_CATEGORY_INITIAL_VALUES,
-    resolver: zodResolver(FMethodValidator),
+    resolver: zodResolver(MethodValidator.FMethodValidator),
   });
 
   const options = [

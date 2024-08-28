@@ -4,13 +4,13 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { PlaceRepository } from '@/repository';
 import { CommonTransformer, PlaceTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VPlace } from '@/types';
-import { RPlaceValidator, VPlaceValidator } from '@/validator';
+import { PlaceValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VPlace[]>> | Response> {
   const raw = await PlaceRepository.getAll();
 
   const transformedData = raw.map((item) => PlaceTransformer.DPlaceTransformer(item));
-  const dataValidation = VPlaceValidator.array().safeParse(transformedData);
+  const dataValidation = PlaceValidator.VPlaceValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   const requestBody = await request.json();
 
   // 2. validate request body
-  const requestValidation = RPlaceValidator.safeParse(requestBody);
+  const requestValidation = PlaceValidator.RPlaceValidator.safeParse(requestBody);
 
   // 3.1 if not passed, throw 400 bad request
   if (!requestValidation.success) {

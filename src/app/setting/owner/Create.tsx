@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { F_OWNER_INITIAL_VALUES } from '@/constant';
 import { FOwner } from '@/types';
-import { FOwnerValidator } from '@/validator';
+import { OwnerValidator } from '@/validator';
 
 interface Props {
   className?: string;
@@ -15,7 +15,7 @@ export default function Create(props: Props) {
 
   const { register, handleSubmit, formState, reset } = useForm<FOwner>({
     defaultValues: F_OWNER_INITIAL_VALUES,
-    resolver: zodResolver(FOwnerValidator),
+    resolver: zodResolver(OwnerValidator.FOwnerValidator),
   });
 
   return (

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { DAsset, FAsset, MAsset, RAsset, VAsset } from '@/types';
 
-import { AssetCommonValidator, DbBaseValidator, IdValidator, PriceValidator } from './common';
+import { CommonValidator } from './common';
 
 export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
   brand: z.object({ name: z.record(z.string(), z.string().nullable()) }),
@@ -21,8 +21,8 @@ export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
       type: z.nativeEnum(MethodType),
     })
     .nullable(),
-  endPrice: PriceValidator.nullable(),
-  id: IdValidator,
+  endPrice: CommonValidator.PriceValidator.nullable(),
+  id: CommonValidator.IdValidator,
   isCensored: z.boolean(),
   meta: z.record(z.string(), z.string().or(z.number())),
   name: z.record(z.string(), z.string()),
@@ -35,13 +35,15 @@ export const DAssetValidator: z.ZodSchema<DAsset> = z.object({
     name: z.record(z.string(), z.string().nullable()),
     type: z.nativeEnum(MethodType),
   }),
-  startPrice: PriceValidator,
+  startPrice: CommonValidator.PriceValidator,
 });
 
-export const MAssetValidator: z.ZodSchema<MAsset> = DbBaseValidator.and(AssetCommonValidator);
+export const MAssetValidator: z.ZodSchema<MAsset> = CommonValidator.DbBaseValidator.and(
+  CommonValidator.AssetCommonValidator,
+);
 
 export const VAssetValidator: z.ZodSchema<VAsset> = MAssetValidator;
 
-export const RAssetValidator: z.ZodSchema<RAsset> = AssetCommonValidator;
+export const RAssetValidator: z.ZodSchema<RAsset> = CommonValidator.AssetCommonValidator;
 
 export const FAssetValidator: z.ZodSchema<FAsset> = RAssetValidator;

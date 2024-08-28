@@ -1,11 +1,11 @@
 import { DEFAULT_NAME } from '@/constant';
 import { MOwner, VOwner } from '@/types';
 import { DOwner } from '@/types/dbModels';
-import { NameValidator } from '@/validator';
+import { CommonValidator } from '@/validator';
 
 export abstract class OwnerTransformer {
   public static DOwnerTransformer(src: DOwner): MOwner {
-    const nameValidation = NameValidator.safeParse(src.name);
+    const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
       return { ...src, name: DEFAULT_NAME };

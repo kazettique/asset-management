@@ -4,7 +4,7 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { PlaceRepository } from '@/repository';
 import { CommonTransformer, PlaceTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VPlace } from '@/types';
-import { IdValidator, RPlaceValidator, VPlaceValidator } from '@/validator';
+import { CommonValidator, PlaceValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
 
@@ -12,7 +12,7 @@ export async function GET(
   _request: Request,
   { params }: Segments,
 ): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
-  const idValidation = IdValidator.safeParse(params.id);
+  const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
@@ -23,7 +23,7 @@ export async function GET(
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
       const transformedData = PlaceTransformer.DPlaceTransformer(raw);
-      const dataValidation = VPlaceValidator.safeParse(transformedData);
+      const dataValidation = PlaceValidator.VPlaceValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -38,7 +38,7 @@ export async function DELETE(
   _request: Request,
   { params }: Segments,
 ): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
-  const idValidation = IdValidator.safeParse(params.id);
+  const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
@@ -54,10 +54,10 @@ export async function POST(
   request: Request,
   { params }: Segments,
 ): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
-  const idValidation = IdValidator.safeParse(params.id);
+  const idValidation = CommonValidator.IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = RPlaceValidator.safeParse(requestBody);
+  const requestValidation = PlaceValidator.RPlaceValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
     return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {

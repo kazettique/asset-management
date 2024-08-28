@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { FMethod, VMethod } from '@/types';
-import { FMethodValidator } from '@/validator';
+import { MethodValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
@@ -16,7 +16,7 @@ interface Props {
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FMethod>({
     defaultValues: props.item,
-    resolver: zodResolver(FMethodValidator),
+    resolver: zodResolver(MethodValidator.FMethodValidator),
   });
 
   return (

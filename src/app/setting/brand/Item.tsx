@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { FBrand, VBrand } from '@/types';
-import { FBrandValidator } from '@/validator';
+import { BrandValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
@@ -16,7 +16,7 @@ interface Props {
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FBrand>({
     defaultValues: props.item,
-    resolver: zodResolver(FBrandValidator),
+    resolver: zodResolver(BrandValidator.FBrandValidator),
   });
 
   return (

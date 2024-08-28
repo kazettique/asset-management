@@ -2,26 +2,32 @@ import { z } from 'zod';
 
 import { DBrand, FBrand, MBrand, RBrand, VBrand } from '@/types';
 
-import { IdValidator, SettingBaseValidator } from './common';
+import { CommonValidator } from './common';
 
-export const DBrandValidator: z.ZodSchema<DBrand> = z.object({
-  comment: z.string().nullable(),
-  id: IdValidator,
-  name: z.record(z.string(), z.string()),
-});
+export abstract class BrandValidator {
+  public static readonly DBrandValidator: z.ZodSchema<DBrand> = z.object({
+    comment: z.string().nullable(),
+    id: CommonValidator.IdValidator,
+    name: z.record(z.string(), z.string()),
+  });
 
-export const MBrandValidator: z.ZodSchema<MBrand> = z.object({ id: IdValidator }).and(SettingBaseValidator);
+  public static readonly MBrandValidator: z.ZodSchema<MBrand> = z
+    .object({ id: CommonValidator.IdValidator })
+    .and(CommonValidator.SettingBaseValidator);
 
-export const VBrandValidator: z.ZodSchema<VBrand> = MBrandValidator;
+  public static readonly VBrandValidator: z.ZodSchema<VBrand> = this.MBrandValidator;
 
-export const RBrandValidator: z.ZodSchema<RBrand> = SettingBaseValidator.superRefine((values, context) => {
-  const nameEnLength: number = values.name.nameEn?.length || 0;
-  const nameTwLength: number = values.name.nameTw?.length || 0;
-  const nameJpLength: number = values.name.nameJp?.length || 0;
+  public static readonly RBrandValidator: z.ZodSchema<RBrand> = CommonValidator.SettingBaseValidator.superRefine(
+    (values, context) => {
+      const nameEnLength: number = values.name.nameEn?.length || 0;
+      const nameTwLength: number = values.name.nameTw?.length || 0;
+      const nameJpLength: number = values.name.nameJp?.length || 0;
 
-  if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
-    context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['name'] });
-  }
-});
+      if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
+        context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['name'] });
+      }
+    },
+  );
 
-export const FBrandValidator: z.ZodSchema<FBrand> = RBrandValidator;
+  public static readonly FBrandValidator: z.ZodSchema<FBrand> = this.RBrandValidator;
+}

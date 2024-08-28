@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { FOwner, VOwner } from '@/types';
-import { FOwnerValidator } from '@/validator';
+import { OwnerValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
@@ -16,7 +16,7 @@ interface Props {
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FOwner>({
     defaultValues: props.item,
-    resolver: zodResolver(FOwnerValidator),
+    resolver: zodResolver(OwnerValidator.FOwnerValidator),
   });
 
   return (

@@ -4,13 +4,13 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { OwnerRepository } from '@/repository';
 import { CommonTransformer, OwnerTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VOwner } from '@/types';
-import { ROwnerValidator, VOwnerValidator } from '@/validator';
+import { OwnerValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VOwner[]>> | Response> {
   const raw = await OwnerRepository.getAll();
 
   const transformedData = raw.map((item) => OwnerTransformer.DOwnerTransformer(item));
-  const dataValidation = VOwnerValidator.array().safeParse(transformedData);
+  const dataValidation = OwnerValidator.VOwnerValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   const requestBody = await request.json();
 
   // 2. validate request body
-  const requestValidation = ROwnerValidator.safeParse(requestBody);
+  const requestValidation = OwnerValidator.ROwnerValidator.safeParse(requestBody);
 
   // 3.1 if not passed, throw 400 bad request
   if (!requestValidation.success) {

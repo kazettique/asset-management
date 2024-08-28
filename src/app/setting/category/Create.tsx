@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { F_CATEGORY_INITIAL_VALUES } from '@/constant';
 import { FCategory } from '@/types';
-import { FCategoryValidator } from '@/validator';
+import { CategoryValidator } from '@/validator';
 
 interface Props {
   className?: string;
@@ -15,7 +15,7 @@ export default function Create(props: Props) {
 
   const { register, handleSubmit, formState, reset } = useForm<FCategory>({
     defaultValues: F_CATEGORY_INITIAL_VALUES,
-    resolver: zodResolver(FCategoryValidator),
+    resolver: zodResolver(CategoryValidator.FCategoryValidator),
   });
 
   return (

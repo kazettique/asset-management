@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { F_PLACE_INITIAL_VALUES } from '@/constant';
 import { FPlace } from '@/types';
-import { FPlaceValidator } from '@/validator';
+import { PlaceValidator } from '@/validator';
 
 interface Props {
   className?: string;
@@ -15,7 +15,7 @@ export default function Create(props: Props) {
 
   const { register, handleSubmit, formState, reset } = useForm<FPlace>({
     defaultValues: F_PLACE_INITIAL_VALUES,
-    resolver: zodResolver(FPlaceValidator),
+    resolver: zodResolver(PlaceValidator.FPlaceValidator),
   });
 
   return (

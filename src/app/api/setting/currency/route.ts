@@ -4,13 +4,13 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { CurrencyRepository } from '@/repository';
 import { CommonTransformer, CurrencyTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCurrency } from '@/types';
-import { RCurrencyValidator, VCurrencyValidator } from '@/validator';
+import { CurrencyValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCurrency[]>> | Response> {
   const raw = await CurrencyRepository.getAll();
 
   const transformedData = raw.map((item) => CurrencyTransformer.DCurrencyTransformer(item));
-  const dataValidation = VCurrencyValidator.array().safeParse(transformedData);
+  const dataValidation = CurrencyValidator.VCurrencyValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   const requestBody = await request.json();
 
   // 2. validate request body
-  const requestValidation = RCurrencyValidator.safeParse(requestBody);
+  const requestValidation = CurrencyValidator.RCurrencyValidator.safeParse(requestBody);
 
   // 3.1 if not passed, throw 400 bad request
   if (!requestValidation.success) {

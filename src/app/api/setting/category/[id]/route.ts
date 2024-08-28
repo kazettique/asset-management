@@ -4,7 +4,7 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { CategoryRepository } from '@/repository';
 import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VCategory } from '@/types';
-import { IdValidator, RCategoryValidator, VCategoryValidator } from '@/validator';
+import { CategoryValidator, IdValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
 
@@ -23,7 +23,7 @@ export async function GET(
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
       const transformedData = CategoryTransformer.DCategoryTransformer(raw);
-      const dataValidation = VCategoryValidator.safeParse(transformedData);
+      const dataValidation = CategoryValidator.VCategoryValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -57,7 +57,7 @@ export async function POST(
   const idValidation = IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = RCategoryValidator.safeParse(requestBody);
+  const requestValidation = CategoryValidator.RCategoryValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
     return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {

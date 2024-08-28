@@ -4,7 +4,7 @@ import { MSG_DIRTY_DATA } from '@/constant';
 import { CurrencyRepository } from '@/repository';
 import { CommonTransformer, CurrencyTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VCurrency } from '@/types';
-import { IdValidator, RCurrencyValidator, VCurrencyValidator } from '@/validator';
+import { CommonValidator, CurrencyValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
 
@@ -12,7 +12,7 @@ export async function GET(
   _request: Request,
   { params }: Segments,
 ): Promise<Response | NextResponse<GeneralResponse<VCurrency>>> {
-  const idValidation = IdValidator.safeParse(params.id);
+  const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
@@ -23,7 +23,7 @@ export async function GET(
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
       const transformedData = CurrencyTransformer.DCurrencyTransformer(raw);
-      const dataValidation = VCurrencyValidator.safeParse(transformedData);
+      const dataValidation = CurrencyValidator.VCurrencyValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -38,7 +38,7 @@ export async function DELETE(
   _request: Request,
   { params }: Segments,
 ): Promise<Response | NextResponse<GeneralResponse<VCurrency>>> {
-  const idValidation = IdValidator.safeParse(params.id);
+  const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
@@ -54,10 +54,10 @@ export async function POST(
   request: Request,
   { params }: Segments,
 ): Promise<Response | NextResponse<GeneralResponse<VCurrency>>> {
-  const idValidation = IdValidator.safeParse(params.id);
+  const idValidation = CommonValidator.IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = RCurrencyValidator.safeParse(requestBody);
+  const requestValidation = CurrencyValidator.RCurrencyValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
     return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {

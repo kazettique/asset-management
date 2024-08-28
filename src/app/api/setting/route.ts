@@ -11,7 +11,7 @@ import {
 } from '@/repository';
 import { CommonTransformer, SettingTransformer } from '@/transformer';
 import { HttpStatusCode } from '@/types';
-import { VSettingValidator } from '@/validator';
+import { SettingValidator } from '@/validator';
 
 export async function GET(_request: Request) {
   const brands = await BrandRepository.getAll();
@@ -30,7 +30,7 @@ export async function GET(_request: Request) {
     places,
   });
 
-  const dataValidation = VSettingValidator.safeParse(transformedData);
+  const dataValidation = SettingValidator.VSettingValidator.safeParse(transformedData);
 
   if (dataValidation.success) {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));

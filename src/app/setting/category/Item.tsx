@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { FCategory, VCategory } from '@/types';
-import { FCategoryValidator } from '@/validator';
+import { CategoryValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
@@ -16,7 +16,7 @@ interface Props {
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FCategory>({
     defaultValues: props.item,
-    resolver: zodResolver(FCategoryValidator),
+    resolver: zodResolver(CategoryValidator.FCategoryValidator),
   });
 
   return (

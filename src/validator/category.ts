@@ -3,18 +3,22 @@ import { z } from 'zod';
 import { FCategory, MCategory, RCategory, VCategory } from '@/types';
 import { DCategory } from '@/types/dbModels';
 
-import { IdValidator, SettingBaseValidator } from './common';
+import { CommonValidator } from './common';
 
-export const DCategoryValidator: z.ZodSchema<DCategory> = z.object({
-  comment: z.string().nullable(),
-  id: IdValidator,
-  name: z.record(z.string(), z.string()),
-});
+export abstract class CategoryValidator {
+  public static readonly DCategoryValidator: z.ZodSchema<DCategory> = z.object({
+    comment: z.string().nullable(),
+    id: CommonValidator.IdValidator,
+    name: z.record(z.string(), z.string()),
+  });
 
-export const MCategoryValidator: z.ZodSchema<MCategory> = z.object({ id: IdValidator }).and(SettingBaseValidator);
+  public static readonly MCategoryValidator: z.ZodSchema<MCategory> = z
+    .object({ id: CommonValidator.IdValidator })
+    .and(CommonValidator.SettingBaseValidator);
 
-export const VCategoryValidator: z.ZodSchema<VCategory> = MCategoryValidator;
+  public static readonly VCategoryValidator: z.ZodSchema<VCategory> = this.MCategoryValidator;
 
-export const RCategoryValidator: z.ZodSchema<RCategory> = SettingBaseValidator;
+  public static readonly RCategoryValidator: z.ZodSchema<RCategory> = CommonValidator.SettingBaseValidator;
 
-export const FCategoryValidator: z.ZodSchema<FCategory> = RCategoryValidator;
+  public static readonly FCategoryValidator: z.ZodSchema<FCategory> = this.RCategoryValidator;
+}

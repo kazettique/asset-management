@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { FCurrency, VCurrency } from '@/types';
-import { FCurrencyValidator } from '@/validator';
+import { CurrencyValidator } from '@/validator';
 
 interface Props {
   isEdit: boolean;
@@ -16,7 +16,7 @@ interface Props {
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FCurrency>({
     defaultValues: props.item,
-    resolver: zodResolver(FCurrencyValidator),
+    resolver: zodResolver(CurrencyValidator.FCurrencyValidator),
   });
 
   return (

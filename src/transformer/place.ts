@@ -1,11 +1,11 @@
 import { DEFAULT_NAME } from '@/constant';
 import { MPlace, VPlace } from '@/types';
 import { DPlace } from '@/types/dbModels';
-import { NameValidator } from '@/validator';
+import { CommonValidator } from '@/validator';
 
 export abstract class PlaceTransformer {
   public static DPlaceTransformer(src: DPlace): MPlace {
-    const nameValidation = NameValidator.safeParse(src.name);
+    const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
       return { ...src, name: DEFAULT_NAME };

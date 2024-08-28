@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { F_BRAND_INITIAL_VALUES } from '@/constant';
 import { FBrand } from '@/types';
-import { FBrandValidator } from '@/validator';
+import { BrandValidator } from '@/validator';
 
 interface Props {
   className?: string;
@@ -15,7 +15,7 @@ export default function Create(props: Props) {
 
   const { register, handleSubmit, formState, reset } = useForm<FBrand>({
     defaultValues: F_BRAND_INITIAL_VALUES,
-    resolver: zodResolver(FBrandValidator),
+    resolver: zodResolver(BrandValidator.FBrandValidator),
   });
 
   return (

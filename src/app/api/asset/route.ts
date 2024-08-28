@@ -44,7 +44,7 @@ export async function GET(_request: Request) {
   //   return NextResponse.json(rawDataValidation.data);
   // }
 
-  const rawData = await AssetRepository.test();
+  // const rawData = await AssetRepository.test();
 
-  return NextResponse.json(rawData);
+  return NextResponse.json('hello');
 }

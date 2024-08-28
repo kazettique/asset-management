@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { F_CURRENCY_INITIAL_VALUES } from '@/constant';
 import { FCurrency } from '@/types';
-import { FCurrencyValidator } from '@/validator';
+import { CurrencyValidator } from '@/validator';
 
 interface Props {
   className?: string;
@@ -15,7 +15,7 @@ export default function Create(props: Props) {
 
   const { register, handleSubmit, formState, reset } = useForm<FCurrency>({
     defaultValues: F_CURRENCY_INITIAL_VALUES,
-    resolver: zodResolver(FCurrencyValidator),
+    resolver: zodResolver(CurrencyValidator.FCurrencyValidator),
   });
 
   return (

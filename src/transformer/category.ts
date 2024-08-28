@@ -1,10 +1,10 @@
 import { DEFAULT_NAME } from '@/constant';
 import { DCategory, MCategory, VCategory } from '@/types';
-import { NameValidator } from '@/validator';
+import { CommonValidator } from '@/validator';
 
 export abstract class CategoryTransformer {
   public static DCategoryTransformer(src: DCategory): MCategory {
-    const nameValidation = NameValidator.safeParse(src.name);
+    const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
       return { ...src, name: DEFAULT_NAME };
