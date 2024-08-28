@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { MSG_DIRTY_DATA } from '@/constant';
+import { Constants } from '@/constant';
 import { MethodRepository } from '@/repository';
 import { CommonTransformer, MethodTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VMethod } from '@/types';
@@ -28,7 +28,7 @@ export async function GET(
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
       } else {
-        return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+        return new Response(Constants.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
       }
     }
   }

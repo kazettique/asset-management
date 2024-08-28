@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { MSG_DIRTY_DATA } from '@/constant';
+import { Constants } from '@/constant';
 import { AssetRepository } from '@/repository';
 import { AssetTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VAsset } from '@/types';
@@ -13,7 +13,7 @@ export async function GET(_request: Request): Promise<NextResponse<GeneralRespon
   const dataValidation = AssetValidator.VAssetValidator.array().safeParse(transformedData);
 
   if (!dataValidation.success) {
-    return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+    return new Response(Constants.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
   } else {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
   }
