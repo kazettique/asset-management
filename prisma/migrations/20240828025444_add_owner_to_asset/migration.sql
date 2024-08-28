@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `Asset` ADD COLUMN `ownerId` VARCHAR(191) NULL;
+
+-- AddForeignKey
+ALTER TABLE `Asset` ADD CONSTRAINT `Asset_ownerId_fkey` FOREIGN KEY (`ownerId`) REFERENCES `Owner`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

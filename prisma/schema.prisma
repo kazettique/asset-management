@@ -22,6 +22,8 @@ model Asset {
   meta       Json
   brandId    String
   brand      Brand   @relation(fields: [brandId], references: [id])
+  ownerId    String?
+  owner      Owner?  @relation(fields: [ownerId], references: [id])
 
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
@@ -108,6 +110,7 @@ model Owner {
   comment   String?
 
   OwnershipHistory OwnershipHistory[]
+  Asset            Asset[]
 }
 
 enum MethodType {
