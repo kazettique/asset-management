@@ -1,3 +1,7 @@
+import dayjs, { Dayjs } from 'dayjs';
+
+import { DATE_TIME_FORMAT } from '@/constant';
+
 export abstract class Utils {
   /**
    * @description Check whether is plain JavaScript object
@@ -5,6 +9,16 @@ export abstract class Utils {
    */
   public static IsPlainObject<T>(source: T): boolean {
     return source?.constructor.name === 'Object';
+  }
+
+  /**
+   * Get Date Time String 'YYYY.MM.DD HH:mm'
+   * @function getDateTimeString
+   * @param {(Dayjs | Date)} dateTime
+   * @returns {string}
+   */
+  public static GetDateTimeString(dateTime: Dayjs | Date | string, format = DATE_TIME_FORMAT): string {
+    return dayjs(dateTime).format(format);
   }
 
   // public static GetCircularReplacer() {

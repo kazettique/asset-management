@@ -1,4 +1,3 @@
-import { MethodType } from '@prisma/client';
 import { z } from 'zod';
 
 import { DAsset, FAsset, MAsset, RAsset, VAsset } from '@/types';
@@ -24,7 +23,12 @@ export abstract class AssetValidator {
 
   public static readonly VAssetValidator: z.ZodSchema<VAsset> = this.MAssetValidator;
 
-  public static readonly RAssetValidator: z.ZodSchema<RAsset> = CommonValidator.AssetCommonValidator;
+  public static readonly RAssetValidator: z.ZodSchema<RAsset> = z
+    .object({
+      meta: CommonValidator.AssetMetaValidator,
+      name: CommonValidator.NameValidator,
+    })
+    .and(CommonValidator.AssetCommonValidator);
 
   public static readonly FAssetValidator: z.ZodSchema<FAsset> = this.RAssetValidator;
 }

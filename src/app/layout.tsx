@@ -21,6 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           <section>
             <div className="w-full bg-slate-200 p-4 flex items-center gap-x-4">
               <Link href="/">Home</Link>
+              <Link href="/asset">Asset</Link>
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/setting">Setting</Link>
             </div>

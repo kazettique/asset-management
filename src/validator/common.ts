@@ -58,11 +58,13 @@ export abstract class CommonValidator {
     endCurrencyId: CommonValidator.IdValidator.nullable(),
     endDate: z.date().nullable(),
     endMethodId: CommonValidator.IdValidator.nullable(),
+    endPlaceId: CommonValidator.IdValidator.nullable(),
     endPrice: this.PriceValidator.nullable(),
     isCensored: z.boolean(),
     startCurrencyId: CommonValidator.IdValidator,
     startDate: z.date(),
     startMethodId: CommonValidator.IdValidator,
+    startPlaceId: CommonValidator.IdValidator,
     startPrice: this.PriceValidator,
   });
 }

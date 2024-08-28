@@ -7,3 +7,5 @@ export const DEFAULT_NAME: Name = {
   nameJp: null,
   nameTw: null,
 };
+
+export const DATE_TIME_FORMAT: string = 'YYYY-MM-DD HH:mm';

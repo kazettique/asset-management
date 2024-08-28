@@ -8,6 +8,7 @@ const queryObj = {
   endCurrencyId: true,
   endDate: true,
   endMethodId: true,
+  endPlaceId: true,
   endPrice: true,
   id: true,
   isCensored: true,
@@ -16,6 +17,7 @@ const queryObj = {
   startCurrencyId: true,
   startDate: true,
   startMethodId: true,
+  startPlaceId: true,
   startPrice: true,
 };
 

@@ -54,10 +54,12 @@ export interface AssetCommon {
   endCurrencyId: NType<Id>;
   endDate: NType<Date>;
   endMethodId: NType<Id>;
+  endPlaceId: NType<Id>;
   endPrice: NType<Price>;
   isCensored: boolean;
   startCurrencyId: Id;
   startDate: Date;
   startMethodId: Id;
+  startPlaceId: Id;
   startPrice: Price;
 }
