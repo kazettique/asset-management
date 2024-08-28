@@ -1,53 +1,23 @@
-import { MethodType, Prisma } from '@prisma/client';
-
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
-import { AssetMeta, DAsset, Id, MAsset, Name, NString, NType, Price, RAsset } from '@/types';
+import { DAsset, Id, MAsset, NType } from '@/types';
 
 const queryObj = {
-  brand: {
-    select: { name: true },
-  },
+  brandId: true,
   comment: true,
-  endCurrency: {
-    select: { display: true, symbol: true },
-  },
+  endCurrencyId: true,
   endDate: true,
-  endMethod: {
-    select: { name: true, type: true },
-  },
+  endMethodId: true,
   endPrice: true,
   id: true,
   isCensored: true,
   meta: true,
   name: true,
-  startCurrency: {
-    select: { display: true, symbol: true },
-  },
+  startCurrencyId: true,
   startDate: true,
-  startMethod: {
-    select: { name: true, type: true },
-  },
+  startMethodId: true,
   startPrice: true,
 };
-
-interface AssetCommonTest {
-  // brand: { name: Name };
-  comment: NString;
-  // endCurrency: NType<{ display: string; symbol: string }>;
-  // endDate: NType<Date>;
-  // endMethod: NType<{ name: Name; type: MethodType }>;
-  // endPrice: NType<Price>;
-  isCensored: boolean;
-  // meta: AssetMeta;
-  meta: any;
-  // name: Name;
-  name: any;
-  // startCurrency: { display: string; symbol: string };
-  startDate: Date;
-  // startMethod: { name: Name; type: MethodType };
-  startPrice: Price;
-}
 
 export abstract class AssetRepository {
   public static async getAll(): Promise<MAsset[]> {

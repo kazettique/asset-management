@@ -41,29 +41,23 @@ export interface MethodCommon extends SettingBase {
 
 // TODO: how to define it dynamically?
 export interface AssetMeta {
-  // common meta
   color?: string;
-
-  // for electronic
   model?: string;
   ram?: string;
-
-  // for cloth
   size?: string;
+  ssd?: string;
 }
 
 export interface AssetCommon {
-  brand: { name: Name };
+  brandId: Id;
   comment: NString;
-  endCurrency: NType<{ display: string; symbol: string }>;
+  endCurrencyId: NType<Id>;
   endDate: NType<Date>;
-  endMethod: NType<{ name: Name; type: MethodType }>;
+  endMethodId: NType<Id>;
   endPrice: NType<Price>;
   isCensored: boolean;
-  meta: AssetMeta;
-  name: Name;
-  startCurrency: { display: string; symbol: string };
+  startCurrencyId: Id;
   startDate: Date;
-  startMethod: { name: Name; type: MethodType };
+  startMethodId: Id;
   startPrice: Price;
 }

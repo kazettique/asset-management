@@ -1,50 +1,39 @@
 import { NextResponse } from 'next/server';
 
 import { MSG_DIRTY_DATA } from '@/constant';
-import { db } from '@/lib/db';
 import { AssetRepository } from '@/repository';
-import { HttpStatusCode } from '@/types';
-import { DAssetValidator } from '@/validator';
+import { AssetTransformer, CommonTransformer } from '@/transformer';
+import { GeneralResponse, HttpStatusCode, VAsset } from '@/types';
+import { AssetValidator } from '@/validator';
 
-export async function GET(_request: Request) {
-  // const rawData = await db.asset.findMany({
-  //   select: {
-  //     brand: {
-  //       select: { name: true },
-  //     },
-  //     comment: true,
-  //     endCurrency: {
-  //       select: { display: true, symbol: true },
-  //     },
-  //     endDate: true,
-  //     endMethod: {
-  //       select: { name: true, type: true },
-  //     },
-  //     endPrice: true,
-  //     id: true,
-  //     isCensored: true,
-  //     meta: true,
-  //     name: true,
-  //     startCurrency: {
-  //       select: { display: true, symbol: true },
-  //     },
-  //     startDate: true,
-  //     startMethod: {
-  //       select: { name: true, type: true },
-  //     },
-  //     startPrice: true,
-  //   },
-  // });
+export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VAsset[]>> | Response> {
+  const raw = await AssetRepository.getAll();
 
-  // const rawDataValidation = DAssetValidator.array().safeParse(rawData);
+  const transformedData = raw.map((item) => AssetTransformer.MAssetTransformer(item));
+  const dataValidation = AssetValidator.VAssetValidator.array().safeParse(transformedData);
 
-  // if (!rawDataValidation.success) {
-  //   return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
-  // } else {
-  //   return NextResponse.json(rawDataValidation.data);
-  // }
-
-  // const rawData = await AssetRepository.test();
-
-  return NextResponse.json('hello');
+  if (!dataValidation.success) {
+    return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+  } else {
+    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+  }
 }
+
+// export async function POST(request: Request): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {
+//   // 1. parse request body
+//   const requestBody = await request.json();
+
+//   // 2. validate request body
+//   const requestValidation = AssetValidator.RAssetValidator.safeParse(requestBody);
+
+//   // 3.1 if not passed, throw 400 bad request
+//   if (!requestValidation.success) {
+//     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
+//   } else {
+//     // 3.2 if passed, fetch repository
+//     const raw = await AssetRepository.create(requestValidation.data);
+//     const data = AssetTransformer.MAssetTransformer(raw);
+
+//     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
+//   }
+// }

@@ -45,21 +45,24 @@ export abstract class CommonValidator {
     })
     .and(this.SettingBaseValidator);
 
-  public static readonly AssetMetaValidator: z.ZodSchema<AssetMeta> = z.object({});
+  public static readonly AssetMetaValidator: z.ZodSchema<AssetMeta> = z.object({
+    color: z.string().optional(),
+    model: z.string().optional(),
+    ram: z.string().optional(),
+    size: z.string().optional(),
+  });
 
   public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z.object({
-    brand: z.object({ name: this.NameValidator }),
+    brandId: CommonValidator.IdValidator,
     comment: z.string().nullable(),
-    endCurrency: z.object({ display: z.string(), symbol: z.string() }).nullable(),
+    endCurrencyId: CommonValidator.IdValidator.nullable(),
     endDate: z.date().nullable(),
-    endMethod: z.object({ name: this.NameValidator, type: z.nativeEnum(MethodType) }).nullable(),
+    endMethodId: CommonValidator.IdValidator.nullable(),
     endPrice: this.PriceValidator.nullable(),
     isCensored: z.boolean(),
-    meta: this.AssetMetaValidator,
-    name: this.NameValidator,
-    startCurrency: z.object({ display: z.string(), symbol: z.string() }),
+    startCurrencyId: CommonValidator.IdValidator,
     startDate: z.date(),
-    startMethod: z.object({ name: this.NameValidator, type: z.nativeEnum(MethodType) }),
+    startMethodId: CommonValidator.IdValidator,
     startPrice: this.PriceValidator,
   });
 }

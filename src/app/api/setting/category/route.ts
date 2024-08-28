@@ -12,10 +12,10 @@ export async function GET(_request: Request): Promise<NextResponse<GeneralRespon
   const transformedData = raw.map((item) => CategoryTransformer.DCategoryTransformer(item));
   const dataValidation = CategoryValidator.VCategoryValidator.array().safeParse(transformedData);
 
-  if (dataValidation.success) {
-    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
-  } else {
+  if (!dataValidation.success) {
     return new Response(MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+  } else {
+    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
   }
 }
 
