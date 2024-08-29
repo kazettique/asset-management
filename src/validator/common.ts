@@ -6,9 +6,9 @@ import { AssetCommon, AssetMeta, CurrencyCommon, DbBase, Id, MethodCommon, Name,
 export abstract class CommonValidator {
   public static readonly NameValidator: z.ZodSchema<Name> = z
     .object({
-      nameEn: z.string().nullable(),
-      nameJp: z.string().nullable(),
-      nameTw: z.string().nullable(),
+      nameEn: z.string(),
+      nameJp: z.string(),
+      nameTw: z.string(),
     })
     .superRefine((values, context) => {
       const nameEnLength: number = values.nameEn?.length || 0;
@@ -54,15 +54,16 @@ export abstract class CommonValidator {
 
   public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z.object({
     brandId: CommonValidator.IdValidator,
+    categoryId: CommonValidator.IdValidator,
     comment: z.string().nullable(),
     endCurrencyId: CommonValidator.IdValidator.nullable(),
-    endDate: z.date().nullable(),
+    endDate: z.coerce.date().nullable(),
     endMethodId: CommonValidator.IdValidator.nullable(),
     endPlaceId: CommonValidator.IdValidator.nullable(),
     endPrice: this.PriceValidator.nullable(),
     isCensored: z.boolean(),
     startCurrencyId: CommonValidator.IdValidator,
-    startDate: z.date(),
+    startDate: z.coerce.date(),
     startMethodId: CommonValidator.IdValidator,
     startPlaceId: CommonValidator.IdValidator,
     startPrice: this.PriceValidator,

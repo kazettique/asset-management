@@ -1,4 +1,4 @@
-import { DSetting, MSetting, VSetting } from '@/types';
+import { DSetting, FSettingOptions, MCurrency, MSetting, Name, NString, VSetting } from '@/types';
 
 import { BrandTransformer } from './brand';
 import { CategoryTransformer } from './category';
@@ -21,5 +21,24 @@ export abstract class SettingTransformer {
 
   public static MSettingTransformer(src: MSetting): VSetting {
     return src;
+  }
+
+  public static FSettingOptionsTransformer(src: VSetting): FSettingOptions {
+    // TODO: need stricter typing
+    const parseName = (name: Name): string =>
+      Object.values(name)
+        .filter((item) => item !== null && item.length > 0)
+        .join('|');
+
+    const parseCurrency = (currency: MCurrency) => `(${currency.display})${currency.symbol}`;
+
+    return {
+      brands: src.brands.map((item) => ({ label: parseName(item.name), value: item.id })),
+      categories: src.categories.map((item) => ({ label: parseName(item.name), value: item.id })),
+      currencies: src.currencies.map((item) => ({ label: parseCurrency(item), value: item.id })),
+      methods: src.methods.map((item) => ({ label: parseName(item.name), value: item.id })),
+      owners: src.owners.map((item) => ({ label: parseName(item.name), value: item.id })),
+      places: src.places.map((item) => ({ label: parseName(item.name), value: item.id })),
+    };
   }
 }

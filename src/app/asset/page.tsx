@@ -1,9 +1,12 @@
 'use client';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useFormState } from 'react-dom';
 
+import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
+import { SettingTransformer } from '@/transformer';
 import { FAsset, Id, NType, VAsset } from '@/types';
 
 import Create from './Create';
@@ -20,6 +23,16 @@ export default function Page() {
     queryFn: () => SettingFetcher.getAll(),
     queryKey: ['setting'],
   });
+
+  const settingOptions = useMemo(
+    () =>
+      settingData?.data
+        ? SettingTransformer.FSettingOptionsTransformer(settingData.data)
+        : SettingConstant.F_SETTING_OPTIONS,
+    [settingData],
+  );
+
+  // console.log('settingOptions', settingOptions);
 
   const {
     data: assetData,
@@ -87,26 +100,14 @@ export default function Page() {
       {assetIsPending ? (
         <div>loading...</div>
       ) : (
-        <table className="table-fixed border-collapse border border-slate-300 w-full">
+        <table className="table-fixed overflow-x-auto border-collapse border border-slate-300">
           <thead>
             <tr>
-              <th className="border border-slate-300">Name</th>
-              <th className="border border-slate-300">名稱</th>
-              <th className="border border-slate-300">名前</th>
+              <th className="border border-slate-300 w-40">Name</th>
               <th className="border border-slate-300">Brand</th>
-
-              {/* start info */}
-              <th className="border border-slate-300">StartDate</th>
-              <th className="border border-slate-300">StartPrice</th>
-              <th className="border border-slate-300">StartMethod</th>
-              <th className="border border-slate-300">StartPlace</th>
-
-              {/* end info */}
-              <th className="border border-slate-300">EndDate</th>
-              <th className="border border-slate-300">EndPrice</th>
-              <th className="border border-slate-300">EndMethod</th>
-              <th className="border border-slate-300">EndPlace</th>
-
+              <th className="border border-slate-300">Start Info</th>
+              <th className="border border-slate-300">End Info</th>
+              <th className="border border-slate-300">Meta</th>
               <th className="border border-slate-300">Comment</th>
               <th className="border border-slate-300">Action</th>
             </tr>
@@ -123,13 +124,14 @@ export default function Page() {
                   onEdit={(asset) => onItemEdit(asset)}
                   onDelete={(id) => onItemDelete(id)}
                   onUpdate={(asset) => onItemUpdate(asset, item.id)}
+                  settingOptions={settingOptions}
                 />
               ))}
           </tbody>
         </table>
       )}
 
-      <Create onSubmit={onCreateSubmit} className="w-1/2" />
+      <Create onSubmit={onCreateSubmit} settingOptions={settingOptions} className="w-2/3" />
     </div>
   );
 }

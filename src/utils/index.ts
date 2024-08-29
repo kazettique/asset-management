@@ -21,6 +21,16 @@ export abstract class Utils {
     return dayjs(dateTime).format(format);
   }
 
+  /**
+   * Get Number String with Commas
+   * @function numberWithCommas
+   * @param {(number | string)} x
+   * @returns {string} number string
+   */
+  public static NumberWithCommas(x: number | string): string {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   // public static GetCircularReplacer() {
   //   const ancestors: any[] = [];
 

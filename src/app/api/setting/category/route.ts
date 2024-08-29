@@ -9,7 +9,7 @@ import { CategoryValidator } from '@/validator';
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCategory[]>> | Response> {
   const raw = await CategoryRepository.getAll();
 
-  const transformedData = raw.map((item) => CategoryTransformer.DCategoryTransformer(item));
+  const transformedData = raw.map((item) => CategoryTransformer.MCategoryTransformer(item));
   const dataValidation = CategoryValidator.VCategoryValidator.array().safeParse(transformedData);
 
   if (!dataValidation.success) {

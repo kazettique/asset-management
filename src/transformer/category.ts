@@ -1,18 +1,22 @@
 import { Constants } from '@/constant';
 import { DCategory, MCategory, VCategory } from '@/types';
-import { CommonValidator } from '@/validator';
+import { CategoryValidator } from '@/validator';
 
 export abstract class CategoryTransformer {
   public static DCategoryTransformer(src: DCategory): MCategory {
-    const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
+    const validation = CategoryValidator.DCategoryValidator.safeParse(src.name);
 
-    if (!nameValidation.success) {
+    if (!validation.success) {
       return { ...src, name: Constants.DEFAULT_NAME };
     } else {
       return {
-        comment: src.comment,
-        id: src.id,
-        name: { ...Constants.DEFAULT_NAME, ...nameValidation.data },
+        ...validation.data,
+        name:
+          typeof validation.data.name === 'object' &&
+          validation.data.name !== null &&
+          !Array.isArray(validation.data.name)
+            ? { ...Constants.DEFAULT_NAME, ...validation.data.name }
+            : Constants.DEFAULT_NAME,
       };
     }
   }

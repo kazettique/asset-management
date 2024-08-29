@@ -22,8 +22,7 @@ export async function GET(
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const transformedData = BrandTransformer.DBrandTransformer(raw);
-      const dataValidation = BrandValidator.VBrandValidator.safeParse(transformedData);
+      const dataValidation = BrandValidator.VBrandValidator.safeParse(raw);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));

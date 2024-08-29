@@ -10,16 +10,22 @@ interface Props<T extends FieldValues>
 }
 
 export default function Input<T extends FieldValues>(props: Props<T>) {
-  const { label = '', path, required, register, className = '' } = props;
+  const { label = '', path, register, className = '', placeholder = '請輸入', ...rest } = props;
+
+  const registerOptions =
+    props.type === 'date' ? { valueAsDate: true } : props.type === 'number' ? { valueAsNumber: true } : {};
 
   return (
     <div className="flex gap-x-2 flex-col">
-      {label && (
-        <label className="block" htmlFor={path}>
-          {label}
-        </label>
-      )}
-      <input {...register(path, { required })} className={`block bg-slate-300 p-1 ${className}`} />
+      <label className="block" htmlFor={path}>
+        {label || path}
+      </label>
+      <input
+        {...register(path, registerOptions)}
+        {...rest}
+        placeholder={placeholder}
+        className={`block bg-slate-300 p-1 ${className}`}
+      />
     </div>
   );
 }

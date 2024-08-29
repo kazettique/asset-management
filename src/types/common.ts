@@ -8,9 +8,9 @@ export interface GeneralResponse<T> {
 }
 
 export interface Name {
-  nameEn: NString;
-  nameJp: NString;
-  nameTw: NString;
+  nameEn: string;
+  nameJp: string;
+  nameTw: string;
 }
 
 export type Id = string;
@@ -50,6 +50,7 @@ export interface AssetMeta {
 
 export interface AssetCommon {
   brandId: Id;
+  categoryId: Id;
   comment: NString;
   endCurrencyId: NType<Id>;
   endDate: NType<Date>;

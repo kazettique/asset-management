@@ -31,8 +31,10 @@ module.exports = {
     'no-unused-vars': 'off',
     'prettier/prettier': 'error',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', 'tsx'] }], //allow jsx syntax in js files (for next.js project), should add ".ts" if typescript project
+    'react/no-children-prop': 'off',
     'react/react-in-jsx-scope': 'off', // suppress errors for missing 'import React' in files
     'react/self-closing-comp': 'warn',
+    'react-hooks/exhaustive-deps': 'error',
     semi: 'off',
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': 'error',
