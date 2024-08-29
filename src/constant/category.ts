@@ -1,8 +1,10 @@
 import { FCategory } from '@/types';
 
-import { Constants } from './common';
+import { CommonConstant } from './common';
 
-export const F_CATEGORY_INITIAL_VALUES: FCategory = {
-  comment: '',
-  name: Constants.DEFAULT_NAME,
-};
+export abstract class CategoryConstant {
+  public static readonly F_CATEGORY_INITIAL_VALUES: FCategory = {
+    comment: '',
+    name: CommonConstant.DEFAULT_NAME,
+  };
+}

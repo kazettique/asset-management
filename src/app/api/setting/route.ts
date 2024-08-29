@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 import {
   BrandRepository,
   CategoryRepository,
@@ -32,9 +32,11 @@ export async function GET(_request: Request) {
 
   const dataValidation = SettingValidator.VSettingValidator.safeParse(transformedData);
 
-  if (dataValidation.success) {
-    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+  if (!dataValidation.success) {
+    return new Response(JSON.stringify({ error: dataValidation.error, message: CommonConstant.MSG_DIRTY_DATA }), {
+      status: HttpStatusCode.BAD_REQUEST,
+    });
   } else {
-    return new Response(Constants.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
   }
 }

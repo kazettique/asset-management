@@ -50,7 +50,7 @@ export abstract class AssetRepository {
 
   public static async create(payload: RAsset): Promise<MAsset> {
     const rawData = await db.asset.create({
-      data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.meta as Prisma.JsonObject },
+      data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.name as unknown as Prisma.JsonObject },
       select: queryObj,
     });
 
@@ -68,7 +68,7 @@ export abstract class AssetRepository {
 
   public static async update(payload: RAsset, id: MAsset['id']): Promise<MAsset> {
     const rawData = await db.asset.update({
-      data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.meta as Prisma.JsonObject },
+      data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.name as unknown as Prisma.JsonObject },
       select: queryObj,
       where: { id },
     });

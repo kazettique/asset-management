@@ -1,4 +1,5 @@
 import { MethodType } from '@prisma/client';
+import dayjs from 'dayjs';
 import { z } from 'zod';
 
 import { AssetCommon, AssetMeta, CurrencyCommon, DbBase, Id, MethodCommon, Name, Price, SettingBase } from '@/types';
@@ -11,9 +12,9 @@ export abstract class CommonValidator {
       nameTw: z.string(),
     })
     .superRefine((values, context) => {
-      const nameEnLength: number = values.nameEn?.length || 0;
-      const nameTwLength: number = values.nameTw?.length || 0;
-      const nameJpLength: number = values.nameJp?.length || 0;
+      const nameEnLength: number = values.nameEn.length;
+      const nameTwLength: number = values.nameTw.length;
+      const nameJpLength: number = values.nameJp.length;
 
       if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
         context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['name'] });
@@ -52,20 +53,35 @@ export abstract class CommonValidator {
     size: z.string().optional(),
   });
 
-  public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z.object({
-    brandId: CommonValidator.IdValidator,
-    categoryId: CommonValidator.IdValidator,
-    comment: z.string().nullable(),
-    endCurrencyId: CommonValidator.IdValidator.nullable(),
-    endDate: z.coerce.date().nullable(),
-    endMethodId: CommonValidator.IdValidator.nullable(),
-    endPlaceId: CommonValidator.IdValidator.nullable(),
-    endPrice: this.PriceValidator.nullable(),
-    isCensored: z.boolean(),
-    startCurrencyId: CommonValidator.IdValidator,
-    startDate: z.coerce.date(),
-    startMethodId: CommonValidator.IdValidator,
-    startPlaceId: CommonValidator.IdValidator,
-    startPrice: this.PriceValidator,
-  });
+  public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z
+    .object({
+      brandId: CommonValidator.IdValidator,
+      categoryId: CommonValidator.IdValidator,
+      comment: z.string().nullable(),
+      endCurrencyId: CommonValidator.IdValidator.nullable(),
+      endDate: z.coerce.date().nullable(),
+      endMethodId: CommonValidator.IdValidator.nullable(),
+      endPlaceId: CommonValidator.IdValidator.nullable(),
+      endPrice: this.PriceValidator.nullable(),
+      isCensored: z.boolean(),
+      startCurrencyId: CommonValidator.IdValidator,
+      startDate: z.coerce.date(),
+      startMethodId: CommonValidator.IdValidator,
+      startPlaceId: CommonValidator.IdValidator,
+      startPrice: this.PriceValidator,
+    })
+    .superRefine((values, context) => {
+      if (values.endDate !== null) {
+        const startDate = dayjs(values.startDate);
+        const endDate = dayjs(values.endDate);
+
+        if (startDate.isAfter(endDate)) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'End date should be after start date.',
+            path: ['endDate'],
+          });
+        }
+      }
+    });
 }

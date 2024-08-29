@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 import { AssetRepository } from '@/repository';
 import { AssetTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VAsset } from '@/types';
@@ -27,7 +27,7 @@ export async function GET(
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
       } else {
-        return new Response(Constants.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+        return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
       }
     }
   }
@@ -49,23 +49,23 @@ export async function DELETE(
   }
 }
 
-// export async function POST(
-//   request: Request,
-//   { params }: Segments,
-// ): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {
-//   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
-//   const requestBody = await request.json();
+export async function POST(
+  request: Request,
+  { params }: Segments,
+): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {
+  const idValidation = CommonValidator.IdValidator.safeParse(params.id);
+  const requestBody = await request.json();
 
-//   const requestValidation = AssetValidator.RAssetValidator.safeParse(requestBody);
+  const requestValidation = AssetValidator.RAssetValidator.safeParse(requestBody);
 
-//   if (!idValidation.success || !requestValidation.success) {
-//     return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {
-//       status: HttpStatusCode.BAD_REQUEST,
-//     });
-//   } else {
-//     const raw = await AssetRepository.update(requestValidation.data, idValidation.data);
-//     const data = AssetTransformer.MAssetTransformer(raw);
+  if (!idValidation.success || !requestValidation.success) {
+    return new Response(JSON.stringify({ error: requestValidation.error, message: CommonConstant.MSG_DIRTY_DATA }), {
+      status: HttpStatusCode.BAD_REQUEST,
+    });
+  } else {
+    const raw = await AssetRepository.update(requestValidation.data, idValidation.data);
+    const data = AssetTransformer.MAssetTransformer(raw);
 
-//     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
-//   }
-// }
+    return NextResponse.json(CommonTransformer.ResponseTransformer(data));
+  }
+}

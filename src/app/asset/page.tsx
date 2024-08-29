@@ -2,11 +2,10 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { useFormState } from 'react-dom';
 
 import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
-import { SettingTransformer } from '@/transformer';
+import { AssetTransformer, SettingTransformer } from '@/transformer';
 import { FAsset, Id, NType, VAsset } from '@/types';
 
 import Create from './Create';
@@ -32,8 +31,6 @@ export default function Page() {
     [settingData],
   );
 
-  // console.log('settingOptions', settingOptions);
-
   const {
     data: assetData,
     isPending: assetIsPending,
@@ -44,14 +41,15 @@ export default function Page() {
   });
 
   const createAsset = useMutation({
-    mutationFn: (payload: FAsset) => AssetFetcher.create(payload),
+    mutationFn: (payload: FAsset) => AssetFetcher.create(AssetTransformer.FAssetTransformer(payload)),
     onSuccess: () => {
       assetRefetch();
     },
   });
 
   const updateAsset = useMutation({
-    mutationFn: ({ payload, id }: { id: VAsset['id']; payload: FAsset }) => AssetFetcher.update(payload, id),
+    mutationFn: ({ payload, id }: { id: VAsset['id']; payload: FAsset }) =>
+      AssetFetcher.update(AssetTransformer.FAssetTransformer(payload), id),
     onSuccess: () => {
       assetRefetch();
       setEditItem(null);

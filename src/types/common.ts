@@ -22,9 +22,9 @@ export interface DbBase {
 export interface SettingBase {
   comment: NString;
   name: {
-    nameEn: NString;
-    nameJp: NString;
-    nameTw: NString;
+    nameEn: string;
+    nameJp: string;
+    nameTw: string;
   };
 }
 

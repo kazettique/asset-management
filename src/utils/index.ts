@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 
 export abstract class Utils {
   /**
@@ -17,7 +17,7 @@ export abstract class Utils {
    * @param {(Dayjs | Date)} dateTime
    * @returns {string}
    */
-  public static GetDateTimeString(dateTime: Dayjs | Date | string, format = Constants.DATE_TIME_FORMAT): string {
+  public static GetDateTimeString(dateTime: Dayjs | Date | string, format = CommonConstant.DATE_TIME_FORMAT): string {
     return dayjs(dateTime).format(format);
   }
 

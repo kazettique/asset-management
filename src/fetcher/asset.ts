@@ -1,6 +1,6 @@
 'use client';
 
-import { FAsset, GeneralResponse, Id, MAsset, VAsset } from '@/types';
+import { GeneralResponse, Id, MAsset, RAsset, VAsset } from '@/types';
 
 export abstract class AssetFetcher {
   public static async getAll(): Promise<GeneralResponse<VAsset[]>> {
@@ -11,7 +11,7 @@ export abstract class AssetFetcher {
     return data;
   }
 
-  public static async create(payload: FAsset): Promise<GeneralResponse<VAsset>> {
+  public static async create(payload: RAsset): Promise<GeneralResponse<VAsset>> {
     const res = await fetch('/api/asset', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
@@ -27,7 +27,7 @@ export abstract class AssetFetcher {
     return data;
   }
 
-  public static async update(payload: FAsset, id: MAsset['id']): Promise<GeneralResponse<VAsset>> {
+  public static async update(payload: RAsset, id: MAsset['id']): Promise<GeneralResponse<VAsset>> {
     const res = await fetch('/api/asset/' + id, {
       body: JSON.stringify(payload),
       method: 'POST',

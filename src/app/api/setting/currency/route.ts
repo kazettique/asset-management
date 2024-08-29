@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 import { CurrencyRepository } from '@/repository';
 import { CommonTransformer, CurrencyTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCurrency } from '@/types';
@@ -15,7 +15,7 @@ export async function GET(_request: Request): Promise<NextResponse<GeneralRespon
   if (dataValidation.success) {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
   } else {
-    return new Response(Constants.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+    return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
   }
 }
 

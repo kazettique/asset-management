@@ -2,8 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { MethodType } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 
-import Select, { Props as SelectProps } from '@/components/Select';
-import { F_CATEGORY_INITIAL_VALUES } from '@/constant';
+import Select from '@/components/Select';
+import { MethodConstant } from '@/constant';
 import { FMethod } from '@/types';
 import { MethodValidator } from '@/validator';
 
@@ -16,7 +16,7 @@ export default function Create(props: Props) {
   const { className = '', onSubmit } = props;
 
   const { register, handleSubmit, formState, reset } = useForm<FMethod>({
-    defaultValues: F_CATEGORY_INITIAL_VALUES,
+    defaultValues: MethodConstant.F_METHOD_INITIAL_VALUES,
     resolver: zodResolver(MethodValidator.FMethodValidator),
   });
 

@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { F_PLACE_INITIAL_VALUES } from '@/constant';
+import { PlaceConstant } from '@/constant';
 import { FPlace } from '@/types';
 import { PlaceValidator } from '@/validator';
 
@@ -14,7 +14,7 @@ export default function Create(props: Props) {
   const { className = '', onSubmit } = props;
 
   const { register, handleSubmit, formState, reset } = useForm<FPlace>({
-    defaultValues: F_PLACE_INITIAL_VALUES,
+    defaultValues: PlaceConstant.F_PLACE_INITIAL_VALUES,
     resolver: zodResolver(PlaceValidator.FPlaceValidator),
   });
 

@@ -1,8 +1,10 @@
 import { FBrand } from '@/types';
 
-import { Constants } from './common';
+import { CommonConstant } from './common';
 
-export const F_BRAND_INITIAL_VALUES: FBrand = {
-  comment: '',
-  name: Constants.DEFAULT_NAME,
-};
+export abstract class BrandConstant {
+  public static readonly F_BRAND_INITIAL_VALUES: FBrand = {
+    comment: '',
+    name: CommonConstant.DEFAULT_NAME,
+  };
+}

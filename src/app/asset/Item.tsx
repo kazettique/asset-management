@@ -2,7 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
+import { AssetTransformer } from '@/transformer';
 import { FAsset, FSettingOptions, VAsset } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
@@ -19,14 +20,14 @@ interface Props {
 
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FAsset>({
-    defaultValues: props.item,
+    defaultValues: AssetTransformer.VAssetTransformer(props.item),
     resolver: zodResolver(AssetValidator.FAssetValidator),
   });
 
   const brand = useMemo(() => {
     const findItem = props.settingOptions.brands.find((item) => item.value === props.item.brandId);
 
-    return findItem ? findItem.label : Constants.DEFAULT_EMPTY_STRING;
+    return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.brandId, props.settingOptions.brands]);
 
   const startDate = Utils.GetDateTimeString(props.item.startDate);
@@ -36,19 +37,19 @@ export default function Item(props: Props) {
 
     return findItem
       ? `${findItem.label} ${Utils.NumberWithCommas(props.item.startPrice)}`
-      : Constants.DEFAULT_EMPTY_STRING;
+      : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.startCurrencyId, props.item.startPrice, props.settingOptions.currencies]);
 
   const startMethod = useMemo(() => {
     const findItem = props.settingOptions.methods.find((item) => item.value === props.item.startMethodId);
 
-    return findItem ? findItem.label : Constants.DEFAULT_EMPTY_STRING;
+    return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.startMethodId, props.settingOptions.methods]);
 
   const startPlace = useMemo(() => {
     const findItem = props.settingOptions.places.find((item) => item.value === props.item.startPlaceId);
 
-    return findItem ? findItem.label : Constants.DEFAULT_EMPTY_STRING;
+    return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.startPlaceId, props.settingOptions.places]);
 
   const endPrice = useMemo(() => {
@@ -56,22 +57,24 @@ export default function Item(props: Props) {
 
     return findItem && props.item.endPrice
       ? `${findItem.label} ${Utils.NumberWithCommas(props.item.endPrice)}`
-      : Constants.DEFAULT_EMPTY_STRING;
+      : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.endCurrencyId, props.item.endPrice, props.settingOptions.currencies]);
 
   const endMethod = useMemo(() => {
     const findItem = props.settingOptions.methods.find((item) => item.value === props.item.endMethodId);
 
-    return findItem ? findItem.label : Constants.DEFAULT_EMPTY_STRING;
+    return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.endMethodId, props.settingOptions.methods]);
 
   const endPlace = useMemo(() => {
     const findItem = props.settingOptions.places.find((item) => item.value === props.item.endPlaceId);
 
-    return findItem ? findItem.label : Constants.DEFAULT_EMPTY_STRING;
+    return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.endPlaceId, props.settingOptions.places]);
 
-  const endDate = props.item.endDate ? Utils.GetDateTimeString(props.item.endDate) : Constants.DEFAULT_EMPTY_STRING;
+  const endDate = props.item.endDate
+    ? Utils.GetDateTimeString(props.item.endDate)
+    : CommonConstant.DEFAULT_EMPTY_STRING;
 
   // const
 

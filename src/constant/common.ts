@@ -1,6 +1,6 @@
 import { Name } from '@/types';
 
-export abstract class Constants {
+export abstract class CommonConstant {
   public static readonly MSG_DIRTY_DATA: string = 'dirty data';
 
   public static readonly DEFAULT_NAME: Name = {

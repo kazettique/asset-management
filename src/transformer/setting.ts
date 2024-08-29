@@ -1,4 +1,4 @@
-import { DSetting, FSettingOptions, MCurrency, MSetting, Name, NString, VSetting } from '@/types';
+import { DSetting, FSettingOptions, MCurrency, MSetting, Name, VSetting } from '@/types';
 
 import { BrandTransformer } from './brand';
 import { CategoryTransformer } from './category';
@@ -8,7 +8,7 @@ import { OwnerTransformer } from './owner';
 import { PlaceTransformer } from './place';
 
 export abstract class SettingTransformer {
-  public static DAssetTransformer(src: DSetting): MSetting {
+  public static DSettingTransformer(src: DSetting): MSetting {
     return {
       brands: src.brands.map((item) => BrandTransformer.DBrandTransformer(item)),
       categories: src.categories.map((item) => CategoryTransformer.DCategoryTransformer(item)),
@@ -27,7 +27,7 @@ export abstract class SettingTransformer {
     // TODO: need stricter typing
     const parseName = (name: Name): string =>
       Object.values(name)
-        .filter((item) => item !== null && item.length > 0)
+        .filter((item) => item.length > 0)
         .join('|');
 
     const parseCurrency = (currency: MCurrency) => `(${currency.display})${currency.symbol}`;

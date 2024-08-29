@@ -1,4 +1,4 @@
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 import { MPlace, VPlace } from '@/types';
 import { DPlace } from '@/types/dbModels';
 import { CommonValidator } from '@/validator';
@@ -8,11 +8,11 @@ export abstract class PlaceTransformer {
     const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
-      return { ...src, name: Constants.DEFAULT_NAME };
+      return { ...src, name: CommonConstant.DEFAULT_NAME };
     } else {
       return {
         ...src,
-        name: { ...Constants.DEFAULT_NAME, ...nameValidation.data },
+        name: { ...CommonConstant.DEFAULT_NAME, ...nameValidation.data },
       };
     }
   }

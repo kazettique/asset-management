@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { F_CURRENCY_INITIAL_VALUES } from '@/constant';
+import { CurrencyConstant } from '@/constant';
 import { FCurrency } from '@/types';
 import { CurrencyValidator } from '@/validator';
 
@@ -14,7 +14,7 @@ export default function Create(props: Props) {
   const { className = '', onSubmit } = props;
 
   const { register, handleSubmit, formState, reset } = useForm<FCurrency>({
-    defaultValues: F_CURRENCY_INITIAL_VALUES,
+    defaultValues: CurrencyConstant.F_CURRENCY_INITIAL_VALUES,
     resolver: zodResolver(CurrencyValidator.FCurrencyValidator),
   });
 

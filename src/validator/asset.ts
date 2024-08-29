@@ -30,5 +30,22 @@ export abstract class AssetValidator {
     })
     .and(CommonValidator.AssetCommonValidator);
 
-  public static readonly FAssetValidator: z.ZodSchema<FAsset> = this.RAssetValidator;
+  public static readonly FAssetValidator: z.ZodSchema<FAsset> = z.object({
+    brandId: z.string(),
+    categoryId: z.string(),
+    comment: z.string(),
+    endCurrencyId: z.string(),
+    endDate: z.date().nullable(),
+    endMethodId: z.string(),
+    endPlaceId: z.string(),
+    endPrice: CommonValidator.PriceValidator,
+    isCensored: z.boolean(),
+    meta: CommonValidator.AssetMetaValidator,
+    name: CommonValidator.NameValidator,
+    startCurrencyId: z.string(),
+    startDate: z.date(),
+    startMethodId: z.string(),
+    startPlaceId: z.string(),
+    startPrice: CommonValidator.PriceValidator,
+  });
 }

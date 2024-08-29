@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { F_OWNER_INITIAL_VALUES } from '@/constant';
+import { OwnerConstant } from '@/constant';
 import { FOwner } from '@/types';
 import { OwnerValidator } from '@/validator';
 
@@ -14,7 +14,7 @@ export default function Create(props: Props) {
   const { className = '', onSubmit } = props;
 
   const { register, handleSubmit, formState, reset } = useForm<FOwner>({
-    defaultValues: F_OWNER_INITIAL_VALUES,
+    defaultValues: OwnerConstant.F_OWNER_INITIAL_VALUES,
     resolver: zodResolver(OwnerValidator.FOwnerValidator),
   });
 

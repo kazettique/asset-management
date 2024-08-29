@@ -1,22 +1,24 @@
+import dayjs from 'dayjs';
+
 import { FAsset } from '@/types';
 
-import { Constants } from './common';
+import { CommonConstant } from './common';
 
 export abstract class AssetConstant {
   public static readonly F_ASSET_INITIAL_VALUES: FAsset = {
     brandId: '',
     categoryId: '',
-    comment: null,
-    endCurrencyId: null,
+    comment: '',
+    endCurrencyId: '',
     endDate: null,
-    endMethodId: null,
-    endPlaceId: null,
-    endPrice: null,
+    endMethodId: '',
+    endPlaceId: '',
+    endPrice: 0,
     isCensored: false,
     meta: {},
-    name: Constants.DEFAULT_NAME,
+    name: CommonConstant.DEFAULT_NAME,
     startCurrencyId: '',
-    startDate: new Date(),
+    startDate: dayjs().toDate(),
     startMethodId: '',
     startPlaceId: '',
     startPrice: 0,

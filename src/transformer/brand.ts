@@ -1,4 +1,4 @@
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 import { DBrand, MBrand, VBrand } from '@/types';
 import { CommonValidator } from '@/validator';
 
@@ -7,11 +7,11 @@ export abstract class BrandTransformer {
     const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
-      return { ...src, name: Constants.DEFAULT_NAME };
+      return { ...src, name: CommonConstant.DEFAULT_NAME };
     } else {
       return {
         ...src,
-        name: { ...Constants.DEFAULT_NAME, ...nameValidation.data },
+        name: { ...CommonConstant.DEFAULT_NAME, ...nameValidation.data },
       };
     }
   }

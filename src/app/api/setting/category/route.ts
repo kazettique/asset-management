@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 import { CategoryRepository } from '@/repository';
 import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCategory } from '@/types';
@@ -13,7 +13,7 @@ export async function GET(_request: Request): Promise<NextResponse<GeneralRespon
   const dataValidation = CategoryValidator.VCategoryValidator.array().safeParse(transformedData);
 
   if (!dataValidation.success) {
-    return new Response(Constants.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+    return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
   } else {
     return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
   }

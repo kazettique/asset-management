@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { F_CATEGORY_INITIAL_VALUES } from '@/constant';
+import { CategoryConstant } from '@/constant';
 import { FCategory } from '@/types';
 import { CategoryValidator } from '@/validator';
 
@@ -14,7 +14,7 @@ export default function Create(props: Props) {
   const { className = '', onSubmit } = props;
 
   const { register, handleSubmit, formState, reset } = useForm<FCategory>({
-    defaultValues: F_CATEGORY_INITIAL_VALUES,
+    defaultValues: CategoryConstant.F_CATEGORY_INITIAL_VALUES,
     resolver: zodResolver(CategoryValidator.FCategoryValidator),
   });
 

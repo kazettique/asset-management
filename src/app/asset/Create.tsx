@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
@@ -17,15 +16,10 @@ interface Props {
 export default function Create(props: Props) {
   const { className = '', onSubmit } = props;
 
-  const { register, handleSubmit, formState, reset, control } = useForm<FAsset>({
+  const { register, handleSubmit, reset } = useForm<FAsset>({
     defaultValues: AssetConstant.F_ASSET_INITIAL_VALUES,
-    mode: 'all',
     resolver: zodResolver(AssetValidator.FAssetValidator),
   });
-
-  const test = () => {
-    console.log('formState.errors', formState.errors);
-  };
 
   return (
     <div className={`border border-slate-600 rounded-sm p-2 flex flex-col gap-y-4 mt-4 ${className}`}>
@@ -68,12 +62,10 @@ export default function Create(props: Props) {
 
         <Input register={register} path="comment" />
 
-        <button onClick={test} type="submit" className="bg-slate-400 hover:bg-slate-500 p-2 m-4 rounded-sm">
+        <button type="submit" className="bg-slate-400 hover:bg-slate-500 p-2 m-4 rounded-sm">
           Submit
         </button>
       </form>
-
-      {/* <DevTool control={control} /> */}
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import { FPlace } from '@/types';
 
-import { Constants } from './common';
-
-export const F_PLACE_INITIAL_VALUES: FPlace = {
-  comment: '',
-  name: Constants.DEFAULT_NAME,
-};
+import { CommonConstant } from './common';
+export abstract class PlaceConstant {
+  public static readonly F_PLACE_INITIAL_VALUES: FPlace = {
+    comment: '',
+    name: CommonConstant.DEFAULT_NAME,
+  };
+}

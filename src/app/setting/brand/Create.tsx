@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { F_BRAND_INITIAL_VALUES } from '@/constant';
+import { BrandConstant } from '@/constant';
 import { FBrand } from '@/types';
 import { BrandValidator } from '@/validator';
 
@@ -14,7 +14,7 @@ export default function Create(props: Props) {
   const { className = '', onSubmit } = props;
 
   const { register, handleSubmit, formState, reset } = useForm<FBrand>({
-    defaultValues: F_BRAND_INITIAL_VALUES,
+    defaultValues: BrandConstant.F_BRAND_INITIAL_VALUES,
     resolver: zodResolver(BrandValidator.FBrandValidator),
   });
 

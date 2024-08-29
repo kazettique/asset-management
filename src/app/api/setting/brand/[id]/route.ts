@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { Constants } from '@/constant';
+import { CommonConstant } from '@/constant';
 import { BrandRepository } from '@/repository';
 import { BrandTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VBrand } from '@/types';
@@ -27,7 +27,7 @@ export async function GET(
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
       } else {
-        return new Response(Constants.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+        return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
       }
     }
   }

@@ -2,10 +2,12 @@ import { MethodType } from '@prisma/client';
 
 import { FMethod } from '@/types';
 
-import { Constants } from './common';
+import { CommonConstant } from './common';
 
-export const F_METHOD_INITIAL_VALUES: FMethod = {
-  comment: '',
-  name: Constants.DEFAULT_NAME,
-  type: MethodType.START,
-};
+export abstract class MethodConstant {
+  public static readonly F_METHOD_INITIAL_VALUES: FMethod = {
+    comment: '',
+    name: CommonConstant.DEFAULT_NAME,
+    type: MethodType.START,
+  };
+}

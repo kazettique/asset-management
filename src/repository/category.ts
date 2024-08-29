@@ -14,6 +14,8 @@ export abstract class CategoryRepository {
       select: queryObj,
     });
 
+    // console.log('rawData', rawData);
+
     const parsedData = rawData.map((category) => CategoryTransformer.DCategoryTransformer(category));
 
     return parsedData;
