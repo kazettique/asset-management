@@ -1,6 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import { OwnerConstant } from '@/constant';
 import { FOwner } from '@/types';
 import { OwnerValidator } from '@/validator';
@@ -28,26 +30,11 @@ export default function Create(props: Props) {
         })}
         className="flex flex-col gap-y-4"
       >
-        <div>
-          <label htmlFor="name.nameEn">Name: </label>
-
-          <input {...register('name.nameEn')} className="bg-slate-300" />
-        </div>
-        <div>
-          <label htmlFor="name.nameTw">名稱: </label>
-          <input {...register('name.nameTw')} className="bg-slate-300" />
-        </div>
-        <div>
-          <label htmlFor="name.nameJp">名前: </label>
-          <input {...register('name.nameJp')} className="bg-slate-300" />
-        </div>
-        <div>
-          <label htmlFor="comment">Comment: </label>
-          <input {...register('comment')} className="bg-slate-300" />
-        </div>
-        <button type="submit" className="bg-slate-400 hover:bg-slate-500 p-2 m-4 rounded-sm">
-          Submit
-        </button>
+        <Input register={register} path="name.nameEn" />
+        <Input register={register} path="name.nameTw" />
+        <Input register={register} path="name.nameJp" />
+        <Input register={register} path="comment" />
+        <Button type="submit">Submit</Button>
       </form>
       {formState.errors.name && <div className="text-red-500">{formState.errors.name.message}</div>}
     </div>

@@ -3,15 +3,6 @@ export default function Page() {
   return (
     <>
       <h1>Hello, Dashboard Page!</h1>
-      <table>
-        <tbody>
-          <tr>
-            <form>
-              <input placeholder="hello" type="text" />
-            </form>
-          </tr>
-        </tbody>
-      </table>
     </>
   );
 }

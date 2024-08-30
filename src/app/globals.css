@@ -2,32 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+.basicButton {
+  @apply mr-4 rounded-lg py-1.5 px-2 font-sans text-xs font-bold uppercase text-white shadow-md  transition-all hover:shadow-lg  focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none;
+  @apply bg-blue-500 shadow-blue-500/20 hover:shadow-blue-500/40;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  &[data-variant='primary'] {
+    @apply bg-blue-500 shadow-blue-500/20 hover:shadow-blue-500/40;
+  }
+
+  &[data-variant='secondary'] {
+    @apply bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40;
+  }
+
+  &[data-variant='danger'] {
+    @apply bg-red-500 shadow-red-500/20 hover:shadow-red-500/40;
+  }
+
+  &[data-variant='warning'] {
+    @apply bg-orange-500 shadow-orange-500/20 hover:shadow-orange-500/40;
+  }
+
+  &[data-variant='success'] {
+    @apply bg-green-500 shadow-green-500/20 hover:shadow-green-500/40;
   }
 }
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-} */

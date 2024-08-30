@@ -132,7 +132,7 @@ export default function Page() {
         </table>
       )}
 
-      <Create onSubmit={onCreateSubmit} settingOptions={settingOptions} className="w-2/3" />
+      <Create onSubmit={onCreateSubmit} settingOptions={settingOptions} className="w-full" />
     </div>
   );
 }

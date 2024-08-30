@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import { AssetConstant } from '@/constant';
@@ -62,9 +63,7 @@ export default function Create(props: Props) {
 
         <Input register={register} path="comment" />
 
-        <button type="submit" className="bg-slate-400 hover:bg-slate-500 p-2 m-4 rounded-sm">
-          Submit
-        </button>
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   );

@@ -5,6 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
+import Input from '@/components/Input';
 import { CommonConstant } from '@/constant';
 import { AssetTransformer } from '@/transformer';
 import { FAsset, FSettingOptions, VAsset } from '@/types';
@@ -177,30 +178,30 @@ export default function Item(props: Props) {
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <input {...register('name.nameEn')} className="bg-slate-400 w-1/5" />
-            <input {...register('name.nameTw')} className="bg-slate-400 w-1/5" />
-            <input {...register('name.nameJp')} className="bg-slate-400 w-1/5" />
-            <input {...register('brandId')} className="bg-slate-400 w-1/5" />
+            <Input register={register} path="name.nameEn" />
+            <Input register={register} path="name.nameTw" />
+            <Input register={register} path="name.nameJp" />
+            <Input register={register} path="brandId" />
 
             {/* start info */}
-            <input {...register('startDate')} className="bg-slate-400 w-1/5" />
+            <Input register={register} path="startDate" />
             <div>
-              <input {...register('startCurrencyId')} className="bg-slate-400 w-1/5" />
-              <input {...register('startPrice')} className="bg-slate-400 w-1/5" />
+              <Input register={register} path="startCurrencyId" />
+              <Input register={register} path="startPrice" />
             </div>
-            <input {...register('startMethodId')} className="bg-slate-400 w-1/5" />
-            <input {...register('startPlaceId')} className="bg-slate-400 w-1/5" />
+            <Input register={register} path="startMethodId" />
+            <Input register={register} path="startPlaceId" />
 
             {/* end info */}
-            <input {...register('endDate')} className="bg-slate-400 w-1/5" />
+            <Input register={register} path="endDate" />
             <div>
-              <input {...register('endCurrencyId')} className="bg-slate-400 w-1/5" />
-              <input {...register('endPrice')} className="bg-slate-400 w-1/5" />
+              <Input register={register} path="endCurrencyId" />
+              <Input register={register} path="endPrice" />
             </div>
-            <input {...register('endMethodId')} className="bg-slate-400 w-1/5" />
-            <input {...register('endPlaceId')} className="bg-slate-400 w-1/5" />
+            <Input register={register} path="endMethodId" />
+            <Input register={register} path="endPlaceId" />
 
-            <input {...register('comment')} name="comment" className="bg-slate-400 w-1/5" />
+            <Input register={register} path="comment" />
             <div className="w-1/5 gap-x-2 flex">
               <button className="bg-slate-500 p-1 rounded-sm text-white">Save</button>
               <button className="bg-red-500 p-1 rounded-sm text-white" onClick={() => props.onDelete(props.item.id)}>

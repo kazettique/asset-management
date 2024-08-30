@@ -1,6 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import Button from '@/components/Button';
+import Input from '@/components/Input';
 import { FCurrency, VCurrency } from '@/types';
 import { CurrencyValidator } from '@/validator';
 
@@ -24,10 +26,10 @@ export default function Item(props: Props) {
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <input {...register('name')} className="bg-slate-400 w-1/5" />
-            <input {...register('display')} className="bg-slate-400 w-1/5" />
-            <input {...register('symbol')} className="bg-slate-400 w-1/5" />
-            <input {...register('comment')} name="comment" className="bg-slate-400 w-1/5" />
+            <Input register={register} path="name" className="w-1/5" />
+            <Input register={register} path="display" className="w-1/5" />
+            <Input register={register} path="symbol" className="w-1/5" />
+            <Input register={register} path="comment" className="w-1/5" />
             <div className="w-1/5 gap-x-2 flex">
               <button className="bg-slate-500 p-1 rounded-sm text-white">Save</button>
               <button className="bg-red-500 p-1 rounded-sm text-white" onClick={() => props.onDelete(props.item.id)}>
@@ -46,9 +48,9 @@ export default function Item(props: Props) {
           <td className="border border-slate-300">{props.item.symbol}</td>
           <td className="border border-slate-300">{props.item.comment}</td>
           <td className="border border-slate-300 flex gap-x-2">
-            <button className="bg-slate-500 p-1 rounded-sm text-white" onClick={() => props.onEdit(props.item)}>
+            <Button variant="secondary" onClick={() => props.onEdit(props.item)}>
               Edit
-            </button>
+            </Button>
           </td>
         </>
       )}

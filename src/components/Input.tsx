@@ -24,7 +24,7 @@ export default function Input<T extends FieldValues>(props: Props<T>) {
         {...register(path, registerOptions)}
         {...rest}
         placeholder={placeholder}
-        className={`block bg-slate-300 p-1 ${className}`}
+        className={`h-10 border mt-1 rounded px-4 w-full bg-gray-50 ${className}`}
       />
     </div>
   );
