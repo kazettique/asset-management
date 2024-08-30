@@ -1,28 +1,21 @@
 'use client';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import dayjs, { Dayjs } from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { useMemo, useState } from 'react';
 
 import Button from '@/components/Button';
 import SearchInput from '@/components/SearchInput';
 import Table, { ColumnProps } from '@/components/Table';
-import { CommonConstant, SettingConstant } from '@/constant';
+import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
 import { AssetTransformer, SettingTransformer } from '@/transformer';
 import { FAsset, FSettingOptions, Id, NType, TAsset, VAsset } from '@/types';
-import { Utils } from '@/utils';
 
 import Create from './Create';
-import Item from './Item';
-
-dayjs.extend(relativeTime);
-dayjs.extend(duration);
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VAsset>>(null);
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   const {
     data: settingData,
@@ -186,8 +179,8 @@ export default function Page() {
   ];
 
   return (
-    <div className="p-5">
-      <section className="container px-4 mx-auto">
+    <div className="p-4 relative w-screen overflow-hidden">
+      <section className="container mx-auto">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-x-3">
@@ -225,7 +218,10 @@ export default function Page() {
               <span>Import</span>
             </button>
 
-            <button className="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+            <button
+              onClick={() => setIsActive(true)}
+              className="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -237,7 +233,7 @@ export default function Page() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
 
-              <span>Add vendor</span>
+              <span>Create Asset</span>
             </button>
           </div>
         </div>
@@ -315,7 +311,15 @@ export default function Page() {
         </div>
       </section>
 
-      <Create onSubmit={onCreateSubmit} settingOptions={settingOptions} className="w-full" />
+      <Create
+        onClose={() => setIsActive(false)}
+        onSubmit={onCreateSubmit}
+        settingOptions={settingOptions}
+        className={`absolute w-full h-full top-0 transition-all ${isActive ? 'left-0' : 'left-full'}`}
+      />
+
+      {/* <Modal isOpen={modalOpen} onClose={() => setModelOpen(false)} /> */}
+      {/* <Sidebar /> */}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import Button from '@/components/Button';
+import Icon from '@/components/Icon';
 import Input from '@/components/Input';
 import Select from '@/components/Select';
 import { AssetConstant } from '@/constant';
@@ -10,12 +11,13 @@ import { AssetValidator } from '@/validator';
 
 interface Props {
   className?: string;
+  onClose: () => void;
   onSubmit: (data: FAsset) => void;
   settingOptions: FSettingOptions;
 }
 
 export default function Create(props: Props) {
-  const { className = '', onSubmit } = props;
+  const { className = '', onSubmit, onClose } = props;
 
   const { register, handleSubmit, reset } = useForm<FAsset>({
     defaultValues: AssetConstant.F_ASSET_INITIAL_VALUES,
@@ -23,8 +25,15 @@ export default function Create(props: Props) {
   });
 
   return (
-    <div className={`border border-slate-600 rounded-sm p-2 flex flex-col gap-y-4 mt-4 ${className}`}>
-      <div className="font-bold text-xl">Create Asset</div>
+    <div className={`p-4 flex flex-col gap-y-4 bg-white overflow-auto ${className}`}>
+      <div className="flex justify-between">
+        <div className="font-bold text-xl">Create Asset</div>
+        <Icon
+          onClick={onClose}
+          iconType="x-lg"
+          className="cursor-pointer hover:bg-slate-200 rounded-sm transition-all p-1"
+        />
+      </div>
       <form
         onSubmit={handleSubmit((data) => {
           onSubmit(data);

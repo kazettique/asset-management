@@ -13,6 +13,7 @@
     "icon-prepare": "fantasticon --normalize true"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.3",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.18.0",
     "@tanstack/react-form": "^0.31.0",
@@ -23,6 +24,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
+    "transition-hook": "^1.5.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -11,6 +11,9 @@ type Props<T> = {
   data?: T[];
 };
 
+// ref: https://medium.com/@thashwiniwattuhewa/generic-react-table-component-1407a6fc2179
+// ref: https://www.bekk.christmas/post/2020/22/create-a-generic-table-with-react-and-typescript
+// ref: https://www.creative-tim.com/twcomponents/component/table-with-filter-and-search
 export default function Table<T>({ data, columns }: Props<T>) {
   const headers = columns.map((column, index) => {
     return (
