@@ -11,4 +11,4 @@ coverage
 .next
 build
 
-# src/types/http.ts
+src/types/iconTypes.ts

@@ -9,7 +9,8 @@
     "lint": "next lint",
     "lint:eslint": "eslint --ext .ts,.js,.tsx,.jsx .",
     "db-migrate": "npx prisma migrate dev",
-    "local-db": "npx prisma studio"
+    "db-studio": "npx prisma studio",
+    "icon-prepare": "fantasticon --normalize true"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -39,6 +40,7 @@
     "eslint-plugin-sort-keys": "^2.3.5",
     "eslint-plugin-typescript-sort-keys": "^3.2.0",
     "eslint-plugin-xstate": "^3.2.1",
+    "fantasticon": "^3.0.0",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",

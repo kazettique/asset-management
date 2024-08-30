@@ -26,6 +26,8 @@ module.exports = {
         ignoreRestSiblings: false,
       },
     ],
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
     'no-console': 'warn',
     'no-duplicate-imports': 'error',
     'no-unused-vars': 'off',
