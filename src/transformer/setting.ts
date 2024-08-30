@@ -1,3 +1,5 @@
+import { MethodType } from '@prisma/client';
+
 import { DSetting, FSettingOptions, MCurrency, MSetting, Name, VSetting } from '@/types';
 
 import { BrandTransformer } from './brand';
@@ -20,7 +22,15 @@ export abstract class SettingTransformer {
   }
 
   public static MSettingTransformer(src: MSetting): VSetting {
-    return src;
+    return {
+      brands: src.brands,
+      categories: src.categories,
+      currencies: src.currencies,
+      endMethods: src.methods.filter((item) => item.type === MethodType.END),
+      owners: src.owners,
+      places: src.places,
+      startMethods: src.methods.filter((item) => item.type === MethodType.START),
+    };
   }
 
   public static FSettingOptionsTransformer(src: VSetting): FSettingOptions {
@@ -36,9 +46,10 @@ export abstract class SettingTransformer {
       brands: src.brands.map((item) => ({ label: parseName(item.name), value: item.id })),
       categories: src.categories.map((item) => ({ label: parseName(item.name), value: item.id })),
       currencies: src.currencies.map((item) => ({ label: parseCurrency(item), value: item.id })),
-      methods: src.methods.map((item) => ({ label: parseName(item.name), value: item.id })),
+      endMethods: src.endMethods.map((item) => ({ label: parseName(item.name), value: item.id })),
       owners: src.owners.map((item) => ({ label: parseName(item.name), value: item.id })),
       places: src.places.map((item) => ({ label: parseName(item.name), value: item.id })),
+      startMethods: src.startMethods.map((item) => ({ label: parseName(item.name), value: item.id })),
     };
   }
 }

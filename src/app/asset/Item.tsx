@@ -1,4 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs, { Dayjs } from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -8,6 +11,8 @@ import { FAsset, FSettingOptions, VAsset } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
+dayjs.extend(relativeTime);
+dayjs.extend(duration);
 interface Props {
   isEdit: boolean;
   item: VAsset;
@@ -24,59 +29,148 @@ export default function Item(props: Props) {
     resolver: zodResolver(AssetValidator.FAssetValidator),
   });
 
-  const brand = useMemo(() => {
+  const brand = useMemo<string>(() => {
     const findItem = props.settingOptions.brands.find((item) => item.value === props.item.brandId);
 
     return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.brandId, props.settingOptions.brands]);
 
-  const startDate = Utils.GetDateTimeString(props.item.startDate);
+  // const startDate: string = Utils.GetDateTimeString(props.item.startDate);
 
-  const startPrice = useMemo(() => {
-    const findItem = props.settingOptions.currencies.find((item) => item.value === props.item.startCurrencyId);
+  // const startPrice = useMemo<string>(() => {
+  //   const findItem = props.settingOptions.currencies.find((item) => item.value === props.item.startCurrencyId);
 
-    return findItem
-      ? `${findItem.label} ${Utils.NumberWithCommas(props.item.startPrice)}`
-      : CommonConstant.DEFAULT_EMPTY_STRING;
-  }, [props.item.startCurrencyId, props.item.startPrice, props.settingOptions.currencies]);
+  //   return findItem
+  //     ? `${findItem.label} ${Utils.NumberWithCommas(props.item.startPrice)}`
+  //     : CommonConstant.DEFAULT_EMPTY_STRING;
+  // }, [props.item.startCurrencyId, props.item.startPrice, props.settingOptions.currencies]);
 
-  const startMethod = useMemo(() => {
-    const findItem = props.settingOptions.methods.find((item) => item.value === props.item.startMethodId);
+  const startMethod = useMemo<string>(() => {
+    const findItem = props.settingOptions.startMethods.find((item) => item.value === props.item.startMethodId);
 
     return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
-  }, [props.item.startMethodId, props.settingOptions.methods]);
+  }, [props.item.startMethodId, props.settingOptions.startMethods]);
 
-  const startPlace = useMemo(() => {
+  const startPlace = useMemo<string>(() => {
     const findItem = props.settingOptions.places.find((item) => item.value === props.item.startPlaceId);
 
     return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.startPlaceId, props.settingOptions.places]);
 
-  const endPrice = useMemo(() => {
-    const findItem = props.settingOptions.currencies.find((item) => item.value === props.item.endCurrencyId);
+  // const endPrice = useMemo<string>(() => {
+  //   const findItem = props.settingOptions.currencies.find((item) => item.value === props.item.endCurrencyId);
 
-    return findItem && props.item.endPrice
-      ? `${findItem.label} ${Utils.NumberWithCommas(props.item.endPrice)}`
-      : CommonConstant.DEFAULT_EMPTY_STRING;
-  }, [props.item.endCurrencyId, props.item.endPrice, props.settingOptions.currencies]);
+  //   return findItem && props.item.endPrice
+  //     ? `${findItem.label} ${Utils.NumberWithCommas(props.item.endPrice)}`
+  //     : CommonConstant.DEFAULT_EMPTY_STRING;
+  // }, [props.item.endCurrencyId, props.item.endPrice, props.settingOptions.currencies]);
 
-  const endMethod = useMemo(() => {
-    const findItem = props.settingOptions.methods.find((item) => item.value === props.item.endMethodId);
+  const endMethod = useMemo<string>(() => {
+    const findItem = props.settingOptions.endMethods.find((item) => item.value === props.item.endMethodId);
 
     return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
-  }, [props.item.endMethodId, props.settingOptions.methods]);
+  }, [props.item.endMethodId, props.settingOptions.endMethods]);
 
-  const endPlace = useMemo(() => {
+  const endPlace = useMemo<string>(() => {
     const findItem = props.settingOptions.places.find((item) => item.value === props.item.endPlaceId);
 
     return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
   }, [props.item.endPlaceId, props.settingOptions.places]);
 
-  const endDate = props.item.endDate
-    ? Utils.GetDateTimeString(props.item.endDate)
-    : CommonConstant.DEFAULT_EMPTY_STRING;
+  // const endDate = props.item.endDate
+  //   ? Utils.GetDateTimeString(props.item.endDate)
+  //   : CommonConstant.DEFAULT_EMPTY_STRING;
 
-  // const
+  // const priceDifference = useMemo<string>(() => {
+  //   const findItem = props.settingOptions.currencies.find((item) => item.value === props.item.startCurrencyId);
+
+  //   if (props.item.startCurrencyId === props.item.endCurrencyId && props.item.endPrice && findItem)
+  //     return findItem.label + Utils.NumberWithCommas(props.item.startPrice - props.item.endPrice);
+  //   else {
+  //     return CommonConstant.DEFAULT_EMPTY_STRING;
+  //   }
+  // }, [
+  //   props.item.endCurrencyId,
+  //   props.item.endPrice,
+  //   props.item.startCurrencyId,
+  //   props.item.startPrice,
+  //   props.settingOptions.currencies,
+  // ]);
+
+  // const usageTime = useMemo<string>(() => {
+  //   const endDate: Dayjs = props.item.endDate !== null ? dayjs(props.item.endDate) : dayjs();
+  //   const startDate: Dayjs = dayjs(props.item.startDate);
+
+  //   return Utils.DetailedRelativeTime(startDate, endDate);
+  // }, [props.item.endDate, props.item.startDate]);
+
+  // const monthlyCost = useMemo<string>(() => {
+  //   if (priceDifference === CommonConstant.DEFAULT_EMPTY_STRING) {
+  //     return CommonConstant.DEFAULT_EMPTY_STRING;
+  //   } else {
+  //     const endDate: Dayjs = props.item.endDate !== null ? dayjs(props.item.endDate) : dayjs();
+  //     const startDate: Dayjs = dayjs(props.item.startDate);
+  //     const monthCount: number = startDate.diff(endDate, 'month');
+
+  //     return (priceDifference / monthCount).toString();
+  //   }
+  // }, [priceDifference, props.item.endDate, props.item.startDate]);
+
+  const display = useMemo(() => {
+    // startDate
+    const _startDate: Dayjs = dayjs(props.item.startDate);
+    // startPrice
+    const startCurrency = props.settingOptions.currencies.find((item) => item.value === props.item.startCurrencyId);
+    // endDate
+    const _endDate: Dayjs = props.item.endDate !== null ? dayjs(props.item.endDate) : dayjs();
+
+    // endPrice
+    const endCurrency = props.settingOptions.currencies.find((item) => item.value === props.item.endCurrencyId);
+
+    const _priceDifference: number =
+      props.item.startCurrencyId === props.item.endCurrencyId && props.item.endPrice
+        ? props.item.startPrice - props.item.endPrice
+        : props.item.startPrice;
+
+    let monthlyCost: string = '';
+
+    if (startCurrency) {
+      const endDate: Dayjs = props.item.endDate !== null ? dayjs(props.item.endDate) : dayjs();
+      const startDate: Dayjs = dayjs(props.item.startDate);
+      const monthCount: number = endDate.diff(startDate, 'month');
+
+      if (monthCount > 0) {
+        monthlyCost = startCurrency.label + Utils.NumberWithCommas(Math.round(_priceDifference / monthCount));
+      } else {
+        monthlyCost = startCurrency.label + Utils.NumberWithCommas(_priceDifference);
+      }
+    }
+
+    return {
+      endDate: props.item.endDate ? Utils.GetDateTimeString(props.item.endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
+      endPrice:
+        endCurrency && props.item.endPrice
+          ? `${endCurrency.label} ${Utils.NumberWithCommas(props.item.endPrice)}`
+          : CommonConstant.DEFAULT_EMPTY_STRING,
+      monthlyCost,
+      priceDifference: startCurrency
+        ? startCurrency.label + Utils.NumberWithCommas(_priceDifference)
+        : CommonConstant.DEFAULT_EMPTY_STRING,
+      startDate: Utils.GetDateTimeString(_startDate),
+      startPrice: startCurrency
+        ? `${startCurrency.label} ${Utils.NumberWithCommas(props.item.startPrice)}`
+        : CommonConstant.DEFAULT_EMPTY_STRING,
+      usageTime: Utils.DetailedRelativeTime(_startDate, _endDate),
+    };
+  }, [
+    props.item.endCurrencyId,
+    props.item.endDate,
+    props.item.endPrice,
+    props.item.startCurrencyId,
+    props.item.startDate,
+    props.item.startPrice,
+    props.settingOptions.currencies,
+  ]);
 
   return (
     <tr key={props.item.id} data-test-comp={Item.name} className="even:bg-slate-100 hover:bg-slate-200">
@@ -129,16 +223,16 @@ export default function Item(props: Props) {
 
           {/* start info */}
           <td className="border border-slate-300">
-            <div>Date: {startDate}</div>
-            <div>Price: {startPrice}</div>
+            <div>Date: {display.startDate}</div>
+            <div>Price: {display.startPrice}</div>
             <div>Method: {startMethod}</div>
             <div>Place: {startPlace}</div>
           </td>
 
           {/* end info */}
           <td className="border border-slate-300">
-            <div>Date: {endDate}</div>
-            <div>Price: {endPrice}</div>
+            <div>Date: {display.endDate}</div>
+            <div>Price: {display.endPrice}</div>
             <div>Method: {endMethod}</div>
             <div>Place: {endPlace}</div>
           </td>
@@ -150,6 +244,9 @@ export default function Item(props: Props) {
               </div>
             ))}
           </td>
+          <td className="border border-slate-300">{display.priceDifference}</td>
+          <td className="border border-slate-300">{display.usageTime}</td>
+          <td className="border border-slate-300">{display.monthlyCost}</td>
           <td className="border border-slate-300">{props.item.comment}</td>
           <td className="border border-slate-300 flex gap-x-2">
             <button className="bg-slate-500 p-1 rounded-sm text-white" onClick={() => props.onEdit(props.item)}>

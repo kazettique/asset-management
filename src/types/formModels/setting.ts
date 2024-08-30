@@ -4,7 +4,8 @@ export interface FSettingOptions {
   brands: FormOption[];
   categories: FormOption[];
   currencies: FormOption[];
-  methods: FormOption[];
+  endMethods: FormOption[];
   owners: FormOption[];
   places: FormOption[];
+  startMethods: FormOption[];
 }

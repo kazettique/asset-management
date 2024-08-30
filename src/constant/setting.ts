@@ -5,8 +5,9 @@ export abstract class SettingConstant {
     brands: [],
     categories: [],
     currencies: [],
-    methods: [],
+    endMethods: [],
     owners: [],
     places: [],
+    startMethods: [],
   };
 }

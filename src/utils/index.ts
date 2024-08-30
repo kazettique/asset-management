@@ -31,6 +31,24 @@ export abstract class Utils {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
+  // ref: https://stackoverflow.com/questions/68254697/have-the-difference-between-two-date-in-days-and-months-with-dayjs-and-react
+  public static DetailedRelativeTime(startDate: Dayjs, endDate: Dayjs): string {
+    const duration = dayjs.duration(endDate.diff(startDate));
+
+    const durationInYears = duration.years();
+    const durationInMonths = duration.months();
+    const durationInDays = duration.days();
+
+    const output: string[] = [];
+
+    if (durationInYears !== 0) output.push(durationInYears + 'y');
+    if (durationInMonths !== 0) output.push(durationInMonths + 'm');
+    if (durationInDays !== 0) output.push(durationInDays + 'd');
+
+    // There were no durations that need to be added, so just return the default relative date
+    return output.join(',');
+  }
+
   // public static GetCircularReplacer() {
   //   const ancestors: any[] = [];
 

@@ -47,7 +47,7 @@ export default function Create(props: Props) {
           <Select options={props.settingOptions.currencies} register={register} path="startCurrencyId" />
           <Input type="number" register={register} path="startPrice" />
 
-          <Select options={props.settingOptions.methods} register={register} path="startMethodId" />
+          <Select options={props.settingOptions.startMethods} register={register} path="startMethodId" />
           <Select options={props.settingOptions.places} register={register} path="startPlaceId" />
         </div>
 
@@ -56,7 +56,7 @@ export default function Create(props: Props) {
           <Select options={props.settingOptions.currencies} register={register} path="endCurrencyId" />
           <Input type="number" register={register} path="endPrice" />
 
-          <Select options={props.settingOptions.methods} register={register} path="endMethodId" />
+          <Select options={props.settingOptions.endMethods} register={register} path="endMethodId" />
           <Select options={props.settingOptions.places} register={register} path="endPlaceId" />
         </div>
 

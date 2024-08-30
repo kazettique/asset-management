@@ -28,5 +28,13 @@ export abstract class SettingValidator {
     places: PlaceValidator.MPlaceValidator.array(),
   });
 
-  public static readonly VSettingValidator: z.ZodSchema<VSetting> = this.MSettingValidator;
+  public static readonly VSettingValidator: z.ZodSchema<VSetting> = z.object({
+    brands: BrandValidator.MBrandValidator.array(),
+    categories: CategoryValidator.MCategoryValidator.array(),
+    currencies: CurrencyValidator.MCurrencyValidator.array(),
+    endMethods: MethodValidator.MMethodValidator.array(),
+    owners: OwnerValidator.MOwnerValidator.array(),
+    places: PlaceValidator.MPlaceValidator.array(),
+    startMethods: MethodValidator.MMethodValidator.array(),
+  });
 }

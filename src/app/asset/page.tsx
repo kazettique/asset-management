@@ -106,6 +106,9 @@ export default function Page() {
               <th className="border border-slate-300">Start Info</th>
               <th className="border border-slate-300">End Info</th>
               <th className="border border-slate-300">Meta</th>
+              <th className="border border-slate-300">Price Diff</th>
+              <th className="border border-slate-300">Usage Time</th>
+              <th className="border border-slate-300">Monthly Cost</th>
               <th className="border border-slate-300">Comment</th>
               <th className="border border-slate-300">Action</th>
             </tr>

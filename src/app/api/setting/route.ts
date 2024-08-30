@@ -10,10 +10,10 @@ import {
   PlaceRepository,
 } from '@/repository';
 import { CommonTransformer, SettingTransformer } from '@/transformer';
-import { HttpStatusCode } from '@/types';
+import { HttpStatusCode, VSetting } from '@/types';
 import { SettingValidator } from '@/validator';
 
-export async function GET(_request: Request) {
+export async function GET(_request: Request): Promise<Response | NextResponse<VSetting>> {
   const brands = await BrandRepository.getAll();
   const categories = await CategoryRepository.getAll();
   const currencies = await CurrencyRepository.getAll();
