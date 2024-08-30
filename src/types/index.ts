@@ -7,4 +7,5 @@ export * from './http';
 export * from './iconTypes';
 export * from './models';
 export * from './requestModels';
+export * from './tableModels';
 export * from './viewModels';
