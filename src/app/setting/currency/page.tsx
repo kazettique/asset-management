@@ -13,19 +13,19 @@ export default function Page() {
   const [editItem, setEditItem] = useState<NType<VCurrency>>(null);
 
   const { data, isPending, refetch } = useQuery({
-    queryFn: () => CurrencyFetcher.getAll(),
+    queryFn: () => CurrencyFetcher.FindAll(),
     queryKey: ['currencyList'],
   });
 
   const createCurrency = useMutation({
-    mutationFn: (payload: FCurrency) => CurrencyFetcher.create(payload),
+    mutationFn: (payload: FCurrency) => CurrencyFetcher.Create(payload),
     onSuccess: () => {
       refetch();
     },
   });
 
   const updateCurrency = useMutation({
-    mutationFn: ({ payload, id }: { id: VCurrency['id']; payload: FCurrency }) => CurrencyFetcher.update(payload, id),
+    mutationFn: ({ payload, id }: { id: VCurrency['id']; payload: FCurrency }) => CurrencyFetcher.Update(payload, id),
     onSuccess: () => {
       refetch();
       setEditItem(null);
@@ -35,7 +35,7 @@ export default function Page() {
   const deleteCurrency = useMutation({
     mutationFn: (id: Id) => {
       if (confirm('Confirm delete?')) {
-        return CurrencyFetcher.delete(id);
+        return CurrencyFetcher.Delete(id);
       } else {
         throw Error('Deletion terminated.');
       }

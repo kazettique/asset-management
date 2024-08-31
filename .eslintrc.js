@@ -18,6 +18,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react', 'prettier', 'simple-import-sort', 'sort-keys', 'jsx-a11y', 'jsx-a11y', '@typescript-eslint'],
   rules: {
+    '@typescript-eslint/explicit-member-accessibility': 'error',
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {

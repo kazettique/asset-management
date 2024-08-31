@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 
+import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
 import { DAsset, Id, MAsset, NType, RAsset } from '@/types';
@@ -24,8 +25,9 @@ const queryObj = {
   startPrice: true,
 };
 
+@backendImplements()
 export abstract class AssetRepository {
-  public static async getAll(): Promise<MAsset[]> {
+  public static async FindAll(): Promise<MAsset[]> {
     const rawData: DAsset[] = await db.asset.findMany({
       select: queryObj,
     });
@@ -35,7 +37,7 @@ export abstract class AssetRepository {
     return parsedData;
   }
 
-  public static async get(id: Id): Promise<NType<MAsset>> {
+  public static async Find(id: Id): Promise<NType<MAsset>> {
     const rawData: NType<DAsset> = await db.asset.findUnique({
       select: queryObj,
       where: { id },
@@ -48,7 +50,7 @@ export abstract class AssetRepository {
     }
   }
 
-  public static async create(payload: RAsset): Promise<MAsset> {
+  public static async Create(payload: RAsset): Promise<MAsset> {
     const rawData = await db.asset.create({
       data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.name as unknown as Prisma.JsonObject },
       select: queryObj,
@@ -57,7 +59,7 @@ export abstract class AssetRepository {
     return AssetTransformer.DAssetTransformer(rawData);
   }
 
-  public static async delete(id: Id): Promise<MAsset> {
+  public static async Delete(id: Id): Promise<MAsset> {
     const rawData = await db.asset.delete({
       select: queryObj,
       where: { id },
@@ -66,7 +68,7 @@ export abstract class AssetRepository {
     return AssetTransformer.DAssetTransformer(rawData);
   }
 
-  public static async update(payload: RAsset, id: MAsset['id']): Promise<MAsset> {
+  public static async Update(payload: RAsset, id: MAsset['id']): Promise<MAsset> {
     const rawData = await db.asset.update({
       data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.name as unknown as Prisma.JsonObject },
       select: queryObj,

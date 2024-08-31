@@ -8,7 +8,7 @@ import { GeneralResponse, HttpStatusCode, VMethod } from '@/types';
 import { MethodValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VMethod[]>> | Response> {
-  const raw = await MethodService.getAll();
+  const raw = await MethodService.FindAll();
 
   const transformedData = raw.map((item) => MethodTransformer.DMethodTransformer(item));
   const dataValidation = MethodValidator.VMethodValidator.array().safeParse(transformedData);
@@ -32,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await MethodService.create(requestValidation.data);
+    const raw = await MethodService.Create(requestValidation.data);
     const data = MethodTransformer.MMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

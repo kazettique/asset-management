@@ -22,7 +22,7 @@ export default function Page() {
     isPending: settingIsPending,
     refetch: settingRefetch,
   } = useQuery({
-    queryFn: () => SettingFetcher.getAll(),
+    queryFn: () => SettingFetcher.FindAll(),
     queryKey: ['setting'],
   });
 
@@ -39,12 +39,12 @@ export default function Page() {
     isPending: assetIsPending,
     refetch: assetRefetch,
   } = useQuery({
-    queryFn: () => AssetFetcher.getAll(),
+    queryFn: () => AssetFetcher.FindAll(),
     queryKey: ['assetList'],
   });
 
   const createAsset = useMutation({
-    mutationFn: (payload: FAsset) => AssetFetcher.create(AssetTransformer.FAssetTransformer(payload)),
+    mutationFn: (payload: FAsset) => AssetFetcher.Create(AssetTransformer.FAssetTransformer(payload)),
     onSuccess: () => {
       assetRefetch();
     },
@@ -52,7 +52,7 @@ export default function Page() {
 
   const updateAsset = useMutation({
     mutationFn: ({ payload, id }: { id: VAsset['id']; payload: FAsset }) =>
-      AssetFetcher.update(AssetTransformer.FAssetTransformer(payload), id),
+      AssetFetcher.Update(AssetTransformer.FAssetTransformer(payload), id),
     onSuccess: () => {
       assetRefetch();
       setEditItem(null);
@@ -62,7 +62,7 @@ export default function Page() {
   const deleteAsset = useMutation({
     mutationFn: (id: Id) => {
       if (confirm('Confirm delete?')) {
-        return AssetFetcher.delete(id);
+        return AssetFetcher.Delete(id);
       } else {
         throw Error('Deletion terminated.');
       }

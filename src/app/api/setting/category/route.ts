@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { CategoryRepository } from '@/repository';
 import { CategoryService } from '@/service';
 import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCategory } from '@/types';
 import { CategoryValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCategory[]>> | Response> {
-  const raw = await CategoryService.getAll();
+  const raw = await CategoryService.FindAll();
 
   const transformedData = raw.map((item) => CategoryTransformer.MCategoryTransformer(item));
   const dataValidation = CategoryValidator.VCategoryValidator.array().safeParse(transformedData);
@@ -32,7 +31,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await CategoryService.create(requestValidation.data);
+    const raw = await CategoryService.Create(requestValidation.data);
     const data = CategoryTransformer.MCategoryTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

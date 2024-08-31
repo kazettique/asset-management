@@ -8,7 +8,7 @@ import { GeneralResponse, HttpStatusCode, VPlace } from '@/types';
 import { PlaceValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VPlace[]>> | Response> {
-  const raw = await PlaceService.getAll();
+  const raw = await PlaceService.FindAll();
 
   const transformedData = raw.map((item) => PlaceTransformer.DPlaceTransformer(item));
   const dataValidation = PlaceValidator.VPlaceValidator.array().safeParse(transformedData);
@@ -32,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await PlaceService.create(requestValidation.data);
+    const raw = await PlaceService.Create(requestValidation.data);
     const data = PlaceTransformer.MPlaceTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

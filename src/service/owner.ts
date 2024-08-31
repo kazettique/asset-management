@@ -1,24 +1,26 @@
+import { backendImplements } from '@/decorator';
 import { OwnerRepository } from '@/repository';
 import { Id, MOwner, NType, ROwner } from '@/types';
 
+@backendImplements()
 export abstract class OwnerService {
-  public static async getAll(): Promise<MOwner[]> {
-    return await OwnerRepository.getAll();
+  public static async FindAll(): Promise<MOwner[]> {
+    return await OwnerRepository.FindAll();
   }
 
-  public static async get(id: Id): Promise<NType<MOwner>> {
-    return await OwnerRepository.get(id);
+  public static async Find(id: Id): Promise<NType<MOwner>> {
+    return await OwnerRepository.Find(id);
   }
 
-  public static async create(payload: ROwner): Promise<MOwner> {
-    return await OwnerRepository.create(payload);
+  public static async Create(payload: ROwner): Promise<MOwner> {
+    return await OwnerRepository.Create(payload);
   }
 
-  public static async delete(id: Id): Promise<MOwner> {
-    return await OwnerRepository.delete(id);
+  public static async Delete(id: Id): Promise<MOwner> {
+    return await OwnerRepository.Delete(id);
   }
 
-  public static async update(payload: ROwner, id: MOwner['id']): Promise<MOwner> {
-    return await OwnerRepository.update(payload, id);
+  public static async Update(payload: ROwner, id: MOwner['id']): Promise<MOwner> {
+    return await OwnerRepository.Update(payload, id);
   }
 }

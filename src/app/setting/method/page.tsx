@@ -13,19 +13,19 @@ export default function Page() {
   const [editItem, setEditItem] = useState<NType<VMethod>>(null);
 
   const { data, isPending, refetch } = useQuery({
-    queryFn: () => MethodFetcher.getAll(),
+    queryFn: () => MethodFetcher.FindAll(),
     queryKey: ['methodList'],
   });
 
   const createMethod = useMutation({
-    mutationFn: (payload: FMethod) => MethodFetcher.create(payload),
+    mutationFn: (payload: FMethod) => MethodFetcher.Create(payload),
     onSuccess: () => {
       refetch();
     },
   });
 
   const updateMethod = useMutation({
-    mutationFn: ({ payload, id }: { id: VMethod['id']; payload: FMethod }) => MethodFetcher.update(payload, id),
+    mutationFn: ({ payload, id }: { id: VMethod['id']; payload: FMethod }) => MethodFetcher.Update(payload, id),
     onSuccess: () => {
       refetch();
       setEditItem(null);
@@ -35,7 +35,7 @@ export default function Page() {
   const deleteMethod = useMutation({
     mutationFn: (id: Id) => {
       if (confirm('Confirm delete?')) {
-        return MethodFetcher.delete(id);
+        return MethodFetcher.Delete(id);
       } else {
         throw Error('Deletion terminated.');
       }

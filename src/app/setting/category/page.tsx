@@ -13,19 +13,19 @@ export default function Page() {
   const [editItem, setEditItem] = useState<NType<VCategory>>(null);
 
   const { data, isPending, refetch } = useQuery({
-    queryFn: () => CategoryFetcher.getAll(),
+    queryFn: () => CategoryFetcher.FindAll(),
     queryKey: ['categoryList'],
   });
 
   const createCategory = useMutation({
-    mutationFn: (payload: FCategory) => CategoryFetcher.create(payload),
+    mutationFn: (payload: FCategory) => CategoryFetcher.Create(payload),
     onSuccess: () => {
       refetch();
     },
   });
 
   const updateCategory = useMutation({
-    mutationFn: ({ payload, id }: { id: VCategory['id']; payload: FCategory }) => CategoryFetcher.update(payload, id),
+    mutationFn: ({ payload, id }: { id: VCategory['id']; payload: FCategory }) => CategoryFetcher.Update(payload, id),
     onSuccess: () => {
       refetch();
       setEditItem(null);
@@ -35,7 +35,7 @@ export default function Page() {
   const deleteCategory = useMutation({
     mutationFn: (id: Id) => {
       if (confirm('Confirm delete?')) {
-        return CategoryFetcher.delete(id);
+        return CategoryFetcher.Delete(id);
       } else {
         throw Error('Deletion terminated.');
       }

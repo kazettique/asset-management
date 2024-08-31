@@ -8,7 +8,7 @@ import { GeneralResponse, HttpStatusCode, VOwner } from '@/types';
 import { OwnerValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VOwner[]>> | Response> {
-  const raw = await OwnerService.getAll();
+  const raw = await OwnerService.FindAll();
 
   const transformedData = raw.map((item) => OwnerTransformer.DOwnerTransformer(item));
   const dataValidation = OwnerValidator.VOwnerValidator.array().safeParse(transformedData);
@@ -32,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await OwnerService.create(requestValidation.data);
+    const raw = await OwnerService.Create(requestValidation.data);
     const data = OwnerTransformer.MOwnerTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

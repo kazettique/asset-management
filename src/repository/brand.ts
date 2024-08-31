@@ -1,3 +1,4 @@
+import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { BrandTransformer } from '@/transformer';
 import { DBrand, Id, MBrand, NType, RBrand } from '@/types';
@@ -8,8 +9,9 @@ const queryObj = {
   name: true,
 };
 
+@backendImplements()
 export abstract class BrandRepository {
-  public static async getAll(): Promise<MBrand[]> {
+  public static async FindAll(): Promise<MBrand[]> {
     const rawData: DBrand[] = await db.brand.findMany({
       select: queryObj,
     });
@@ -19,7 +21,7 @@ export abstract class BrandRepository {
     return parsedData;
   }
 
-  public static async get(id: Id): Promise<NType<MBrand>> {
+  public static async Find(id: Id): Promise<NType<MBrand>> {
     const rawData: NType<DBrand> = await db.brand.findUnique({
       select: queryObj,
       where: { id },
@@ -32,7 +34,7 @@ export abstract class BrandRepository {
     }
   }
 
-  public static async create(payload: RBrand): Promise<MBrand> {
+  public static async Create(payload: RBrand): Promise<MBrand> {
     const rawData = await db.brand.create({
       data: payload,
       select: queryObj,
@@ -41,7 +43,7 @@ export abstract class BrandRepository {
     return BrandTransformer.DBrandTransformer(rawData);
   }
 
-  public static async delete(id: Id): Promise<MBrand> {
+  public static async Delete(id: Id): Promise<MBrand> {
     const rawData = await db.brand.delete({
       select: queryObj,
       where: { id },
@@ -50,7 +52,7 @@ export abstract class BrandRepository {
     return BrandTransformer.DBrandTransformer(rawData);
   }
 
-  public static async update(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
+  public static async Update(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
     const rawData = await db.brand.update({
       data: payload,
       select: queryObj,

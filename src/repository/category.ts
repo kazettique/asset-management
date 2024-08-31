@@ -1,3 +1,4 @@
+import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { CategoryTransformer } from '@/transformer';
 import { DCategory, Id, MCategory, NType, RCategory } from '@/types';
@@ -8,8 +9,9 @@ const queryObj = {
   name: true,
 };
 
+@backendImplements()
 export abstract class CategoryRepository {
-  public static async getAll(): Promise<MCategory[]> {
+  public static async FindAll(): Promise<MCategory[]> {
     const rawData: DCategory[] = await db.category.findMany({
       select: queryObj,
     });
@@ -21,7 +23,7 @@ export abstract class CategoryRepository {
     return parsedData;
   }
 
-  public static async get(id: Id): Promise<NType<MCategory>> {
+  public static async Find(id: Id): Promise<NType<MCategory>> {
     const rawData: NType<DCategory> = await db.category.findUnique({
       select: queryObj,
       where: { id },
@@ -34,7 +36,7 @@ export abstract class CategoryRepository {
     }
   }
 
-  public static async create(payload: RCategory): Promise<MCategory> {
+  public static async Create(payload: RCategory): Promise<MCategory> {
     const rawData = await db.category.create({
       data: payload,
       select: queryObj,
@@ -43,7 +45,7 @@ export abstract class CategoryRepository {
     return CategoryTransformer.DCategoryTransformer(rawData);
   }
 
-  public static async delete(id: Id): Promise<MCategory> {
+  public static async Delete(id: Id): Promise<MCategory> {
     const rawData = await db.category.delete({
       select: queryObj,
       where: { id },
@@ -52,7 +54,7 @@ export abstract class CategoryRepository {
     return CategoryTransformer.DCategoryTransformer(rawData);
   }
 
-  public static async update(payload: RCategory, id: MCategory['id']): Promise<MCategory> {
+  public static async Update(payload: RCategory, id: MCategory['id']): Promise<MCategory> {
     const rawData = await db.category.update({
       data: payload,
       select: queryObj,

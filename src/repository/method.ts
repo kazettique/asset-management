@@ -1,3 +1,4 @@
+import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { MethodTransformer } from '@/transformer';
 import { DMethod, Id, MMethod, NType, RMethod } from '@/types';
@@ -9,8 +10,9 @@ const queryObj = {
   type: true,
 };
 
+@backendImplements()
 export abstract class MethodRepository {
-  public static async getAll(): Promise<MMethod[]> {
+  public static async FindAll(): Promise<MMethod[]> {
     const rawData: DMethod[] = await db.method.findMany({
       select: queryObj,
     });
@@ -20,7 +22,7 @@ export abstract class MethodRepository {
     return parsedData;
   }
 
-  public static async get(id: Id): Promise<NType<MMethod>> {
+  public static async Find(id: Id): Promise<NType<MMethod>> {
     const rawData: NType<DMethod> = await db.method.findUnique({
       select: queryObj,
       where: { id },
@@ -33,7 +35,7 @@ export abstract class MethodRepository {
     }
   }
 
-  public static async create(payload: RMethod): Promise<MMethod> {
+  public static async Create(payload: RMethod): Promise<MMethod> {
     const rawData = await db.method.create({
       data: payload,
       select: queryObj,
@@ -42,7 +44,7 @@ export abstract class MethodRepository {
     return MethodTransformer.DMethodTransformer(rawData);
   }
 
-  public static async delete(id: Id): Promise<MMethod> {
+  public static async Delete(id: Id): Promise<MMethod> {
     const rawData = await db.method.delete({
       select: queryObj,
       where: { id },
@@ -51,7 +53,7 @@ export abstract class MethodRepository {
     return MethodTransformer.DMethodTransformer(rawData);
   }
 
-  public static async update(payload: RMethod, id: MMethod['id']): Promise<MMethod> {
+  public static async Update(payload: RMethod, id: MMethod['id']): Promise<MMethod> {
     const rawData = await db.method.update({
       data: payload,
       select: queryObj,

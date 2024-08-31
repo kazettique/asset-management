@@ -17,7 +17,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await CurrencyService.get(idValidation.data);
+    const raw = await CurrencyService.Find(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -43,7 +43,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await CurrencyService.delete(idValidation.data);
+    const raw = await CurrencyService.Delete(idValidation.data);
     const data = CurrencyTransformer.MCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -64,7 +64,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await CurrencyService.update(requestValidation.data, idValidation.data);
+    const raw = await CurrencyService.Update(requestValidation.data, idValidation.data);
     const data = CurrencyTransformer.MCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

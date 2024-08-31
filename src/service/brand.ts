@@ -1,24 +1,26 @@
+import { backendImplements } from '@/decorator';
 import { BrandRepository } from '@/repository';
 import { Id, MBrand, NType, RBrand } from '@/types';
 
+@backendImplements()
 export abstract class BrandService {
-  public static async getAll(): Promise<MBrand[]> {
-    return await BrandRepository.getAll();
+  public static async FindAll(): Promise<MBrand[]> {
+    return await BrandRepository.FindAll();
   }
 
-  public static async get(id: Id): Promise<NType<MBrand>> {
-    return await BrandRepository.get(id);
+  public static async Find(id: Id): Promise<NType<MBrand>> {
+    return await BrandRepository.Find(id);
   }
 
-  public static async create(payload: RBrand): Promise<MBrand> {
-    return await BrandRepository.create(payload);
+  public static async Create(payload: RBrand): Promise<MBrand> {
+    return await BrandRepository.Create(payload);
   }
 
-  public static async delete(id: Id): Promise<MBrand> {
-    return await BrandRepository.delete(id);
+  public static async Delete(id: Id): Promise<MBrand> {
+    return await BrandRepository.Delete(id);
   }
 
-  public static async update(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
-    return await BrandRepository.update(payload, id);
+  public static async Update(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
+    return await BrandRepository.Update(payload, id);
   }
 }

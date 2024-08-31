@@ -17,7 +17,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await MethodService.get(idValidation.data);
+    const raw = await MethodService.Find(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -43,7 +43,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await MethodService.delete(idValidation.data);
+    const raw = await MethodService.Delete(idValidation.data);
     const data = MethodTransformer.MMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -64,7 +64,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await MethodService.update(requestValidation.data, idValidation.data);
+    const raw = await MethodService.Update(requestValidation.data, idValidation.data);
     const data = MethodTransformer.MMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

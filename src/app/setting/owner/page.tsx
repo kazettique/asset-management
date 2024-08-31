@@ -13,19 +13,19 @@ export default function Page() {
   const [editItem, setEditItem] = useState<NType<VOwner>>(null);
 
   const { data, isPending, refetch } = useQuery({
-    queryFn: () => OwnerFetcher.getAll(),
+    queryFn: () => OwnerFetcher.FindAll(),
     queryKey: ['ownerList'],
   });
 
   const createOwner = useMutation({
-    mutationFn: (payload: FOwner) => OwnerFetcher.create(payload),
+    mutationFn: (payload: FOwner) => OwnerFetcher.Create(payload),
     onSuccess: () => {
       refetch();
     },
   });
 
   const updateOwner = useMutation({
-    mutationFn: ({ payload, id }: { id: VOwner['id']; payload: FOwner }) => OwnerFetcher.update(payload, id),
+    mutationFn: ({ payload, id }: { id: VOwner['id']; payload: FOwner }) => OwnerFetcher.Update(payload, id),
     onSuccess: () => {
       refetch();
       setEditItem(null);
@@ -35,7 +35,7 @@ export default function Page() {
   const deleteOwner = useMutation({
     mutationFn: (id: Id) => {
       if (confirm('Confirm delete?')) {
-        return OwnerFetcher.delete(id);
+        return OwnerFetcher.Delete(id);
       } else {
         throw Error('Deletion terminated.');
       }

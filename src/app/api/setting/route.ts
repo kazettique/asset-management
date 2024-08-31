@@ -14,12 +14,12 @@ import { HttpStatusCode, VSetting } from '@/types';
 import { SettingValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<Response | NextResponse<VSetting>> {
-  const brands = await BrandRepository.getAll();
-  const categories = await CategoryRepository.getAll();
-  const currencies = await CurrencyRepository.getAll();
-  const methods = await MethodRepository.getAll();
-  const places = await PlaceRepository.getAll();
-  const owners = await OwnerRepository.getAll();
+  const brands = await BrandRepository.FindAll();
+  const categories = await CategoryRepository.FindAll();
+  const currencies = await CurrencyRepository.FindAll();
+  const methods = await MethodRepository.FindAll();
+  const places = await PlaceRepository.FindAll();
+  const owners = await OwnerRepository.FindAll();
 
   const transformedData = SettingTransformer.MSettingTransformer({
     brands,

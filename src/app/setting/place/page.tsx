@@ -13,19 +13,19 @@ export default function Page() {
   const [editItem, setEditItem] = useState<NType<VPlace>>(null);
 
   const { data, isPending, refetch } = useQuery({
-    queryFn: () => PlaceFetcher.getAll(),
+    queryFn: () => PlaceFetcher.FindAll(),
     queryKey: ['placeList'],
   });
 
   const createPlace = useMutation({
-    mutationFn: (payload: FPlace) => PlaceFetcher.create(payload),
+    mutationFn: (payload: FPlace) => PlaceFetcher.Create(payload),
     onSuccess: () => {
       refetch();
     },
   });
 
   const updatePlace = useMutation({
-    mutationFn: ({ payload, id }: { id: VPlace['id']; payload: FPlace }) => PlaceFetcher.update(payload, id),
+    mutationFn: ({ payload, id }: { id: VPlace['id']; payload: FPlace }) => PlaceFetcher.Update(payload, id),
     onSuccess: () => {
       refetch();
       setEditItem(null);
@@ -35,7 +35,7 @@ export default function Page() {
   const deletePlace = useMutation({
     mutationFn: (id: Id) => {
       if (confirm('Confirm delete?')) {
-        return PlaceFetcher.delete(id);
+        return PlaceFetcher.Delete(id);
       } else {
         throw Error('Deletion terminated.');
       }
