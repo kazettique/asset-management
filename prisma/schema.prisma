@@ -17,15 +17,18 @@ model Asset {
   id String @id @default(uuid())
 
   // information
-  name       Json
+  name       String   @db.TinyText
   isCensored Boolean  @default(false)
   meta       Json
-  brandId    String
-  brand      Brand    @relation(fields: [brandId], references: [id])
+  brandId    String?
+  brand      Brand?   @relation(fields: [brandId], references: [id])
   ownerId    String?
   owner      Owner?   @relation(fields: [ownerId], references: [id])
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
+  tags       Tag[]
+  placeId    String?
+  place      Place?   @relation(fields: [placeId], references: [id])
 
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
@@ -35,8 +38,8 @@ model Asset {
   startCurrency   Currency @relation("AssetStartCurrency", fields: [startCurrencyId], references: [id])
   startMethodId   String
   startMethod     Method   @relation("AssetStartMethod", fields: [startMethodId], references: [id])
-  startPlaceId    String
-  startPlace      Place    @relation("AssetStartPlace", fields: [startPlaceId], references: [id])
+  startPlatformId String
+  startPlatform   Platform @relation("AssetStartPlatform", fields: [startPlatformId], references: [id])
 
   endDate       DateTime?
   endPrice      Float?
@@ -44,12 +47,14 @@ model Asset {
   endCurrency   Currency? @relation("AssetEndCurrency", fields: [endCurrencyId], references: [id])
   endMethodId   String?
   endMethod     Method?   @relation("AssetEndMethod", fields: [endMethodId], references: [id])
-  endPlaceId    String?
-  endPlace      Place?    @relation("AssetEndPlace", fields: [endPlaceId], references: [id])
+  endPlatformId String?
+  endPlatform   Platform? @relation("AssetEndPlatform", fields: [endPlatformId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
+
+  PriceHistory PriceHistory[]
 }
 
 model Currency {
@@ -61,7 +66,7 @@ model Currency {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
 
   StartCurrency Asset[] @relation("AssetStartCurrency")
   EndCurrency   Asset[] @relation("AssetEndCurrency")
@@ -70,36 +75,50 @@ model Currency {
 model Brand {
   id String @id @default(uuid())
 
-  name Json
+  name String @db.TinyText
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
 
   Asset Asset[]
 }
 
-model Place {
+// Purchase, selling platforms
+model Platform {
   id String @id @default(uuid())
 
-  name Json
+  name String @db.TinyText
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
 
-  StartPlace Asset[] @relation("AssetStartPlace")
-  EndPlace   Asset[] @relation("AssetEndPlace")
+  StartPlatform Asset[] @relation("AssetStartPlatform")
+  EndPlatform   Asset[] @relation("AssetEndPlatform")
+}
+
+// Store place
+model Place {
+  id String @id @default(uuid())
+
+  name String @db.TinyText
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  comment   String?  @db.TinyText
+
+  Asset Asset[]
 }
 
 model Category {
   id String @id @default(uuid())
 
-  name Json
+  name String @db.TinyText
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
 
   Asset Asset[]
 }
@@ -107,18 +126,18 @@ model Category {
 model Owner {
   id String @id @default(uuid())
 
-  name Json
+  name String @db.TinyText
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
 
   OwnershipHistory OwnershipHistory[]
-
-  Asset Asset[]
+  Asset            Asset[]
 }
 
 enum MethodType {
+  BOTH
   START
   END
 }
@@ -126,15 +145,26 @@ enum MethodType {
 model Method {
   id String @id @default(uuid())
 
-  name Json
+  name String     @db.TinyText
   type MethodType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
 
   StartMethod Asset[] @relation("AssetStartMethod")
   EndMethod   Asset[] @relation("AssetEndMethod")
+}
+
+model Tag {
+  id String @id @default(uuid())
+
+  assetId String
+  asset   Asset  @relation(fields: [assetId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  comment   String?  @db.TinyText
 }
 
 model OwnershipHistory {
@@ -146,5 +176,16 @@ model OwnershipHistory {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?
+  comment   String?  @db.TinyText
+}
+
+model PriceHistory {
+  id String @id @default(uuid())
+
+  assetId Asset @relation(fields: [id], references: [id])
+  price   Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  comment   String?  @db.TinyText
 }
