@@ -1,9 +1,3 @@
-import { Prisma } from '@prisma/client';
+import { DbBase, SettingBase } from '@/types';
 
-import { Id, NString } from '@/types';
-
-export interface DBrand {
-  comment: NString;
-  id: Id;
-  name: Prisma.JsonValue;
-}
+export interface DBrand extends DbBase, SettingBase {}

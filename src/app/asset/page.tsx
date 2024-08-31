@@ -101,13 +101,6 @@ export default function Page() {
   const columns: ColumnProps<TAsset>[] = [
     {
       key: 'name',
-      render: (column, item) => (
-        <>
-          <div>En: {item.name.nameEn}</div>
-          <div>Tw: {item.name.nameTw}</div>
-          <div>Jp: {item.name.nameJp}</div>
-        </>
-      ),
       title: 'Name',
     },
     {
@@ -121,7 +114,7 @@ export default function Page() {
           <div>Date: {item.startInfo.startDate}</div>
           <div>Price: {item.startInfo.startPrice}</div>
           <div>Method: {item.startInfo.startMethod}</div>
-          <div>Place: {item.startInfo.startPlace}</div>
+          <div>Place: {item.startInfo.startPlatform}</div>
         </>
       ),
       title: 'Start Info',
@@ -133,7 +126,7 @@ export default function Page() {
           <div>Date: {item.endInfo.endDate}</div>
           <div>Price: {item.endInfo.endPrice}</div>
           <div>Method: {item.endInfo.endMethod}</div>
-          <div>Place: {item.endInfo.endPlace}</div>
+          <div>Place: {item.endInfo.endPlatform}</div>
         </>
       ),
       title: 'End Info',
@@ -142,11 +135,14 @@ export default function Page() {
       key: 'meta',
       render: (column, item) => (
         <>
-          {Object.entries(item.meta).map(([key, value]) => (
-            <div key={key}>
-              {key}: {value}
-            </div>
-          ))}
+          {item.meta.map((item, index) => {
+            const [key, value] = Object.entries(item);
+            return (
+              <div key={index}>
+                {key}: {value}
+              </div>
+            );
+          })}
         </>
       ),
       title: 'Meta',
@@ -179,7 +175,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="p-4 relative w-screen overflow-hidden">
+    <div className="p-4 relative w-screen h-screen overflow-hidden">
       <section className="container mx-auto">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div>

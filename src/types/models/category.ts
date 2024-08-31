@@ -1,3 +1,3 @@
-import { DbBase, SettingBase } from '@/types';
+import { DCategory } from '@/types';
 
-export interface MCategory extends SettingBase, DbBase {}
+export interface MCategory extends DCategory {}

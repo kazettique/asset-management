@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { CommonConstant } from '@/constant';
-import { DAsset, FAsset, FSettingOptions, MAsset, PAsset, TAsset, VAsset } from '@/types';
+import { DAsset, FAsset, FSettingOptions, MAsset, NString, PAsset, TAsset, VAsset } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
@@ -18,11 +18,10 @@ export abstract class AssetTransformer {
     if (!assetValidation.success) {
       return {
         ...src,
-        meta: typeof src.meta === 'object' && src.meta !== null && !Array.isArray(src.meta) ? src.meta : {},
-        name:
-          typeof src.name === 'object' && src.name !== null && !Array.isArray(src.name)
-            ? { ...src.name, ...CommonConstant.DEFAULT_NAME }
-            : CommonConstant.DEFAULT_NAME,
+        meta:
+          typeof src.meta === 'object' && src.meta !== null && Array.isArray(src.meta)
+            ? JSON.parse(JSON.stringify(src.meta))
+            : [],
       };
     } else {
       return assetValidation.data;
@@ -37,33 +36,40 @@ export abstract class AssetTransformer {
   // view model -> form model
   public static VFAssetTransformer(src: VAsset): FAsset {
     return {
-      brandId: src.brandId,
+      brandId: src.brandId ?? '',
       categoryId: src.categoryId,
       comment: src.comment ?? '',
       endCurrencyId: src.endCurrencyId ?? '',
       endDate: src.endDate,
       endMethodId: src.endMethodId ?? '',
-      endPlaceId: src.endPlaceId ?? '',
+      endPlatformId: src.endPlatformId ?? '',
       endPrice: src.endPrice ?? 0,
       isCensored: src.isCensored,
       meta: src.meta,
       name: src.name,
+      ownerId: src.ownerId ?? '',
+      placeId: src.placeId ?? '',
       startCurrencyId: src.startCurrencyId,
       startDate: src.startDate,
       startMethodId: src.startMethodId,
-      startPlaceId: src.startPlaceId,
+      startPlatformId: src.startPlatformId,
       startPrice: src.startPrice,
     };
   }
 
   // form model -> request model
   public static FPAssetTransformer(src: FAsset): PAsset {
+    const convertEmptyStringToNull = (str: string): NString => (str.length === 0 ? null : str);
+
     return {
       ...src,
-      endCurrencyId: src.endCurrencyId.length === 0 ? null : src.endCurrencyId,
-      endMethodId: src.endMethodId.length === 0 ? null : src.endMethodId,
-      endPlaceId: src.endPlaceId.length === 0 ? null : src.endPlaceId,
+      brandId: convertEmptyStringToNull(src.brandId),
+      endCurrencyId: convertEmptyStringToNull(src.endCurrencyId),
+      endMethodId: convertEmptyStringToNull(src.endMethodId),
+      endPlatformId: convertEmptyStringToNull(src.endPlatformId),
       endPrice: src.endPrice,
+      ownerId: convertEmptyStringToNull(src.ownerId),
+      placeId: convertEmptyStringToNull(src.placeId),
       startDate: new Date(src.startDate),
     };
   }
@@ -72,9 +78,12 @@ export abstract class AssetTransformer {
   public static VTAssetTransformer(src: VAsset, settingOptions: FSettingOptions): TAsset {
     const findBrand = settingOptions.brands.find((_item) => _item.value === src.brandId);
     const findStartMethod = settingOptions.startMethods.find((_item) => _item.value === src.startMethodId);
-    const findStartPlace = settingOptions.places.find((_item) => _item.value === src.startPlaceId);
+    const findStartPlatform = settingOptions.platforms.find((_item) => _item.value === src.startPlatformId);
     const findEndMethod = settingOptions.endMethods.find((_item) => _item.value === src.endMethodId);
-    const findEndPlace = settingOptions.places.find((_item) => _item.value === src.endPlaceId);
+    const findEndPlatform = settingOptions.platforms.find((_item) => _item.value === src.endPlatformId);
+    const findPlace = settingOptions.places.find((_item) => _item.value === src.placeId);
+    const findOwner = settingOptions.owners.find((_item) => _item.value === src.ownerId);
+    const findCategory = settingOptions.categories.find((_item) => _item.value === src.ownerId);
 
     // startDate
     const _startDate: Dayjs = dayjs(src.startDate);
@@ -105,10 +114,11 @@ export abstract class AssetTransformer {
 
     return {
       brand: findBrand ? findBrand.label : CommonConstant.DEFAULT_EMPTY_STRING,
+      category: findCategory ? findCategory.label : CommonConstant.DEFAULT_EMPTY_STRING,
       endInfo: {
         endDate: src.endDate ? Utils.GetDateTimeString(src.endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
         endMethod: findEndMethod ? findEndMethod.label : CommonConstant.DEFAULT_EMPTY_STRING,
-        endPlace: findEndPlace ? findEndPlace.label : CommonConstant.DEFAULT_EMPTY_STRING,
+        endPlatform: findEndPlatform ? findEndPlatform.label : CommonConstant.DEFAULT_EMPTY_STRING,
         endPrice:
           endCurrency && src.endPrice
             ? `${endCurrency.label} ${Utils.NumberWithCommas(src.endPrice)}`
@@ -117,6 +127,8 @@ export abstract class AssetTransformer {
       meta: src.meta,
       monthlyCost,
       name: src.name,
+      owner: findOwner ? findOwner.label : CommonConstant.DEFAULT_EMPTY_STRING,
+      place: findPlace ? findPlace.label : CommonConstant.DEFAULT_EMPTY_STRING,
       priceDifference: startCurrency
         ? startCurrency.label + Utils.NumberWithCommas(_priceDifference)
         : CommonConstant.DEFAULT_EMPTY_STRING,
@@ -124,7 +136,7 @@ export abstract class AssetTransformer {
       startInfo: {
         startDate: Utils.GetDateTimeString(_startDate),
         startMethod: findStartMethod ? findStartMethod.label : CommonConstant.DEFAULT_EMPTY_STRING,
-        startPlace: findStartPlace ? findStartPlace.label : CommonConstant.DEFAULT_EMPTY_STRING,
+        startPlatform: findStartPlatform ? findStartPlatform.label : CommonConstant.DEFAULT_EMPTY_STRING,
         startPrice: startCurrency
           ? `${startCurrency.label} ${Utils.NumberWithCommas(src.startPrice)}`
           : CommonConstant.DEFAULT_EMPTY_STRING,

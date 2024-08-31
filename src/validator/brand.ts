@@ -5,29 +5,15 @@ import { DBrand, FBrand, MBrand, PBrand, VBrand } from '@/types';
 import { CommonValidator } from './common';
 
 export abstract class BrandValidator {
-  public static readonly DBrandValidator: z.ZodSchema<DBrand> = z.object({
-    comment: z.string().nullable(),
-    id: CommonValidator.IdValidator,
-    name: z.record(z.string(), z.string()),
-  });
+  public static readonly DBrandValidator: z.ZodSchema<DBrand> = CommonValidator.DbBaseValidator.and(
+    CommonValidator.SettingBaseValidator,
+  );
 
-  public static readonly MBrandValidator: z.ZodSchema<MBrand> = z
-    .object({ id: CommonValidator.IdValidator })
-    .and(CommonValidator.SettingBaseValidator);
+  public static readonly MBrandValidator: z.ZodSchema<MBrand> = this.DBrandValidator;
 
   public static readonly VBrandValidator: z.ZodSchema<VBrand> = this.MBrandValidator;
 
-  public static readonly RBrandValidator: z.ZodSchema<PBrand> = CommonValidator.SettingBaseValidator.superRefine(
-    (values, context) => {
-      const nameEnLength: number = values.name.nameEn.length;
-      const nameTwLength: number = values.name.nameTw.length;
-      const nameJpLength: number = values.name.nameJp.length;
-
-      if ([nameEnLength, nameTwLength, nameJpLength].every((item) => item === 0)) {
-        context.addIssue({ code: z.ZodIssueCode.custom, message: 'At least fill one name', path: ['name'] });
-      }
-    },
-  );
+  public static readonly RBrandValidator: z.ZodSchema<PBrand> = CommonValidator.SettingBaseValidator;
 
   public static readonly FBrandValidator: z.ZodSchema<FBrand> = this.RBrandValidator;
 }

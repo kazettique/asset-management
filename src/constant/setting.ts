@@ -8,6 +8,7 @@ export abstract class SettingConstant {
     endMethods: [],
     owners: [],
     places: [],
+    platforms: [],
     startMethods: [],
   };
 }

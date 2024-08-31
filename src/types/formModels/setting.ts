@@ -7,5 +7,6 @@ export interface FSettingOptions {
   endMethods: FormOption[];
   owners: FormOption[];
   places: FormOption[];
+  platforms: FormOption[];
   startMethods: FormOption[];
 }

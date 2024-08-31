@@ -43,10 +43,10 @@ export default function Item(props: Props) {
   }, [props.item.startMethodId, props.settingOptions.startMethods]);
 
   const startPlace = useMemo<string>(() => {
-    const findItem = props.settingOptions.places.find((item) => item.value === props.item.startPlaceId);
+    const findItem = props.settingOptions.platforms.find((item) => item.value === props.item.startPlatformId);
 
     return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
-  }, [props.item.startPlaceId, props.settingOptions.places]);
+  }, [props.item.startPlatformId, props.settingOptions.platforms]);
 
   const endMethod = useMemo<string>(() => {
     const findItem = props.settingOptions.endMethods.find((item) => item.value === props.item.endMethodId);
@@ -55,10 +55,10 @@ export default function Item(props: Props) {
   }, [props.item.endMethodId, props.settingOptions.endMethods]);
 
   const endPlace = useMemo<string>(() => {
-    const findItem = props.settingOptions.places.find((item) => item.value === props.item.endPlaceId);
+    const findItem = props.settingOptions.platforms.find((item) => item.value === props.item.endPlatformId);
 
     return findItem ? findItem.label : CommonConstant.DEFAULT_EMPTY_STRING;
-  }, [props.item.endPlaceId, props.settingOptions.places]);
+  }, [props.item.endPlatformId, props.settingOptions.platforms]);
 
   const display = useMemo(() => {
     // startDate
@@ -121,9 +121,7 @@ export default function Item(props: Props) {
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <Input register={register} path="name.nameEn" />
-            <Input register={register} path="name.nameTw" />
-            <Input register={register} path="name.nameJp" />
+            <Input register={register} path="name" />
             <Input register={register} path="brandId" />
 
             {/* start info */}
@@ -133,7 +131,7 @@ export default function Item(props: Props) {
               <Input register={register} path="startPrice" />
             </div>
             <Input register={register} path="startMethodId" />
-            <Input register={register} path="startPlaceId" />
+            <Input register={register} path="startPlatformId" />
 
             {/* end info */}
             <Input register={register} path="endDate" />
@@ -142,7 +140,7 @@ export default function Item(props: Props) {
               <Input register={register} path="endPrice" />
             </div>
             <Input register={register} path="endMethodId" />
-            <Input register={register} path="endPlaceId" />
+            <Input register={register} path="endPlatformId" />
 
             <Input register={register} path="comment" />
             <div className="w-1/5 gap-x-2 flex">
@@ -158,11 +156,7 @@ export default function Item(props: Props) {
         </td>
       ) : (
         <>
-          <td className="border border-slate-300">
-            <div>En: {props.item.name.nameEn}</div>
-            <div>Tw: {props.item.name.nameTw}</div>
-            <div>Jp: {props.item.name.nameJp}</div>
-          </td>
+          <td className="border border-slate-300">{props.item.name}</td>
           <td className="border border-slate-300">{brand}</td>
 
           {/* start info */}
@@ -182,11 +176,14 @@ export default function Item(props: Props) {
           </td>
 
           <td className="border border-slate-300">
-            {Object.entries(props.item.meta).map(([key, value]) => (
-              <div key={key}>
-                {key}: {value}
-              </div>
-            ))}
+            {props.item.meta.map((item, index) => {
+              const [key, value] = Object.entries(item);
+              return (
+                <div key={index}>
+                  {key}: {value}
+                </div>
+              );
+            })}
           </td>
           <td className="border border-slate-300">{display.priceDifference}</td>
           <td className="border border-slate-300">{display.usageTime}</td>

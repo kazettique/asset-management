@@ -1,5 +1,3 @@
-import { Id, SettingBase } from '@/types';
+import { DBrand } from '@/types';
 
-export interface MBrand extends SettingBase {
-  id: Id;
-}
+export interface MBrand extends DBrand {}

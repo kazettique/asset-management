@@ -1,20 +1,15 @@
 import { z } from 'zod';
 
-import { FCategory, MCategory, PCategory, VCategory } from '@/types';
-import { DCategory } from '@/types/dbModels';
+import { DCategory, FCategory, MCategory, PCategory, VCategory } from '@/types';
 
 import { CommonValidator } from './common';
 
 export abstract class CategoryValidator {
-  public static readonly DCategoryValidator: z.ZodSchema<DCategory> = z.object({
-    comment: z.string().nullable(),
-    id: CommonValidator.IdValidator,
-    name: z.record(z.string(), z.string()),
-  });
+  public static readonly DCategoryValidator: z.ZodSchema<DCategory> = CommonValidator.DbBaseValidator.and(
+    CommonValidator.SettingBaseValidator,
+  );
 
-  public static readonly MCategoryValidator: z.ZodSchema<MCategory> = z
-    .object({ id: CommonValidator.IdValidator })
-    .and(CommonValidator.SettingBaseValidator);
+  public static readonly MCategoryValidator: z.ZodSchema<MCategory> = this.DCategoryValidator;
 
   public static readonly VCategoryValidator: z.ZodSchema<VCategory> = this.MCategoryValidator;
 

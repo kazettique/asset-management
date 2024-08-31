@@ -16,6 +16,7 @@ export default function DashboardLayout({
         <Link href="/setting/method">Method</Link>
         <Link href="/setting/owner">Owner</Link>
         <Link href="/setting/place">Place</Link>
+        <Link href="/setting/platform">Platform</Link>
       </nav>
 
       <div>{children}</div>

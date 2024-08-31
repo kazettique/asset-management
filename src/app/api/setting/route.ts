@@ -8,6 +8,7 @@ import {
   MethodRepository,
   OwnerRepository,
   PlaceRepository,
+  PlatformRepository,
 } from '@/repository';
 import { CommonTransformer, SettingTransformer } from '@/transformer';
 import { HttpStatusCode, VSetting } from '@/types';
@@ -20,6 +21,7 @@ export async function GET(_request: Request): Promise<Response | NextResponse<VS
   const methods = await MethodRepository.FindAll();
   const places = await PlaceRepository.FindAll();
   const owners = await OwnerRepository.FindAll();
+  const platforms = await PlatformRepository.FindAll();
 
   const transformedData = SettingTransformer.MVSettingTransformer({
     brands,
@@ -28,6 +30,7 @@ export async function GET(_request: Request): Promise<Response | NextResponse<VS
     methods,
     owners,
     places,
+    platforms,
   });
 
   const dataValidation = SettingValidator.VSettingValidator.safeParse(transformedData);

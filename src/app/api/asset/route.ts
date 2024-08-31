@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 
-import { AssetRepository } from '@/repository';
 import { AssetService } from '@/service';
 import { AssetTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VAsset } from '@/types';

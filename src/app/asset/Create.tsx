@@ -42,14 +42,14 @@ export default function Create(props: Props) {
         className="flex flex-col gap-y-4"
       >
         <div className="flex gap-x-2">
-          <Input register={register} path="name.nameEn" />
-          <Input register={register} path="name.nameTw" />
-          <Input register={register} path="name.nameJp" />
+          <Input register={register} path="name" />
         </div>
 
         <div className="flex gap-2">
           <Select options={props.settingOptions.brands} register={register} path="brandId" />
           <Select options={props.settingOptions.categories} register={register} path="categoryId" />
+          <Select options={props.settingOptions.owners} register={register} path="ownerId" />
+          <Select options={props.settingOptions.places} register={register} path="placeId" />
         </div>
 
         <div className="grid grid-cols-2 gap-2">
@@ -58,7 +58,7 @@ export default function Create(props: Props) {
           <Input type="number" register={register} path="startPrice" />
 
           <Select options={props.settingOptions.startMethods} register={register} path="startMethodId" />
-          <Select options={props.settingOptions.places} register={register} path="startPlaceId" />
+          <Select options={props.settingOptions.platforms} register={register} path="startPlatformId" />
         </div>
 
         <div className="grid grid-cols-2 gap-2">
@@ -67,7 +67,7 @@ export default function Create(props: Props) {
           <Input type="number" register={register} path="endPrice" />
 
           <Select options={props.settingOptions.endMethods} register={register} path="endMethodId" />
-          <Select options={props.settingOptions.places} register={register} path="endPlaceId" />
+          <Select options={props.settingOptions.platforms} register={register} path="endPlatformId" />
         </div>
 
         <Input register={register} path="comment" />

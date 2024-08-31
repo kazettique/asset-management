@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { CategoryRepository } from '@/repository';
 import { CategoryService } from '@/service';
 import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VCategory } from '@/types';

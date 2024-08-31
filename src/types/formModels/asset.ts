@@ -9,14 +9,16 @@ export interface FAsset {
   endCurrencyId: Id;
   endDate: NType<Date>;
   endMethodId: Id;
-  endPlaceId: Id;
+  endPlatformId: Id;
   endPrice: Price;
   isCensored: boolean;
   meta: AssetMeta;
   name: Name;
+  ownerId: Id;
+  placeId: Id;
   startCurrencyId: Id;
   startDate: Date;
   startMethodId: Id;
-  startPlaceId: Id;
+  startPlatformId: Id;
   startPrice: Price;
 }

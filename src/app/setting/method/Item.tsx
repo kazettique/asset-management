@@ -26,9 +26,7 @@ export default function Item(props: Props) {
       {props.isEdit ? (
         <td colSpan={6} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <Input register={register} path="name.nameEn" className="w-1/6" />
-            <Input register={register} path="name.nameTw" className="w-1/6" />
-            <Input register={register} path="name.nameJp" className="w-1/6" />
+            <Input register={register} path="name" className="w-1/6" />
             <Input register={register} path="type" className="w-1/6" />
             <Input register={register} path="comment" className="w-1/6" />
             <div className="w-1/5 gap-x-2 flex">
@@ -44,9 +42,7 @@ export default function Item(props: Props) {
         </td>
       ) : (
         <>
-          <td className="border border-slate-300">{props.item.name.nameEn}</td>
-          <td className="border border-slate-300">{props.item.name.nameTw}</td>
-          <td className="border border-slate-300">{props.item.name.nameJp}</td>
+          <td className="border border-slate-300">{props.item.name}</td>
           <td className="border border-slate-300">{props.item.type}</td>
           <td className="border border-slate-300">{props.item.comment}</td>
           <td className="border border-slate-300 flex gap-x-2">

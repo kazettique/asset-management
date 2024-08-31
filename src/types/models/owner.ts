@@ -1,5 +1,3 @@
-import { Id, SettingBase } from '@/types';
+import { DOwner } from '@/types';
 
-export interface MOwner extends SettingBase {
-  id: Id;
-}
+export interface MOwner extends DOwner {}

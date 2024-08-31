@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { CurrencyRepository } from '@/repository';
 import { CurrencyService } from '@/service';
 import { CommonTransformer, CurrencyTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCurrency } from '@/types';

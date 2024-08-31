@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { BrandRepository } from '@/repository';
 import { BrandService } from '@/service';
 import { BrandTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VBrand } from '@/types';

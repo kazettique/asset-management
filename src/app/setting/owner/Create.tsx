@@ -30,9 +30,7 @@ export default function Create(props: Props) {
         })}
         className="flex flex-col gap-y-4"
       >
-        <Input register={register} path="name.nameEn" />
-        <Input register={register} path="name.nameTw" />
-        <Input register={register} path="name.nameJp" />
+        <Input register={register} path="name" />
         <Input register={register} path="comment" />
         <Button type="submit">Submit</Button>
       </form>

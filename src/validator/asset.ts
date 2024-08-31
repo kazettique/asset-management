@@ -7,8 +7,7 @@ import { CommonValidator } from './common';
 export abstract class AssetValidator {
   public static readonly DAssetValidator: z.ZodSchema<DAsset> = z
     .object({
-      meta: z.record(z.string(), z.string()),
-      name: z.record(z.string(), z.string().nullable()),
+      meta: z.record(z.string(), z.any()),
     })
     .and(CommonValidator.DbBaseValidator)
     .and(CommonValidator.AssetCommonValidator);
@@ -16,7 +15,6 @@ export abstract class AssetValidator {
   public static readonly MAssetValidator: z.ZodSchema<MAsset> = z
     .object({
       meta: CommonValidator.AssetMetaValidator,
-      name: CommonValidator.NameValidator,
     })
     .and(CommonValidator.DbBaseValidator)
     .and(CommonValidator.AssetCommonValidator);
@@ -37,15 +35,17 @@ export abstract class AssetValidator {
     endCurrencyId: z.string(),
     endDate: z.date().nullable(),
     endMethodId: z.string(),
-    endPlaceId: z.string(),
+    endPlatformId: z.string(),
     endPrice: CommonValidator.PriceValidator,
     isCensored: z.boolean(),
     meta: CommonValidator.AssetMetaValidator,
     name: CommonValidator.NameValidator,
+    ownerId: z.string(),
+    placeId: z.string(),
     startCurrencyId: z.string(),
     startDate: z.date(),
     startMethodId: z.string(),
-    startPlaceId: z.string(),
+    startPlatformId: z.string(),
     startPrice: CommonValidator.PriceValidator,
   });
 }

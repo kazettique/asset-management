@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { OwnerRepository } from '@/repository';
 import { OwnerService } from '@/service';
 import { CommonTransformer, OwnerTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VOwner } from '@/types';

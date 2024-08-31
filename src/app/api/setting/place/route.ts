@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { PlaceRepository } from '@/repository';
 import { PlaceService } from '@/service';
 import { CommonTransformer, PlaceTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VPlace } from '@/types';

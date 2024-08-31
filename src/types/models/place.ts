@@ -1,5 +1,3 @@
-import { Id, SettingBase } from '@/types';
+import { DPlace } from '@/types';
 
-export interface MPlace extends SettingBase {
-  id: Id;
-}
+export interface MPlace extends DPlace {}

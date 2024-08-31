@@ -1,20 +1,9 @@
-import { CommonConstant } from '@/constant';
 import { MOwner, VOwner } from '@/types';
 import { DOwner } from '@/types/dbModels';
-import { CommonValidator } from '@/validator';
 
 export abstract class OwnerTransformer {
   public static DMOwnerTransformer(src: DOwner): MOwner {
-    const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
-
-    if (!nameValidation.success) {
-      return { ...src, name: CommonConstant.DEFAULT_NAME };
-    } else {
-      return {
-        ...src,
-        name: { ...CommonConstant.DEFAULT_NAME, ...nameValidation.data },
-      };
-    }
+    return src;
   }
 
   public static MVOwnerTransformer(src: MOwner): VOwner {

@@ -1,3 +1,4 @@
+import { platform } from 'os';
 import { z } from 'zod';
 
 import { DSetting, MSetting, VSetting } from '@/types';
@@ -8,6 +9,7 @@ import { CurrencyValidator } from './currency';
 import { MethodValidator } from './method';
 import { OwnerValidator } from './owner';
 import { PlaceValidator } from './place';
+import { PlatformValidator } from './platform';
 
 export abstract class SettingValidator {
   public static readonly DSettingValidator: z.ZodSchema<DSetting> = z.object({
@@ -26,6 +28,7 @@ export abstract class SettingValidator {
     methods: MethodValidator.MMethodValidator.array(),
     owners: OwnerValidator.MOwnerValidator.array(),
     places: PlaceValidator.MPlaceValidator.array(),
+    platforms: PlatformValidator.MPlatformValidator.array(),
   });
 
   public static readonly VSettingValidator: z.ZodSchema<VSetting> = z.object({
@@ -35,6 +38,7 @@ export abstract class SettingValidator {
     endMethods: MethodValidator.MMethodValidator.array(),
     owners: OwnerValidator.MOwnerValidator.array(),
     places: PlaceValidator.MPlaceValidator.array(),
+    platforms: PlatformValidator.MPlatformValidator.array(),
     startMethods: MethodValidator.MMethodValidator.array(),
   });
 }

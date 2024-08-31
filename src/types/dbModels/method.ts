@@ -1,10 +1,7 @@
-import { MethodType, Prisma } from '@prisma/client';
+import { MethodType } from '@prisma/client';
 
-import { NString } from '../base';
-import { DbBase } from '../common';
+import { DbBase, SettingBase } from '../common';
 
-export interface DMethod extends DbBase {
-  comment: NString;
-  name: Prisma.JsonValue;
+export interface DMethod extends DbBase, SettingBase {
   type: MethodType;
 }

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { MethodRepository } from '@/repository';
 import { MethodService } from '@/service';
 import { CommonTransformer, MethodTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VMethod } from '@/types';
