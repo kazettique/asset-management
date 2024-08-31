@@ -1,3 +1,3 @@
-import { RCurrency } from '../requestModels';
+import { PCurrency } from '../payloadModels';
 
-export interface FCurrency extends RCurrency {}
+export interface FCurrency extends PCurrency {}

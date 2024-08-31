@@ -1,7 +1,7 @@
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { OwnerTransformer } from '@/transformer';
-import { DOwner, Id, MOwner, NType, ROwner } from '@/types';
+import { DOwner, Id, MOwner, NType, POwner } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -34,7 +34,7 @@ export abstract class OwnerRepository {
     }
   }
 
-  public static async Create(payload: ROwner): Promise<MOwner> {
+  public static async Create(payload: POwner): Promise<MOwner> {
     const rawData = await db.owner.create({
       data: payload,
       select: queryObj,
@@ -52,7 +52,7 @@ export abstract class OwnerRepository {
     return OwnerTransformer.DOwnerTransformer(rawData);
   }
 
-  public static async Update(payload: ROwner, id: MOwner['id']): Promise<MOwner> {
+  public static async Update(payload: POwner, id: MOwner['id']): Promise<MOwner> {
     const rawData = await db.owner.update({
       data: payload,
       select: queryObj,

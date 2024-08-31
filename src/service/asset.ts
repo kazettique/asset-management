@@ -1,6 +1,6 @@
 import { backendImplements } from '@/decorator';
 import { AssetRepository } from '@/repository';
-import { Id, MAsset, NType, RAsset } from '@/types';
+import { Id, MAsset, NType, PAsset } from '@/types';
 
 @backendImplements()
 export abstract class AssetService {
@@ -12,7 +12,7 @@ export abstract class AssetService {
     return await AssetRepository.Find(id);
   }
 
-  public static async Create(payload: RAsset): Promise<MAsset> {
+  public static async Create(payload: PAsset): Promise<MAsset> {
     return await AssetRepository.Create(payload);
   }
 
@@ -20,7 +20,7 @@ export abstract class AssetService {
     return await AssetRepository.Delete(id);
   }
 
-  public static async Update(payload: RAsset, id: MAsset['id']): Promise<MAsset> {
+  public static async Update(payload: PAsset, id: MAsset['id']): Promise<MAsset> {
     return await AssetRepository.Update(payload, id);
   }
 }

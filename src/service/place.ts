@@ -1,6 +1,6 @@
 import { backendImplements } from '@/decorator';
 import { PlaceRepository } from '@/repository';
-import { Id, MPlace, NType, RPlace } from '@/types';
+import { Id, MPlace, NType, PPlace } from '@/types';
 
 @backendImplements()
 export abstract class PlaceService {
@@ -12,7 +12,7 @@ export abstract class PlaceService {
     return await PlaceRepository.Find(id);
   }
 
-  public static async Create(payload: RPlace): Promise<MPlace> {
+  public static async Create(payload: PPlace): Promise<MPlace> {
     return await PlaceRepository.Create(payload);
   }
 
@@ -20,7 +20,7 @@ export abstract class PlaceService {
     return await PlaceRepository.Delete(id);
   }
 
-  public static async Update(payload: RPlace, id: MPlace['id']): Promise<MPlace> {
+  public static async Update(payload: PPlace, id: MPlace['id']): Promise<MPlace> {
     return await PlaceRepository.Update(payload, id);
   }
 }

@@ -1,3 +1,3 @@
-import { ROwner } from '@/types';
+import { POwner } from '@/types';
 
-export interface FOwner extends ROwner {}
+export interface FOwner extends POwner {}

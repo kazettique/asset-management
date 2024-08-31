@@ -1,7 +1,7 @@
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { MethodTransformer } from '@/transformer';
-import { DMethod, Id, MMethod, NType, RMethod } from '@/types';
+import { DMethod, Id, MMethod, NType, PMethod } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -35,7 +35,7 @@ export abstract class MethodRepository {
     }
   }
 
-  public static async Create(payload: RMethod): Promise<MMethod> {
+  public static async Create(payload: PMethod): Promise<MMethod> {
     const rawData = await db.method.create({
       data: payload,
       select: queryObj,
@@ -53,7 +53,7 @@ export abstract class MethodRepository {
     return MethodTransformer.DMethodTransformer(rawData);
   }
 
-  public static async Update(payload: RMethod, id: MMethod['id']): Promise<MMethod> {
+  public static async Update(payload: PMethod, id: MMethod['id']): Promise<MMethod> {
     const rawData = await db.method.update({
       data: payload,
       select: queryObj,

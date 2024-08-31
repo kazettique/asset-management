@@ -1,6 +1,6 @@
 import { backendImplements } from '@/decorator';
 import { MethodRepository } from '@/repository';
-import { Id, MMethod, NType, RMethod } from '@/types';
+import { Id, MMethod, NType, PMethod } from '@/types';
 
 @backendImplements()
 export abstract class MethodService {
@@ -12,7 +12,7 @@ export abstract class MethodService {
     return await MethodRepository.Find(id);
   }
 
-  public static async Create(payload: RMethod): Promise<MMethod> {
+  public static async Create(payload: PMethod): Promise<MMethod> {
     return await MethodRepository.Create(payload);
   }
 
@@ -20,7 +20,7 @@ export abstract class MethodService {
     return await MethodRepository.Delete(id);
   }
 
-  public static async Update(payload: RMethod, id: MMethod['id']): Promise<MMethod> {
+  public static async Update(payload: PMethod, id: MMethod['id']): Promise<MMethod> {
     return await MethodRepository.Update(payload, id);
   }
 }

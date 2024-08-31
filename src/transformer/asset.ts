@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { CommonConstant } from '@/constant';
-import { DAsset, FAsset, FSettingOptions, MAsset, RAsset, TAsset, VAsset } from '@/types';
+import { DAsset, FAsset, FSettingOptions, MAsset, PAsset, TAsset, VAsset } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
@@ -56,7 +56,7 @@ export abstract class AssetTransformer {
   }
 
   // form model -> request model
-  public static FAssetTransformer(src: FAsset): RAsset {
+  public static FAssetTransformer(src: FAsset): PAsset {
     return {
       ...src,
       endCurrencyId: src.endCurrencyId.length === 0 ? null : src.endCurrencyId,

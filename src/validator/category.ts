@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { FCategory, MCategory, RCategory, VCategory } from '@/types';
+import { FCategory, MCategory, PCategory, VCategory } from '@/types';
 import { DCategory } from '@/types/dbModels';
 
 import { CommonValidator } from './common';
@@ -18,7 +18,7 @@ export abstract class CategoryValidator {
 
   public static readonly VCategoryValidator: z.ZodSchema<VCategory> = this.MCategoryValidator;
 
-  public static readonly RCategoryValidator: z.ZodSchema<RCategory> = CommonValidator.SettingBaseValidator;
+  public static readonly RCategoryValidator: z.ZodSchema<PCategory> = CommonValidator.SettingBaseValidator;
 
   public static readonly FCategoryValidator: z.ZodSchema<FCategory> = this.RCategoryValidator;
 }

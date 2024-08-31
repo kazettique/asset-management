@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DBrand, FBrand, MBrand, RBrand, VBrand } from '@/types';
+import { DBrand, FBrand, MBrand, PBrand, VBrand } from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -17,7 +17,7 @@ export abstract class BrandValidator {
 
   public static readonly VBrandValidator: z.ZodSchema<VBrand> = this.MBrandValidator;
 
-  public static readonly RBrandValidator: z.ZodSchema<RBrand> = CommonValidator.SettingBaseValidator.superRefine(
+  public static readonly RBrandValidator: z.ZodSchema<PBrand> = CommonValidator.SettingBaseValidator.superRefine(
     (values, context) => {
       const nameEnLength: number = values.name.nameEn.length;
       const nameTwLength: number = values.name.nameTw.length;

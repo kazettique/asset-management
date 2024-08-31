@@ -1,3 +1,3 @@
-import { RMethod } from '@/types';
+import { PMethod } from '@/types';
 
-export interface FMethod extends RMethod {}
+export interface FMethod extends PMethod {}

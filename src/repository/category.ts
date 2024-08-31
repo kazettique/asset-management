@@ -1,7 +1,7 @@
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { CategoryTransformer } from '@/transformer';
-import { DCategory, Id, MCategory, NType, RCategory } from '@/types';
+import { DCategory, Id, MCategory, NType, PCategory } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -36,7 +36,7 @@ export abstract class CategoryRepository {
     }
   }
 
-  public static async Create(payload: RCategory): Promise<MCategory> {
+  public static async Create(payload: PCategory): Promise<MCategory> {
     const rawData = await db.category.create({
       data: payload,
       select: queryObj,
@@ -54,7 +54,7 @@ export abstract class CategoryRepository {
     return CategoryTransformer.DCategoryTransformer(rawData);
   }
 
-  public static async Update(payload: RCategory, id: MCategory['id']): Promise<MCategory> {
+  public static async Update(payload: PCategory, id: MCategory['id']): Promise<MCategory> {
     const rawData = await db.category.update({
       data: payload,
       select: queryObj,

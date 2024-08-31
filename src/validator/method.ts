@@ -1,7 +1,7 @@
 import { MethodType } from '@prisma/client';
 import { z } from 'zod';
 
-import { DMethod, FMethod, MMethod, RMethod, VMethod } from '@/types';
+import { DMethod, FMethod, MMethod, PMethod, VMethod } from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -19,7 +19,7 @@ export abstract class MethodValidator {
 
   public static readonly VMethodValidator: z.ZodSchema<VMethod> = this.MMethodValidator;
 
-  public static readonly RMethodValidator: z.ZodSchema<RMethod> = CommonValidator.MethodCommonValidator;
+  public static readonly RMethodValidator: z.ZodSchema<PMethod> = CommonValidator.MethodCommonValidator;
 
   public static readonly FMethodValidator: z.ZodSchema<FMethod> = this.RMethodValidator;
 }

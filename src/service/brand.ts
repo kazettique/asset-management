@@ -1,6 +1,6 @@
 import { backendImplements } from '@/decorator';
 import { BrandRepository } from '@/repository';
-import { Id, MBrand, NType, RBrand } from '@/types';
+import { Id, MBrand, NType, PBrand } from '@/types';
 
 @backendImplements()
 export abstract class BrandService {
@@ -12,7 +12,7 @@ export abstract class BrandService {
     return await BrandRepository.Find(id);
   }
 
-  public static async Create(payload: RBrand): Promise<MBrand> {
+  public static async Create(payload: PBrand): Promise<MBrand> {
     return await BrandRepository.Create(payload);
   }
 
@@ -20,7 +20,7 @@ export abstract class BrandService {
     return await BrandRepository.Delete(id);
   }
 
-  public static async Update(payload: RBrand, id: MBrand['id']): Promise<MBrand> {
+  public static async Update(payload: PBrand, id: MBrand['id']): Promise<MBrand> {
     return await BrandRepository.Update(payload, id);
   }
 }

@@ -1,6 +1,6 @@
 import { AssetCommon, AssetMeta, Name } from '../common';
 
-export interface RAsset extends AssetCommon {
+export interface PAsset extends AssetCommon {
   meta: AssetMeta;
   name: Name;
 }

@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
-import { DAsset, Id, MAsset, NType, RAsset } from '@/types';
+import { DAsset, Id, MAsset, NType, PAsset } from '@/types';
 
 const queryObj = {
   brandId: true,
@@ -50,7 +50,7 @@ export abstract class AssetRepository {
     }
   }
 
-  public static async Create(payload: RAsset): Promise<MAsset> {
+  public static async Create(payload: PAsset): Promise<MAsset> {
     const rawData = await db.asset.create({
       data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.name as unknown as Prisma.JsonObject },
       select: queryObj,
@@ -68,7 +68,7 @@ export abstract class AssetRepository {
     return AssetTransformer.DAssetTransformer(rawData);
   }
 
-  public static async Update(payload: RAsset, id: MAsset['id']): Promise<MAsset> {
+  public static async Update(payload: PAsset, id: MAsset['id']): Promise<MAsset> {
     const rawData = await db.asset.update({
       data: { ...payload, meta: payload.meta as Prisma.JsonObject, name: payload.name as unknown as Prisma.JsonObject },
       select: queryObj,

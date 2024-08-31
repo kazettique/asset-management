@@ -1,6 +1,6 @@
 import { backendImplements } from '@/decorator';
 import { CategoryRepository } from '@/repository';
-import { Id, MCategory, NType, RCategory } from '@/types';
+import { Id, MCategory, NType, PCategory } from '@/types';
 
 @backendImplements()
 export abstract class CategoryService {
@@ -12,7 +12,7 @@ export abstract class CategoryService {
     return await CategoryRepository.Find(id);
   }
 
-  public static async Create(payload: RCategory): Promise<MCategory> {
+  public static async Create(payload: PCategory): Promise<MCategory> {
     return await CategoryRepository.Create(payload);
   }
 
@@ -20,7 +20,7 @@ export abstract class CategoryService {
     return await CategoryRepository.Delete(id);
   }
 
-  public static async Update(payload: RCategory, id: MCategory['id']): Promise<MCategory> {
+  public static async Update(payload: PCategory, id: MCategory['id']): Promise<MCategory> {
     return await CategoryRepository.Update(payload, id);
   }
 }

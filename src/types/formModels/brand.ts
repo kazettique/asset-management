@@ -1,3 +1,3 @@
-import { RBrand } from '@/types';
+import { PBrand } from '@/types';
 
-export interface FBrand extends RBrand {}
+export interface FBrand extends PBrand {}

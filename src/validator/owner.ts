@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DOwner, FOwner, MOwner, ROwner, VOwner } from '@/types';
+import { DOwner, FOwner, MOwner, POwner, VOwner } from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -17,7 +17,7 @@ export abstract class OwnerValidator {
 
   public static readonly VOwnerValidator: z.ZodSchema<VOwner> = this.MOwnerValidator;
 
-  public static readonly ROwnerValidator: z.ZodSchema<ROwner> = CommonValidator.SettingBaseValidator.superRefine(
+  public static readonly ROwnerValidator: z.ZodSchema<POwner> = CommonValidator.SettingBaseValidator.superRefine(
     (values, context) => {
       const nameEnLength: number = values.name.nameEn?.length || 0;
       const nameTwLength: number = values.name.nameTw?.length || 0;

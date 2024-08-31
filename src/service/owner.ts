@@ -1,6 +1,6 @@
 import { backendImplements } from '@/decorator';
 import { OwnerRepository } from '@/repository';
-import { Id, MOwner, NType, ROwner } from '@/types';
+import { Id, MOwner, NType, POwner } from '@/types';
 
 @backendImplements()
 export abstract class OwnerService {
@@ -12,7 +12,7 @@ export abstract class OwnerService {
     return await OwnerRepository.Find(id);
   }
 
-  public static async Create(payload: ROwner): Promise<MOwner> {
+  public static async Create(payload: POwner): Promise<MOwner> {
     return await OwnerRepository.Create(payload);
   }
 
@@ -20,7 +20,7 @@ export abstract class OwnerService {
     return await OwnerRepository.Delete(id);
   }
 
-  public static async Update(payload: ROwner, id: MOwner['id']): Promise<MOwner> {
+  public static async Update(payload: POwner, id: MOwner['id']): Promise<MOwner> {
     return await OwnerRepository.Update(payload, id);
   }
 }

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { FPlace, MPlace, RPlace, VPlace } from '@/types';
+import { FPlace, MPlace, PPlace, VPlace } from '@/types';
 import { DPlace } from '@/types/dbModels';
 
 import { CommonValidator } from './common';
@@ -18,7 +18,7 @@ export abstract class PlaceValidator {
 
   public static readonly VPlaceValidator: z.ZodSchema<VPlace> = this.MPlaceValidator;
 
-  public static readonly RPlaceValidator: z.ZodSchema<RPlace> = CommonValidator.SettingBaseValidator.superRefine(
+  public static readonly RPlaceValidator: z.ZodSchema<PPlace> = CommonValidator.SettingBaseValidator.superRefine(
     (values, context) => {
       const nameEnLength: number = values.name.nameEn?.length || 0;
       const nameTwLength: number = values.name.nameTw?.length || 0;

@@ -1,7 +1,7 @@
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { CurrencyTransformer } from '@/transformer';
-import { DCurrency, Id, MCurrency, NType, RCurrency } from '@/types';
+import { DCurrency, Id, MCurrency, NType, PCurrency } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -36,7 +36,7 @@ export abstract class CurrencyRepository {
     }
   }
 
-  public static async Create(payload: RCurrency): Promise<MCurrency> {
+  public static async Create(payload: PCurrency): Promise<MCurrency> {
     const rawData = await db.currency.create({
       data: payload,
       select: queryObj,
@@ -54,7 +54,7 @@ export abstract class CurrencyRepository {
     return CurrencyTransformer.DCurrencyTransformer(rawData);
   }
 
-  public static async Update(payload: RCurrency, id: MCurrency['id']): Promise<MCurrency> {
+  public static async Update(payload: PCurrency, id: MCurrency['id']): Promise<MCurrency> {
     const rawData = await db.currency.update({
       data: payload,
       select: queryObj,

@@ -1,3 +1,3 @@
-import { RCategory } from '@/types';
+import { PCategory } from '@/types';
 
-export interface FCategory extends RCategory {}
+export interface FCategory extends PCategory {}

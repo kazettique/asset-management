@@ -1,6 +1,6 @@
 import { backendImplements } from '@/decorator';
 import { CurrencyRepository } from '@/repository';
-import { Id, MCurrency, NType, RCurrency } from '@/types';
+import { Id, MCurrency, NType, PCurrency } from '@/types';
 
 @backendImplements()
 export abstract class CurrencyService {
@@ -12,7 +12,7 @@ export abstract class CurrencyService {
     return await CurrencyRepository.Find(id);
   }
 
-  public static async Create(payload: RCurrency): Promise<MCurrency> {
+  public static async Create(payload: PCurrency): Promise<MCurrency> {
     return await CurrencyRepository.Create(payload);
   }
 
@@ -20,7 +20,7 @@ export abstract class CurrencyService {
     return await CurrencyRepository.Delete(id);
   }
 
-  public static async Update(payload: RCurrency, id: MCurrency['id']): Promise<MCurrency> {
+  public static async Update(payload: PCurrency, id: MCurrency['id']): Promise<MCurrency> {
     return await CurrencyRepository.Update(payload, id);
   }
 }

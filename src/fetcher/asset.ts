@@ -1,7 +1,7 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { GeneralResponse, Id, MAsset, RAsset, VAsset } from '@/types';
+import { GeneralResponse, Id, MAsset, PAsset, VAsset } from '@/types';
 
 @backendImplements()
 export abstract class AssetFetcher {
@@ -21,7 +21,7 @@ export abstract class AssetFetcher {
     return data;
   }
 
-  public static async Create(payload: RAsset): Promise<GeneralResponse<VAsset>> {
+  public static async Create(payload: PAsset): Promise<GeneralResponse<VAsset>> {
     const res = await fetch('/api/asset', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
@@ -37,7 +37,7 @@ export abstract class AssetFetcher {
     return data;
   }
 
-  public static async Update(payload: RAsset, id: MAsset['id']): Promise<GeneralResponse<VAsset>> {
+  public static async Update(payload: PAsset, id: MAsset['id']): Promise<GeneralResponse<VAsset>> {
     const res = await fetch('/api/asset/' + id, {
       body: JSON.stringify(payload),
       method: 'POST',
