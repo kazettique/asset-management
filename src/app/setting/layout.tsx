@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ReactNode } from 'react';
 
 export default function DashboardLayout({
@@ -6,20 +5,5 @@ export default function DashboardLayout({
 }: {
   children: ReactNode;
 }) {
-  return (
-    <section className="flex pt-16">
-      <nav className="w-auto flex flex-col bg-slate-300 top-0 p-2 sticky items-center gap-x-4">
-        <Link href="/setting">Setting</Link>
-        <Link href="/setting/brand">Brand</Link>
-        <Link href="/setting/category">Category</Link>
-        <Link href="/setting/currency">Currency</Link>
-        <Link href="/setting/method">Method</Link>
-        <Link href="/setting/owner">Owner</Link>
-        <Link href="/setting/place">Place</Link>
-        <Link href="/setting/platform">Platform</Link>
-      </nav>
-
-      <div>{children}</div>
-    </section>
-  );
+  return <section>{children}</section>;
 }
