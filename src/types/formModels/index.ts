@@ -8,3 +8,4 @@ export * from './owner';
 export * from './place';
 export * from './platform';
 export * from './setting';
+export * from './tag';

@@ -6,3 +6,4 @@ export * from './method';
 export * from './owner';
 export * from './place';
 export * from './platform';
+export * from './tag';

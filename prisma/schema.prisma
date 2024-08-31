@@ -26,7 +26,6 @@ model Asset {
   owner      Owner?   @relation(fields: [ownerId], references: [id])
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
-  tags       Tag[]
   placeId    String?
   place      Place?   @relation(fields: [placeId], references: [id])
 
@@ -55,6 +54,7 @@ model Asset {
   comment   String?  @db.TinyText
 
   PriceHistory PriceHistory[]
+  Tag          Tag[]
 }
 
 model Currency {
