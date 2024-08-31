@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { MethodRepository } from '@/repository';
+import { MethodService } from '@/service';
 import { CommonTransformer, MethodTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VMethod } from '@/types';
 import { CommonValidator, MethodValidator } from '@/validator';
@@ -17,7 +17,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await MethodRepository.get(idValidation.data);
+    const raw = await MethodService.get(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -43,7 +43,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await MethodRepository.delete(idValidation.data);
+    const raw = await MethodService.delete(idValidation.data);
     const data = MethodTransformer.MMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -64,7 +64,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await MethodRepository.update(requestValidation.data, idValidation.data);
+    const raw = await MethodService.update(requestValidation.data, idValidation.data);
     const data = MethodTransformer.MMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { CurrencyRepository } from '@/repository';
+import { CurrencyService } from '@/service';
 import { CommonTransformer, CurrencyTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VCurrency } from '@/types';
 import { CommonValidator, CurrencyValidator } from '@/validator';
@@ -17,7 +17,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await CurrencyRepository.get(idValidation.data);
+    const raw = await CurrencyService.get(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -43,7 +43,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await CurrencyRepository.delete(idValidation.data);
+    const raw = await CurrencyService.delete(idValidation.data);
     const data = CurrencyTransformer.MCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -64,7 +64,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await CurrencyRepository.update(requestValidation.data, idValidation.data);
+    const raw = await CurrencyService.update(requestValidation.data, idValidation.data);
     const data = CurrencyTransformer.MCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

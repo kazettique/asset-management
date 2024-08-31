@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { OwnerRepository } from '@/repository';
+import { OwnerService } from '@/service';
 import { CommonTransformer, OwnerTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VOwner } from '@/types';
 import { CommonValidator, OwnerValidator } from '@/validator';
@@ -17,7 +17,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await OwnerRepository.get(idValidation.data);
+    const raw = await OwnerService.get(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -43,7 +43,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await OwnerRepository.delete(idValidation.data);
+    const raw = await OwnerService.delete(idValidation.data);
     const data = OwnerTransformer.MOwnerTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -64,7 +64,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await OwnerRepository.update(requestValidation.data, idValidation.data);
+    const raw = await OwnerService.update(requestValidation.data, idValidation.data);
     const data = OwnerTransformer.MOwnerTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

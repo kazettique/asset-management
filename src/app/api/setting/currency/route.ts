@@ -2,12 +2,13 @@ import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
 import { CurrencyRepository } from '@/repository';
+import { CurrencyService } from '@/service';
 import { CommonTransformer, CurrencyTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCurrency } from '@/types';
 import { CurrencyValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCurrency[]>> | Response> {
-  const raw = await CurrencyRepository.getAll();
+  const raw = await CurrencyService.getAll();
 
   const transformedData = raw.map((item) => CurrencyTransformer.DCurrencyTransformer(item));
   const dataValidation = CurrencyValidator.VCurrencyValidator.array().safeParse(transformedData);
@@ -31,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await CurrencyRepository.create(requestValidation.data);
+    const raw = await CurrencyService.create(requestValidation.data);
     const data = CurrencyTransformer.MCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

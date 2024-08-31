@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { PlaceRepository } from '@/repository';
+import { PlaceService } from '@/service';
 import { CommonTransformer, PlaceTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VPlace } from '@/types';
 import { CommonValidator, PlaceValidator } from '@/validator';
@@ -17,7 +17,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await PlaceRepository.get(idValidation.data);
+    const raw = await PlaceService.get(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -43,7 +43,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await PlaceRepository.delete(idValidation.data);
+    const raw = await PlaceService.delete(idValidation.data);
     const data = PlaceTransformer.MPlaceTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -64,7 +64,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await PlaceRepository.update(requestValidation.data, idValidation.data);
+    const raw = await PlaceService.update(requestValidation.data, idValidation.data);
     const data = PlaceTransformer.MPlaceTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

@@ -2,12 +2,13 @@ import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
 import { PlaceRepository } from '@/repository';
+import { PlaceService } from '@/service';
 import { CommonTransformer, PlaceTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VPlace } from '@/types';
 import { PlaceValidator } from '@/validator';
 
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VPlace[]>> | Response> {
-  const raw = await PlaceRepository.getAll();
+  const raw = await PlaceService.getAll();
 
   const transformedData = raw.map((item) => PlaceTransformer.DPlaceTransformer(item));
   const dataValidation = PlaceValidator.VPlaceValidator.array().safeParse(transformedData);
@@ -31,7 +32,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     // 3.2 if passed, fetch repository
-    const raw = await PlaceRepository.create(requestValidation.data);
+    const raw = await PlaceService.create(requestValidation.data);
     const data = PlaceTransformer.MPlaceTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

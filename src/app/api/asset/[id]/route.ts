@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { AssetRepository } from '@/repository';
+import { AssetService } from '@/service';
 import { AssetTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, Id, VAsset } from '@/types';
 import { AssetValidator, CommonValidator } from '@/validator';
@@ -17,7 +17,7 @@ export async function GET(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await AssetRepository.get(idValidation.data);
+    const raw = await AssetService.get(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
@@ -42,7 +42,7 @@ export async function DELETE(
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await AssetRepository.delete(idValidation.data);
+    const raw = await AssetService.delete(idValidation.data);
     const data = AssetTransformer.MAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
@@ -63,7 +63,7 @@ export async function POST(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await AssetRepository.update(requestValidation.data, idValidation.data);
+    const raw = await AssetService.update(requestValidation.data, idValidation.data);
     const data = AssetTransformer.MAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
