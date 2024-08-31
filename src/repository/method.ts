@@ -17,7 +17,7 @@ export abstract class MethodRepository {
       select: queryObj,
     });
 
-    const parsedData = rawData.map((category) => MethodTransformer.DMethodTransformer(category));
+    const parsedData = rawData.map((category) => MethodTransformer.DMMethodTransformer(category));
 
     return parsedData;
   }
@@ -31,7 +31,7 @@ export abstract class MethodRepository {
     if (rawData === null) {
       return rawData;
     } else {
-      return MethodTransformer.DMethodTransformer(rawData);
+      return MethodTransformer.DMMethodTransformer(rawData);
     }
   }
 
@@ -41,7 +41,7 @@ export abstract class MethodRepository {
       select: queryObj,
     });
 
-    return MethodTransformer.DMethodTransformer(rawData);
+    return MethodTransformer.DMMethodTransformer(rawData);
   }
 
   public static async Delete(id: Id): Promise<MMethod> {
@@ -50,7 +50,7 @@ export abstract class MethodRepository {
       where: { id },
     });
 
-    return MethodTransformer.DMethodTransformer(rawData);
+    return MethodTransformer.DMMethodTransformer(rawData);
   }
 
   public static async Update(payload: PMethod, id: MMethod['id']): Promise<MMethod> {
@@ -60,6 +60,6 @@ export abstract class MethodRepository {
       where: { id },
     });
 
-    return MethodTransformer.DMethodTransformer(rawData);
+    return MethodTransformer.DMMethodTransformer(rawData);
   }
 }

@@ -16,7 +16,7 @@ export abstract class BrandRepository {
       select: queryObj,
     });
 
-    const parsedData = rawData.map((brand) => BrandTransformer.DBrandTransformer(brand));
+    const parsedData = rawData.map((brand) => BrandTransformer.DMBrandTransformer(brand));
 
     return parsedData;
   }
@@ -30,7 +30,7 @@ export abstract class BrandRepository {
     if (rawData === null) {
       return rawData;
     } else {
-      return BrandTransformer.DBrandTransformer(rawData);
+      return BrandTransformer.DMBrandTransformer(rawData);
     }
   }
 
@@ -40,7 +40,7 @@ export abstract class BrandRepository {
       select: queryObj,
     });
 
-    return BrandTransformer.DBrandTransformer(rawData);
+    return BrandTransformer.DMBrandTransformer(rawData);
   }
 
   public static async Delete(id: Id): Promise<MBrand> {
@@ -49,7 +49,7 @@ export abstract class BrandRepository {
       where: { id },
     });
 
-    return BrandTransformer.DBrandTransformer(rawData);
+    return BrandTransformer.DMBrandTransformer(rawData);
   }
 
   public static async Update(payload: PBrand, id: MBrand['id']): Promise<MBrand> {
@@ -59,6 +59,6 @@ export abstract class BrandRepository {
       where: { id },
     });
 
-    return BrandTransformer.DBrandTransformer(rawData);
+    return BrandTransformer.DMBrandTransformer(rawData);
   }
 }

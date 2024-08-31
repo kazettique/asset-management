@@ -3,7 +3,7 @@ import { DBrand, MBrand, VBrand } from '@/types';
 import { CommonValidator } from '@/validator';
 
 export abstract class BrandTransformer {
-  public static DBrandTransformer(src: DBrand): MBrand {
+  public static DMBrandTransformer(src: DBrand): MBrand {
     const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
@@ -16,7 +16,7 @@ export abstract class BrandTransformer {
     }
   }
 
-  public static MBrandTransformer(src: MBrand): VBrand {
+  public static MVBrandTransformer(src: MBrand): VBrand {
     return src;
   }
 }

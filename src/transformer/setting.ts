@@ -10,18 +10,18 @@ import { OwnerTransformer } from './owner';
 import { PlaceTransformer } from './place';
 
 export abstract class SettingTransformer {
-  public static DSettingTransformer(src: DSetting): MSetting {
+  public static DMSettingTransformer(src: DSetting): MSetting {
     return {
-      brands: src.brands.map((item) => BrandTransformer.DBrandTransformer(item)),
-      categories: src.categories.map((item) => CategoryTransformer.DCategoryTransformer(item)),
-      currencies: src.currencies.map((item) => CurrencyTransformer.DCurrencyTransformer(item)),
-      methods: src.methods.map((item) => MethodTransformer.DMethodTransformer(item)),
-      owners: src.owners.map((item) => OwnerTransformer.DOwnerTransformer(item)),
-      places: src.places.map((item) => PlaceTransformer.DPlaceTransformer(item)),
+      brands: src.brands.map((item) => BrandTransformer.DMBrandTransformer(item)),
+      categories: src.categories.map((item) => CategoryTransformer.DMCategoryTransformer(item)),
+      currencies: src.currencies.map((item) => CurrencyTransformer.DMCurrencyTransformer(item)),
+      methods: src.methods.map((item) => MethodTransformer.DMMethodTransformer(item)),
+      owners: src.owners.map((item) => OwnerTransformer.DMOwnerTransformer(item)),
+      places: src.places.map((item) => PlaceTransformer.DMPlaceTransformer(item)),
     };
   }
 
-  public static MSettingTransformer(src: MSetting): VSetting {
+  public static MVSettingTransformer(src: MSetting): VSetting {
     return {
       brands: src.brands,
       categories: src.categories,

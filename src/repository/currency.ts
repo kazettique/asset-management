@@ -18,7 +18,7 @@ export abstract class CurrencyRepository {
       select: queryObj,
     });
 
-    const parsedData = rawData.map((category) => CurrencyTransformer.DCurrencyTransformer(category));
+    const parsedData = rawData.map((category) => CurrencyTransformer.DMCurrencyTransformer(category));
 
     return parsedData;
   }
@@ -32,7 +32,7 @@ export abstract class CurrencyRepository {
     if (rawData === null) {
       return rawData;
     } else {
-      return CurrencyTransformer.DCurrencyTransformer(rawData);
+      return CurrencyTransformer.DMCurrencyTransformer(rawData);
     }
   }
 
@@ -42,7 +42,7 @@ export abstract class CurrencyRepository {
       select: queryObj,
     });
 
-    return CurrencyTransformer.DCurrencyTransformer(rawData);
+    return CurrencyTransformer.DMCurrencyTransformer(rawData);
   }
 
   public static async Delete(id: Id): Promise<MCurrency> {
@@ -51,7 +51,7 @@ export abstract class CurrencyRepository {
       where: { id },
     });
 
-    return CurrencyTransformer.DCurrencyTransformer(rawData);
+    return CurrencyTransformer.DMCurrencyTransformer(rawData);
   }
 
   public static async Update(payload: PCurrency, id: MCurrency['id']): Promise<MCurrency> {
@@ -61,6 +61,6 @@ export abstract class CurrencyRepository {
       where: { id },
     });
 
-    return CurrencyTransformer.DCurrencyTransformer(rawData);
+    return CurrencyTransformer.DMCurrencyTransformer(rawData);
   }
 }

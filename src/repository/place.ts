@@ -16,7 +16,7 @@ export abstract class PlaceRepository {
       select: queryObj,
     });
 
-    const parsedData = rawData.map((place) => PlaceTransformer.DPlaceTransformer(place));
+    const parsedData = rawData.map((place) => PlaceTransformer.DMPlaceTransformer(place));
 
     return parsedData;
   }
@@ -30,7 +30,7 @@ export abstract class PlaceRepository {
     if (rawData === null) {
       return rawData;
     } else {
-      return PlaceTransformer.DPlaceTransformer(rawData);
+      return PlaceTransformer.DMPlaceTransformer(rawData);
     }
   }
 
@@ -40,7 +40,7 @@ export abstract class PlaceRepository {
       select: queryObj,
     });
 
-    return PlaceTransformer.DPlaceTransformer(rawData);
+    return PlaceTransformer.DMPlaceTransformer(rawData);
   }
 
   public static async Delete(id: Id): Promise<MPlace> {
@@ -49,7 +49,7 @@ export abstract class PlaceRepository {
       where: { id },
     });
 
-    return PlaceTransformer.DPlaceTransformer(rawData);
+    return PlaceTransformer.DMPlaceTransformer(rawData);
   }
 
   public static async Update(payload: PPlace, id: MPlace['id']): Promise<MPlace> {
@@ -59,6 +59,6 @@ export abstract class PlaceRepository {
       where: { id },
     });
 
-    return PlaceTransformer.DPlaceTransformer(rawData);
+    return PlaceTransformer.DMPlaceTransformer(rawData);
   }
 }

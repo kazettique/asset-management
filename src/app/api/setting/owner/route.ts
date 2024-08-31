@@ -10,7 +10,7 @@ import { OwnerValidator } from '@/validator';
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VOwner[]>> | Response> {
   const raw = await OwnerService.FindAll();
 
-  const transformedData = raw.map((item) => OwnerTransformer.DOwnerTransformer(item));
+  const transformedData = raw.map((item) => OwnerTransformer.DMOwnerTransformer(item));
   const dataValidation = OwnerValidator.VOwnerValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
@@ -33,7 +33,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   } else {
     // 3.2 if passed, fetch repository
     const raw = await OwnerService.Create(requestValidation.data);
-    const data = OwnerTransformer.MOwnerTransformer(raw);
+    const data = OwnerTransformer.MVOwnerTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

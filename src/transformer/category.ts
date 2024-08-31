@@ -3,7 +3,7 @@ import { DCategory, MCategory, VCategory } from '@/types';
 import { CategoryValidator } from '@/validator';
 
 export abstract class CategoryTransformer {
-  public static DCategoryTransformer(src: DCategory): MCategory {
+  public static DMCategoryTransformer(src: DCategory): MCategory {
     const validation = CategoryValidator.DCategoryValidator.safeParse(src);
 
     if (!validation.success) {
@@ -21,7 +21,7 @@ export abstract class CategoryTransformer {
     }
   }
 
-  public static MCategoryTransformer(src: MCategory): VCategory {
+  public static MVCategoryTransformer(src: MCategory): VCategory {
     return src;
   }
 }

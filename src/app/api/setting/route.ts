@@ -21,7 +21,7 @@ export async function GET(_request: Request): Promise<Response | NextResponse<VS
   const places = await PlaceRepository.FindAll();
   const owners = await OwnerRepository.FindAll();
 
-  const transformedData = SettingTransformer.MSettingTransformer({
+  const transformedData = SettingTransformer.MVSettingTransformer({
     brands,
     categories,
     currencies,

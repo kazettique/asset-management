@@ -18,7 +18,7 @@ export abstract class CategoryRepository {
 
     // console.log('rawData', rawData);
 
-    const parsedData = rawData.map((category) => CategoryTransformer.DCategoryTransformer(category));
+    const parsedData = rawData.map((category) => CategoryTransformer.DMCategoryTransformer(category));
 
     return parsedData;
   }
@@ -32,7 +32,7 @@ export abstract class CategoryRepository {
     if (rawData === null) {
       return rawData;
     } else {
-      return CategoryTransformer.DCategoryTransformer(rawData);
+      return CategoryTransformer.DMCategoryTransformer(rawData);
     }
   }
 
@@ -42,7 +42,7 @@ export abstract class CategoryRepository {
       select: queryObj,
     });
 
-    return CategoryTransformer.DCategoryTransformer(rawData);
+    return CategoryTransformer.DMCategoryTransformer(rawData);
   }
 
   public static async Delete(id: Id): Promise<MCategory> {
@@ -51,7 +51,7 @@ export abstract class CategoryRepository {
       where: { id },
     });
 
-    return CategoryTransformer.DCategoryTransformer(rawData);
+    return CategoryTransformer.DMCategoryTransformer(rawData);
   }
 
   public static async Update(payload: PCategory, id: MCategory['id']): Promise<MCategory> {
@@ -61,6 +61,6 @@ export abstract class CategoryRepository {
       where: { id },
     });
 
-    return CategoryTransformer.DCategoryTransformer(rawData);
+    return CategoryTransformer.DMCategoryTransformer(rawData);
   }
 }

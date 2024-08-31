@@ -44,7 +44,7 @@ export async function DELETE(
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     const raw = await BrandService.Delete(idValidation.data);
-    const data = BrandTransformer.MBrandTransformer(raw);
+    const data = BrandTransformer.MVBrandTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
@@ -65,7 +65,7 @@ export async function POST(
     });
   } else {
     const raw = await BrandService.Update(requestValidation.data, idValidation.data);
-    const data = BrandTransformer.MBrandTransformer(raw);
+    const data = BrandTransformer.MVBrandTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

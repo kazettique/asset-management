@@ -23,7 +23,7 @@ export async function GET(
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const transformedData = CategoryTransformer.DCategoryTransformer(raw);
+      const transformedData = CategoryTransformer.DMCategoryTransformer(raw);
       const dataValidation = CategoryValidator.VCategoryValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
@@ -45,7 +45,7 @@ export async function DELETE(
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     const raw = await CategoryService.Delete(idValidation.data);
-    const data = CategoryTransformer.MCategoryTransformer(raw);
+    const data = CategoryTransformer.MVCategoryTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
@@ -66,7 +66,7 @@ export async function POST(
     });
   } else {
     const raw = await CategoryService.Update(requestValidation.data, idValidation.data);
-    const data = CategoryTransformer.MCategoryTransformer(raw);
+    const data = CategoryTransformer.MVCategoryTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

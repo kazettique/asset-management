@@ -16,7 +16,7 @@ export abstract class OwnerRepository {
       select: queryObj,
     });
 
-    const parsedData = rawData.map((owner) => OwnerTransformer.DOwnerTransformer(owner));
+    const parsedData = rawData.map((owner) => OwnerTransformer.DMOwnerTransformer(owner));
 
     return parsedData;
   }
@@ -30,7 +30,7 @@ export abstract class OwnerRepository {
     if (rawData === null) {
       return rawData;
     } else {
-      return OwnerTransformer.DOwnerTransformer(rawData);
+      return OwnerTransformer.DMOwnerTransformer(rawData);
     }
   }
 
@@ -40,7 +40,7 @@ export abstract class OwnerRepository {
       select: queryObj,
     });
 
-    return OwnerTransformer.DOwnerTransformer(rawData);
+    return OwnerTransformer.DMOwnerTransformer(rawData);
   }
 
   public static async Delete(id: Id): Promise<MOwner> {
@@ -49,7 +49,7 @@ export abstract class OwnerRepository {
       where: { id },
     });
 
-    return OwnerTransformer.DOwnerTransformer(rawData);
+    return OwnerTransformer.DMOwnerTransformer(rawData);
   }
 
   public static async Update(payload: POwner, id: MOwner['id']): Promise<MOwner> {
@@ -59,6 +59,6 @@ export abstract class OwnerRepository {
       where: { id },
     });
 
-    return OwnerTransformer.DOwnerTransformer(rawData);
+    return OwnerTransformer.DMOwnerTransformer(rawData);
   }
 }

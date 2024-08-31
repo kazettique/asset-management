@@ -3,7 +3,7 @@ import { DMethod, MMethod, VMethod } from '@/types';
 import { CommonValidator } from '@/validator';
 
 export abstract class MethodTransformer {
-  public static DMethodTransformer(src: DMethod): MMethod {
+  public static DMMethodTransformer(src: DMethod): MMethod {
     const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
@@ -16,7 +16,7 @@ export abstract class MethodTransformer {
     }
   }
 
-  public static MMethodTransformer(src: MMethod): VMethod {
+  public static MVMethodTransformer(src: MMethod): VMethod {
     return src;
   }
 }

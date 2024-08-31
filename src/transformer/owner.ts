@@ -4,7 +4,7 @@ import { DOwner } from '@/types/dbModels';
 import { CommonValidator } from '@/validator';
 
 export abstract class OwnerTransformer {
-  public static DOwnerTransformer(src: DOwner): MOwner {
+  public static DMOwnerTransformer(src: DOwner): MOwner {
     const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
@@ -17,7 +17,7 @@ export abstract class OwnerTransformer {
     }
   }
 
-  public static MOwnerTransformer(src: MOwner): VOwner {
+  public static MVOwnerTransformer(src: MOwner): VOwner {
     return src;
   }
 }

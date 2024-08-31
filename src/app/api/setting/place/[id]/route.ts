@@ -22,7 +22,7 @@ export async function GET(
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const transformedData = PlaceTransformer.DPlaceTransformer(raw);
+      const transformedData = PlaceTransformer.DMPlaceTransformer(raw);
       const dataValidation = PlaceValidator.VPlaceValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
@@ -44,7 +44,7 @@ export async function DELETE(
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     const raw = await PlaceService.Delete(idValidation.data);
-    const data = PlaceTransformer.MPlaceTransformer(raw);
+    const data = PlaceTransformer.MVPlaceTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
@@ -65,7 +65,7 @@ export async function POST(
     });
   } else {
     const raw = await PlaceService.Update(requestValidation.data, idValidation.data);
-    const data = PlaceTransformer.MPlaceTransformer(raw);
+    const data = PlaceTransformer.MVPlaceTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

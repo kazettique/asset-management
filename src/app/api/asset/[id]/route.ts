@@ -43,7 +43,7 @@ export async function DELETE(
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     const raw = await AssetService.Delete(idValidation.data);
-    const data = AssetTransformer.MAssetTransformer(raw);
+    const data = AssetTransformer.MVAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
@@ -64,7 +64,7 @@ export async function POST(
     });
   } else {
     const raw = await AssetService.Update(requestValidation.data, idValidation.data);
-    const data = AssetTransformer.MAssetTransformer(raw);
+    const data = AssetTransformer.MVAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

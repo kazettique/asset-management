@@ -10,7 +10,7 @@ import { BrandValidator } from '@/validator';
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VBrand[]>> | Response> {
   const raw = await BrandService.FindAll();
 
-  const transformedData = raw.map((item) => BrandTransformer.DBrandTransformer(item));
+  const transformedData = raw.map((item) => BrandTransformer.DMBrandTransformer(item));
   const dataValidation = BrandValidator.VBrandValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
@@ -33,7 +33,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   } else {
     // 3.2 if passed, fetch repository
     const raw = await BrandService.Create(requestValidation.data);
-    const data = BrandTransformer.MBrandTransformer(raw);
+    const data = BrandTransformer.MVBrandTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

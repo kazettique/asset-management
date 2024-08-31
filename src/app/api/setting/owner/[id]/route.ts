@@ -22,7 +22,7 @@ export async function GET(
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const transformedData = OwnerTransformer.DOwnerTransformer(raw);
+      const transformedData = OwnerTransformer.DMOwnerTransformer(raw);
       const dataValidation = OwnerValidator.VOwnerValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
@@ -44,7 +44,7 @@ export async function DELETE(
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
     const raw = await OwnerService.Delete(idValidation.data);
-    const data = OwnerTransformer.MOwnerTransformer(raw);
+    const data = OwnerTransformer.MVOwnerTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
@@ -65,7 +65,7 @@ export async function POST(
     });
   } else {
     const raw = await OwnerService.Update(requestValidation.data, idValidation.data);
-    const data = OwnerTransformer.MOwnerTransformer(raw);
+    const data = OwnerTransformer.MVOwnerTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

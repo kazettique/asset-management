@@ -32,7 +32,7 @@ export abstract class AssetRepository {
       select: queryObj,
     });
 
-    const parsedData = rawData.map((asset) => AssetTransformer.DAssetTransformer(asset));
+    const parsedData = rawData.map((asset) => AssetTransformer.DMAssetTransformer(asset));
 
     return parsedData;
   }
@@ -46,7 +46,7 @@ export abstract class AssetRepository {
     if (rawData === null) {
       return rawData;
     } else {
-      return AssetTransformer.DAssetTransformer(rawData);
+      return AssetTransformer.DMAssetTransformer(rawData);
     }
   }
 
@@ -56,7 +56,7 @@ export abstract class AssetRepository {
       select: queryObj,
     });
 
-    return AssetTransformer.DAssetTransformer(rawData);
+    return AssetTransformer.DMAssetTransformer(rawData);
   }
 
   public static async Delete(id: Id): Promise<MAsset> {
@@ -65,7 +65,7 @@ export abstract class AssetRepository {
       where: { id },
     });
 
-    return AssetTransformer.DAssetTransformer(rawData);
+    return AssetTransformer.DMAssetTransformer(rawData);
   }
 
   public static async Update(payload: PAsset, id: MAsset['id']): Promise<MAsset> {
@@ -75,6 +75,6 @@ export abstract class AssetRepository {
       where: { id },
     });
 
-    return AssetTransformer.DAssetTransformer(rawData);
+    return AssetTransformer.DMAssetTransformer(rawData);
   }
 }

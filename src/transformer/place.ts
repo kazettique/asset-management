@@ -4,7 +4,7 @@ import { DPlace } from '@/types/dbModels';
 import { CommonValidator } from '@/validator';
 
 export abstract class PlaceTransformer {
-  public static DPlaceTransformer(src: DPlace): MPlace {
+  public static DMPlaceTransformer(src: DPlace): MPlace {
     const nameValidation = CommonValidator.NameValidator.safeParse(src.name);
 
     if (!nameValidation.success) {
@@ -17,7 +17,7 @@ export abstract class PlaceTransformer {
     }
   }
 
-  public static MPlaceTransformer(src: MPlace): VPlace {
+  public static MVPlaceTransformer(src: MPlace): VPlace {
     return src;
   }
 }

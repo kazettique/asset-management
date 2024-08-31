@@ -10,7 +10,7 @@ import { MethodValidator } from '@/validator';
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VMethod[]>> | Response> {
   const raw = await MethodService.FindAll();
 
-  const transformedData = raw.map((item) => MethodTransformer.DMethodTransformer(item));
+  const transformedData = raw.map((item) => MethodTransformer.DMMethodTransformer(item));
   const dataValidation = MethodValidator.VMethodValidator.array().safeParse(transformedData);
 
   if (dataValidation.success) {
@@ -33,7 +33,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   } else {
     // 3.2 if passed, fetch repository
     const raw = await MethodService.Create(requestValidation.data);
-    const data = MethodTransformer.MMethodTransformer(raw);
+    const data = MethodTransformer.MVMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

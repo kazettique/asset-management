@@ -26,7 +26,7 @@ interface Props {
 
 export default function Item(props: Props) {
   const { register, handleSubmit } = useForm<FAsset>({
-    defaultValues: AssetTransformer.VAssetTransformer(props.item),
+    defaultValues: AssetTransformer.VFAssetTransformer(props.item),
     resolver: zodResolver(AssetValidator.FAssetValidator),
   });
 

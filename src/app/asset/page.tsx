@@ -44,7 +44,7 @@ export default function Page() {
   });
 
   const createAsset = useMutation({
-    mutationFn: (payload: FAsset) => AssetFetcher.Create(AssetTransformer.FAssetTransformer(payload)),
+    mutationFn: (payload: FAsset) => AssetFetcher.Create(AssetTransformer.FPAssetTransformer(payload)),
     onSuccess: () => {
       assetRefetch();
     },
@@ -52,7 +52,7 @@ export default function Page() {
 
   const updateAsset = useMutation({
     mutationFn: ({ payload, id }: { id: VAsset['id']; payload: FAsset }) =>
-      AssetFetcher.Update(AssetTransformer.FAssetTransformer(payload), id),
+      AssetFetcher.Update(AssetTransformer.FPAssetTransformer(payload), id),
     onSuccess: () => {
       assetRefetch();
       setEditItem(null);

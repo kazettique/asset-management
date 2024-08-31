@@ -9,9 +9,10 @@ import { AssetValidator } from '@/validator';
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
+
 export abstract class AssetTransformer {
   // db model -> model
-  public static DAssetTransformer(src: DAsset): MAsset {
+  public static DMAssetTransformer(src: DAsset): MAsset {
     const assetValidation = AssetValidator.MAssetValidator.safeParse(src);
 
     if (!assetValidation.success) {
@@ -29,12 +30,12 @@ export abstract class AssetTransformer {
   }
 
   // model -> view model
-  public static MAssetTransformer(src: MAsset): VAsset {
+  public static MVAssetTransformer(src: MAsset): VAsset {
     return src;
   }
 
   // view model -> form model
-  public static VAssetTransformer(src: VAsset): FAsset {
+  public static VFAssetTransformer(src: VAsset): FAsset {
     return {
       brandId: src.brandId,
       categoryId: src.categoryId,
@@ -56,7 +57,7 @@ export abstract class AssetTransformer {
   }
 
   // form model -> request model
-  public static FAssetTransformer(src: FAsset): PAsset {
+  public static FPAssetTransformer(src: FAsset): PAsset {
     return {
       ...src,
       endCurrencyId: src.endCurrencyId.length === 0 ? null : src.endCurrencyId,
