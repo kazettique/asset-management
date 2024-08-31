@@ -28,6 +28,7 @@ model Asset {
   category   Category @relation(fields: [categoryId], references: [id])
   placeId    String?
   place      Place?   @relation(fields: [placeId], references: [id])
+  tags       Tag[]
 
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
@@ -54,7 +55,6 @@ model Asset {
   comment   String?  @db.TinyText
 
   PriceHistory PriceHistory[]
-  Tag          Tag[]
 }
 
 model Currency {
@@ -159,12 +159,13 @@ model Method {
 model Tag {
   id String @id @default(uuid())
 
-  assetId String
-  asset   Asset  @relation(fields: [assetId], references: [id])
+  name String @db.TinyText
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   comment   String?  @db.TinyText
+
+  assets Asset[]
 }
 
 model OwnershipHistory {
