@@ -7,7 +7,7 @@ export default function DashboardLayout({
   children: ReactNode;
 }) {
   return (
-    <section className="flex">
+    <section className="flex pt-16">
       <nav className="w-auto flex flex-col bg-slate-300 top-0 p-2 sticky items-center gap-x-4">
         <Link href="/setting">Setting</Link>
         <Link href="/setting/brand">Brand</Link>
