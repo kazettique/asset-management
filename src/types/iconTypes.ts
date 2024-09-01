@@ -1,32 +1,29 @@
 export type IconType =
   | 'x-lg'
-  | 'ticket'
-  | 'share'
-  | 'send'
+  | 'wrench-solid'
+  | 'tags-solid'
+  | 'tag-solid'
   | 'search'
   | 'question-circle'
   | 'plus-square'
-  | 'phone'
   | 'person'
   | 'person-o'
   | 'person-circle'
-  | 'pen'
+  | 'pen-to-square-solid'
   | 'more'
-  | 'lock-outline'
-  | 'lock-open'
+  | 'magnifying-glass-solid'
+  | 'location-dot-solid'
   | 'list'
   | 'link-45deg'
-  | 'line'
-  | 'journal-text'
-  | 'instagram'
-  | 'ice-drip-coffee'
+  | 'layer-group-solid'
+  | 'house-solid'
+  | 'hashtag-solid'
+  | 'handshake-regular'
   | 'hand-thumbs-up'
   | 'hand-thumbs-up-fill'
-  | 'google'
+  | 'hammer-solid'
   | 'gift-fill'
-  | 'gear-fill'
-  | 'fast-forward-fill'
-  | 'facebook'
+  | 'gear-solid'
   | 'eye'
   | 'eye-slash'
   | 'eye-fill'
@@ -34,9 +31,11 @@ export type IconType =
   | 'exclamation-circle'
   | 'envelope'
   | 'envelope-fill'
-  | 'crown'
+  | 'dollar-sign-solid'
+  | 'desktop-solid'
+  | 'cubes-solid'
+  | 'cube-solid'
   | 'cross'
-  | 'credit-card'
   | 'content-copy'
   | 'coin'
   | 'clock'
@@ -47,76 +46,77 @@ export type IconType =
   | 'check-lg'
   | 'check-circle'
   | 'chat-text'
-  | 'chat-left'
-  | 'chat-left-dots-fill'
+  | 'cart-shopping-solid'
   | 'caret-up-fill'
   | 'caret-down-fill'
-  | 'calendar-frame'
+  | 'building-shield-solid'
+  | 'boxes-packing-solid'
+  | 'box-solid'
   | 'box-arrow-in-right'
+  | 'box-archive-solid'
   | 'bookmark'
   | 'bookmark-fill'
-  | 'aspect-ratio'
   | 'arrow-sm'
   | 'arrow-left-right';
 
 export const ICONS_CODEPOINTS: { [key in IconType]: string } = {
   'x-lg': '61697',
-  'ticket': '61698',
-  'share': '61699',
-  'send': '61700',
+  'wrench-solid': '61698',
+  'tags-solid': '61699',
+  'tag-solid': '61700',
   'search': '61701',
   'question-circle': '61702',
   'plus-square': '61703',
-  'phone': '61704',
-  'person': '61705',
-  'person-o': '61706',
-  'person-circle': '61707',
-  'pen': '61708',
-  'more': '61709',
-  'lock-outline': '61710',
-  'lock-open': '61711',
-  'list': '61712',
-  'link-45deg': '61713',
-  'line': '61714',
-  'journal-text': '61715',
-  'instagram': '61716',
-  'ice-drip-coffee': '61717',
-  'hand-thumbs-up': '61718',
-  'hand-thumbs-up-fill': '61719',
-  'google': '61720',
-  'gift-fill': '61721',
-  'gear-fill': '61722',
-  'fast-forward-fill': '61723',
-  'facebook': '61724',
-  'eye': '61725',
-  'eye-slash': '61726',
-  'eye-fill': '61727',
-  'exclamation-triangle': '61728',
-  'exclamation-circle': '61729',
-  'envelope': '61730',
-  'envelope-fill': '61731',
-  'crown': '61732',
+  'person': '61704',
+  'person-o': '61705',
+  'person-circle': '61706',
+  'pen-to-square-solid': '61707',
+  'more': '61708',
+  'magnifying-glass-solid': '61709',
+  'location-dot-solid': '61710',
+  'list': '61711',
+  'link-45deg': '61712',
+  'layer-group-solid': '61713',
+  'house-solid': '61714',
+  'hashtag-solid': '61715',
+  'handshake-regular': '61716',
+  'hand-thumbs-up': '61717',
+  'hand-thumbs-up-fill': '61718',
+  'hammer-solid': '61719',
+  'gift-fill': '61720',
+  'gear-solid': '61721',
+  'eye': '61722',
+  'eye-slash': '61723',
+  'eye-fill': '61724',
+  'exclamation-triangle': '61725',
+  'exclamation-circle': '61726',
+  'envelope': '61727',
+  'envelope-fill': '61728',
+  'dollar-sign-solid': '61729',
+  'desktop-solid': '61730',
+  'cubes-solid': '61731',
+  'cube-solid': '61732',
   'cross': '61733',
-  'credit-card': '61734',
-  'content-copy': '61735',
-  'coin': '61736',
-  'clock': '61737',
-  'chevron-up': '61738',
-  'chevron-right': '61739',
-  'chevron-left': '61740',
-  'chevron-down': '61741',
-  'check-lg': '61742',
-  'check-circle': '61743',
-  'chat-text': '61744',
-  'chat-left': '61745',
-  'chat-left-dots-fill': '61746',
-  'caret-up-fill': '61747',
-  'caret-down-fill': '61748',
-  'calendar-frame': '61749',
+  'content-copy': '61734',
+  'coin': '61735',
+  'clock': '61736',
+  'chevron-up': '61737',
+  'chevron-right': '61738',
+  'chevron-left': '61739',
+  'chevron-down': '61740',
+  'check-lg': '61741',
+  'check-circle': '61742',
+  'chat-text': '61743',
+  'cart-shopping-solid': '61744',
+  'caret-up-fill': '61745',
+  'caret-down-fill': '61746',
+  'building-shield-solid': '61747',
+  'boxes-packing-solid': '61748',
+  'box-solid': '61749',
   'box-arrow-in-right': '61750',
-  'bookmark': '61751',
-  'bookmark-fill': '61752',
-  'aspect-ratio': '61753',
+  'box-archive-solid': '61751',
+  'bookmark': '61752',
+  'bookmark-fill': '61753',
   'arrow-sm': '61754',
   'arrow-left-right': '61755',
 };

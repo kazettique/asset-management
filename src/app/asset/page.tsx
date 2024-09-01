@@ -193,7 +193,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="p-4 relative w-full h-screen overflow-hidden">
+    <div className="p-4 relative overflow-hidden">
       <section className="container mx-auto">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div>
@@ -331,7 +331,7 @@ export default function Page() {
       />
 
       {/* <Modal isOpen={modalOpen} onClose={() => setModelOpen(false)} /> */}
-      {/* <Sidebar /> */}
+      {/* <Drawer /> */}
     </div>
   );
 }

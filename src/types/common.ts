@@ -2,6 +2,7 @@ import { MethodType } from '@prisma/client';
 
 import { NString, NType } from './base';
 import { DTag } from './dbModels';
+import { IconType } from './iconTypes';
 
 export interface GeneralResponse<T> {
   data: T;
@@ -11,6 +12,13 @@ export interface GeneralResponse<T> {
 export type Id = string;
 export type Price = number;
 export type Name = string;
+
+export interface MenuItem {
+  children: MenuItem[];
+  icon: IconType;
+  label: string;
+  link: NString;
+}
 
 export interface DbBase {
   id: Id;
