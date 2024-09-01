@@ -9,7 +9,7 @@ import Table, { ColumnProps } from '@/components/Table';
 import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
 import { AssetTransformer, SettingTransformer } from '@/transformer';
-import { FAsset, FSettingOptions, Id, NType, TAsset, VAsset } from '@/types';
+import { FAsset, FSettingOptions, Id, NType, VAsset, VAssetTable } from '@/types';
 
 import Create from './Create';
 
@@ -95,10 +95,10 @@ export default function Page() {
     createAsset.mutate(data);
   };
 
-  const tableData: TAsset[] = assetData
+  const tableData: VAssetTable[] = assetData
     ? assetData.data.map((item) => AssetTransformer.VTAssetTransformer(item, settingOptions))
     : [];
-  const columns: ColumnProps<TAsset>[] = [
+  const columns: ColumnProps<VAssetTable>[] = [
     {
       key: 'name',
       title: 'Name',
@@ -135,8 +135,8 @@ export default function Page() {
       key: 'meta',
       render: (column, item) => (
         <>
-          {item.meta.map((item, index) => {
-            const [key, value] = Object.entries(item);
+          {item.meta.map((_item, index) => {
+            const [key, value] = _item;
             return (
               <div key={index}>
                 {key}: {value}
@@ -158,6 +158,24 @@ export default function Page() {
     {
       key: 'monthlyCost',
       title: 'monthlyCost',
+    },
+    {
+      key: 'owner',
+      title: 'owner',
+    },
+    {
+      key: 'tags',
+      render: (column, item) => (
+        <div>
+          {item.tags.map((_item, _index) => (
+            <div key={_index}>
+              <span>#</span>
+              <span>{_item}</span>
+            </div>
+          ))}
+        </div>
+      ),
+      title: 'tags',
     },
     {
       key: 'action',
@@ -255,9 +273,7 @@ export default function Page() {
         <div className="flex flex-col mt-6">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                {assetIsPending ? <div>loading...</div> : <Table data={tableData} columns={columns} />}
-              </div>
+              {assetIsPending ? <div>loading...</div> : <Table data={tableData} columns={columns} />}
             </div>
           </div>
         </div>

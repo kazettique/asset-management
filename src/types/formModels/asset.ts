@@ -14,6 +14,7 @@ export interface FAsset {
   isCensored: boolean;
   meta: AssetMeta;
   name: Name;
+  newTags: string[];
   ownerId: Id;
   placeId: Id;
   startCurrencyId: Id;
@@ -21,4 +22,5 @@ export interface FAsset {
   startMethodId: Id;
   startPlatformId: Id;
   startPrice: Price;
+  tags: Id[];
 }

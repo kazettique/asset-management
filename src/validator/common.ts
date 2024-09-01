@@ -7,6 +7,7 @@ import { AssetCommon, AssetMeta, CurrencyCommon, DbBase, Id, MethodCommon, Name,
 export abstract class CommonValidator {
   public static readonly IdValidator: z.ZodSchema<Id> = z.string().uuid();
   public static readonly PriceValidator: z.ZodSchema<Price> = z.number().nonnegative();
+  // TODO: add more detailed validation, ex: no symbols, no whitespace ...etc
   public static readonly NameValidator: z.ZodSchema<Name> = z.string().min(1);
 
   public static readonly DbBaseValidator: z.ZodSchema<DbBase> = z.object({
@@ -32,7 +33,7 @@ export abstract class CommonValidator {
     .and(this.SettingBaseValidator);
 
   public static readonly AssetMetaValidator: z.ZodSchema<AssetMeta> = z
-    .record(z.string(), z.string().or(z.number()))
+    .tuple([z.string(), z.string().or(z.number())])
     .array();
 
   public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z

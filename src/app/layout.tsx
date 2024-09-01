@@ -17,55 +17,54 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="dark:bg-slate-900">
         <Providers>
           <section>
-            <nav className="bg-white border-b border-gray-200 fixed z-30 w-full">
-              <div className="px-3 py-3 lg:px-5 lg:pl-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center justify-start">
-                    <button
-                      id="toggleSidebarMobile"
-                      aria-expanded="true"
-                      aria-controls="sidebar"
-                      className="lg:hidden mr-2 text-gray-600 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 rounded"
+            <nav className="border-b border-gray-200 fixed z-30 w-full h-10 flex items-center">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center justify-start">
+                  <button
+                    id="toggleSidebarMobile"
+                    aria-expanded="true"
+                    aria-controls="sidebar"
+                    className="lg:hidden mr-2 text-gray-600 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 rounded"
+                  >
+                    <svg
+                      id="toggleSidebarMobileHamburger"
+                      className="w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <svg
-                        id="toggleSidebarMobileHamburger"
-                        className="w-6 h-6"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <svg
-                        id="toggleSidebarMobileClose"
-                        className="w-6 h-6 hidden"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                    <a href="/" className="text-xl font-bold flex items-center lg:ml-2.5">
-                      {/* <img
+                      <path
+                        fillRule="evenodd"
+                        d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <svg
+                      id="toggleSidebarMobileClose"
+                      className="w-6 h-6 hidden"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <a href="/" className="text-xl font-bold flex items-center lg:ml-2.5 dark:text-slate-200">
+                    {/* <img
                         src="https://demo.themesberg.com/windster/images/logo.svg"
                         className="h-6 mr-2"
                         alt="Windster Logo"
                       /> */}
-                      <span className="self-center whitespace-nowrap">Asset Management</span>
-                    </a>
-                    <form action="#" method="GET" className="hidden lg:block lg:pl-32">
+                    <span className="self-center whitespace-nowrap">Asset Management</span>
+                  </a>
+                  {/* <form action="#" method="GET" className="hidden lg:block lg:pl-32">
                       <label htmlFor="topbar-search" className="sr-only">
                         Search
                       </label>
@@ -92,9 +91,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                           placeholder="Search"
                         />
                       </div>
-                    </form>
-                  </div>
-                  <div className="flex items-center">
+                    </form> */}
+                </div>
+                {/* <div className="flex items-center">
                     <button
                       id="toggleSidebarMobileSearch"
                       type="button"
@@ -151,19 +150,18 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                       </svg>
                       Upgrade to Pro
                     </a>
-                  </div>
-                </div>
+                  </div> */}
               </div>
             </nav>
-            <div className="flex overflow-hidden bg-white pt-16 w-screen max-h-screen">
+            <div className="flex overflow-hidden pt-10 w-screen max-h-screen">
               <aside
                 id="sidebar"
                 className="h-screen flex lg:flex flex-shrink-0 flex-col w-40 transition-width duration-75"
                 aria-label="Sidebar"
               >
-                <div className="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0">
+                <div className="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 pt-0">
                   <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-                    <div className="flex-1 px-3 bg-white divide-y space-y-1">
+                    <div className="flex-1 px-3 divide-y space-y-1">
                       <ul className="space-y-2 pb-2">
                         <li>
                           <form action="#" method="GET" className="lg:hidden">

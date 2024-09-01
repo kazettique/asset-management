@@ -25,7 +25,7 @@ export default function Create(props: Props) {
   });
 
   return (
-    <div className={`p-4 flex flex-col gap-y-4 bg-white overflow-auto ${className}`}>
+    <div className={`p-4 flex flex-col gap-y-4 bg-white overflow-auto dark:bg-gray-800 ${className}`}>
       <div className="flex justify-between">
         <div className="font-bold text-xl">Create Asset</div>
         <Icon

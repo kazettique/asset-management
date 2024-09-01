@@ -1,6 +1,7 @@
 import { MethodType } from '@prisma/client';
 
 import { NString, NType } from './base';
+import { DTag } from './dbModels';
 
 export interface GeneralResponse<T> {
   data: T;
@@ -28,7 +29,7 @@ export interface MethodCommon extends SettingBase {
   type: MethodType;
 }
 
-export type AssetMeta = Record<string, string | number>[];
+export type AssetMeta = [string, string | number][];
 
 export interface AssetCommon {
   brandId: NType<Id>;

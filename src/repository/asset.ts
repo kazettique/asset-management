@@ -23,6 +23,7 @@ const queryObj = {
   startMethodId: true,
   startPlatformId: true,
   startPrice: true,
+  tags: { select: { id: true, name: true } },
 };
 
 @backendImplements()

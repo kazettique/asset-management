@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { CommonConstant } from '@/constant';
-import { DAsset, FAsset, FSettingOptions, MAsset, NString, PAsset, TAsset, VAsset } from '@/types';
+import { DAsset, FAsset, FSettingOptions, MAsset, NString, PAsset, VAsset, VAssetTable } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
@@ -47,6 +47,7 @@ export abstract class AssetTransformer {
       isCensored: src.isCensored,
       meta: src.meta,
       name: src.name,
+      newTags: [],
       ownerId: src.ownerId ?? '',
       placeId: src.placeId ?? '',
       startCurrencyId: src.startCurrencyId,
@@ -54,6 +55,7 @@ export abstract class AssetTransformer {
       startMethodId: src.startMethodId,
       startPlatformId: src.startPlatformId,
       startPrice: src.startPrice,
+      tags: src.tags.map((item) => item.id),
     };
   }
 
@@ -71,11 +73,15 @@ export abstract class AssetTransformer {
       ownerId: convertEmptyStringToNull(src.ownerId),
       placeId: convertEmptyStringToNull(src.placeId),
       startDate: new Date(src.startDate),
+      tags: {
+        connect: src.tags.map((item) => ({ id: item })),
+        create: src.newTags.map((item) => ({ name: item })),
+      },
     };
   }
 
   // view model -> table model
-  public static VTAssetTransformer(src: VAsset, settingOptions: FSettingOptions): TAsset {
+  public static VTAssetTransformer(src: VAsset, settingOptions: FSettingOptions): VAssetTable {
     const findBrand = settingOptions.brands.find((_item) => _item.value === src.brandId);
     const findStartMethod = settingOptions.startMethods.find((_item) => _item.value === src.startMethodId);
     const findStartPlatform = settingOptions.platforms.find((_item) => _item.value === src.startPlatformId);
@@ -141,6 +147,7 @@ export abstract class AssetTransformer {
           ? `${startCurrency.label} ${Utils.NumberWithCommas(src.startPrice)}`
           : CommonConstant.DEFAULT_EMPTY_STRING,
       },
+      tags: src.tags.map((item) => item.name),
       usageTime: Utils.DetailedRelativeTime(_startDate, _endDate),
     };
   }

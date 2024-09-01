@@ -17,6 +17,7 @@ export abstract class AssetConstant {
     isCensored: false,
     meta: [],
     name: CommonConstant.DEFAULT_NAME,
+    newTags: [],
     ownerId: '',
     placeId: '',
     startCurrencyId: '',
@@ -24,5 +25,6 @@ export abstract class AssetConstant {
     startMethodId: '',
     startPlatformId: '',
     startPrice: 0,
+    tags: [],
   };
 }

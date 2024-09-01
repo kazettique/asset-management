@@ -4,9 +4,9 @@ import { TagTransformer } from '@/transformer';
 import { DTag, Id, MTag, NType, PTag } from '@/types';
 
 const queryObj = {
-  // asset: true,
   comment: true,
   id: true,
+  name: true,
 };
 
 @backendImplements()
@@ -36,7 +36,7 @@ export abstract class TagRepository {
 
   public static async Create(payload: PTag): Promise<MTag> {
     const rawData = await db.tag.create({
-      data: { ...payload, assetId: '' }, // TODO: strange for asset id?
+      data: payload,
       select: queryObj,
     });
 

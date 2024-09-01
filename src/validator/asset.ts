@@ -8,6 +8,7 @@ export abstract class AssetValidator {
   public static readonly DAssetValidator: z.ZodSchema<DAsset> = z
     .object({
       meta: z.record(z.string(), z.any()),
+      tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
     .and(CommonValidator.DbBaseValidator)
     .and(CommonValidator.AssetCommonValidator);
@@ -15,6 +16,7 @@ export abstract class AssetValidator {
   public static readonly MAssetValidator: z.ZodSchema<MAsset> = z
     .object({
       meta: CommonValidator.AssetMetaValidator,
+      tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
     .and(CommonValidator.DbBaseValidator)
     .and(CommonValidator.AssetCommonValidator);
@@ -24,7 +26,10 @@ export abstract class AssetValidator {
   public static readonly RAssetValidator: z.ZodSchema<PAsset> = z
     .object({
       meta: CommonValidator.AssetMetaValidator,
-      name: CommonValidator.NameValidator,
+      tags: z.object({
+        connect: z.object({ id: CommonValidator.IdValidator }).array(),
+        create: z.object({ name: CommonValidator.NameValidator }).array(),
+      }),
     })
     .and(CommonValidator.AssetCommonValidator);
 
@@ -40,6 +45,7 @@ export abstract class AssetValidator {
     isCensored: z.boolean(),
     meta: CommonValidator.AssetMetaValidator,
     name: CommonValidator.NameValidator,
+    newTags: CommonValidator.NameValidator.array(),
     ownerId: z.string(),
     placeId: z.string(),
     startCurrencyId: z.string(),
@@ -47,5 +53,6 @@ export abstract class AssetValidator {
     startMethodId: z.string(),
     startPlatformId: z.string(),
     startPrice: CommonValidator.PriceValidator,
+    tags: CommonValidator.IdValidator.array(),
   });
 }
