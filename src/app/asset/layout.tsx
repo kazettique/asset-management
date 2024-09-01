@@ -7,5 +7,5 @@ export interface Props {
 export default function Layout(props: Props) {
   const { children } = props;
 
-  return <section>{children}</section>;
+  return <section className="h-full">{children}</section>;
 }

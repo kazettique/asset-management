@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 
 import Button from '@/components/Button';
+import ToggleSwitch from '@/components/ToggleSwitch';
 
 interface MyForm {
   test: {
@@ -32,6 +34,13 @@ export default function Home() {
     console.log('data', data);
   };
 
+  const onChange = (event: boolean): void => {
+    console.log('event', event);
+    setIsChecked(event);
+  };
+
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
   return (
     <main>
       <h1 className="text-4xl font-bold text-center py-4">Home page</h1>
@@ -58,6 +67,9 @@ export default function Home() {
 
         <div className="bg-slate-100">{JSON.stringify(values, null, 2)}</div>
       </form>
+
+      <ToggleSwitch onChange={onChange} isChecked={isChecked} />
+      <ToggleSwitch onChange={onChange} label="hello" isChecked={isChecked} />
     </main>
   );
 }
