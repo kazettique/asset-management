@@ -1,9 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
-export default function DashboardLayout({
-  children, // will be a page or nested layout
-}: {
-  children: ReactNode;
-}) {
+export interface Props {
+  children: ReactElement;
+}
+
+export default function Layout(props: Props) {
+  const { children } = props;
+
   return <section>{children}</section>;
 }

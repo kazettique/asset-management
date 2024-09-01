@@ -11,14 +11,12 @@ export default function SideMenu(props: Props) {
   const { list } = props;
 
   return (
-    <>
-      <aside className="w-64 h-full bg-gray-50 dark:bg-gray-800 px-3 py-4">
-        <ul className="space-y-2">
-          {list.map((item, index) => (
-            <MenuItemComp key={index} item={item} />
-          ))}
-        </ul>
-      </aside>
-    </>
+    <aside className="w-64 h-full bg-gray-100 dark:bg-gray-800 px-3 py-4 border-r border-gray-200">
+      <ul className="space-y-2">
+        {list.map((item, index) => (
+          <MenuItemComp key={index} item={item} />
+        ))}
+      </ul>
+    </aside>
   );
 }
