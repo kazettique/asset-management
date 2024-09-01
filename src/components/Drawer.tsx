@@ -1,6 +1,8 @@
+'use client';
+
 import { useState } from 'react';
 
-export default function Sidebar() {
+export default function Drawer() {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   return (
     <div className="flex justify-center items-center min-h-screen">

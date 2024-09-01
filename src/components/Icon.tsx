@@ -11,5 +11,5 @@ interface Props {
 export default function Icon(props: Props) {
   const { className = '', iconType = 'arrow-sm', onClick } = props;
 
-  return <i onClick={onClick} className={`${className} icon-${iconType}`} data-test-comp={Icon.name} />;
+  return <i onClick={onClick} className={`icon-${iconType} ${className}`} data-test-comp={Icon.name} />;
 }
