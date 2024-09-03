@@ -1,4 +1,4 @@
-import { DBrand, DCategory, DCurrency, DMethod, DOwner, DPlace } from '@/types';
+import { DBrand, DCategory, DCurrency, DMethod, DOwner, DPlace, DTag } from '@/types';
 
 export interface DSetting {
   brands: DBrand[];
@@ -7,4 +7,5 @@ export interface DSetting {
   methods: DMethod[];
   owners: DOwner[];
   places: DPlace[];
+  tags: DTag[];
 }

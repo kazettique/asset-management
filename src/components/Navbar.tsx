@@ -13,17 +13,17 @@ export default function Navbar(props: Props) {
 
   return (
     <header
-      className={`flex justify-between items-center h-14 px-4 w-full border-b border-gray-300 bg-gray-200 dark:bg-gray-800 ${className}`}
+      className={`flex justify-between items-center h-14 px-4 w-full border-b border-gray-300 bg-gray-200 dark:bg-gray-800 text-slate-700 dark:text-slate-200 ${className}`}
     >
       <div className="flex items-center gap-x-2">
-        <Icon iconType="cube-solid" className="text-2xl text-slate-700" />
-        <Link href="/" className="text-xl font-bold flex items-center lg:ml-2.5 text-slate-700 dark:text-slate-200">
+        <Icon iconType="cube-solid" className="text-2xl" />
+        <Link href="/" className="text-xl font-bold flex items-center lg:ml-2.5 ">
           <span className="self-center whitespace-nowrap">Asset Management</span>
         </Link>
       </div>
       <div className="flex items-center gap-x-2">
-        <div className="text-slate-700 text-sm">Hello! User</div>
-        <Icon iconType="person-circle" className="text-2xl text-slate-700" />
+        <div className="text-sm">Hello! User</div>
+        <Icon iconType="person-circle" className="text-2xl" />
       </div>
     </header>
   );

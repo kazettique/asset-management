@@ -3,7 +3,18 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { CommonConstant } from '@/constant';
-import { DAsset, FAsset, FSettingOptions, MAsset, NString, PAsset, VAsset, VAssetTable } from '@/types';
+import {
+  DAsset,
+  FAsset,
+  FormOption,
+  FSettingOptions,
+  MAsset,
+  NString,
+  NType,
+  PAsset,
+  VAsset,
+  VAssetTable,
+} from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
@@ -34,48 +45,65 @@ export abstract class AssetTransformer {
   }
 
   // view model -> form model
-  public static VFAssetTransformer(src: VAsset): FAsset {
+  public static VFAssetTransformer(src: VAsset, settingOptions: FSettingOptions): FAsset {
+    const convert = (_src: { id: string; name: string }): FormOption => ({ label: _src.name, value: _src.id });
+
+    const findBrand = settingOptions.brands.find((_item) => _item.value === src.brandId);
+    const findStartMethod = settingOptions.startMethods.find((_item) => _item.value === src.startMethodId);
+    const findStartPlatform = settingOptions.platforms.find((_item) => _item.value === src.startPlatformId);
+    const findStartCurrencyId = settingOptions.currencies.find((_item) => _item.value === src.startCurrencyId);
+    const findEndMethod = settingOptions.endMethods.find((_item) => _item.value === src.endMethodId);
+    const findEndPlatform = settingOptions.platforms.find((_item) => _item.value === src.endPlatformId);
+    const findEndCurrencyId = settingOptions.currencies.find((_item) => _item.value === src.endCurrencyId);
+    const findPlace = settingOptions.places.find((_item) => _item.value === src.placeId);
+    const findOwner = settingOptions.owners.find((_item) => _item.value === src.ownerId);
+    const findCategory = settingOptions.categories.find((_item) => _item.value === src.ownerId);
+
     return {
-      brandId: src.brandId ?? '',
-      categoryId: src.categoryId,
+      brandId: findBrand || CommonConstant.DEFAULT_SELECT_OPTION,
+      categoryId: findCategory || CommonConstant.DEFAULT_SELECT_OPTION,
       comment: src.comment ?? '',
-      endCurrencyId: src.endCurrencyId ?? '',
+      endCurrencyId: findEndCurrencyId || CommonConstant.DEFAULT_SELECT_OPTION,
       endDate: src.endDate,
-      endMethodId: src.endMethodId ?? '',
-      endPlatformId: src.endPlatformId ?? '',
+      endMethodId: findEndMethod || CommonConstant.DEFAULT_SELECT_OPTION,
+      endPlatformId: findEndPlatform || CommonConstant.DEFAULT_SELECT_OPTION,
       endPrice: src.endPrice ?? 0,
       isCensored: src.isCensored,
       meta: src.meta,
       name: src.name,
-      newTags: [],
-      ownerId: src.ownerId ?? '',
-      placeId: src.placeId ?? '',
-      startCurrencyId: src.startCurrencyId,
+      ownerId: findOwner || CommonConstant.DEFAULT_SELECT_OPTION,
+      placeId: findPlace || CommonConstant.DEFAULT_SELECT_OPTION,
+      startCurrencyId: findEndCurrencyId || CommonConstant.DEFAULT_SELECT_OPTION,
       startDate: src.startDate,
-      startMethodId: src.startMethodId,
-      startPlatformId: src.startPlatformId,
+      startMethodId: findStartMethod || CommonConstant.DEFAULT_SELECT_OPTION,
+      startPlatformId: findStartPlatform || CommonConstant.DEFAULT_SELECT_OPTION,
       startPrice: src.startPrice,
-      tags: src.tags.map((item) => item.id),
+      tags: src.tags.map((item) => convert(item)),
     };
   }
 
   // form model -> request model
   public static FPAssetTransformer(src: FAsset): PAsset {
-    const convertEmptyStringToNull = (str: string): NString => (str.length === 0 ? null : str);
+    const convertEmptyStringToNull = (option: NType<FormOption>): NString =>
+      option === null ? null : String(option.value);
 
     return {
       ...src,
       brandId: convertEmptyStringToNull(src.brandId),
+      categoryId: String(src.categoryId.value),
       endCurrencyId: convertEmptyStringToNull(src.endCurrencyId),
       endMethodId: convertEmptyStringToNull(src.endMethodId),
       endPlatformId: convertEmptyStringToNull(src.endPlatformId),
       endPrice: src.endPrice,
       ownerId: convertEmptyStringToNull(src.ownerId),
       placeId: convertEmptyStringToNull(src.placeId),
+      startCurrencyId: String(src.startCurrencyId.value),
       startDate: new Date(src.startDate),
+      startMethodId: String(src.startMethodId.value),
+      startPlatformId: String(src.startPlatformId.value),
       tags: {
-        connect: src.tags.map((item) => ({ id: item })),
-        create: src.newTags.map((item) => ({ name: item })),
+        connect: src.tags.filter((item) => !item.__isNew__).map((item) => ({ id: String(item.value) })),
+        create: src.tags.filter((item) => item.__isNew__ === true).map((item) => ({ name: item.label })),
       },
     };
   }

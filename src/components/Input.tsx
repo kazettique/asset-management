@@ -10,21 +10,21 @@ interface Props<T extends FieldValues>
 }
 
 export default function Input<T extends FieldValues>(props: Props<T>) {
-  const { label = '', path, register, className = '', placeholder = '請輸入', ...rest } = props;
+  const { label = '', path, register, className = '', placeholder = 'Please type something', ...rest } = props;
 
   const registerOptions =
     props.type === 'date' ? { valueAsDate: true } : props.type === 'number' ? { valueAsNumber: true } : {};
 
   return (
-    <div className="flex gap-x-2 flex-col">
-      <label className="block dark:text-gray-50 text-gray-800" htmlFor={path}>
+    <div className={`flex gap-x-2 flex-col ${className}`}>
+      <label className="block dark:text-gray-50 text-gray-700" htmlFor={path}>
         {label || path}
       </label>
       <input
         {...register(path, registerOptions)}
         {...rest}
         placeholder={placeholder}
-        className={`h-10 border mt-1 rounded px-4 w-full bg-gray-50 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-50 ${className}`}
+        className={`h-10 border mt-1 rounded px-4 w-full bg-gray-50 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-50 ${className}`}
       />
     </div>
   );

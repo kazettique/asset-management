@@ -1,4 +1,3 @@
-import { platform } from 'os';
 import { z } from 'zod';
 
 import { DSetting, MSetting, VSetting } from '@/types';
@@ -10,6 +9,7 @@ import { MethodValidator } from './method';
 import { OwnerValidator } from './owner';
 import { PlaceValidator } from './place';
 import { PlatformValidator } from './platform';
+import { TagValidator } from './tag';
 
 export abstract class SettingValidator {
   public static readonly DSettingValidator: z.ZodSchema<DSetting> = z.object({
@@ -19,6 +19,7 @@ export abstract class SettingValidator {
     methods: MethodValidator.DMethodValidator.array(),
     owners: OwnerValidator.DOwnerValidator.array(),
     places: PlaceValidator.DPlaceValidator.array(),
+    tags: TagValidator.DTagValidator.array(),
   });
 
   public static readonly MSettingValidator: z.ZodSchema<MSetting> = z.object({
@@ -29,6 +30,7 @@ export abstract class SettingValidator {
     owners: OwnerValidator.MOwnerValidator.array(),
     places: PlaceValidator.MPlaceValidator.array(),
     platforms: PlatformValidator.MPlatformValidator.array(),
+    tags: TagValidator.MTagValidator.array(),
   });
 
   public static readonly VSettingValidator: z.ZodSchema<VSetting> = z.object({
@@ -40,5 +42,6 @@ export abstract class SettingValidator {
     places: PlaceValidator.MPlaceValidator.array(),
     platforms: PlatformValidator.MPlatformValidator.array(),
     startMethods: MethodValidator.MMethodValidator.array(),
+    tags: TagValidator.MTagValidator.array(),
   });
 }

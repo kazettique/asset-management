@@ -2,9 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { MethodType } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 
+import Select from '@/components/BasicSelect';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import Select from '@/components/Select';
 import { MethodConstant } from '@/constant';
 import { FMethod } from '@/types';
 import { MethodValidator } from '@/validator';

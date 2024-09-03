@@ -9,4 +9,5 @@ export interface FSettingOptions {
   places: FormOption[];
   platforms: FormOption[];
   startMethods: FormOption[];
+  tags: FormOption[];
 }

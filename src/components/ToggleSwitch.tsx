@@ -16,7 +16,7 @@ export default function ToggleSwitch(props: Props) {
   return (
     <label className={`toggleSwitch ${className}`}>
       <div>{label}</div>
-      <input type="checkbox" checked={isChecked} onClick={handleChange} />
+      <input type="checkbox" checked={isChecked} onChange={handleChange} />
       <i />
     </label>
   );

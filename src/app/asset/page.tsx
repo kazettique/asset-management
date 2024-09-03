@@ -15,7 +15,7 @@ import Create from './Create';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VAsset>>(null);
-  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   const {
     data: settingData,

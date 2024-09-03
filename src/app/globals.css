@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .basicButton {
-  @apply rounded-lg py-1.5 px-2 font-sans text-xs font-bold uppercase text-white shadow-md  transition-all hover:shadow-lg  focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none;
+  @apply rounded-lg py-1.5 px-2 font-sans text-xs font-bold uppercase text-white shadow-md transition-all hover:shadow-lg  focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none;
   @apply bg-blue-500 shadow-blue-500/20 hover:shadow-blue-500/40;
 
   &[data-variant='primary'] {

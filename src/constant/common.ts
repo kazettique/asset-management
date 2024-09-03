@@ -1,4 +1,4 @@
-import { MenuItem, Name } from '@/types';
+import { FormOption, MenuItem, Name } from '@/types';
 
 export abstract class CommonConstant {
   public static readonly MSG_DIRTY_DATA: string = 'dirty data';
@@ -8,6 +8,11 @@ export abstract class CommonConstant {
   public static readonly DATE_TIME_FORMAT: string = 'YYYY-MM-DD';
 
   public static readonly DEFAULT_EMPTY_STRING: string = '--';
+
+  public static readonly DEFAULT_SELECT_OPTION: FormOption = {
+    label: 'Please choose',
+    value: '',
+  };
 
   public static readonly SIDE_MENU_LIST: MenuItem[] = [
     {

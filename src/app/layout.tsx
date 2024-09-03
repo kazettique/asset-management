@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 // ref: https://www.creative-tim.com/twcomponents/component/layout-with-header-sidebar-and-rightbar
+// ref:https://stackoverflow.com/questions/75337953/what-causes-nextjs-warning-extra-attributes-from-the-server-data-new-gr-c-s-c
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">

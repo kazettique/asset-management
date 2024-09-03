@@ -1,26 +1,26 @@
 import { NType } from '../base';
-import { AssetMeta, Id, Name, Price } from '../common';
+import { AssetMeta, Name, Price } from '../common';
+import { FormOption } from './common';
 
 // no null type in all properties
 export interface FAsset {
-  brandId: Id;
-  categoryId: Id;
+  brandId: NType<FormOption>;
+  categoryId: FormOption;
   comment: string;
-  endCurrencyId: Id;
+  endCurrencyId: NType<FormOption>;
   endDate: NType<Date>;
-  endMethodId: Id;
-  endPlatformId: Id;
+  endMethodId: NType<FormOption>;
+  endPlatformId: NType<FormOption>;
   endPrice: Price;
   isCensored: boolean;
   meta: AssetMeta;
   name: Name;
-  newTags: string[];
-  ownerId: Id;
-  placeId: Id;
-  startCurrencyId: Id;
+  ownerId: NType<FormOption>;
+  placeId: NType<FormOption>;
+  startCurrencyId: FormOption;
   startDate: Date;
-  startMethodId: Id;
-  startPlatformId: Id;
+  startMethodId: FormOption;
+  startPlatformId: FormOption;
   startPrice: Price;
-  tags: Id[];
+  tags: FormOption[];
 }

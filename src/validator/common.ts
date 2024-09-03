@@ -2,7 +2,18 @@ import { MethodType } from '@prisma/client';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
-import { AssetCommon, AssetMeta, CurrencyCommon, DbBase, Id, MethodCommon, Name, Price, SettingBase } from '@/types';
+import {
+  AssetCommon,
+  AssetMeta,
+  CurrencyCommon,
+  DbBase,
+  FormOption,
+  Id,
+  MethodCommon,
+  Name,
+  Price,
+  SettingBase,
+} from '@/types';
 
 export abstract class CommonValidator {
   public static readonly IdValidator: z.ZodSchema<Id> = z.string().uuid();
@@ -31,6 +42,12 @@ export abstract class CommonValidator {
       type: z.nativeEnum(MethodType),
     })
     .and(this.SettingBaseValidator);
+
+  public static readonly FormOptionValidator: z.ZodSchema<FormOption> = z.object({
+    __isNew__: z.boolean().optional(),
+    label: z.string(),
+    value: z.string().min(1),
+  });
 
   public static readonly AssetMetaValidator: z.ZodSchema<AssetMeta> = z
     .tuple([z.string(), z.string().or(z.number())])

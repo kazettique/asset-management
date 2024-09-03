@@ -34,7 +34,7 @@ export default function Component(props: Props) {
       {item.link ? (
         <Link
           href={item.link}
-          className={`w-full flex items-center p-2 rounded-lg dark:text-white gap-x-3 ${isActiveLink ? 'bg-gray-200' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+          className={`w-full flex items-center p-2 rounded-lg dark:text-white gap-x-3 ${isActiveLink ? 'bg-gray-200 dark:bg-gray-700' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
         >
           <Icon
             iconType={item.icon}

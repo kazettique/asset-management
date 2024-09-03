@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+import { FormProps, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
+import BasicSelect from '@/components/BasicSelect';
 import Button from '@/components/Button';
-import ToggleSwitch from '@/components/ToggleSwitch';
+import FileReader from '@/components/FileReader';
+import { FormOption } from '@/types';
 
 interface MyForm {
   test: {
@@ -19,57 +23,46 @@ const defaultValues: MyForm = {
 };
 
 export default function Home() {
-  const { control, register, watch, handleSubmit } = useForm<MyForm>({
-    defaultValues,
+  const { register, handleSubmit, reset, control, watch, formState } = useForm<{ name: string | null }>({
+    defaultValues: { name: null },
     mode: 'all',
-  });
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormProvider)
-    name: 'test', // unique name for your Field Array
+    resolver: zodResolver(z.object({ name: z.string().nullable() })),
   });
 
-  const values = useWatch<MyForm>({ control, name: 'test' });
+  const options: FormOption[] = [
+    {
+      label: 'aaa',
+      value: 1,
+    },
+    { label: 'bbb', value: 2 },
+  ];
 
-  const onSubmit = (data: MyForm) => {
-    console.log('data', data);
-  };
-
-  const onChange = (event: boolean): void => {
-    console.log('event', event);
-    setIsChecked(event);
-  };
-
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  useEffect(() => {
+    const errors = formState.errors;
+    const values = watch();
+    console.log('error', errors);
+    console.log('values', values);
+  }, [formState.errors, watch]);
 
   return (
     <main>
       <h1 className="text-4xl font-bold text-center py-4">Home page</h1>
-      <form className="flex flex-col gap-y-4 w-2/3 p-10" onSubmit={handleSubmit(onSubmit)}>
-        {fields.map((field, index) => (
-          <div className="flex gap-x-2" key={field.id}>
-            <input className="block" placeholder="please type name" {...register(`test.${index}.name` as const)} />
-            <input className="block" placeholder="please type price" {...register(`test.${index}.price` as const)} />
-          </div>
-        ))}
-        <Button
-          onClick={() =>
-            append({
-              name: '',
-              price: 0,
-            })
-          }
-          variant="secondary"
-        >
-          Add
+
+      <FileReader />
+      {/* <MultiSelect /> */}
+
+      <form
+        onSubmit={handleSubmit((data) => {
+          console.log('data', data);
+          // onSubmit(data);
+          // reset();
+        })}
+      >
+        <BasicSelect control={control} path="name" options={options} />
+        <Button type="submit" className="w-fit mt-4 block ml-auto mr-0">
+          Submit
         </Button>
-        <hr />
-        <Button type="submit">Submit</Button>
-
-        <div className="bg-slate-100">{JSON.stringify(values, null, 2)}</div>
       </form>
-
-      <ToggleSwitch onChange={onChange} isChecked={isChecked} />
-      <ToggleSwitch onChange={onChange} label="hello" isChecked={isChecked} />
     </main>
   );
 }
