@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import Button from '@/components/Button';
+import BasicButton from '@/components/BasicButton';
 import Table, { ColumnProps } from '@/components/Table';
 import { CurrencyFetcher } from '@/fetcher';
 import { CurrencyTransformer } from '@/transformer';
@@ -94,13 +94,13 @@ export default function Page() {
     {
       key: 'action',
       render: (column, item) => (
-        <Button
+        <BasicButton
           variant="secondary"
           className="bg-slate-500 p-1 rounded-sm text-white"
           onClick={() => onItemEdit(item.raw)}
         >
           Edit
-        </Button>
+        </BasicButton>
       ),
       title: 'Action',
     },

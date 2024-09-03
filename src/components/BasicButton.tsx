@@ -6,11 +6,17 @@ interface Props extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement
   variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning';
 }
 
-export default function Button(props: Props) {
+export default function BasicButton(props: Props) {
   const { children, variant = 'primary', className, type = 'button' } = props;
 
   return (
-    <button {...props} className={`basicButton ${className}`} type={type} data-variant={variant}>
+    <button
+      {...props}
+      data-test-comp={BasicButton.name}
+      className={`basicButton ${className}`}
+      type={type}
+      data-variant={variant}
+    >
       {children}
     </button>
   );

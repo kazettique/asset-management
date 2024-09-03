@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import BasicSelect from '@/components/BasicSelect';
-import Button from '@/components/Button';
+import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import TextArea from '@/components/TextArea';
@@ -82,9 +82,9 @@ export default function Create(props: Props) {
           </div>
         </div>
 
-        <Button type="submit" className="w-fit mt-4 block ml-auto mr-0">
+        <BasicButton type="submit" className="w-fit mt-4 block ml-auto mr-0">
           Submit
-        </Button>
+        </BasicButton>
       </form>
     </div>
   );

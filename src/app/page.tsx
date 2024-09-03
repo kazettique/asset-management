@@ -6,7 +6,7 @@ import { FormProps, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import BasicSelect from '@/components/BasicSelect';
-import Button from '@/components/Button';
+import BasicButton from '@/components/BasicButton';
 import FileReader from '@/components/FileReader';
 import { FormOption } from '@/types';
 
@@ -59,9 +59,9 @@ export default function Home() {
         })}
       >
         <BasicSelect control={control} path="name" options={options} />
-        <Button type="submit" className="w-fit mt-4 block ml-auto mr-0">
+        <BasicButton type="submit" className="w-fit mt-4 block ml-auto mr-0">
           Submit
-        </Button>
+        </BasicButton>
       </form>
     </main>
   );

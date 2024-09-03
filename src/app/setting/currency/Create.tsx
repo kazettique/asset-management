@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import Button from '@/components/Button';
+import BasicButton from '@/components/BasicButton';
 import BasicInput from '@/components/BasicInput';
 import { CurrencyConstant } from '@/constant';
 import { FCurrency } from '@/types';
@@ -46,7 +46,7 @@ export default function Create(props: Props) {
           <BasicInput register={register} path="comment" />
           {formState.errors.comment && <div className="text-red-500">{formState.errors.comment.message}</div>}
         </div>
-        <Button type="submit">Submit</Button>
+        <BasicButton type="submit">Submit</BasicButton>
       </form>
     </div>
   );

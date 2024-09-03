@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import Button from '@/components/Button';
+import BasicButton from '@/components/BasicButton';
 import BasicInput from '@/components/BasicInput';
 import { FPlace, VPlace } from '@/types';
 import { PlaceValidator } from '@/validator';
@@ -29,13 +29,13 @@ export default function Item(props: Props) {
             <BasicInput register={register} path="name" className="w-1/5" />
             <BasicInput register={register} path="comment" className="w-1/5" />
             <div className="w-1/5 gap-x-2 flex">
-              <Button type="submit">Save</Button>
-              <Button variant="danger" onClick={() => props.onDelete(props.item.id)}>
+              <BasicButton type="submit">Save</BasicButton>
+              <BasicButton variant="danger" onClick={() => props.onDelete(props.item.id)}>
                 Del
-              </Button>
-              <Button variant="secondary" onClick={() => props.onCancel()}>
+              </BasicButton>
+              <BasicButton variant="secondary" onClick={() => props.onCancel()}>
                 Cancel
-              </Button>
+              </BasicButton>
             </div>
           </form>
         </td>

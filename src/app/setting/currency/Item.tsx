@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import Button from '@/components/Button';
+import BasicButton from '@/components/BasicButton';
 import BasicInput from '@/components/BasicInput';
 import { FCurrency, VCurrency } from '@/types';
 import { CurrencyValidator } from '@/validator';
@@ -48,9 +48,9 @@ export default function Item(props: Props) {
           <td className="border border-slate-300">{props.item.symbol}</td>
           <td className="border border-slate-300">{props.item.comment}</td>
           <td className="border border-slate-300 flex gap-x-2">
-            <Button variant="secondary" onClick={() => props.onEdit(props.item)}>
+            <BasicButton variant="secondary" onClick={() => props.onEdit(props.item)}>
               Edit
-            </Button>
+            </BasicButton>
           </td>
         </>
       )}

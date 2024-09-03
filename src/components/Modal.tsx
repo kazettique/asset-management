@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 
 import { NString } from '@/types';
 
-import Button from './Button';
+import BasicButton from './BasicButton';
 
 const DEFAULT_TITLE: string = '標題';
 const DEFAULT_PRIMARY_BTN_TEXT = '確定';
@@ -67,12 +67,12 @@ export default function Modal(props: Props) {
             <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
             {children}
             <div className="flex gap-4">
-              <Button className="grow" variant="secondary" onClick={handleSecondaryBtnClick}>
+              <BasicButton className="grow" variant="secondary" onClick={handleSecondaryBtnClick}>
                 {secondaryBtnText}
-              </Button>
-              <Button className="grow" onClick={handlePrimaryBtnClick}>
+              </BasicButton>
+              <BasicButton className="grow" onClick={handlePrimaryBtnClick}>
                 {primaryBtnText}
-              </Button>
+              </BasicButton>
             </div>
           </div>
         </div>

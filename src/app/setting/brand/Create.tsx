@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import Button from '@/components/Button';
+import BasicButton from '@/components/BasicButton';
 import BasicInput from '@/components/BasicInput';
 import { BrandConstant } from '@/constant';
 import { FBrand } from '@/types';
@@ -32,7 +32,7 @@ export default function Create(props: Props) {
       >
         <BasicInput register={register} path="name" />
         <BasicInput register={register} path="comment" />
-        <Button type="submit">Submit</Button>
+        <BasicButton type="submit">Submit</BasicButton>
       </form>
       {formState.errors.name && <div className="text-red-500">{formState.errors.name.message}</div>}
     </div>
