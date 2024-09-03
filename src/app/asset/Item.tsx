@@ -5,7 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-import Input from '@/components/Input';
+import BasicInput from '@/components/BasicInput';
 import { CommonConstant } from '@/constant';
 import { AssetTransformer } from '@/transformer';
 import { FAsset, FSettingOptions, VAsset } from '@/types';
@@ -121,28 +121,28 @@ export default function Item(props: Props) {
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <Input register={register} path="name" />
-            <Input register={register} path="brandId" />
+            <BasicInput register={register} path="name" />
+            <BasicInput register={register} path="brandId" />
 
             {/* start info */}
-            <Input register={register} path="startDate" />
+            <BasicInput register={register} path="startDate" />
             <div>
-              <Input register={register} path="startCurrencyId" />
-              <Input register={register} path="startPrice" />
+              <BasicInput register={register} path="startCurrencyId" />
+              <BasicInput register={register} path="startPrice" />
             </div>
-            <Input register={register} path="startMethodId" />
-            <Input register={register} path="startPlatformId" />
+            <BasicInput register={register} path="startMethodId" />
+            <BasicInput register={register} path="startPlatformId" />
 
             {/* end info */}
-            <Input register={register} path="endDate" />
+            <BasicInput register={register} path="endDate" />
             <div>
-              <Input register={register} path="endCurrencyId" />
-              <Input register={register} path="endPrice" />
+              <BasicInput register={register} path="endCurrencyId" />
+              <BasicInput register={register} path="endPrice" />
             </div>
-            <Input register={register} path="endMethodId" />
-            <Input register={register} path="endPlatformId" />
+            <BasicInput register={register} path="endMethodId" />
+            <BasicInput register={register} path="endPlatformId" />
 
-            <Input register={register} path="comment" />
+            <BasicInput register={register} path="comment" />
             <div className="w-1/5 gap-x-2 flex">
               <button className="bg-slate-500 p-1 rounded-sm text-white">Save</button>
               <button className="bg-red-500 p-1 rounded-sm text-white" onClick={() => props.onDelete(props.item.id)}>

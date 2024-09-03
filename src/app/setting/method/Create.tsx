@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import Select from '@/components/BasicSelect';
 import Button from '@/components/Button';
-import Input from '@/components/Input';
+import BasicInput from '@/components/BasicInput';
 import { MethodConstant } from '@/constant';
 import { FMethod } from '@/types';
 import { MethodValidator } from '@/validator';
@@ -43,8 +43,8 @@ export default function Create(props: Props) {
         })}
         className="flex flex-col gap-y-4"
       >
-        <Input register={register} path="name" />
-        <Input register={register} path="comment" />
+        <BasicInput register={register} path="name" />
+        <BasicInput register={register} path="comment" />
         <Button type="submit">Submit</Button>
       </form>
       {formState.errors.name && <div className="text-red-500">{formState.errors.name.message}</div>}

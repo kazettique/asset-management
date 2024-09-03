@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import Button from '@/components/Button';
-import Input from '@/components/Input';
+import BasicInput from '@/components/BasicInput';
 import { OwnerConstant } from '@/constant';
 import { FOwner } from '@/types';
 import { OwnerValidator } from '@/validator';
@@ -30,8 +30,8 @@ export default function Create(props: Props) {
         })}
         className="flex flex-col gap-y-4"
       >
-        <Input register={register} path="name" />
-        <Input register={register} path="comment" />
+        <BasicInput register={register} path="name" />
+        <BasicInput register={register} path="comment" />
         <Button type="submit">Submit</Button>
       </form>
       {formState.errors.name && <div className="text-red-500">{formState.errors.name.message}</div>}

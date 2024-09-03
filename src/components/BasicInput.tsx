@@ -9,14 +9,14 @@ interface Props<T extends FieldValues>
   register: UseFormRegister<T>;
 }
 
-export default function Input<T extends FieldValues>(props: Props<T>) {
+export default function BasicInput<T extends FieldValues>(props: Props<T>) {
   const { label = '', path, register, className = '', placeholder = 'Please type something', ...rest } = props;
 
   const registerOptions =
     props.type === 'date' ? { valueAsDate: true } : props.type === 'number' ? { valueAsNumber: true } : {};
 
   return (
-    <div className={`flex gap-x-2 flex-col ${className}`}>
+    <div className={`flex gap-x-2 flex-col ${className}`} data-test-comp={BasicInput.name}>
       <label className="block dark:text-gray-50 text-gray-700" htmlFor={path}>
         {label || path}
       </label>

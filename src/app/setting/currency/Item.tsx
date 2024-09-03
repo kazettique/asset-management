@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import Button from '@/components/Button';
-import Input from '@/components/Input';
+import BasicInput from '@/components/BasicInput';
 import { FCurrency, VCurrency } from '@/types';
 import { CurrencyValidator } from '@/validator';
 
@@ -26,10 +26,10 @@ export default function Item(props: Props) {
       {props.isEdit ? (
         <td colSpan={5} className="border border-slate-300 bg-slate-400">
           <form onSubmit={handleSubmit(props.onUpdate)} className="flex">
-            <Input register={register} path="name" className="w-1/5" />
-            <Input register={register} path="display" className="w-1/5" />
-            <Input register={register} path="symbol" className="w-1/5" />
-            <Input register={register} path="comment" className="w-1/5" />
+            <BasicInput register={register} path="name" className="w-1/5" />
+            <BasicInput register={register} path="display" className="w-1/5" />
+            <BasicInput register={register} path="symbol" className="w-1/5" />
+            <BasicInput register={register} path="comment" className="w-1/5" />
             <div className="w-1/5 gap-x-2 flex">
               <button className="bg-slate-500 p-1 rounded-sm text-white">Save</button>
               <button className="bg-red-500 p-1 rounded-sm text-white" onClick={() => props.onDelete(props.item.id)}>

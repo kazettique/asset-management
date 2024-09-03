@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import BasicSelect from '@/components/BasicSelect';
 import Button from '@/components/Button';
 import Icon from '@/components/Icon';
-import Input from '@/components/Input';
+import BasicInput from '@/components/BasicInput';
 import TextArea from '@/components/TextArea';
 import { AssetConstant } from '@/constant';
 import { FAsset, FSettingOptions } from '@/types';
@@ -44,7 +44,7 @@ export default function Create(props: Props) {
         <div className="flex gap-4">
           <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4 w-1/2">
             <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">basic info</div>
-            <Input register={register} path="name" />
+            <BasicInput register={register} path="name" />
             <BasicSelect options={props.settingOptions.brands} path="brandId" control={control} />
             <BasicSelect options={props.settingOptions.categories} path="categoryId" control={control} />
             <BasicSelect options={props.settingOptions.owners} path="ownerId" control={control} isCreatable />
@@ -59,9 +59,9 @@ export default function Create(props: Props) {
             <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4">
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">start info</div>
               <div className="grid grid-cols-2 gap-2">
-                <Input type="date" register={register} path="startDate" />
+                <BasicInput type="date" register={register} path="startDate" />
                 <BasicSelect options={props.settingOptions.currencies} path="startCurrencyId" control={control} />
-                <Input type="number" register={register} path="startPrice" />
+                <BasicInput type="number" register={register} path="startPrice" />
 
                 <BasicSelect options={props.settingOptions.startMethods} path="startMethodId" control={control} />
                 <BasicSelect options={props.settingOptions.platforms} path="startPlatformId" control={control} />
@@ -71,9 +71,9 @@ export default function Create(props: Props) {
             <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4">
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">end info</div>
               <div className="grid grid-cols-2 gap-2">
-                <Input type="date" register={register} path="endDate" />
+                <BasicInput type="date" register={register} path="endDate" />
                 <BasicSelect options={props.settingOptions.currencies} path="endCurrencyId" control={control} />
-                <Input type="number" register={register} path="endPrice" />
+                <BasicInput type="number" register={register} path="endPrice" />
 
                 <BasicSelect options={props.settingOptions.endMethods} path="endMethodId" control={control} />
                 <BasicSelect options={props.settingOptions.platforms} path="endPlatformId" control={control} />
