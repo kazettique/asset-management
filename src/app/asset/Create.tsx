@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import BasicSelect from '@/components/BasicSelect';
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
-import TextArea from '@/components/TextArea';
+import BasicSelect from '@/components/BasicSelect';
+import BasicTextArea from '@/components/BasicTextArea';
 import { AssetConstant } from '@/constant';
 import { FAsset, FSettingOptions } from '@/types';
 import { AssetValidator } from '@/validator';
@@ -52,7 +52,7 @@ export default function Create(props: Props) {
             <BasicSelect options={props.settingOptions.tags} isCreatable isMulti path="tags" control={control} />
             {/* <div className="dark:text-white">{JSON.stringify(values)}</div> */}
 
-            <TextArea register={register} path="comment" rows={5} />
+            <BasicTextArea register={register} path="comment" rows={5} />
           </div>
 
           <div className="w-1/2 flex flex-col gap-4">

@@ -9,11 +9,11 @@ interface Props<T extends FieldValues>
   register: UseFormRegister<T>;
 }
 
-export default function TextArea<T extends FieldValues>(props: Props<T>) {
+export default function BasicTextArea<T extends FieldValues>(props: Props<T>) {
   const { label = '', path, register, className = '', placeholder = 'Please type something', ...rest } = props;
 
   return (
-    <div className="flex gap-x-2 flex-col" data-test-comp={TextArea.name}>
+    <div className="flex gap-x-2 flex-col" data-test-comp={BasicTextArea.name}>
       <label className="block dark:text-gray-50 text-gray-700" htmlFor={path}>
         {label || path}
       </label>
