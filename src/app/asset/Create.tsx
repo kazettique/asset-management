@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import BasicSelect from '@/components/BasicSelect';
 import Button from '@/components/Button';
-import Icon from '@/components/Icon';
+import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import TextArea from '@/components/TextArea';
 import { AssetConstant } from '@/constant';
@@ -29,7 +29,7 @@ export default function Create(props: Props) {
     <div className={`p-4 flex flex-col gap-y-4 bg-gray-50 overflow-auto dark:bg-gray-800 ${className}`}>
       <div className="flex justify-between">
         <div className="font-bold text-xl dark:text-gray-50">Create Asset</div>
-        <Icon
+        <BasicIcon
           onClick={onClose}
           iconType="x-lg"
           className="cursor-pointer hover:bg-slate-200 rounded-sm transition-all p-1"
