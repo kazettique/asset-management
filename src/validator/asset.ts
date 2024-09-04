@@ -7,7 +7,7 @@ import { CommonValidator } from './common';
 export abstract class AssetValidator {
   public static readonly DAssetValidator: z.ZodSchema<DAsset> = z
     .object({
-      meta: z.record(z.string(), z.any()),
+      meta: z.record(z.string(), z.any()).nullable(),
       tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
     .and(CommonValidator.DbBaseValidator)
@@ -15,7 +15,7 @@ export abstract class AssetValidator {
 
   public static readonly MAssetValidator: z.ZodSchema<MAsset> = z
     .object({
-      meta: CommonValidator.AssetMetaValidator,
+      meta: CommonValidator.AssetMetaValidator.nullable(),
       tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
     .and(CommonValidator.DbBaseValidator)

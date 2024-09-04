@@ -41,7 +41,7 @@ export type AssetMeta = { key: string; value: string | number }[];
 
 export interface AssetCommon {
   brandId: NType<Id>;
-  categoryId: Id;
+  categoryId: NType<Id>;
   comment: NString;
   endCurrencyId: NType<Id>;
   endDate: NType<Date>;
@@ -52,9 +52,9 @@ export interface AssetCommon {
   name: Name;
   ownerId: NType<Id>;
   placeId: NType<Id>;
-  startCurrencyId: Id;
-  startDate: Date;
-  startMethodId: Id;
-  startPlatformId: Id;
-  startPrice: Price;
+  startCurrencyId: NType<Id>;
+  startDate: NType<Date>;
+  startMethodId: NType<Id>;
+  startPlatformId: NType<Id>;
+  startPrice: NType<Price>;
 }

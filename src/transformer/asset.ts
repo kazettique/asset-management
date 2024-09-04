@@ -73,11 +73,11 @@ export abstract class AssetTransformer {
       name: src.name,
       ownerId: findOwner || CommonConstant.DEFAULT_SELECT_OPTION,
       placeId: findPlace || CommonConstant.DEFAULT_SELECT_OPTION,
-      startCurrencyId: findEndCurrencyId || CommonConstant.DEFAULT_SELECT_OPTION,
+      startCurrencyId: findStartCurrencyId || CommonConstant.DEFAULT_SELECT_OPTION,
       startDate: src.startDate,
       startMethodId: findStartMethod || CommonConstant.DEFAULT_SELECT_OPTION,
       startPlatformId: findStartPlatform || CommonConstant.DEFAULT_SELECT_OPTION,
-      startPrice: src.startPrice,
+      startPrice: src.startPrice ?? 0,
       tags: src.tags.map((item) => convert(item)),
     };
   }
@@ -95,12 +95,12 @@ export abstract class AssetTransformer {
       endMethodId: convertEmptyStringToNull(src.endMethodId),
       endPlatformId: convertEmptyStringToNull(src.endPlatformId),
       endPrice: src.endPrice,
+      meta: src.meta ?? [],
       ownerId: convertEmptyStringToNull(src.ownerId),
       placeId: convertEmptyStringToNull(src.placeId),
-      startCurrencyId: String(src.startCurrencyId.value),
-      startDate: new Date(src.startDate),
-      startMethodId: String(src.startMethodId.value),
-      startPlatformId: String(src.startPlatformId.value),
+      startCurrencyId: convertEmptyStringToNull(src.startCurrencyId),
+      startMethodId: convertEmptyStringToNull(src.startMethodId),
+      startPlatformId: convertEmptyStringToNull(src.startPlatformId),
       tags: {
         connect: src.tags.filter((item) => !item.__isNew__).map((item) => ({ id: String(item.value) })),
         create: src.tags.filter((item) => item.__isNew__ === true).map((item) => ({ name: item.label })),
@@ -130,7 +130,7 @@ export abstract class AssetTransformer {
     const endCurrency = settingOptions.currencies.find((_item) => _item.value === src.endCurrencyId);
 
     const _priceDifference: number =
-      src.startCurrencyId === src.endCurrencyId && src.endPrice ? src.startPrice - src.endPrice : src.startPrice;
+      src.startCurrencyId === src.endCurrencyId && src.endPrice && src.startPrice ? src.startPrice - src.endPrice : 0;
 
     let monthlyCost: string = '';
 
@@ -159,7 +159,7 @@ export abstract class AssetTransformer {
             ? `${endCurrency.label} ${Utils.NumberWithCommas(src.endPrice)}`
             : CommonConstant.DEFAULT_EMPTY_STRING,
       },
-      meta: src.meta,
+      meta: src.meta ?? [],
       monthlyCost,
       name: src.name,
       owner: findOwner ? findOwner.label : CommonConstant.DEFAULT_EMPTY_STRING,
@@ -172,9 +172,10 @@ export abstract class AssetTransformer {
         startDate: Utils.GetDateTimeString(_startDate),
         startMethod: findStartMethod ? findStartMethod.label : CommonConstant.DEFAULT_EMPTY_STRING,
         startPlatform: findStartPlatform ? findStartPlatform.label : CommonConstant.DEFAULT_EMPTY_STRING,
-        startPrice: startCurrency
-          ? `${startCurrency.label} ${Utils.NumberWithCommas(src.startPrice)}`
-          : CommonConstant.DEFAULT_EMPTY_STRING,
+        startPrice:
+          startCurrency && src.startPrice
+            ? `${startCurrency.label} ${Utils.NumberWithCommas(src.startPrice)}`
+            : CommonConstant.DEFAULT_EMPTY_STRING,
       },
       tags: src.tags.map((item) => item.name),
       usageTime: Utils.DetailedRelativeTime(_startDate, _endDate),

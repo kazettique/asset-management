@@ -13,14 +13,14 @@ export interface FAsset {
   endPlatformId: NType<FormOption>;
   endPrice: Price;
   isCensored: boolean;
-  meta: AssetMeta;
+  meta: NType<AssetMeta>;
   name: Name;
   ownerId: NType<FormOption>;
   placeId: NType<FormOption>;
-  startCurrencyId: FormOption;
-  startDate: Date;
-  startMethodId: FormOption;
-  startPlatformId: FormOption;
+  startCurrencyId: NType<FormOption>;
+  startDate: NType<Date>;
+  startMethodId: NType<FormOption>;
+  startPlatformId: NType<FormOption>;
   startPrice: Price;
   tags: FormOption[];
 }

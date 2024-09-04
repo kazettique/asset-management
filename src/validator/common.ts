@@ -56,7 +56,7 @@ export abstract class CommonValidator {
   public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z
     .object({
       brandId: CommonValidator.IdValidator.nullable(),
-      categoryId: CommonValidator.IdValidator,
+      categoryId: CommonValidator.IdValidator.nullable(),
       comment: z.string().nullable(),
       endCurrencyId: CommonValidator.IdValidator.nullable(),
       endDate: z.coerce.date().nullable(),
@@ -67,11 +67,11 @@ export abstract class CommonValidator {
       name: CommonValidator.NameValidator,
       ownerId: CommonValidator.IdValidator.nullable(),
       placeId: CommonValidator.IdValidator.nullable(),
-      startCurrencyId: CommonValidator.IdValidator,
-      startDate: z.coerce.date(),
-      startMethodId: CommonValidator.IdValidator,
-      startPlatformId: CommonValidator.IdValidator,
-      startPrice: this.PriceValidator,
+      startCurrencyId: CommonValidator.IdValidator.nullable(),
+      startDate: z.coerce.date().nullable(),
+      startMethodId: CommonValidator.IdValidator.nullable(),
+      startPlatformId: CommonValidator.IdValidator.nullable(),
+      startPrice: this.PriceValidator.nullable(),
     })
     .superRefine((values, context) => {
       if (values.endDate !== null) {

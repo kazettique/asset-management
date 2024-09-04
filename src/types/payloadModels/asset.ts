@@ -8,3 +8,7 @@ export interface PAsset extends AssetCommon {
     create: { name: string }[];
   };
 }
+
+export interface PBatchAsset extends AssetCommon {
+  meta: AssetMeta;
+}
