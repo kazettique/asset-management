@@ -1,5 +1,7 @@
 'use client';
 
+import { Prisma } from '@prisma/client';
+
 import { backendImplements } from '@/decorator';
 import { FPlace, GeneralResponse, Id, MPlace, VPlace } from '@/types';
 
@@ -25,6 +27,14 @@ export abstract class PlatformFetcher {
     const res = await fetch('/api/setting/platform', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
+
+    return data;
+  }
+
+  public static async CreateMany(payload: FPlace[]): Promise<GeneralResponse<Prisma.BatchPayload>> {
+    const res = await fetch('/api/setting/platform/import', { body: JSON.stringify(payload), method: 'POST' });
+
+    const data = (await res.json()) as Promise<GeneralResponse<Prisma.BatchPayload>>;
 
     return data;
   }

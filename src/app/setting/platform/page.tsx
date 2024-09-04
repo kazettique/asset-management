@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import BasicButton from '@/components/BasicButton';
+import BasicFileReaderComp from '@/components/BasicFileReader';
 import Table, { ColumnProps } from '@/components/Table';
 import { PlatformFetcher } from '@/fetcher';
 import { PlatformTransformer } from '@/transformer';
@@ -98,9 +99,18 @@ export default function Page() {
     },
   ];
 
+  const handleChange = async (event: any) => {
+    // console.log('event', event);
+    const res = await PlatformFetcher.CreateMany(event);
+    refetch();
+  };
+
   return (
     <div className="p-5">
-      <div className="font-bold capitalize text-xl my-2">platform setting</div>
+      <div className="flex justify-between">
+        <div className="font-bold capitalize text-xl my-2">platform setting</div>
+        <BasicFileReaderComp onChange={handleChange} />
+      </div>
       {isPending ? <div>loading...</div> : <Table data={tableData} columns={columns} />}
 
       <Create onSubmit={onCreateSubmit} className="w-1/2" />

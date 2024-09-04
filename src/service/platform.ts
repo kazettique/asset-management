@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 import { backendImplements } from '@/decorator';
 import { PlatformRepository } from '@/repository';
 import { Id, MPlace, NType, PPlace } from '@/types';
@@ -14,6 +16,10 @@ export abstract class PlatformService {
 
   public static async Create(payload: PPlace): Promise<MPlace> {
     return await PlatformRepository.Create(payload);
+  }
+
+  public static async CreateMany(payload: PPlace[]): Promise<Prisma.BatchPayload> {
+    return await PlatformRepository.CreateMany(payload);
   }
 
   public static async Delete(id: Id): Promise<MPlace> {
