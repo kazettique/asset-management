@@ -15,7 +15,7 @@ import Create from './Create';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VAsset>>(null);
-  const [isActive, setIsActive] = useState<boolean>(true);
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   const {
     data: settingData,
@@ -136,7 +136,7 @@ export default function Page() {
       render: (column, item) => (
         <>
           {item.meta.map((_item, index) => {
-            const [key, value] = _item;
+            const { key, value } = _item;
             return (
               <div key={index}>
                 {key}: {value}

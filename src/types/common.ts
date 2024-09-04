@@ -37,7 +37,7 @@ export interface MethodCommon extends SettingBase {
   type: MethodType;
 }
 
-export type AssetMeta = [string, string | number][];
+export type AssetMeta = { key: string; value: string | number }[];
 
 export interface AssetCommon {
   brandId: NType<Id>;

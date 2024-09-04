@@ -18,9 +18,8 @@
       "    </div>",
       "  );",
       "}",
-      "",
     ],
-    "description": "React Component",
+    "description": "Next Component",
   },
   "Next Page": {
     "prefix": "npage",

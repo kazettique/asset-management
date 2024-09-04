@@ -50,7 +50,7 @@ export abstract class CommonValidator {
   });
 
   public static readonly AssetMetaValidator: z.ZodSchema<AssetMeta> = z
-    .tuple([z.string(), z.string().or(z.number())])
+    .object({ key: z.string(), value: z.string().or(z.number()) })
     .array();
 
   public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z

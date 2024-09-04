@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
+import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
 import { AssetConstant } from '@/constant';
@@ -22,6 +23,7 @@ export default function Create(props: Props) {
 
   const { register, handleSubmit, reset, control } = useForm<FAsset>({
     defaultValues: AssetConstant.F_ASSET_INITIAL_VALUES,
+    mode: 'all',
     resolver: zodResolver(AssetValidator.FAssetValidator),
   });
 
@@ -42,15 +44,35 @@ export default function Create(props: Props) {
         })}
       >
         <div className="flex gap-4">
-          <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4 w-1/2">
+          <div className="flex flex-col gap-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4 w-1/2">
             <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">basic info</div>
             <BasicInput register={register} path="name" />
-            <BasicSelect options={props.settingOptions.brands} path="brandId" control={control} />
-            <BasicSelect options={props.settingOptions.categories} path="categoryId" control={control} />
-            <BasicSelect options={props.settingOptions.owners} path="ownerId" control={control} isCreatable />
-            <BasicSelect options={props.settingOptions.places} path="placeId" control={control} />
+            <div className="flex gap-2">
+              <BasicSelect className="grow" options={props.settingOptions.brands} path="brandId" control={control} />
+              <BasicSelect
+                className="grow"
+                options={props.settingOptions.categories}
+                path="categoryId"
+                control={control}
+              />
+            </div>
+            <div className="flex gap-2">
+              <BasicSelect
+                className="grow"
+                options={props.settingOptions.owners}
+                path="ownerId"
+                control={control}
+                isCreatable
+              />
+              <BasicSelect className="grow" options={props.settingOptions.places} path="placeId" control={control} />
+            </div>
             <BasicSelect options={props.settingOptions.tags} isCreatable isMulti path="tags" control={control} />
-            {/* <div className="dark:text-white">{JSON.stringify(values)}</div> */}
+            <BasicInputList
+              control={control}
+              path="meta"
+              register={register}
+              newItemDefaultValue={{ key: '', value: '' }}
+            />
 
             <BasicTextArea register={register} path="comment" rows={5} />
           </div>
@@ -60,8 +82,11 @@ export default function Create(props: Props) {
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">start info</div>
               <div className="grid grid-cols-2 gap-2">
                 <BasicInput type="date" register={register} path="startDate" />
-                <BasicSelect options={props.settingOptions.currencies} path="startCurrencyId" control={control} />
-                <BasicInput type="number" register={register} path="startPrice" />
+
+                <div className="flex gap-2">
+                  <BasicSelect options={props.settingOptions.currencies} path="startCurrencyId" control={control} />
+                  <BasicInput type="number" register={register} path="startPrice" />
+                </div>
 
                 <BasicSelect options={props.settingOptions.startMethods} path="startMethodId" control={control} />
                 <BasicSelect options={props.settingOptions.platforms} path="startPlatformId" control={control} />
@@ -72,8 +97,11 @@ export default function Create(props: Props) {
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">end info</div>
               <div className="grid grid-cols-2 gap-2">
                 <BasicInput type="date" register={register} path="endDate" />
-                <BasicSelect options={props.settingOptions.currencies} path="endCurrencyId" control={control} />
-                <BasicInput type="number" register={register} path="endPrice" />
+
+                <div className="flex gap-2">
+                  <BasicSelect options={props.settingOptions.currencies} path="endCurrencyId" control={control} />
+                  <BasicInput type="number" register={register} path="endPrice" />
+                </div>
 
                 <BasicSelect options={props.settingOptions.endMethods} path="endMethodId" control={control} />
                 <BasicSelect options={props.settingOptions.platforms} path="endPlatformId" control={control} />
