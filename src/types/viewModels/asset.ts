@@ -6,6 +6,7 @@ export interface VAsset extends MAsset {}
 export interface VAssetTable {
   brand: string;
   category: string;
+  comment: string;
   endInfo: {
     endDate: string;
     endMethod: string;

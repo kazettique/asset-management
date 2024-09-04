@@ -149,6 +149,7 @@ export abstract class AssetTransformer {
     return {
       brand: findBrand ? findBrand.label : CommonConstant.DEFAULT_EMPTY_STRING,
       category: findCategory ? findCategory.label : CommonConstant.DEFAULT_EMPTY_STRING,
+      comment: src.comment ?? '',
       endInfo: {
         endDate: src.endDate ? Utils.GetDateTimeString(src.endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
         endMethod: findEndMethod ? findEndMethod.label : CommonConstant.DEFAULT_EMPTY_STRING,

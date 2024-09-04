@@ -178,6 +178,10 @@ export default function Page() {
       title: 'tags',
     },
     {
+      key: 'comment',
+      title: 'Comment',
+    },
+    {
       key: 'action',
       render: (column, item) => (
         <BasicButton
@@ -193,7 +197,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="p-4 relative overflow-hidden h-full">
+    <div className="p-4 relative overflow-y-auto overflow-x-hidden h-full">
       <section className="container mx-auto">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div>
