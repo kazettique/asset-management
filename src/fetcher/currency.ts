@@ -1,5 +1,7 @@
 'use client';
 
+import { Prisma } from '@prisma/client';
+
 import { backendImplements } from '@/decorator';
 import { FCurrency, GeneralResponse, Id, MCurrency, VCurrency } from '@/types';
 
@@ -25,6 +27,14 @@ export abstract class CurrencyFetcher {
     const res = await fetch('/api/setting/currency', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VCurrency>>;
+
+    return data;
+  }
+
+  public static async CreateMany(payload: FCurrency[]): Promise<GeneralResponse<Prisma.BatchPayload>> {
+    const res = await fetch('/api/setting/currency/import', { body: JSON.stringify(payload), method: 'POST' });
+
+    const data = (await res.json()) as Promise<GeneralResponse<Prisma.BatchPayload>>;
 
     return data;
   }

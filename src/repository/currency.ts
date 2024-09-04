@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { CurrencyTransformer } from '@/transformer';
@@ -43,6 +45,14 @@ export abstract class CurrencyRepository {
     });
 
     return CurrencyTransformer.DMCurrencyTransformer(rawData);
+  }
+
+  public static async CreateMany(payload: PCurrency[]): Promise<Prisma.BatchPayload> {
+    const rawData = await db.currency.createMany({
+      data: payload,
+    });
+
+    return rawData;
   }
 
   public static async Delete(id: Id): Promise<MCurrency> {

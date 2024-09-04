@@ -1,4 +1,5 @@
-import { parse } from 'csv-parse/browser/esm/sync';
+import { parse } from 'csv-parse/browser/esm';
+import csv from 'csvtojson';
 import { ChangeEvent, useId } from 'react';
 
 import BasicIcon from './BasicIcon';
@@ -27,8 +28,18 @@ export default function BasicFileReaderComp(props: Props) {
       reader.onload = function (e) {
         const csvData = e.target?.result;
 
-        const parsedData = parse(String(csvData));
-        onChange(parsedData);
+        csv({
+          noheader: false,
+          output: 'json',
+        })
+          .fromString(String(csvData))
+          .then((csvRow) => {
+            // console.log(csvRow); // => [["1","2","3"], ["4","5","6"], ["7","8","9"]]
+            onChange(csvRow);
+          });
+
+        // const parsedData = parse(String(csvData), { columns: true }, function (err, records) {});
+        // console.log('parsedData', parsedData);
       };
 
       reader.readAsText(file);
