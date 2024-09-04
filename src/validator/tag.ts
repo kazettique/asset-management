@@ -14,7 +14,7 @@ export abstract class TagValidator {
 
   public static readonly VTagValidator: z.ZodSchema<VTag> = this.MTagValidator;
 
-  public static readonly RTagValidator: z.ZodSchema<PTag> = CommonValidator.SettingBaseValidator;
+  public static readonly PTagValidator: z.ZodSchema<PTag> = CommonValidator.SettingBaseValidator;
 
-  public static readonly FTagValidator: z.ZodSchema<FTag> = this.RTagValidator;
+  public static readonly FTagValidator: z.ZodSchema<FTag> = this.PTagValidator;
 }

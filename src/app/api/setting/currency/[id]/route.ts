@@ -57,7 +57,7 @@ export async function POST(
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = CurrencyValidator.RCurrencyValidator.safeParse(requestBody);
+  const requestValidation = CurrencyValidator.PCurrencyValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
     return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {

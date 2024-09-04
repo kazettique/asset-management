@@ -13,7 +13,7 @@ export abstract class CategoryValidator {
 
   public static readonly VCategoryValidator: z.ZodSchema<VCategory> = this.MCategoryValidator;
 
-  public static readonly RCategoryValidator: z.ZodSchema<PCategory> = CommonValidator.SettingBaseValidator;
+  public static readonly PCategoryValidator: z.ZodSchema<PCategory> = CommonValidator.SettingBaseValidator;
 
-  public static readonly FCategoryValidator: z.ZodSchema<FCategory> = this.RCategoryValidator;
+  public static readonly FCategoryValidator: z.ZodSchema<FCategory> = this.PCategoryValidator;
 }

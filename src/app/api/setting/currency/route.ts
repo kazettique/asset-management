@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   const requestBody = await request.json();
 
   // 2. validate request body
-  const requestValidation = CurrencyValidator.RCurrencyValidator.safeParse(requestBody);
+  const requestValidation = CurrencyValidator.PCurrencyValidator.safeParse(requestBody);
 
   // 3.1 if not passed, throw 400 bad request
   if (!requestValidation.success) {

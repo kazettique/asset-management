@@ -13,7 +13,7 @@ export abstract class BrandValidator {
 
   public static readonly VBrandValidator: z.ZodSchema<VBrand> = this.MBrandValidator;
 
-  public static readonly RBrandValidator: z.ZodSchema<PBrand> = CommonValidator.SettingBaseValidator;
+  public static readonly PBrandValidator: z.ZodSchema<PBrand> = CommonValidator.SettingBaseValidator;
 
-  public static readonly FBrandValidator: z.ZodSchema<FBrand> = this.RBrandValidator;
+  public static readonly FBrandValidator: z.ZodSchema<FBrand> = this.PBrandValidator;
 }

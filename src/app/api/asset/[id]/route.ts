@@ -56,7 +56,7 @@ export async function POST(
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = AssetValidator.RAssetValidator.safeParse(requestBody);
+  const requestValidation = AssetValidator.PAssetValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
     return new Response(JSON.stringify({ error: requestValidation.error, message: CommonConstant.MSG_DIRTY_DATA }), {

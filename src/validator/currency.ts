@@ -13,7 +13,7 @@ export abstract class CurrencyValidator {
 
   public static readonly VCurrencyValidator: z.ZodSchema<VCurrency> = this.MCurrencyValidator;
 
-  public static readonly RCurrencyValidator: z.ZodSchema<PCurrency> = CommonValidator.CurrencyCommonValidator;
+  public static readonly PCurrencyValidator: z.ZodSchema<PCurrency> = CommonValidator.CurrencyCommonValidator;
 
-  public static readonly FCurrencyValidator: z.ZodSchema<FCurrency> = this.RCurrencyValidator;
+  public static readonly FCurrencyValidator: z.ZodSchema<FCurrency> = this.PCurrencyValidator;
 }

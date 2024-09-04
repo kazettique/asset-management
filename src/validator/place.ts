@@ -14,7 +14,7 @@ export abstract class PlaceValidator {
 
   public static readonly VPlaceValidator: z.ZodSchema<VPlace> = this.MPlaceValidator;
 
-  public static readonly RPlaceValidator: z.ZodSchema<PPlace> = CommonValidator.SettingBaseValidator;
+  public static readonly PPlaceValidator: z.ZodSchema<PPlace> = CommonValidator.SettingBaseValidator;
 
-  public static readonly FPlaceValidator: z.ZodSchema<FPlace> = this.RPlaceValidator;
+  public static readonly FPlaceValidator: z.ZodSchema<FPlace> = this.PPlaceValidator;
 }

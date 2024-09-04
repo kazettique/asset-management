@@ -13,7 +13,7 @@ export abstract class OwnerValidator {
 
   public static readonly VOwnerValidator: z.ZodSchema<VOwner> = this.MOwnerValidator;
 
-  public static readonly ROwnerValidator: z.ZodSchema<POwner> = CommonValidator.SettingBaseValidator;
+  public static readonly POwnerValidator: z.ZodSchema<POwner> = CommonValidator.SettingBaseValidator;
 
-  public static readonly FOwnerValidator: z.ZodSchema<FOwner> = this.ROwnerValidator;
+  public static readonly FOwnerValidator: z.ZodSchema<FOwner> = this.POwnerValidator;
 }

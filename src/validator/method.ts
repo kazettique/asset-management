@@ -17,7 +17,7 @@ export abstract class MethodValidator {
 
   public static readonly VMethodValidator: z.ZodSchema<VMethod> = this.MMethodValidator;
 
-  public static readonly RMethodValidator: z.ZodSchema<PMethod> = CommonValidator.MethodCommonValidator;
+  public static readonly PMethodValidator: z.ZodSchema<PMethod> = CommonValidator.MethodCommonValidator;
 
-  public static readonly FMethodValidator: z.ZodSchema<FMethod> = this.RMethodValidator;
+  public static readonly FMethodValidator: z.ZodSchema<FMethod> = this.PMethodValidator;
 }
