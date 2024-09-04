@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 
 import { backendImplements } from '@/decorator';
 import { AssetRepository } from '@/repository';
-import { Id, MAsset, NType, PAsset } from '@/types';
+import { Id, MAsset, NType, PAsset, PBatchAsset } from '@/types';
 
 @backendImplements()
 export abstract class AssetService {
@@ -18,7 +18,7 @@ export abstract class AssetService {
     return await AssetRepository.Create(payload);
   }
 
-  public static async CreateMany(payload: PAsset[]): Promise<Prisma.BatchPayload> {
+  public static async CreateMany(payload: PBatchAsset[]): Promise<Prisma.BatchPayload> {
     return await AssetRepository.CreateMany(payload);
   }
 

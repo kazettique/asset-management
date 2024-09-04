@@ -3,7 +3,7 @@
 import { Prisma } from '@prisma/client';
 
 import { backendImplements } from '@/decorator';
-import { GeneralResponse, Id, MAsset, PAsset, VAsset } from '@/types';
+import { GeneralResponse, Id, MAsset, PAsset, PBatchAsset, VAsset } from '@/types';
 
 @backendImplements()
 export abstract class AssetFetcher {
@@ -31,7 +31,7 @@ export abstract class AssetFetcher {
     return data;
   }
 
-  public static async CreateMany(payload: PAsset[]): Promise<GeneralResponse<Prisma.BatchPayload>> {
+  public static async CreateMany(payload: PBatchAsset[]): Promise<GeneralResponse<Prisma.BatchPayload>> {
     const res = await fetch('/api/asset/import', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<Prisma.BatchPayload>>;

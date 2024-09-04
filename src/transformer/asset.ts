@@ -120,11 +120,11 @@ export abstract class AssetTransformer {
     const findCategory = settingOptions.categories.find((_item) => _item.value === src.ownerId);
 
     // startDate
-    const _startDate: Dayjs = dayjs(src.startDate);
+    const _startDate: NType<Dayjs> = src.startDate !== null ? dayjs(src.startDate) : null;
     // startPrice
     const startCurrency = settingOptions.currencies.find((_item) => _item.value === src.startCurrencyId);
     // endDate
-    const _endDate: Dayjs = src.endDate !== null ? dayjs(src.endDate) : dayjs();
+    const _endDate: NType<Dayjs> = src.endDate !== null ? dayjs(src.endDate) : null;
 
     // endPrice
     const endCurrency = settingOptions.currencies.find((_item) => _item.value === src.endCurrencyId);
@@ -169,7 +169,7 @@ export abstract class AssetTransformer {
         : CommonConstant.DEFAULT_EMPTY_STRING,
       raw: src,
       startInfo: {
-        startDate: Utils.GetDateTimeString(_startDate),
+        startDate: _startDate ? Utils.GetDateTimeString(_startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
         startMethod: findStartMethod ? findStartMethod.label : CommonConstant.DEFAULT_EMPTY_STRING,
         startPlatform: findStartPlatform ? findStartPlatform.label : CommonConstant.DEFAULT_EMPTY_STRING,
         startPrice:
@@ -178,7 +178,8 @@ export abstract class AssetTransformer {
             : CommonConstant.DEFAULT_EMPTY_STRING,
       },
       tags: src.tags.map((item) => item.name),
-      usageTime: Utils.DetailedRelativeTime(_startDate, _endDate),
+      usageTime:
+        _startDate && _endDate ? Utils.DetailedRelativeTime(_startDate, _endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
     };
   }
 }

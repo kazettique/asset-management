@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
-import { DAsset, Id, MAsset, NType, PAsset } from '@/types';
+import { DAsset, Id, MAsset, NType, PAsset, PBatchAsset } from '@/types';
 
 const queryObj = {
   brandId: true,
@@ -62,28 +62,9 @@ export abstract class AssetRepository {
     return AssetTransformer.DMAssetTransformer(rawData);
   }
 
-  public static async CreateMany(payload: PAsset[]): Promise<Prisma.BatchPayload> {
+  public static async CreateMany(payload: PBatchAsset[]): Promise<Prisma.BatchPayload> {
     const rawData = await db.asset.createMany({
-      data: payload.map((item) => ({
-        brandId: item.brandId,
-        categoryId: item.categoryId,
-        comment: item.comment,
-        endCurrencyId: item.endCurrencyId,
-        endDate: item.endDate,
-        endMethodId: item.endMethodId,
-        endPlatformId: item.endPlatformId,
-        endPrice: item.endPrice,
-        isCensored: item.isCensored,
-        meta: item.meta,
-        name: item.name,
-        ownerId: item.ownerId,
-        placeId: item.placeId,
-        startCurrencyId: item.startCurrencyId,
-        startDate: item.startDate,
-        startMethodId: item.startMethodId,
-        startPlatformId: item.startPlatformId,
-        startPrice: item.startPrice,
-      })),
+      data: payload,
     });
 
     return rawData;
