@@ -1,7 +1,6 @@
 import { MethodType } from '@prisma/client';
 
 import { NString, NType } from './base';
-import { DTag } from './dbModels';
 import { IconType } from './iconTypes';
 
 export interface GeneralResponse<T> {
