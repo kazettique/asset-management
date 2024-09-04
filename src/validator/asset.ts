@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DAsset, FAsset, MAsset, PAsset, PBatchAsset, VAsset } from '@/types';
+import { DAsset, FAsset, MAsset, PAsset, PBatchAsset, VAsset, VAssetImportItem } from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -59,5 +59,14 @@ export abstract class AssetValidator {
     startPlatformId: CommonValidator.FormOptionValidator,
     startPrice: CommonValidator.PriceValidator,
     tags: CommonValidator.FormOptionValidator.array(),
+  });
+
+  public static readonly VAssetImportItemValidator: z.ZodSchema<VAssetImportItem> = z.object({
+    comment: z.string(),
+    endDate: z.string(),
+    endPrice: z.string(),
+    name: z.string(),
+    startDate: z.string(),
+    startPrice: z.string(),
   });
 }

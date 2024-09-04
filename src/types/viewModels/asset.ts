@@ -29,3 +29,12 @@ export interface VAssetTable {
   tags: string[];
   usageTime: string;
 }
+
+export interface VAssetImportItem {
+  comment: string;
+  endDate: string;
+  endPrice: string;
+  name: string;
+  startDate: string;
+  startPrice: string;
+}
