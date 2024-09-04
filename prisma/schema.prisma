@@ -17,29 +17,29 @@ model Asset {
   id String @id @default(uuid())
 
   // information
-  name       String   @db.TinyText
-  isCensored Boolean  @default(false)
-  meta       Json
+  name       String    @db.TinyText
+  isCensored Boolean   @default(false)
+  meta       Json?
   brandId    String?
-  brand      Brand?   @relation(fields: [brandId], references: [id])
+  brand      Brand?    @relation(fields: [brandId], references: [id])
   ownerId    String?
-  owner      Owner?   @relation(fields: [ownerId], references: [id])
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  owner      Owner?    @relation(fields: [ownerId], references: [id])
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
   placeId    String?
-  place      Place?   @relation(fields: [placeId], references: [id])
+  place      Place?    @relation(fields: [placeId], references: [id])
   tags       Tag[]
 
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
-  startDate       DateTime
-  startPrice      Float
-  startCurrencyId String
-  startCurrency   Currency @relation("AssetStartCurrency", fields: [startCurrencyId], references: [id])
-  startMethodId   String
-  startMethod     Method   @relation("AssetStartMethod", fields: [startMethodId], references: [id])
-  startPlatformId String
-  startPlatform   Platform @relation("AssetStartPlatform", fields: [startPlatformId], references: [id])
+  startDate       DateTime?
+  startPrice      Float?
+  startCurrencyId String?
+  startCurrency   Currency? @relation("AssetStartCurrency", fields: [startCurrencyId], references: [id])
+  startMethodId   String?
+  startMethod     Method?   @relation("AssetStartMethod", fields: [startMethodId], references: [id])
+  startPlatformId String?
+  startPlatform   Platform? @relation("AssetStartPlatform", fields: [startPlatformId], references: [id])
 
   endDate       DateTime?
   endPrice      Float?
@@ -52,7 +52,7 @@ model Asset {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?  @db.TinyText
+  comment   String?  @db.VarChar(1000)
 
   PriceHistory PriceHistory[]
 }
