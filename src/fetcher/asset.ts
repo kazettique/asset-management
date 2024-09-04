@@ -1,5 +1,7 @@
 'use client';
 
+import { Prisma } from '@prisma/client';
+
 import { backendImplements } from '@/decorator';
 import { GeneralResponse, Id, MAsset, PAsset, VAsset } from '@/types';
 
@@ -25,6 +27,14 @@ export abstract class AssetFetcher {
     const res = await fetch('/api/asset', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
+
+    return data;
+  }
+
+  public static async CreateMany(payload: PAsset[]): Promise<GeneralResponse<Prisma.BatchPayload>> {
+    const res = await fetch('/api/asset/import', { body: JSON.stringify(payload), method: 'POST' });
+
+    const data = (await res.json()) as Promise<GeneralResponse<Prisma.BatchPayload>>;
 
     return data;
   }

@@ -49,6 +49,51 @@ export abstract class Utils {
     return output.join(',');
   }
 
+  /**
+   * @description Check whether is number string
+   */
+  public static IsNumString(str: string) {
+    return !isNaN(Number(str));
+  }
+
+  /**
+   * @description Nested parse json string
+   * @see https://github.com/sibu-github/deep-parse-json
+   */
+  public static DeepParseJson(jsonString: string | any[] | Record<string, any>): string | any[] | Record<string, any> {
+    // if not stringify json rather a simple string value then JSON.parse will throw error
+    // otherwise continue recursion
+    if (typeof jsonString === 'string') {
+      if (this.IsNumString(jsonString)) {
+        // if a numeric string is received, return itself
+        // otherwise JSON.parse will convert it to a number
+        return jsonString;
+      }
+      try {
+        return this.DeepParseJson(JSON.parse(jsonString));
+      } catch (err) {
+        return jsonString;
+      }
+    } else if (Array.isArray(jsonString)) {
+      // if an array is received, map over the array and deepParse each value
+      return jsonString.map((val) => this.DeepParseJson(val));
+    } else if (typeof jsonString === 'object' && jsonString !== null) {
+      // if an object is received then deepParse each element in the object
+      // typeof null returns 'object' too, so we have to eliminate that
+      return Object.keys(jsonString).reduce(
+        (obj, key) => {
+          const val = jsonString[key];
+          obj[key] = this.IsNumString(val) ? val : this.DeepParseJson(val);
+          return obj;
+        },
+        {} as Record<string, any>,
+      );
+    } else {
+      // otherwise return whatever was received
+      return jsonString;
+    }
+  }
+
   // public static GetCircularReplacer() {
   //   const ancestors: any[] = [];
 

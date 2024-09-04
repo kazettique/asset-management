@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
@@ -58,6 +60,33 @@ export abstract class AssetRepository {
     });
 
     return AssetTransformer.DMAssetTransformer(rawData);
+  }
+
+  public static async CreateMany(payload: PAsset[]): Promise<Prisma.BatchPayload> {
+    const rawData = await db.asset.createMany({
+      data: payload.map((item) => ({
+        brandId: item.brandId,
+        categoryId: item.categoryId,
+        comment: item.comment,
+        endCurrencyId: item.endCurrencyId,
+        endDate: item.endDate,
+        endMethodId: item.endMethodId,
+        endPlatformId: item.endPlatformId,
+        endPrice: item.endPrice,
+        isCensored: item.isCensored,
+        meta: item.meta,
+        name: item.name,
+        ownerId: item.ownerId,
+        placeId: item.placeId,
+        startCurrencyId: item.startCurrencyId,
+        startDate: item.startDate,
+        startMethodId: item.startMethodId,
+        startPlatformId: item.startPlatformId,
+        startPrice: item.startPrice,
+      })),
+    });
+
+    return rawData;
   }
 
   public static async Delete(id: Id): Promise<MAsset> {

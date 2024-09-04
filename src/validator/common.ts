@@ -17,7 +17,7 @@ import {
 
 export abstract class CommonValidator {
   public static readonly IdValidator: z.ZodSchema<Id> = z.string().uuid();
-  public static readonly PriceValidator: z.ZodSchema<Price> = z.number().nonnegative();
+  public static readonly PriceValidator: z.ZodSchema<Price> = z.coerce.number().nonnegative();
   // TODO: add more detailed validation, ex: no symbols, no whitespace ...etc
   public static readonly NameValidator: z.ZodSchema<Name> = z.string().min(1);
 
