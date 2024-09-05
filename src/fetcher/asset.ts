@@ -3,7 +3,7 @@
 import { Prisma } from '@prisma/client';
 
 import { backendImplements } from '@/decorator';
-import { GeneralResponse, Id, MAsset, PAsset, PBatchAsset, VAsset } from '@/types';
+import { GeneralResponse, Id, MAsset, PaginationBase, PAsset, PAssetFind, PBatchAsset, VAsset } from '@/types';
 
 @backendImplements()
 export abstract class AssetFetcher {
@@ -11,6 +11,17 @@ export abstract class AssetFetcher {
     const res = await fetch('/api/asset');
 
     const data = (await res.json()) as GeneralResponse<VAsset[]>;
+
+    return data;
+  }
+
+  public static async FindMany(payload: PAssetFind): Promise<PaginationBase<MAsset>> {
+    const res = await fetch(
+      '/api/asset?' +
+        new URLSearchParams({ page: String(payload.page), pageSize: String(payload.pageSize) }).toString(),
+    );
+
+    const data = (await res.json()) as PaginationBase<MAsset>;
 
     return data;
   }

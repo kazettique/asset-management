@@ -40,18 +40,12 @@ export type IconType =
   | 'content-copy'
   | 'coin'
   | 'clock'
-  | 'chevron-up'
-  | 'chevron-right'
-  | 'chevron-left'
-  | 'chevron-down'
   | 'check-lg'
   | 'check-circle'
   | 'chat-text'
   | 'chart-pie-solid'
   | 'chart-line-solid'
   | 'cart-shopping-solid'
-  | 'caret-up-fill'
-  | 'caret-down-fill'
   | 'building-shield-solid'
   | 'boxes-packing-solid'
   | 'box-solid'
@@ -59,8 +53,20 @@ export type IconType =
   | 'box-archive-solid'
   | 'bookmark'
   | 'bookmark-fill'
-  | 'arrow-sm'
-  | 'arrow-left-right';
+  | 'arrows-rotate-solid'
+  | 'arrow-up-solid'
+  | 'arrow-right-solid'
+  | 'arrow-left-solid'
+  | 'arrow-left-right'
+  | 'arrow-down-solid'
+  | 'angles-up-solid'
+  | 'angles-right-solid'
+  | 'angles-left-solid'
+  | 'angles-down-solid'
+  | 'angle-up-solid'
+  | 'angle-right-solid'
+  | 'angle-left-solid'
+  | 'angle-down-solid';
 
 export const ICONS_CODEPOINTS: { [key in IconType]: string } = {
   'x-lg': '61697',
@@ -104,25 +110,31 @@ export const ICONS_CODEPOINTS: { [key in IconType]: string } = {
   'content-copy': '61735',
   'coin': '61736',
   'clock': '61737',
-  'chevron-up': '61738',
-  'chevron-right': '61739',
-  'chevron-left': '61740',
-  'chevron-down': '61741',
-  'check-lg': '61742',
-  'check-circle': '61743',
-  'chat-text': '61744',
-  'chart-pie-solid': '61745',
-  'chart-line-solid': '61746',
-  'cart-shopping-solid': '61747',
-  'caret-up-fill': '61748',
-  'caret-down-fill': '61749',
-  'building-shield-solid': '61750',
-  'boxes-packing-solid': '61751',
-  'box-solid': '61752',
-  'box-arrow-in-right': '61753',
-  'box-archive-solid': '61754',
-  'bookmark': '61755',
-  'bookmark-fill': '61756',
-  'arrow-sm': '61757',
-  'arrow-left-right': '61758',
+  'check-lg': '61738',
+  'check-circle': '61739',
+  'chat-text': '61740',
+  'chart-pie-solid': '61741',
+  'chart-line-solid': '61742',
+  'cart-shopping-solid': '61743',
+  'building-shield-solid': '61744',
+  'boxes-packing-solid': '61745',
+  'box-solid': '61746',
+  'box-arrow-in-right': '61747',
+  'box-archive-solid': '61748',
+  'bookmark': '61749',
+  'bookmark-fill': '61750',
+  'arrows-rotate-solid': '61751',
+  'arrow-up-solid': '61752',
+  'arrow-right-solid': '61753',
+  'arrow-left-solid': '61754',
+  'arrow-left-right': '61755',
+  'arrow-down-solid': '61756',
+  'angles-up-solid': '61757',
+  'angles-right-solid': '61758',
+  'angles-left-solid': '61759',
+  'angles-down-solid': '61760',
+  'angle-up-solid': '61761',
+  'angle-right-solid': '61762',
+  'angle-left-solid': '61763',
+  'angle-down-solid': '61764',
 };

@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { AssetService } from '@/service';
 import { AssetTransformer, CommonTransformer } from '@/transformer';
-import { GeneralResponse, HttpStatusCode, VAsset } from '@/types';
+import { GeneralResponse, HttpStatusCode, MAsset, PaginationBase, VAsset } from '@/types';
 import { AssetValidator } from '@/validator';
 
-export async function GET(request: NextRequest): Promise<NextResponse<GeneralResponse<VAsset[]>> | Response> {
+export async function GET(request: NextRequest): Promise<NextResponse<PaginationBase<MAsset>> | Response> {
   // parse search params
   const searchParams = request.nextUrl.searchParams;
   const page = searchParams.get('page');
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<GeneralRes
   }
 
   // data is fine
-  return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+  return NextResponse.json(rawData);
 }
 
 export async function POST(request: Request): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {
