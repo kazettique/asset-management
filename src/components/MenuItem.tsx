@@ -11,19 +11,20 @@ import BasicIcon from './BasicIcon';
 export interface Props {
   children?: ReactElement;
   className?: string;
+  isActive: boolean;
   item: MenuItem;
 }
 
 export default function Component(props: Props) {
-  const { children, className = '', item } = props;
+  const { children, className = '', item, isActive } = props;
 
   const pathname = usePathname();
   const isActiveLink: boolean = item.link !== null && item.link === pathname;
 
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isCollapse, setIsCollapse] = useState<boolean>(true);
 
   const hasChildren: boolean = item.children.length > 0;
-  const toggleOpen = () => setIsOpen((prev) => !prev);
+  const toggleOpen = () => setIsCollapse((prev) => !prev);
 
   return (
     <li
@@ -40,7 +41,7 @@ export default function Component(props: Props) {
             iconType={item.icon}
             className="flex-shrink-0 w-6 h-6 text-center text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
           />
-          <div className="capitalize grow text-left">{item.label}</div>
+          {isActive && <div className="capitalize grow text-left">{item.label}</div>}
         </Link>
       ) : (
         <button
@@ -52,15 +53,15 @@ export default function Component(props: Props) {
             iconType={item.icon}
             className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
           />
-          <div className="capitalize grow text-left">{item.label}</div>
-          {hasChildren && <BasicIcon iconType={isOpen ? 'chevron-up' : 'chevron-down'} />}
+          {isActive && <div className="capitalize grow text-left">{item.label}</div>}
+          {hasChildren && isActive && <BasicIcon iconType={isCollapse ? 'angle-up-solid' : 'angle-down-solid'} />}
         </button>
       )}
 
-      {isOpen && (
-        <ul className="space-y-2 block my-2 ml-4">
+      {isCollapse && (
+        <ul className="space-y-2 block my-2">
           {item.children.map((item, index) => (
-            <Component key={index} item={item} />
+            <Component key={index} item={item} isActive={isActive} />
           ))}
         </ul>
       )}

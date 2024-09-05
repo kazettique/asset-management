@@ -31,7 +31,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
     <tr>
       <td
         colSpan={columns.length}
-        className="px-4 py-4 text-sm font-medium whitespace-nowrap text-center text-gray-500 dark:text-gray-400"
+        className="p-2 text-sm font-medium whitespace-nowrap text-center text-gray-500 dark:text-gray-400"
       >
         No data
       </td>
@@ -46,10 +46,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
               : (row[column.key as keyof typeof row] as string);
 
             return (
-              <td
-                key={`cell-${index2}`}
-                className="px-4 py-4 text-sm whitespace-nowrap text-gray-700 dark:text-gray-200"
-              >
+              <td key={`cell-${index2}`} className="p-2 text-sm whitespace-nowrap text-gray-700 dark:text-gray-200">
                 {value}
               </td>
             );

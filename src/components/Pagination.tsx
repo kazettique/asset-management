@@ -20,7 +20,7 @@ export default function Pagination(props: Props) {
   const hasNext: boolean = page < totalPage;
 
   return (
-    <div className={`mt-6 sm:flex sm:items-center sm:justify-between ${className}`} data-test-comp={Pagination.name}>
+    <div className={`mt-2 sm:flex sm:items-center sm:justify-between ${className}`} data-test-comp={Pagination.name}>
       <div className="text-sm text-gray-500 dark:text-gray-400">
         <span>Page&nbsp;</span>
         <span className="font-medium text-gray-700 dark:text-gray-100">
