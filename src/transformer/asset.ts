@@ -120,7 +120,7 @@ export abstract class AssetTransformer {
     const findEndPlatform = settingOptions.platforms.find((_item) => _item.value === src.endPlatformId);
     const findPlace = settingOptions.places.find((_item) => _item.value === src.placeId);
     const findOwner = settingOptions.owners.find((_item) => _item.value === src.ownerId);
-    const findCategory = settingOptions.categories.find((_item) => _item.value === src.ownerId);
+    const findCategory = settingOptions.categories.find((_item) => _item.value === src.categoryId);
 
     // startDate
     const _startDate: NType<Dayjs> = src.startDate !== null ? dayjs(src.startDate) : null;

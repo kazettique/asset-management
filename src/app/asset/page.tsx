@@ -18,12 +18,14 @@ import { FAsset, FSettingOptions, Id, NType, VAsset, VAssetTable } from '@/types
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
-import Create from './Create';
+import AssetModifier from './AssetModifier';
+
+type DrawerType = 'create' | 'edit' | 'import' | null;
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VAsset>>(null);
-  const [isActive, setIsActive] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+  const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
 
   const {
     data: settingData,
@@ -113,6 +115,10 @@ export default function Page() {
       title: 'Name',
     },
     {
+      key: 'category',
+      title: 'Category',
+    },
+    {
       key: 'brand',
       title: 'Brand',
     },
@@ -194,13 +200,25 @@ export default function Page() {
     {
       key: 'action',
       render: (column, item) => (
-        <BasicButton
-          variant="secondary"
-          className="bg-slate-500 p-1 rounded-sm text-white"
-          onClick={() => onItemEdit(item.raw)}
-        >
-          <BasicIcon iconType="pen-to-square-solid" />
-        </BasicButton>
+        <div className="flex gap-x-2">
+          <BasicButton
+            variant="secondary"
+            onClick={() => {
+              onItemEdit(item.raw);
+              setActiveDrawer('edit');
+            }}
+          >
+            <BasicIcon iconType="pen-to-square-solid" />
+          </BasicButton>
+          <BasicButton
+            variant="danger"
+            onClick={() => {
+              onItemDelete(item.raw.id);
+            }}
+          >
+            <BasicIcon iconType="x-lg" />
+          </BasicButton>
+        </div>
       ),
       title: 'Action',
     },
@@ -220,6 +238,11 @@ export default function Page() {
       assetRefetch();
     }
   };
+
+  const editData = useMemo<FAsset | undefined>(
+    () => (editItem ? AssetTransformer.VFAssetTransformer(editItem, settingOptions) : undefined),
+    [editItem, settingOptions],
+  );
 
   return (
     <div className="p-4 relative overflow-y-auto h-full flex flex-col">
@@ -243,7 +266,7 @@ export default function Page() {
           <BasicFileReader onChange={handleImport} label="import" />
 
           <button
-            onClick={() => setIsActive(true)}
+            onClick={() => setActiveDrawer('create')}
             className="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
           >
             <BasicIcon iconType="cross" />
@@ -271,15 +294,27 @@ export default function Page() {
         )}
       </div>
 
-      {/* <Create
-        onClose={() => setIsActive(false)}
-        onSubmit={onCreateSubmit}
-        settingOptions={settingOptions}
-        className={`absolute w-full h-full top-0 transition-all ${isActive ? 'left-0' : 'left-full'}`}
-      /> */}
-
-      {/* <Modal isOpen={modalOpen} onClose={() => setModelOpen(false)} /> */}
-      {/* <Drawer /> */}
+      <>
+        {activeDrawer !== 'import' && (
+          <AssetModifier
+            isOpen={activeDrawer === 'create' || activeDrawer === 'edit'}
+            onClose={() => {
+              setActiveDrawer(null);
+              onItemCancel();
+            }}
+            defaultValues={editData}
+            mode={activeDrawer === 'create' ? 'create' : 'edit'}
+            onSubmit={(event) => {
+              if (activeDrawer === 'create') {
+                onCreateSubmit(event);
+              } else if (editItem) {
+                onItemUpdate(event, editItem.id);
+              }
+            }}
+            settingOptions={settingOptions}
+          />
+        )}
+      </>
     </div>
   );
 }

@@ -43,11 +43,11 @@ export abstract class SettingTransformer {
       brands: src.brands,
       categories: src.categories,
       currencies: src.currencies,
-      endMethods: src.methods.filter((item) => item.type === MethodType.END),
+      endMethods: src.methods.filter((item) => item.type !== MethodType.START),
       owners: src.owners,
       places: src.places,
       platforms: src.platforms,
-      startMethods: src.methods.filter((item) => item.type === MethodType.START),
+      startMethods: src.methods.filter((item) => item.type !== MethodType.END),
       tags: src.tags,
     };
   }

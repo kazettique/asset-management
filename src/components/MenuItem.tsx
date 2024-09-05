@@ -15,7 +15,7 @@ export interface Props {
   item: MenuItem;
 }
 
-export default function Component(props: Props) {
+export default function MenuItemComp(props: Props) {
   const { children, className = '', item, isActive } = props;
 
   const pathname = usePathname();
@@ -30,7 +30,7 @@ export default function Component(props: Props) {
     <li
       {...props}
       className={`text-gray-700 dark:text-white hover:text-gray-800 dark:hover:text-gray-200 ${className}`}
-      data-test-comp={Component.name}
+      data-test-comp={MenuItemComp.name}
     >
       {item.link ? (
         <Link
@@ -61,7 +61,7 @@ export default function Component(props: Props) {
       {isCollapse && (
         <ul className="space-y-2 block my-2">
           {item.children.map((item, index) => (
-            <Component key={index} item={item} isActive={isActive} />
+            <MenuItemComp key={index} item={item} isActive={isActive} />
           ))}
         </ul>
       )}

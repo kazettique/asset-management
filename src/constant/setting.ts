@@ -10,5 +10,6 @@ export abstract class SettingConstant {
     places: [],
     platforms: [],
     startMethods: [],
+    tags: [],
   };
 }
