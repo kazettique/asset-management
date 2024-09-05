@@ -1,50 +1,29 @@
 'use client';
 
+import { Transition } from '@headlessui/react';
 import { useState } from 'react';
-import { useSwitchTransition, useTransition } from 'transition-hook';
+
+import BasicButton from '@/components/BasicButton';
+import Drawer from '@/components/Drawer';
+import Modal from '@/components/Modal';
 
 export default function Page() {
-  const [onOff, setOnOff] = useState(true);
-  const { stage, shouldMount } = useTransition(onOff, 300); // (state, timeout)
-
-  const [count, setCount] = useState(0);
-  const transition = useSwitchTransition(count, 300, 'default'); // (state, timeout, mode)
-
-  // console.log('onOff', onOff);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <>
+    <div className="relative h-full bg-slate-50">
       <h1>Hello, Test Page!</h1>
-      <button onClick={() => setOnOff((prev) => !prev)}>toggle</button>
-      {shouldMount && (
-        <p
-          style={{
-            opacity: stage === 'enter' ? 1 : 0,
-            transition: '.3s',
-          }}
-        >
-          Hey guys, Im fading
-        </p>
-      )}
-      <hr />
-      <div>
-        <button onClick={() => setCount(count + 1)}>add</button>
-        {transition((state, stage) => (
-          <p
-            style={{
-              opacity: stage === 'enter' ? 1 : 0,
-              transform: {
-                enter: 'translateX(0%)',
-                from: 'translateX(-100%)',
-                leave: 'translateX(100%)',
-              }[stage],
-              transition: '.3s',
-            }}
-          >
-            {state}
-          </p>
-        ))}
-      </div>
-    </>
+      <Drawer isOpen={isOpen} onClose={() => setIsOpen(false)} title="hello drawer">
+        this is the content for drawer!!
+      </Drawer>
+      <BasicButton onClick={() => setIsOpen(true)}>btn</BasicButton>
+      <BasicButton variant="secondary" onClick={() => setIsOpen((prev) => !prev)}>
+        btn2
+      </BasicButton>
+      <Transition show={isOpen}>
+        <div className="transition duration-300 ease-in data-[closed]:opacity-0">I will fade in and out</div>
+      </Transition>
+      {/* <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} /> */}
+    </div>
   );
 }

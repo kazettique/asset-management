@@ -9,6 +9,7 @@ import BasicIcon from '@/components/BasicIcon';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Pagination from '@/components/Pagination';
 import SearchInput from '@/components/SearchInput';
+import TabGroup from '@/components/TabGroup';
 import Table, { ColumnProps } from '@/components/Table';
 import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
@@ -198,7 +199,7 @@ export default function Page() {
           className="bg-slate-500 p-1 rounded-sm text-white"
           onClick={() => onItemEdit(item.raw)}
         >
-          Edit
+          <BasicIcon iconType="pen-to-square-solid" />
         </BasicButton>
       ),
       title: 'Action',
@@ -235,19 +236,7 @@ export default function Page() {
         </div>
 
         <div className="flex items-center gap-x-3">
-          <div className="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-            <button className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
-              View all
-            </button>
-
-            <button className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-              Monitored
-            </button>
-
-            <button className="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-              Unmonitored
-            </button>
-          </div>
+          <TabGroup />
 
           <SearchInput />
 
@@ -259,7 +248,7 @@ export default function Page() {
           >
             <BasicIcon iconType="cross" />
 
-            <span>Create Asset</span>
+            <span>Create</span>
           </button>
         </div>
       </div>

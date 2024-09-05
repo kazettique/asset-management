@@ -17,17 +17,19 @@ export default function SideMenu(props: Props) {
   const [isActive, setIsActive] = useState<boolean>(true);
 
   return (
-    <aside className="w-56 h-full bg-gray-100 dark:bg-gray-800 px-3 py-4 border-r border-gray-200 overflow-y-auto relative">
-      {/* <BasicIcon
-        iconType="angle-right-solid"
-        className="w-full bg-gray-200 block"
+    <aside className="h-full bg-gray-100 dark:bg-gray-800 border-r border-gray-200 flex">
+      <div className="overflow-y-auto h-full px-3 py-4">
+        <ul className="space-y-2">
+          {list.map((item, index) => (
+            <MenuItemComp key={index} item={item} isActive={isActive} />
+          ))}
+        </ul>
+      </div>
+      <BasicIcon
+        iconType={isActive ? 'angle-left-solid' : 'angle-right-solid'}
+        className="h-full flex items-center justify-center bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer text-gray-700 dark:text-white hover:text-gray-800 dark:hover:text-gray-200"
         onClick={() => setIsActive((prev) => !prev)}
-      /> */}
-      <ul className="space-y-2">
-        {list.map((item, index) => (
-          <MenuItemComp key={index} item={item} isActive={isActive} />
-        ))}
-      </ul>
+      />
     </aside>
   );
 }
