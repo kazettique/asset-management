@@ -28,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <Navbar className="absolute top-0 left-0" />
             <div className="flex h-full pt-14">
               <SideMenu list={CommonConstant.SIDE_MENU_LIST} />
-              <main className="flex flex-col w-full h-full overflow-x-hidden overflow-y-auto bg-gray-50">
+              <main className="flex flex-col w-full h-full overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-700">
                 {children}
               </main>
               {/* <Rightbar /> */}
