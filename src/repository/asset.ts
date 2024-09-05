@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
-import { DAsset, Id, MAsset, NType, PAsset, PBatchAsset } from '@/types';
+import { DAsset, Id, MAsset, NType, PaginationBase, PAsset, PAssetFind, PBatchAsset } from '@/types';
 
 const queryObj = {
   brandId: true,
@@ -38,6 +38,28 @@ export abstract class AssetRepository {
     const parsedData = rawData.map((asset) => AssetTransformer.DMAssetTransformer(asset));
 
     return parsedData;
+  }
+
+  // ref: https://github.com/prisma/prisma/discussions/3087
+  public static async FindMany({ page = 1, pageSize = 10 }: PAssetFind): Promise<PaginationBase<MAsset>> {
+    const skipCount: number = (page - 1) * pageSize;
+
+    const raw = await db.$transaction([
+      db.asset.count(),
+      db.asset.findMany({
+        orderBy: [{ createdAt: 'desc' }],
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Math.ceil(totalCount / pageSize);
+
+    const parsedData = rawData.map((asset) => AssetTransformer.DMAssetTransformer(asset));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Find(id: Id): Promise<NType<MAsset>> {

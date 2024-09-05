@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DAsset, FAsset, MAsset, PAsset, PBatchAsset, VAsset, VAssetImportItem } from '@/types';
+import { DAsset, FAsset, MAsset, PAsset, PAssetFind, PBatchAsset, VAsset, VAssetImportItem } from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -68,5 +68,10 @@ export abstract class AssetValidator {
     name: z.string(),
     startDate: z.string(),
     startPrice: z.string(),
+  });
+
+  public static readonly PAssetFindValidator: z.ZodSchema<PAssetFind> = z.object({
+    page: z.coerce.number().int().positive(),
+    pageSize: z.coerce.number().int().positive().max(100),
   });
 }

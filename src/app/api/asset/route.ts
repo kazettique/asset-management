@@ -1,21 +1,37 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { AssetService } from '@/service';
 import { AssetTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VAsset } from '@/types';
 import { AssetValidator } from '@/validator';
 
-export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VAsset[]>> | Response> {
-  const raw = await AssetService.FindAll();
+export async function GET(request: NextRequest): Promise<NextResponse<GeneralResponse<VAsset[]>> | Response> {
+  // parse search params
+  const searchParams = request.nextUrl.searchParams;
+  const page = searchParams.get('page');
+  const pageSize = searchParams.get('pageSize');
 
-  const transformedData = raw.map((item) => AssetTransformer.MVAssetTransformer(item));
+  // params validation
+  const parseParams = AssetTransformer.PAssetFindTransformer({ page, pageSize });
+  const paramsValidation = AssetValidator.PAssetFindValidator.safeParse(parseParams);
+
+  // params error
+  if (!paramsValidation.success) {
+    return new Response('', { status: HttpStatusCode.BAD_REQUEST });
+  }
+
+  // query data
+  const rawData = await AssetService.FindMany(paramsValidation.data);
+  const transformedData = rawData.data.map((item) => AssetTransformer.MVAssetTransformer(item));
   const dataValidation = AssetValidator.VAssetValidator.array().safeParse(transformedData);
 
+  // dirty data error
   if (!dataValidation.success) {
     return new Response(JSON.stringify(dataValidation.error), { status: HttpStatusCode.BAD_REQUEST });
-  } else {
-    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
   }
+
+  // data is fine
+  return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
 }
 
 export async function POST(request: Request): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {

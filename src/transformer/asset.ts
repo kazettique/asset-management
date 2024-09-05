@@ -12,6 +12,7 @@ import {
   NString,
   NType,
   PAsset,
+  PAssetFind,
   PBatchAsset,
   VAsset,
   VAssetImportItem,
@@ -204,6 +205,13 @@ export abstract class AssetTransformer {
       startMethodId: 'af0dff05-5bb0-4b18-bccc-9b54509edd10',
       startPlatformId: '9bace7c8-d2b1-4487-8a3e-26190acc1c20',
       startPrice: src.startPrice ? Number(src.startPrice) : 0,
+    };
+  }
+
+  public static PAssetFindTransformer(src: Record<string, any>): PAssetFind {
+    return {
+      page: src.page ? Number(src.page) : 1,
+      pageSize: src.pageSize ? Number(src.pageSize) : 10,
     };
   }
 }

@@ -2,12 +2,16 @@ import { Prisma } from '@prisma/client';
 
 import { backendImplements } from '@/decorator';
 import { AssetRepository } from '@/repository';
-import { Id, MAsset, NType, PAsset, PBatchAsset } from '@/types';
+import { Id, MAsset, NType, PaginationBase, PAsset, PAssetFind, PBatchAsset } from '@/types';
 
 @backendImplements()
 export abstract class AssetService {
   public static async FindAll(): Promise<MAsset[]> {
     return await AssetRepository.FindAll();
+  }
+
+  public static async FindMany(payload: PAssetFind): Promise<PaginationBase<MAsset>> {
+    return await AssetRepository.FindMany(payload);
   }
 
   public static async Find(id: Id): Promise<NType<MAsset>> {

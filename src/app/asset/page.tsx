@@ -104,7 +104,7 @@ export default function Page() {
   const columns: ColumnProps<VAssetTable>[] = [
     {
       key: 'name',
-      render: (column, item) => <div className="max-w-[300px] whitespace-pre-wrap">{item.name}</div>,
+      render: (column, item) => <div className="w-[200px] whitespace-pre-wrap">{item.name}</div>,
       title: 'Name',
     },
     {
@@ -183,6 +183,7 @@ export default function Page() {
     },
     {
       key: 'comment',
+      render: (column, item) => <div className="w-[100px] whitespace-pre-wrap">{item.comment}</div>,
       title: 'Comment',
     },
     {

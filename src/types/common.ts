@@ -8,6 +8,16 @@ export interface GeneralResponse<T> {
   // status: HttpStatusCode;
 }
 
+// TODO: define for error handling later
+export interface ErrorResponse {}
+
+export interface PaginationBase<T> {
+  data: T[];
+  page: number;
+  totalCount: number;
+  totalPage: number;
+}
+
 export type Id = string;
 export type Price = number;
 export type Name = string;

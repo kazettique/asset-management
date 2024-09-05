@@ -12,3 +12,10 @@ export interface PAsset extends AssetCommon {
 export interface PBatchAsset extends AssetCommon {
   meta: AssetMeta;
 }
+
+export interface PAssetFind {
+  page: number;
+  pageSize: number;
+  // todo: sorting
+  // todo: filtering
+}
