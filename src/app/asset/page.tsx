@@ -18,6 +18,7 @@ import { FAsset, FSettingOptions, Id, NType, VAsset, VAssetTable } from '@/types
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
+import AssetImport from './AssetImport';
 import AssetModifier from './AssetModifier';
 
 type DrawerType = 'create' | 'edit' | 'import' | null;
@@ -224,21 +225,6 @@ export default function Page() {
     },
   ];
 
-  const handleImport = async (event: any) => {
-    const parsedData = Utils.DeepParseJson(event) as any[];
-
-    const csvValidation = AssetValidator.VAssetImportItemValidator.array().safeParse(parsedData);
-
-    if (!csvValidation.success) {
-      alert('illegal csv format!');
-    } else {
-      const payloadData = parsedData.map((item) => AssetTransformer.VAssetImportTransformer(item));
-
-      await AssetFetcher.CreateMany(payloadData);
-      assetRefetch();
-    }
-  };
-
   const editData = useMemo<FAsset | undefined>(
     () => (editItem ? AssetTransformer.VFAssetTransformer(editItem, settingOptions) : undefined),
     [editItem, settingOptions],
@@ -263,7 +249,10 @@ export default function Page() {
 
           <SearchInput />
 
-          <BasicFileReader onChange={handleImport} label="import" />
+          <BasicButton variant="secondary" onClick={() => setActiveDrawer('import')} className="flex gap-x-2">
+            <BasicIcon iconType="file-import-solid" />
+            <span>Import</span>
+          </BasicButton>
 
           <button
             onClick={() => setActiveDrawer('create')}
@@ -294,27 +283,31 @@ export default function Page() {
         )}
       </div>
 
-      <>
-        {activeDrawer !== 'import' && (
-          <AssetModifier
-            isOpen={activeDrawer === 'create' || activeDrawer === 'edit'}
-            onClose={() => {
-              setActiveDrawer(null);
-              onItemCancel();
-            }}
-            defaultValues={editData}
-            mode={activeDrawer === 'create' ? 'create' : 'edit'}
-            onSubmit={(event) => {
-              if (activeDrawer === 'create') {
-                onCreateSubmit(event);
-              } else if (editItem) {
-                onItemUpdate(event, editItem.id);
-              }
-            }}
-            settingOptions={settingOptions}
-          />
-        )}
-      </>
+      <AssetModifier
+        isOpen={activeDrawer === 'create' || activeDrawer === 'edit'}
+        onClose={() => {
+          setActiveDrawer(null);
+          onItemCancel();
+        }}
+        defaultValues={editData}
+        mode={activeDrawer === 'create' ? 'create' : 'edit'}
+        onSubmit={(event) => {
+          if (activeDrawer === 'create') {
+            onCreateSubmit(event);
+          } else if (editItem) {
+            onItemUpdate(event, editItem.id);
+          }
+        }}
+        settingOptions={settingOptions}
+      />
+
+      <AssetImport
+        isOpen={activeDrawer === 'import'}
+        onClose={() => {
+          setActiveDrawer(null);
+        }}
+        settingOptions={settingOptions}
+      />
     </div>
   );
 }

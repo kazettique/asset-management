@@ -1,6 +1,16 @@
 import { z } from 'zod';
 
-import { DAsset, FAsset, MAsset, PAsset, PAssetFind, PBatchAsset, VAsset, VAssetImportItem } from '@/types';
+import {
+  DAsset,
+  FAsset,
+  FAssetImport,
+  MAsset,
+  PAsset,
+  PAssetFind,
+  PBatchAsset,
+  VAsset,
+  VAssetImportItem,
+} from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -73,5 +83,21 @@ export abstract class AssetValidator {
   public static readonly PAssetFindValidator: z.ZodSchema<PAssetFind> = z.object({
     page: z.coerce.number().int().positive(),
     pageSize: z.coerce.number().int().positive().max(100),
+  });
+
+  public static readonly FAssetImportValidator: z.ZodSchema<FAssetImport> = z.object({
+    brandId: CommonValidator.FormOptionValidator.nullable(),
+    categoryId: CommonValidator.FormOptionValidator,
+    endCurrencyId: CommonValidator.FormOptionValidator.nullable(),
+    endMethodId: CommonValidator.FormOptionValidator.nullable(),
+    endPlatformId: CommonValidator.FormOptionValidator.nullable(),
+    isCensored: z.boolean(),
+    meta: CommonValidator.AssetMetaValidator,
+    ownerId: CommonValidator.FormOptionValidator.nullable(),
+    placeId: CommonValidator.FormOptionValidator.nullable(),
+    startCurrencyId: CommonValidator.FormOptionValidator.nullable(),
+    startMethodId: CommonValidator.FormOptionValidator.nullable(),
+    startPlatformId: CommonValidator.FormOptionValidator.nullable(),
+    tags: CommonValidator.FormOptionValidator.array(),
   });
 }
