@@ -9,8 +9,7 @@ import { CategoryFetcher } from '@/fetcher';
 import { CategoryTransformer } from '@/transformer';
 import { FCategory, Id, NType, VCategory, VCategoryTable } from '@/types';
 
-import Create from './Create';
-import Item from './Item';
+import CategoryModifier from './CategoryModifier';
 
 export default function Page() {
   const [editItem, setEditItem] = useState<NType<VCategory>>(null);
@@ -103,7 +102,7 @@ export default function Page() {
       <div className="font-bold capitalize text-xl my-2">category setting</div>
       {isPending ? <div>loading...</div> : <Table data={tableData} columns={columns} />}
 
-      <Create onSubmit={onCreateSubmit} className="w-1/2" />
+      <CategoryModifier onSubmit={onCreateSubmit} className="w-1/2" />
     </div>
   );
 }
