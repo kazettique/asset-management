@@ -1,19 +1,21 @@
 'use client';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMachine } from '@xstate/react';
 
 import BasicButton from '@/components/BasicButton';
+import BasicIcon from '@/components/BasicIcon';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import Table, { ColumnProps } from '@/components/Table';
 import { MethodFetcher } from '@/fetcher';
+import { methodMachine } from '@/machines';
 import { MethodTransformer } from '@/transformer';
-import { FMethod, Id, NType, VMethod, VMethodTable } from '@/types';
+import { FMethod, Id, VMethod, VMethodTable } from '@/types';
 
-import Create from './Create';
-import Item from './Item';
+import MethodModifier from './MethodModifier';
 
 export default function Page() {
-  const [editItem, setEditItem] = useState<NType<VMethod>>(null);
+  const [state, send] = useMachine(methodMachine, {});
 
   const { data, isPending, refetch } = useQuery({
     queryFn: () => MethodFetcher.FindAll(),
@@ -31,7 +33,6 @@ export default function Page() {
     mutationFn: ({ payload, id }: { id: VMethod['id']; payload: FMethod }) => MethodFetcher.Update(payload, id),
     onSuccess: () => {
       refetch();
-      setEditItem(null);
     },
   });
 
@@ -51,16 +52,8 @@ export default function Page() {
     },
   });
 
-  const onItemEdit = (method: VMethod): void => {
-    setEditItem(method);
-  };
-
   const onItemUpdate = (method: FMethod, id: VMethod['id']): void => {
     updateMethod.mutate({ id, payload: method });
-  };
-
-  const onItemCancel = (): void => {
-    setEditItem(null);
   };
 
   const onItemDelete = (id: VMethod['id']): void => {
@@ -90,10 +83,11 @@ export default function Page() {
       render: (column, item) => (
         <BasicButton
           variant="secondary"
-          className="bg-slate-500 p-1 rounded-sm text-white"
-          onClick={() => onItemEdit(item.raw)}
+          onClick={() =>
+            send({ formValues: MethodTransformer.VFMethodTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
+          }
         >
-          Edit
+          <BasicIcon iconType="pen-to-square-solid" />
         </BasicButton>
       ),
       title: 'Action',
@@ -102,10 +96,34 @@ export default function Page() {
 
   return (
     <div className="p-5">
-      <div className="font-bold capitalize text-xl my-2">method setting</div>
-      {isPending ? <div>loading...</div> : <Table data={tableData} columns={columns} />}
+      <div className="flex justify-between">
+        <h2 className="text-lg font-medium text-gray-800 dark:text-white">Methods</h2>
+        <BasicButton onClick={() => send({ type: 'TO_CREATE' })}>Create</BasicButton>
+      </div>
 
-      <Create onSubmit={onCreateSubmit} className="w-1/2" />
+      <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
+        {!data ? <LoadingSpinner className="h-full" /> : <Table data={tableData} columns={columns} />}
+      </div>
+
+      <MethodModifier
+        isOpen={state.matches('EDIT') || state.matches('CREATE')}
+        onClose={() => send({ type: 'TO_MAIN' })}
+        mode={state.matches('EDIT') ? 'edit' : state.matches('CREATE') ? 'create' : undefined}
+        onUpdate={(data, id) => {
+          onItemUpdate(data, id);
+          send({ type: 'TO_MAIN' });
+        }}
+        onCreate={(data) => {
+          onCreateSubmit(data);
+          send({ type: 'TO_MAIN' });
+        }}
+        onDelete={(id) => {
+          onItemDelete(id);
+          send({ type: 'TO_MAIN' });
+        }}
+        defaultValues={state.context.formValues}
+        id={state.context.id}
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { DMethod, MMethod, VMethod, VMethodTable } from '@/types';
+import { DMethod, FMethod, MMethod, VMethod, VMethodTable } from '@/types';
 
 export abstract class MethodTransformer {
   public static DMMethodTransformer(src: DMethod): MMethod {
@@ -14,6 +14,14 @@ export abstract class MethodTransformer {
       comment: src.comment ?? '',
       name: src.name,
       raw: src,
+      type: src.type,
+    };
+  }
+
+  public static VFMethodTransformer(src: VMethod): FMethod {
+    return {
+      comment: src.name,
+      name: src.name,
       type: src.type,
     };
   }

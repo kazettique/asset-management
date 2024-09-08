@@ -1,3 +1,5 @@
+import { MethodType } from '@prisma/client';
+
 import { FormOption, MenuItem, Name } from '@/types';
 
 export abstract class CommonConstant {
@@ -81,6 +83,17 @@ export abstract class CommonConstant {
       icon: 'gear-solid',
       label: 'setting',
       link: null,
+    },
+  ];
+
+  public static readonly METHOD_TYPE_OPTIONS: FormOption[] = [
+    {
+      label: MethodType.START,
+      value: MethodType.START,
+    },
+    {
+      label: MethodType.END,
+      value: MethodType.END,
     },
   ];
 }
