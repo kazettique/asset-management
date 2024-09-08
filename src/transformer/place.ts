@@ -1,4 +1,4 @@
-import { MPlace, VPlace, VPlaceTable } from '@/types';
+import { FPlace, MPlace, VPlace, VPlaceTable } from '@/types';
 import { DPlace } from '@/types/dbModels';
 
 export abstract class PlaceTransformer {
@@ -15,6 +15,13 @@ export abstract class PlaceTransformer {
       comment: src.comment ?? '',
       name: src.name,
       raw: src,
+    };
+  }
+
+  public static VFPlaceTransformer(src: VPlace): FPlace {
+    return {
+      comment: src.comment,
+      name: src.name,
     };
   }
 }
