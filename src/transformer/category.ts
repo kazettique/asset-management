@@ -1,4 +1,4 @@
-import { DCategory, MCategory, VCategory, VCategoryTable } from '@/types';
+import { DCategory, FCategory, MCategory, VCategory, VCategoryTable } from '@/types';
 
 export abstract class CategoryTransformer {
   public static DMCategoryTransformer(src: DCategory): MCategory {
@@ -14,6 +14,13 @@ export abstract class CategoryTransformer {
       comment: src.comment ?? '',
       name: src.name,
       raw: src,
+    };
+  }
+
+  public static VFCategoryTransformer(src: VCategory): FCategory {
+    return {
+      comment: src.comment,
+      name: src.name,
     };
   }
 }

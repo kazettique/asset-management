@@ -2,20 +2,19 @@ import { assign, setup } from 'xstate';
 
 import { FCategory, Id, NType } from '@/types';
 
+type MachineContext = {
+  formValues: NType<FCategory>;
+  id: NType<Id>;
+};
+
 type MachineEvents = { type: 'TO_CREATE' } | { formValues: FCategory; id: Id; type: 'TO_EDIT' } | { type: 'TO_MAIN' };
 
-const machine = setup({
+export const categoryMachine = setup({
   actions: {
-    // TO_EDIT: assign({
-    //   formValues: ({ context }) => context.formValues,
-    //   id: ({ context }) => context.id,
-    // }),
+    reset: assign({ formValues: null, id: null }),
   },
   types: {
-    context: {} as {
-      formValues: NType<FCategory>;
-      id: NType<Id>;
-    },
+    context: {} as MachineContext,
     events: {} as MachineEvents,
   },
 }).createMachine({
@@ -23,27 +22,32 @@ const machine = setup({
     formValues: null,
     id: null,
   },
+  description: 'category setting page',
   initial: 'MAIN',
   states: {
     CREATE: {
       on: {
         TO_MAIN: {
-          actions: assign({
-            formValues: ({ context, event }) => event.value,
-          }),
+          actions: ['reset'],
           target: 'MAIN',
         },
       },
     },
     EDIT: {
       on: {
-        TO_MAIN: { target: 'MAIN' },
+        TO_MAIN: { actions: ['reset'], target: 'MAIN' },
       },
     },
     MAIN: {
       on: {
         TO_CREATE: { target: 'CREATE' },
-        TO_EDIT: { target: 'EDIT' },
+        TO_EDIT: {
+          actions: assign({
+            formValues: ({ context, event }) => event.formValues,
+            id: ({ context, event }) => event.id,
+          }),
+          target: 'EDIT',
+        },
       },
     },
   },
