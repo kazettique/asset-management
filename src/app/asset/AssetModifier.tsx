@@ -16,7 +16,7 @@ interface Props {
   className?: string;
   defaultValues?: FAsset;
   isOpen: boolean;
-  mode: 'create' | 'edit';
+  mode?: 'create' | 'edit';
   onClose: () => void;
   onSubmit: (data: FAsset) => void;
   settingOptions: FSettingOptions;
@@ -29,7 +29,7 @@ export default function AssetModifier(props: Props) {
     onClose,
     isOpen,
     defaultValues = AssetConstant.F_ASSET_INITIAL_VALUES,
-    mode = 'create',
+    mode,
   } = props;
 
   const _defaultValues = useMemo(() => {

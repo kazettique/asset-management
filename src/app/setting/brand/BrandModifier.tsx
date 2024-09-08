@@ -6,33 +6,30 @@ import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import Drawer from '@/components/Drawer';
-import { CategoryConstant } from '@/constant';
-import { FCategory, Id, NType } from '@/types';
-import { CategoryValidator } from '@/validator';
+import { BrandConstant } from '@/constant';
+import { FBrand, Id, NType } from '@/types';
+import { BrandValidator } from '@/validator';
 
 interface Props {
   className?: string;
-  defaultValues: NType<FCategory>;
+  defaultValues: NType<FBrand>;
   id: NType<Id>;
   isOpen: boolean;
   mode?: 'create' | 'edit';
   onClose: () => void;
-  onCreate: (data: FCategory) => void;
+  onCreate: (data: FBrand) => void;
   onDelete: (id: Id) => void;
-  onUpdate: (data: FCategory, id: Id) => void;
+  onUpdate: (data: FBrand, id: Id) => void;
 }
 
-export default function CategoryModifier(props: Props) {
+export default function BrandModifier(props: Props) {
   const { className = '', defaultValues, id, isOpen, mode, onClose, onCreate, onDelete, onUpdate } = props;
 
-  const _defaultValues = useMemo<FCategory>(
-    () => defaultValues || CategoryConstant.F_CATEGORY_INITIAL_VALUES,
-    [defaultValues],
-  );
+  const _defaultValues = useMemo<FBrand>(() => defaultValues || BrandConstant.F_BRAND_INITIAL_VALUES, [defaultValues]);
 
-  const { register, handleSubmit, formState, reset } = useForm<FCategory>({
+  const { register, handleSubmit, formState, reset } = useForm<FBrand>({
     defaultValues: _defaultValues,
-    resolver: zodResolver(CategoryValidator.FCategoryValidator),
+    resolver: zodResolver(BrandValidator.FBrandValidator),
   });
 
   useEffect(() => {

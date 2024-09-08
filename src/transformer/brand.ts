@@ -1,4 +1,4 @@
-import { DBrand, MBrand, VBrand, VBrandTable } from '@/types';
+import { DBrand, FBrand, MBrand, VBrand, VBrandTable } from '@/types';
 
 export abstract class BrandTransformer {
   public static DMBrandTransformer(src: DBrand): MBrand {
@@ -14,6 +14,13 @@ export abstract class BrandTransformer {
       comment: src.comment ?? '',
       name: src.name,
       raw: src,
+    };
+  }
+
+  public static VFBrandTransformer(src: VBrand): FBrand {
+    return {
+      comment: src.comment,
+      name: src.name,
     };
   }
 }
