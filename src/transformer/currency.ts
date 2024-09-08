@@ -1,4 +1,4 @@
-import { DCurrency, MCurrency, VCurrency, VCurrencyTable } from '@/types';
+import { DCurrency, FCurrency, MCurrency, VCurrency, VCurrencyTable } from '@/types';
 
 export abstract class CurrencyTransformer {
   public static DMCurrencyTransformer(src: DCurrency): MCurrency {
@@ -15,6 +15,15 @@ export abstract class CurrencyTransformer {
       display: src.display,
       name: src.name,
       raw: src,
+      symbol: src.symbol,
+    };
+  }
+
+  public static VFCurrencyTransformer(src: VCurrency): FCurrency {
+    return {
+      comment: src.comment,
+      display: src.display,
+      name: src.name,
       symbol: src.symbol,
     };
   }

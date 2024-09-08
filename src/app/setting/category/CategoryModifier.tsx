@@ -39,13 +39,12 @@ export default function CategoryModifier(props: Props) {
     reset(_defaultValues);
   }, [_defaultValues, reset]);
 
-  const title: string = useMemo(() => (mode ? `${mode} category` : ''), [mode]);
+  const title = useMemo<string>(() => (mode ? `${mode} category` : ''), [mode]);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} title={title}>
       <form
         onSubmit={handleSubmit((data) => {
-          // onUpdate(data, id);
           if (mode === 'create') onCreate(data);
           if (mode === 'edit' && id) onUpdate(data, id);
           reset();

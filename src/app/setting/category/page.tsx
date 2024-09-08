@@ -81,9 +81,9 @@ export default function Page() {
       render: (column, item) => (
         <BasicButton
           variant="secondary"
-          onClick={() => {
-            send({ formValues: CategoryTransformer.VFCategoryTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' });
-          }}
+          onClick={() =>
+            send({ formValues: CategoryTransformer.VFCategoryTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
+          }
         >
           <BasicIcon iconType="pen-to-square-solid" />
         </BasicButton>
