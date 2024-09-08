@@ -1,4 +1,4 @@
-import { MPlatform, VPlatform, VPlatformTable } from '@/types';
+import { FPlatform, MPlatform, VPlatform, VPlatformTable } from '@/types';
 import { DPlatform } from '@/types/dbModels';
 
 export abstract class PlatformTransformer {
@@ -15,6 +15,13 @@ export abstract class PlatformTransformer {
       comment: src.comment ?? '',
       name: src.name,
       raw: src,
+    };
+  }
+
+  public static VFPlatformTransformer(src: VPlatform): FPlatform {
+    return {
+      comment: src.comment,
+      name: src.name,
     };
   }
 }
