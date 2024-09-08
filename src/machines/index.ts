@@ -5,3 +5,4 @@ export * from './method';
 export * from './owner';
 export * from './platform';
 export * from './tag';
+export * from './asset'

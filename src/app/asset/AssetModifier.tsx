@@ -3,37 +3,34 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
+import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
 import Drawer from '@/components/Drawer';
 import { AssetConstant } from '@/constant';
-import { FAsset, FSettingOptions, NType } from '@/types';
+import { FAsset, FSettingOptions, Id, NType } from '@/types';
 import { AssetValidator } from '@/validator';
 
 interface Props {
   className?: string;
-  defaultValues?: FAsset;
+  defaultValues: NType<FAsset>;
+  id: NType<Id>;
   isOpen: boolean;
   mode?: 'create' | 'edit';
   onClose: () => void;
-  onSubmit: (data: FAsset) => void;
+  onCreate: (data: FAsset) => void;
+  onDelete: (id: Id) => void;
+  onUpdate: (data: FAsset, id: Id) => void;
   settingOptions: FSettingOptions;
 }
 
 export default function AssetModifier(props: Props) {
-  const {
-    className = '',
-    onSubmit,
-    onClose,
-    isOpen,
-    defaultValues = AssetConstant.F_ASSET_INITIAL_VALUES,
-    mode,
-  } = props;
+  const { className = '', defaultValues, id, isOpen, mode, onClose, onCreate, onDelete, onUpdate } = props;
 
   const _defaultValues = useMemo(() => {
-    return defaultValues;
+    return defaultValues || AssetConstant.F_ASSET_INITIAL_VALUES;
   }, [defaultValues]);
 
   const { register, handleSubmit, reset, control } = useForm<FAsset>({
@@ -46,12 +43,15 @@ export default function AssetModifier(props: Props) {
     reset(_defaultValues);
   }, [_defaultValues, reset]);
 
+  const title = useMemo<string>(() => (mode ? `${mode} asset` : ''), [mode]);
+
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title={`${mode} asset`}>
+    <Drawer isOpen={isOpen} onClose={onClose} title={title}>
       <div className={`p-4 flex flex-col gap-y-4 bg-gray-50 dark:bg-gray-800 w-[500px] ${className}`}>
         <form
           onSubmit={handleSubmit((data) => {
-            onSubmit(data);
+            if (mode === 'create') onCreate(data);
+            if (mode === 'edit' && id) onUpdate(data, id);
             reset();
             onClose();
           })}
@@ -121,9 +121,23 @@ export default function AssetModifier(props: Props) {
             </div>
           </div>
 
-          <BasicButton type="submit" className="w-fit mt-4 block ml-auto mr-0">
-            Submit
-          </BasicButton>
+          <div className="flex gap-2 mt-4 w-fit ml-auto mr-0">
+            {mode && (
+              <BasicButton type="submit" className="grow">
+                {mode === 'create' ? 'create' : 'update'}
+              </BasicButton>
+            )}
+            {mode === 'edit' && (
+              <BasicButton
+                variant="danger"
+                onClick={() => {
+                  if (id) onDelete(id);
+                }}
+              >
+                <BasicIcon iconType="x-lg" />
+              </BasicButton>
+            )}
+          </div>
         </form>
       </div>
     </Drawer>

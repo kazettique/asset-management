@@ -1,6 +1,7 @@
 'use client';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMachine } from '@xstate/react';
 import { useMemo, useState } from 'react';
 
 import BasicButton from '@/components/BasicButton';
@@ -13,6 +14,7 @@ import TabGroup from '@/components/TabGroup';
 import Table, { ColumnProps } from '@/components/Table';
 import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
+import { assetMachine } from '@/machines';
 import { AssetTransformer, SettingTransformer } from '@/transformer';
 import { FAsset, FSettingOptions, Id, NType, VAsset, VAssetTable } from '@/types';
 import { Utils } from '@/utils';
@@ -21,12 +23,13 @@ import { AssetValidator } from '@/validator';
 import AssetImport from './AssetImport';
 import AssetModifier from './AssetModifier';
 
-type DrawerType = 'create' | 'edit' | 'import' | null;
+// type DrawerType = 'create' | 'edit' | 'import' | null;
 
 export default function Page() {
-  const [editItem, setEditItem] = useState<NType<VAsset>>(null);
+  const [state, send] = useMachine(assetMachine, {});
+  // const [editItem, setEditItem] = useState<NType<VAsset>>(null);
   const [page, setPage] = useState<number>(1);
-  const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
+  // const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
 
   const {
     data: settingData,
@@ -66,7 +69,6 @@ export default function Page() {
       AssetFetcher.Update(AssetTransformer.FPAssetTransformer(payload), id),
     onSuccess: () => {
       assetRefetch();
-      setEditItem(null);
     },
   });
 
@@ -86,16 +88,8 @@ export default function Page() {
     },
   });
 
-  const onItemEdit = (asset: VAsset): void => {
-    setEditItem(asset);
-  };
-
   const onItemUpdate = (asset: FAsset, id: VAsset['id']): void => {
     updateAsset.mutate({ id, payload: asset });
-  };
-
-  const onItemCancel = (): void => {
-    setEditItem(null);
   };
 
   const onItemDelete = (id: VAsset['id']): void => {
@@ -201,34 +195,22 @@ export default function Page() {
     {
       key: 'action',
       render: (column, item) => (
-        <div className="flex gap-x-2">
-          <BasicButton
-            variant="secondary"
-            onClick={() => {
-              onItemEdit(item.raw);
-              setActiveDrawer('edit');
-            }}
-          >
-            <BasicIcon iconType="pen-to-square-solid" />
-          </BasicButton>
-          <BasicButton
-            variant="danger"
-            onClick={() => {
-              onItemDelete(item.raw.id);
-            }}
-          >
-            <BasicIcon iconType="x-lg" />
-          </BasicButton>
-        </div>
+        <BasicButton
+          variant="secondary"
+          onClick={() =>
+            send({
+              formValues: AssetTransformer.VFAssetTransformer(item.raw, settingOptions),
+              id: item.raw.id,
+              type: 'TO_EDIT',
+            })
+          }
+        >
+          <BasicIcon iconType="pen-to-square-solid" />
+        </BasicButton>
       ),
       title: 'Action',
     },
   ];
-
-  const editData = useMemo<FAsset | undefined>(
-    () => (editItem ? AssetTransformer.VFAssetTransformer(editItem, settingOptions) : undefined),
-    [editItem, settingOptions],
-  );
 
   return (
     <div className="p-4 relative overflow-y-auto h-full flex flex-col">
@@ -249,13 +231,13 @@ export default function Page() {
 
           <SearchInput />
 
-          <BasicButton variant="secondary" onClick={() => setActiveDrawer('import')} className="flex gap-x-2">
+          <BasicButton variant="secondary" onClick={() => send({ type: 'TO_IMPORT' })} className="flex gap-x-2">
             <BasicIcon iconType="file-import-solid" />
             <span>Import</span>
           </BasicButton>
 
           <button
-            onClick={() => setActiveDrawer('create')}
+            onClick={() => send({ type: 'TO_CREATE' })}
             className="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
           >
             <BasicIcon iconType="cross" />
@@ -284,27 +266,30 @@ export default function Page() {
       </div>
 
       <AssetModifier
-        isOpen={activeDrawer === 'create' || activeDrawer === 'edit'}
-        onClose={() => {
-          setActiveDrawer(null);
-          onItemCancel();
+        isOpen={state.matches('EDIT') || state.matches('CREATE')}
+        onClose={() => send({ type: 'TO_MAIN' })}
+        mode={state.matches('EDIT') ? 'edit' : state.matches('CREATE') ? 'create' : undefined}
+        onUpdate={(data, id) => {
+          onItemUpdate(data, id);
+          send({ type: 'TO_MAIN' });
         }}
-        defaultValues={editData}
-        mode={activeDrawer === 'create' ? 'create' : 'edit'}
-        onSubmit={(event) => {
-          if (activeDrawer === 'create') {
-            onCreateSubmit(event);
-          } else if (editItem) {
-            onItemUpdate(event, editItem.id);
-          }
+        onCreate={(data) => {
+          onCreateSubmit(data);
+          send({ type: 'TO_MAIN' });
         }}
+        onDelete={(id) => {
+          onItemDelete(id);
+          send({ type: 'TO_MAIN' });
+        }}
+        id={state.context.id}
+        defaultValues={state.context.formValues}
         settingOptions={settingOptions}
       />
 
       <AssetImport
-        isOpen={activeDrawer === 'import'}
+        isOpen={state.matches('IMPORT')}
         onClose={() => {
-          setActiveDrawer(null);
+          send({ type: 'TO_MAIN' });
         }}
         settingOptions={settingOptions}
       />
