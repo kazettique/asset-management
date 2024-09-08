@@ -1,4 +1,4 @@
-import { MOwner, VOwner, VOwnerTable } from '@/types';
+import { FOwner, MOwner, VOwner, VOwnerTable } from '@/types';
 import { DOwner } from '@/types/dbModels';
 
 export abstract class OwnerTransformer {
@@ -15,6 +15,13 @@ export abstract class OwnerTransformer {
       comment: src.comment ?? '',
       name: src.name,
       raw: src,
+    };
+  }
+
+  public static VFOwnerTransformer(src: VOwner): FOwner {
+    return {
+      comment: src.comment,
+      name: src.name,
     };
   }
 }

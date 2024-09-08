@@ -6,40 +6,37 @@ import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import Drawer from '@/components/Drawer';
-import { CategoryConstant } from '@/constant';
-import { FCategory, Id, NType } from '@/types';
-import { CategoryValidator } from '@/validator';
+import { OwnerConstant } from '@/constant';
+import { FOwner, Id, NType } from '@/types';
+import { OwnerValidator } from '@/validator';
 
 interface Props {
   className?: string;
-  defaultValues: NType<FCategory>;
+  defaultValues: NType<FOwner>;
   id: NType<Id>;
   isOpen: boolean;
   mode?: 'create' | 'edit';
   onClose: () => void;
-  onCreate: (data: FCategory) => void;
+  onCreate: (data: FOwner) => void;
   onDelete: (id: Id) => void;
-  onUpdate: (data: FCategory, id: Id) => void;
+  onUpdate: (data: FOwner, id: Id) => void;
 }
 
-export default function CategoryModifier(props: Props) {
-  const { className = '', defaultValues, id, isOpen, mode, onClose, onCreate, onDelete, onUpdate } = props;
+export default function OwnerModifier(props: Props) {
+  const { defaultValues, id, isOpen, mode, onClose, onCreate, onDelete, onUpdate } = props;
 
-  const _defaultValues = useMemo<FCategory>(
-    () => defaultValues || CategoryConstant.F_CATEGORY_INITIAL_VALUES,
-    [defaultValues],
-  );
+  const _defaultValues = useMemo<FOwner>(() => defaultValues || OwnerConstant.F_OWNER_INITIAL_VALUES, [defaultValues]);
 
-  const { register, handleSubmit, reset } = useForm<FCategory>({
+  const { register, handleSubmit, reset } = useForm<FOwner>({
     defaultValues: _defaultValues,
-    resolver: zodResolver(CategoryValidator.FCategoryValidator),
+    resolver: zodResolver(OwnerValidator.FOwnerValidator),
   });
 
   useEffect(() => {
     reset(_defaultValues);
   }, [_defaultValues, reset]);
 
-  const title = useMemo<string>(() => (mode ? `${mode} category` : ''), [mode]);
+  const title = useMemo<string>(() => (mode ? `${mode} owner` : ''), [mode]);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} title={title}>
