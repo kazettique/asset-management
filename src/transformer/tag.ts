@@ -1,4 +1,4 @@
-import { DTag, MTag, VTag, VTagTable } from '@/types';
+import { DTag, FTag, MTag, VTag, VTagTable } from '@/types';
 
 export abstract class TagTransformer {
   public static DMTagTransformer(src: DTag): MTag {
@@ -14,6 +14,13 @@ export abstract class TagTransformer {
       comment: src.comment ?? '',
       name: src.name,
       raw: src,
+    };
+  }
+
+  public static VFTagTransformer(src: VTag): FTag {
+    return {
+      comment: src.comment,
+      name: src.name,
     };
   }
 }

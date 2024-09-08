@@ -1,29 +1,29 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { PlaceService } from '@/service';
-import { CommonTransformer, PlaceTransformer } from '@/transformer';
-import { GeneralResponse, HttpStatusCode, Id, VPlace } from '@/types';
-import { CommonValidator, PlaceValidator } from '@/validator';
+import { TagService } from '@/service';
+import { CommonTransformer, TagTransformer } from '@/transformer';
+import { GeneralResponse, HttpStatusCode, Id, VTag } from '@/types';
+import { CommonValidator, TagValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
 
 export async function GET(
   _request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
+): Promise<Response | NextResponse<GeneralResponse<VTag>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await PlaceService.Find(idValidation.data);
+    const raw = await TagService.Find(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const transformedData = PlaceTransformer.DMPlaceTransformer(raw);
-      const dataValidation = PlaceValidator.VPlaceValidator.safeParse(transformedData);
+      const transformedData = TagTransformer.DMTagTransformer(raw);
+      const dataValidation = TagValidator.VTagValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -37,14 +37,14 @@ export async function GET(
 export async function DELETE(
   _request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
+): Promise<Response | NextResponse<GeneralResponse<VTag>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await PlaceService.Delete(idValidation.data);
-    const data = PlaceTransformer.MVPlaceTransformer(raw);
+    const raw = await TagService.Delete(idValidation.data);
+    const data = TagTransformer.MVTagTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
@@ -53,19 +53,19 @@ export async function DELETE(
 export async function POST(
   request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
+): Promise<Response | NextResponse<GeneralResponse<VTag>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = PlaceValidator.PPlaceValidator.safeParse(requestBody);
+  const requestValidation = TagValidator.PTagValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
     return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await PlaceService.Update(requestValidation.data, idValidation.data);
-    const data = PlaceTransformer.MVPlaceTransformer(raw);
+    const raw = await TagService.Update(requestValidation.data, idValidation.data);
+    const data = TagTransformer.MVTagTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

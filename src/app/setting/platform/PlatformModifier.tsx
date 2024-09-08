@@ -39,7 +39,7 @@ export default function PlatformModifier(props: Props) {
     reset(_defaultValues);
   }, [_defaultValues, reset]);
 
-  const title = useMemo<string>(() => (mode ? `${mode} category` : ''), [mode]);
+  const title = useMemo<string>(() => (mode ? `${mode} platform` : ''), [mode]);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} title={title}>

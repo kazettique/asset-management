@@ -6,37 +6,37 @@ import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import Drawer from '@/components/Drawer';
-import { BrandConstant } from '@/constant';
-import { FBrand, Id, NType } from '@/types';
-import { BrandValidator } from '@/validator';
+import { TagConstant } from '@/constant';
+import { FTag, Id, NType } from '@/types';
+import { TagValidator } from '@/validator';
 
 interface Props {
   className?: string;
-  defaultValues: NType<FBrand>;
+  defaultValues: NType<FTag>;
   id: NType<Id>;
   isOpen: boolean;
   mode?: 'create' | 'edit';
   onClose: () => void;
-  onCreate: (data: FBrand) => void;
+  onCreate: (data: FTag) => void;
   onDelete: (id: Id) => void;
-  onUpdate: (data: FBrand, id: Id) => void;
+  onUpdate: (data: FTag, id: Id) => void;
 }
 
-export default function BrandModifier(props: Props) {
+export default function TagModifier(props: Props) {
   const { className = '', defaultValues, id, isOpen, mode, onClose, onCreate, onDelete, onUpdate } = props;
 
-  const _defaultValues = useMemo<FBrand>(() => defaultValues || BrandConstant.F_BRAND_INITIAL_VALUES, [defaultValues]);
+  const _defaultValues = useMemo<FTag>(() => defaultValues || TagConstant.F_TAG_INITIAL_VALUES, [defaultValues]);
 
-  const { register, handleSubmit, formState, reset } = useForm<FBrand>({
+  const { register, handleSubmit, formState, reset } = useForm<FTag>({
     defaultValues: _defaultValues,
-    resolver: zodResolver(BrandValidator.FBrandValidator),
+    resolver: zodResolver(TagValidator.FTagValidator),
   });
 
   useEffect(() => {
     reset(_defaultValues);
   }, [_defaultValues, reset]);
 
-  const title = useMemo<string>(() => (mode ? `${mode} brand` : ''), [mode]);
+  const title = useMemo<string>(() => (mode ? `${mode} tag` : ''), [mode]);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} title={title}>
