@@ -36,7 +36,6 @@ export default function AssetImport(props: Props) {
     //   alert('illegal csv format!');
     // } else {
     //   const payloadData = parsedData.map((item) => AssetTransformer.VAssetImportTransformer(item));
-    //   await AssetFetcher.CreateMany(payloadData);
     //   // assetRefetch();
     // }
   };

@@ -1,5 +1,3 @@
-import { Prisma } from '@prisma/client';
-
 import { backendImplements } from '@/decorator';
 import { CurrencyRepository } from '@/repository';
 import { Id, MCurrency, NType, PCurrency } from '@/types';
@@ -16,10 +14,6 @@ export abstract class CurrencyService {
 
   public static async Create(payload: PCurrency): Promise<MCurrency> {
     return await CurrencyRepository.Create(payload);
-  }
-
-  public static async CreateMany(payload: PCurrency[]): Promise<Prisma.BatchPayload> {
-    return await CurrencyRepository.CreateMany(payload);
   }
 
   public static async Delete(id: Id): Promise<MCurrency> {

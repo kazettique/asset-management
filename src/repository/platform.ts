@@ -1,5 +1,3 @@
-import { Prisma } from '@prisma/client';
-
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { PlatformTransformer } from '@/transformer';
@@ -43,14 +41,6 @@ export abstract class PlatformRepository {
     });
 
     return PlatformTransformer.DMPlatformTransformer(rawData);
-  }
-
-  public static async CreateMany(payload: PPlatform[]): Promise<Prisma.BatchPayload> {
-    const rawData = await db.platform.createMany({
-      data: payload,
-    });
-
-    return rawData;
   }
 
   public static async Delete(id: Id): Promise<MPlatform> {

@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
-import { DAsset, Id, MAsset, NType, PaginationBase, PAsset, PAssetFind, PBatchAsset } from '@/types';
+import { DAsset, Id, MAsset, NType, PaginationBase, PAsset, PAssetFind } from '@/types';
 
 const queryObj = {
   brandId: true,
@@ -82,14 +82,6 @@ export abstract class AssetRepository {
     });
 
     return AssetTransformer.DMAssetTransformer(rawData);
-  }
-
-  public static async CreateMany(payload: PBatchAsset[]): Promise<Prisma.BatchPayload> {
-    const rawData = await db.asset.createMany({
-      data: payload,
-    });
-
-    return rawData;
   }
 
   public static async Delete(id: Id): Promise<MAsset> {

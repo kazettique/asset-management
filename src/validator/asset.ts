@@ -1,16 +1,6 @@
 import { z } from 'zod';
 
-import {
-  DAsset,
-  FAsset,
-  FAssetImport,
-  MAsset,
-  PAsset,
-  PAssetFind,
-  PBatchAsset,
-  VAsset,
-  VAssetImportItem,
-} from '@/types';
+import { DAsset, FAsset, FAssetImport, MAsset, PAsset, PAssetFind, VAsset, VAssetImportItem } from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -40,12 +30,6 @@ export abstract class AssetValidator {
         connect: z.object({ id: CommonValidator.IdValidator }).array(),
         create: z.object({ name: CommonValidator.NameValidator }).array(),
       }),
-    })
-    .and(CommonValidator.AssetCommonValidator);
-
-  public static readonly PBatchAssetValidator: z.ZodSchema<PBatchAsset> = z
-    .object({
-      meta: CommonValidator.AssetMetaValidator,
     })
     .and(CommonValidator.AssetCommonValidator);
 

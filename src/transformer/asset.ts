@@ -13,7 +13,6 @@ import {
   NType,
   PAsset,
   PAssetFind,
-  PBatchAsset,
   VAsset,
   VAssetImportItem,
   VAssetTable,
@@ -186,7 +185,8 @@ export abstract class AssetTransformer {
     };
   }
 
-  public static VAssetImportTransformer(src: VAssetImportItem): PBatchAsset {
+  // TODO: delete after import feature is finished
+  public static VAssetImportTransformer(src: VAssetImportItem): any {
     return {
       ...src,
       brandId: '46241c99-a7f3-49d3-b2f1-6d2916b32e09',

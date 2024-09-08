@@ -47,14 +47,6 @@ export abstract class CurrencyRepository {
     return CurrencyTransformer.DMCurrencyTransformer(rawData);
   }
 
-  public static async CreateMany(payload: PCurrency[]): Promise<Prisma.BatchPayload> {
-    const rawData = await db.currency.createMany({
-      data: payload,
-    });
-
-    return rawData;
-  }
-
   public static async Delete(id: Id): Promise<MCurrency> {
     const rawData = await db.currency.delete({
       select: queryObj,

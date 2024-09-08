@@ -31,14 +31,6 @@ export abstract class PlatformFetcher {
     return data;
   }
 
-  public static async CreateMany(payload: FPlace[]): Promise<GeneralResponse<Prisma.BatchPayload>> {
-    const res = await fetch('/api/setting/platform/import', { body: JSON.stringify(payload), method: 'POST' });
-
-    const data = (await res.json()) as Promise<GeneralResponse<Prisma.BatchPayload>>;
-
-    return data;
-  }
-
   public static async Delete(id: Id): Promise<GeneralResponse<VPlace>> {
     const res = await fetch('/api/setting/platform/' + id, { method: 'DELETE' });
 

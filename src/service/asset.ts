@@ -1,8 +1,6 @@
-import { Prisma } from '@prisma/client';
-
 import { backendImplements } from '@/decorator';
 import { AssetRepository } from '@/repository';
-import { Id, MAsset, NType, PaginationBase, PAsset, PAssetFind, PBatchAsset } from '@/types';
+import { Id, MAsset, NType, PaginationBase, PAsset, PAssetFind } from '@/types';
 
 @backendImplements()
 export abstract class AssetService {
@@ -20,10 +18,6 @@ export abstract class AssetService {
 
   public static async Create(payload: PAsset): Promise<MAsset> {
     return await AssetRepository.Create(payload);
-  }
-
-  public static async CreateMany(payload: PBatchAsset[]): Promise<Prisma.BatchPayload> {
-    return await AssetRepository.CreateMany(payload);
   }
 
   public static async Delete(id: Id): Promise<MAsset> {

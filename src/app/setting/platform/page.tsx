@@ -96,7 +96,6 @@ export default function Page() {
 
   const handleChange = async (event: any) => {
     // console.log('event', event);
-    const res = await PlatformFetcher.CreateMany(event);
     refetch();
   };
 

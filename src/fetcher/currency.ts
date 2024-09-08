@@ -31,14 +31,6 @@ export abstract class CurrencyFetcher {
     return data;
   }
 
-  public static async CreateMany(payload: FCurrency[]): Promise<GeneralResponse<Prisma.BatchPayload>> {
-    const res = await fetch('/api/setting/currency/import', { body: JSON.stringify(payload), method: 'POST' });
-
-    const data = (await res.json()) as Promise<GeneralResponse<Prisma.BatchPayload>>;
-
-    return data;
-  }
-
   public static async Delete(id: Id): Promise<GeneralResponse<VCurrency>> {
     const res = await fetch('/api/setting/currency/' + id, { method: 'DELETE' });
 
