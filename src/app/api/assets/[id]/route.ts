@@ -1,29 +1,28 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { PlaceService } from '@/service';
-import { CommonTransformer, PlaceTransformer } from '@/transformer';
-import { GeneralResponse, HttpStatusCode, Id, VPlace } from '@/types';
-import { CommonValidator, PlaceValidator } from '@/validator';
+import { AssetService } from '@/service';
+import { AssetTransformer, CommonTransformer } from '@/transformer';
+import { GeneralResponse, HttpStatusCode, Id, VAsset } from '@/types';
+import { AssetValidator, CommonValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
 
 export async function GET(
   _request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
+): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await PlaceService.Find(idValidation.data);
+    const raw = await AssetService.Find(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const transformedData = PlaceTransformer.DMPlaceTransformer(raw);
-      const dataValidation = PlaceValidator.VPlaceValidator.safeParse(transformedData);
+      const dataValidation = AssetValidator.VAssetValidator.safeParse(raw);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -37,35 +36,35 @@ export async function GET(
 export async function DELETE(
   _request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
+): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await PlaceService.Delete(idValidation.data);
-    const data = PlaceTransformer.MVPlaceTransformer(raw);
+    const raw = await AssetService.Delete(idValidation.data);
+    const data = AssetTransformer.MVAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
 }
 
-export async function POST(
+export async function PUT(
   request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VPlace>>> {
+): Promise<Response | NextResponse<GeneralResponse<VAsset>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = PlaceValidator.PPlaceValidator.safeParse(requestBody);
+  const requestValidation = AssetValidator.PAssetValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
-    return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {
+    return new Response(JSON.stringify({ error: requestValidation.error, message: CommonConstant.MSG_DIRTY_DATA }), {
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await PlaceService.Update(requestValidation.data, idValidation.data);
-    const data = PlaceTransformer.MVPlaceTransformer(raw);
+    const raw = await AssetService.Update(requestValidation.data, idValidation.data);
+    const data = AssetTransformer.MVAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

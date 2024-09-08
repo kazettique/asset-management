@@ -8,7 +8,7 @@ import { FCurrency, GeneralResponse, Id, MCurrency, VCurrency } from '@/types';
 @backendImplements()
 export abstract class CurrencyFetcher {
   public static async FindAll(): Promise<GeneralResponse<VCurrency[]>> {
-    const res = await fetch('/api/setting/currency');
+    const res = await fetch('/api/setting/currencies');
 
     const data = (await res.json()) as GeneralResponse<VCurrency[]>;
 
@@ -16,7 +16,7 @@ export abstract class CurrencyFetcher {
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VCurrency>> {
-    const res = await fetch('/api/setting/currency/' + id);
+    const res = await fetch('/api/setting/currencies/' + id);
 
     const data = (await res.json()) as GeneralResponse<VCurrency>;
 
@@ -24,7 +24,7 @@ export abstract class CurrencyFetcher {
   }
 
   public static async Create(payload: FCurrency): Promise<GeneralResponse<VCurrency>> {
-    const res = await fetch('/api/setting/currency', { body: JSON.stringify(payload), method: 'POST' });
+    const res = await fetch('/api/setting/currencies', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VCurrency>>;
 
@@ -32,7 +32,7 @@ export abstract class CurrencyFetcher {
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VCurrency>> {
-    const res = await fetch('/api/setting/currency/' + id, { method: 'DELETE' });
+    const res = await fetch('/api/setting/currencies/' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VCurrency>>;
 
@@ -40,9 +40,9 @@ export abstract class CurrencyFetcher {
   }
 
   public static async Update(payload: FCurrency, id: MCurrency['id']): Promise<GeneralResponse<VCurrency>> {
-    const res = await fetch('/api/setting/currency/' + id, {
+    const res = await fetch('/api/setting/currencies/' + id, {
       body: JSON.stringify(payload),
-      method: 'POST',
+      method: 'PUT',
     });
 
     const data = (await res.json()) as Promise<GeneralResponse<VCurrency>>;

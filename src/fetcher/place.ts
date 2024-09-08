@@ -14,7 +14,7 @@ export abstract class PlaceFetcher {
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/place/' + id);
+    const res = await fetch('/api/setting/places' + id);
 
     const data = (await res.json()) as GeneralResponse<VPlace>;
 
@@ -30,7 +30,7 @@ export abstract class PlaceFetcher {
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/place/' + id, { method: 'DELETE' });
+    const res = await fetch('/api/setting/places' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
 
@@ -38,9 +38,9 @@ export abstract class PlaceFetcher {
   }
 
   public static async Update(payload: FPlace, id: MPlace['id']): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/place/' + id, {
+    const res = await fetch('/api/setting/places' + id, {
       body: JSON.stringify(payload),
-      method: 'POST',
+      method: 'PUT',
     });
 
     const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;

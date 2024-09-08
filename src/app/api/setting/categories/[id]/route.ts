@@ -50,7 +50,7 @@ export async function DELETE(
   }
 }
 
-export async function POST(
+export async function PUT(
   request: Request,
   { params }: Segments,
 ): Promise<Response | NextResponse<GeneralResponse<VCategory>>> {

@@ -1,29 +1,29 @@
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
-import { OwnerService } from '@/service';
-import { CommonTransformer, OwnerTransformer } from '@/transformer';
-import { GeneralResponse, HttpStatusCode, Id, VOwner } from '@/types';
-import { CommonValidator, OwnerValidator } from '@/validator';
+import { CurrencyService } from '@/service';
+import { CommonTransformer, CurrencyTransformer } from '@/transformer';
+import { GeneralResponse, HttpStatusCode, Id, VCurrency } from '@/types';
+import { CommonValidator, CurrencyValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
 
 export async function GET(
   _request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VOwner>>> {
+): Promise<Response | NextResponse<GeneralResponse<VCurrency>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await OwnerService.Find(idValidation.data);
+    const raw = await CurrencyService.Find(idValidation.data);
 
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const transformedData = OwnerTransformer.DMOwnerTransformer(raw);
-      const dataValidation = OwnerValidator.VOwnerValidator.safeParse(transformedData);
+      const transformedData = CurrencyTransformer.DMCurrencyTransformer(raw);
+      const dataValidation = CurrencyValidator.VCurrencyValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
@@ -37,35 +37,35 @@ export async function GET(
 export async function DELETE(
   _request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VOwner>>> {
+): Promise<Response | NextResponse<GeneralResponse<VCurrency>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
 
   if (!idValidation.success) {
     return new Response(JSON.stringify(idValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    const raw = await OwnerService.Delete(idValidation.data);
-    const data = OwnerTransformer.MVOwnerTransformer(raw);
+    const raw = await CurrencyService.Delete(idValidation.data);
+    const data = CurrencyTransformer.MVCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }
 }
 
-export async function POST(
+export async function PUT(
   request: Request,
   { params }: Segments,
-): Promise<Response | NextResponse<GeneralResponse<VOwner>>> {
+): Promise<Response | NextResponse<GeneralResponse<VCurrency>>> {
   const idValidation = CommonValidator.IdValidator.safeParse(params.id);
   const requestBody = await request.json();
 
-  const requestValidation = OwnerValidator.POwnerValidator.safeParse(requestBody);
+  const requestValidation = CurrencyValidator.PCurrencyValidator.safeParse(requestBody);
 
   if (!idValidation.success || !requestValidation.success) {
     return new Response(JSON.stringify(idValidation.error) + JSON.stringify(requestValidation.error), {
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await OwnerService.Update(requestValidation.data, idValidation.data);
-    const data = OwnerTransformer.MVOwnerTransformer(raw);
+    const raw = await CurrencyService.Update(requestValidation.data, idValidation.data);
+    const data = CurrencyTransformer.MVCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));
   }

@@ -6,7 +6,7 @@ import { FBrand, GeneralResponse, Id, MBrand, VBrand } from '@/types';
 @backendImplements()
 export abstract class BrandFetcher {
   public static async FindAll(): Promise<GeneralResponse<VBrand[]>> {
-    const res = await fetch('/api/setting/brand');
+    const res = await fetch('/api/setting/brands');
 
     const data = (await res.json()) as GeneralResponse<VBrand[]>;
 
@@ -14,7 +14,7 @@ export abstract class BrandFetcher {
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/' + id);
+    const res = await fetch('/api/setting/brands' + id);
 
     const data = (await res.json()) as GeneralResponse<VBrand>;
 
@@ -22,7 +22,7 @@ export abstract class BrandFetcher {
   }
 
   public static async Create(payload: FBrand): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/brand', { body: JSON.stringify(payload), method: 'POST' });
+    const res = await fetch('/api/setting/brands', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VBrand>>;
 
@@ -30,7 +30,7 @@ export abstract class BrandFetcher {
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/brand/' + id, { method: 'DELETE' });
+    const res = await fetch('/api/setting/brands/' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VBrand>>;
 
@@ -38,9 +38,9 @@ export abstract class BrandFetcher {
   }
 
   public static async Update(payload: FBrand, id: MBrand['id']): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/brand/' + id, {
+    const res = await fetch('/api/setting/brands/' + id, {
       body: JSON.stringify(payload),
-      method: 'POST',
+      method: 'PUT',
     });
 
     const data = (await res.json()) as Promise<GeneralResponse<VBrand>>;

@@ -8,7 +8,7 @@ import { GeneralResponse, Id, MAsset, PaginationBase, PAsset, PAssetFind, VAsset
 @backendImplements()
 export abstract class AssetFetcher {
   public static async FindAll(): Promise<GeneralResponse<VAsset[]>> {
-    const res = await fetch('/api/asset');
+    const res = await fetch('/api/assets');
 
     const data = (await res.json()) as GeneralResponse<VAsset[]>;
 
@@ -17,7 +17,7 @@ export abstract class AssetFetcher {
 
   public static async FindMany(payload: PAssetFind): Promise<PaginationBase<MAsset>> {
     const res = await fetch(
-      '/api/asset?' +
+      '/api/assets?' +
         new URLSearchParams({ page: String(payload.page), pageSize: String(payload.pageSize) }).toString(),
     );
 
@@ -27,7 +27,7 @@ export abstract class AssetFetcher {
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/asset/' + id);
+    const res = await fetch('/api/assets/' + id);
 
     const data = (await res.json()) as GeneralResponse<VAsset>;
 
@@ -35,7 +35,7 @@ export abstract class AssetFetcher {
   }
 
   public static async Create(payload: PAsset): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/asset', { body: JSON.stringify(payload), method: 'POST' });
+    const res = await fetch('/api/assets', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
 
@@ -43,7 +43,7 @@ export abstract class AssetFetcher {
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/asset/' + id, { method: 'DELETE' });
+    const res = await fetch('/api/assets/' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
 
@@ -51,9 +51,9 @@ export abstract class AssetFetcher {
   }
 
   public static async Update(payload: PAsset, id: MAsset['id']): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/asset/' + id, {
+    const res = await fetch('/api/assets/' + id, {
       body: JSON.stringify(payload),
-      method: 'POST',
+      method: 'PUT',
     });
 
     const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
