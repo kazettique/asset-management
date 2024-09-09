@@ -6,7 +6,7 @@ import { FPlace, GeneralResponse, Id, MPlace, VPlace } from '@/types';
 @backendImplements()
 export abstract class PlaceFetcher {
   public static async FindAll(): Promise<GeneralResponse<VPlace[]>> {
-    const res = await fetch('/api/setting/place');
+    const res = await fetch('/api/setting/places');
 
     const data = (await res.json()) as GeneralResponse<VPlace[]>;
 
@@ -22,7 +22,7 @@ export abstract class PlaceFetcher {
   }
 
   public static async Create(payload: FPlace): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/place', { body: JSON.stringify(payload), method: 'POST' });
+    const res = await fetch('/api/setting/places', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
 

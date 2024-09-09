@@ -6,7 +6,7 @@ import { FTag, GeneralResponse, Id, MTag, VTag } from '@/types';
 @backendImplements()
 export abstract class TagFetcher {
   public static async FindAll(): Promise<GeneralResponse<VTag[]>> {
-    const res = await fetch('/api/setting/tag');
+    const res = await fetch('/api/setting/tags');
 
     const data = (await res.json()) as GeneralResponse<VTag[]>;
 
@@ -22,7 +22,7 @@ export abstract class TagFetcher {
   }
 
   public static async Create(payload: FTag): Promise<GeneralResponse<VTag>> {
-    const res = await fetch('/api/setting/tag', { body: JSON.stringify(payload), method: 'POST' });
+    const res = await fetch('/api/setting/tags', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VTag>>;
 
