@@ -34,6 +34,7 @@ export abstract class AssetConstant {
     endMethodId: null,
     endPlatformId: null,
     isCensored: false,
+    isLegalFileData: null,
     meta: [],
     ownerId: null,
     placeId: null,

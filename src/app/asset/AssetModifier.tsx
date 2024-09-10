@@ -10,15 +10,15 @@ import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
 import Drawer from '@/components/Drawer';
 import { AssetConstant } from '@/constant';
-import { FAsset, FSettingOptions, Id, NType } from '@/types';
+import { MachineContext } from '@/machines/asset';
+import { FAsset, FSettingOptions, Id } from '@/types';
 import { AssetValidator } from '@/validator';
 
 interface Props {
   className?: string;
-  defaultValues: NType<FAsset>;
-  id: NType<Id>;
   isOpen: boolean;
   mode?: 'create' | 'edit';
+  modifierContext: MachineContext['modifier'];
   onClose: () => void;
   onCreate: (data: FAsset) => void;
   onDelete: (id: Id) => void;
@@ -27,11 +27,21 @@ interface Props {
 }
 
 export default function AssetModifier(props: Props) {
-  const { className = '', defaultValues, id, isOpen, mode, onClose, onCreate, onDelete, onUpdate } = props;
+  const {
+    className = '',
+    isOpen,
+    mode,
+    modifierContext,
+    onClose,
+    onCreate,
+    onDelete,
+    onUpdate,
+    settingOptions,
+  } = props;
 
   const _defaultValues = useMemo(() => {
-    return defaultValues || AssetConstant.F_ASSET_INITIAL_VALUES;
-  }, [defaultValues]);
+    return modifierContext.formValues || AssetConstant.F_ASSET_INITIAL_VALUES;
+  }, [modifierContext.formValues]);
 
   const { register, handleSubmit, reset, control } = useForm<FAsset>({
     defaultValues: _defaultValues,
@@ -51,7 +61,7 @@ export default function AssetModifier(props: Props) {
         <form
           onSubmit={handleSubmit((data) => {
             if (mode === 'create') onCreate(data);
-            if (mode === 'edit' && id) onUpdate(data, id);
+            if (mode === 'edit' && modifierContext.id) onUpdate(data, modifierContext.id);
             reset();
             onClose();
           })}
@@ -131,7 +141,7 @@ export default function AssetModifier(props: Props) {
               <BasicButton
                 variant="danger"
                 onClick={() => {
-                  if (id) onDelete(id);
+                  if (modifierContext.id) onDelete(modifierContext.id);
                 }}
               >
                 <BasicIcon iconType="x-lg" />

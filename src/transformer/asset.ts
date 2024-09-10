@@ -6,6 +6,7 @@ import { CommonConstant } from '@/constant';
 import {
   DAsset,
   FAsset,
+  FAssetImport,
   FormOption,
   FSettingOptions,
   MAsset,
@@ -206,6 +207,19 @@ export abstract class AssetTransformer {
       startPlatformId: '9bace7c8-d2b1-4487-8a3e-26190acc1c20',
       startPrice: src.startPrice ? Number(src.startPrice) : 0,
     };
+  }
+
+  public static VAssetImportTransformer2(importItem: VAssetImportItem, importFormValues: FAssetImport): PAsset {
+    const asset: FAsset = {
+      ...importItem,
+      ...importFormValues,
+      endDate: importItem.endDate ? dayjs(importItem.endDate).toDate() : null,
+      endPrice: importItem.endPrice ? Number(importItem.endPrice) : 0,
+      startDate: importItem.startDate ? dayjs(importItem.startDate).toDate() : null,
+      startPrice: importItem.startPrice ? Number(importItem.startPrice) : 0,
+    };
+
+    return this.FPAssetTransformer(asset);
   }
 
   public static PAssetFindTransformer(src: Record<string, any>): PAssetFind {

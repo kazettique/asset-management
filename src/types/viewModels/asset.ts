@@ -1,3 +1,5 @@
+import { TaskStatus } from '@/machines/asset';
+
 import { AssetMeta, Name } from '..';
 import { MAsset } from '../models';
 
@@ -37,4 +39,10 @@ export interface VAssetImportItem {
   name: string;
   startDate: string;
   startPrice: string;
+}
+
+export interface VAssetImportTable {
+  name: string;
+  no: number;
+  status: TaskStatus;
 }

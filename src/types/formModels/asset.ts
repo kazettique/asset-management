@@ -25,18 +25,6 @@ export interface FAsset {
   tags: FormOption[];
 }
 
-export interface FAssetImport {
-  brandId: NType<FormOption>;
-  categoryId: FormOption;
-  endCurrencyId: NType<FormOption>;
-  endMethodId: NType<FormOption>;
-  endPlatformId: NType<FormOption>;
-  isCensored: boolean;
-  meta: NType<AssetMeta>;
-  ownerId: NType<FormOption>;
-  placeId: NType<FormOption>;
-  startCurrencyId: NType<FormOption>;
-  startMethodId: NType<FormOption>;
-  startPlatformId: NType<FormOption>;
-  tags: FormOption[];
-}
+export type FAssetImport = Omit<FAsset, 'name' | 'startDate' | 'startPrice' | 'endDate' | 'endPrice' | 'comment'> & {
+  isLegalFileData: boolean | null;
+};

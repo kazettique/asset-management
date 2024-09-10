@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
+import { z } from 'zod';
 
 import { CommonConstant } from '@/constant';
 
@@ -91,6 +92,16 @@ export abstract class Utils {
     } else {
       // otherwise return whatever was received
       return jsonString;
+    }
+  }
+
+  public static async WaitTimer(time: number): Promise<void> {
+    const timeValidation = z.number().int().nonnegative().safeParse(time);
+
+    if (!timeValidation.success) {
+      throw Error(timeValidation.error.message);
+    } else {
+      return await new Promise<void>((resolve, _reject) => setTimeout(() => resolve(), timeValidation.data));
     }
   }
 

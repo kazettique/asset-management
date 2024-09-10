@@ -31,6 +31,7 @@
     "react-hook-form": "^7.52.2",
     "react-select": "^5.8.0",
     "transition-hook": "^1.5.2",
+    "uuid": "^10.0.0",
     "xstate": "^5.18.0",
     "zod": "^3.23.8"
   },
@@ -39,6 +40,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
     "eslint": "^8.57.0",
@@ -53,6 +55,7 @@
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
+    "react-json-pretty": "^2.2.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

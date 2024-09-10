@@ -8,13 +8,14 @@ import BasicIcon from './BasicIcon';
 
 interface Props {
   children?: ReactElement | string;
+  disableClose?: boolean;
   isOpen: boolean;
   onClose: () => void;
   title: string;
 }
 
 export default function Drawer(props: Props) {
-  const { isOpen, onClose, children, title } = props;
+  const { isOpen, onClose, children, title, disableClose = false } = props;
 
   return (
     <>
@@ -30,6 +31,7 @@ export default function Drawer(props: Props) {
           <div className="flex items-center justify-between px-4 pt-4">
             <div className="font-bold text-xl dark:text-gray-50 capitalize">{title}</div>
             <BasicIcon
+              disabled={disableClose}
               onClick={onClose}
               iconType="x-lg"
               className="cursor-pointer hover:bg-slate-200 rounded-sm transition-all p-1"

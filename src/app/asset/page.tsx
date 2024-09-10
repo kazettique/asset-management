@@ -5,7 +5,6 @@ import { useMachine } from '@xstate/react';
 import { useMemo, useState } from 'react';
 
 import BasicButton from '@/components/BasicButton';
-import BasicFileReader from '@/components/BasicFileReader';
 import BasicIcon from '@/components/BasicIcon';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Pagination from '@/components/Pagination';
@@ -16,9 +15,7 @@ import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
 import { assetMachine } from '@/machines';
 import { AssetTransformer, SettingTransformer } from '@/transformer';
-import { FAsset, FSettingOptions, Id, NType, VAsset, VAssetTable } from '@/types';
-import { Utils } from '@/utils';
-import { AssetValidator } from '@/validator';
+import { FAsset, FSettingOptions, Id, VAsset, VAssetTable } from '@/types';
 
 import AssetImport from './AssetImport';
 import AssetModifier from './AssetModifier';
@@ -281,17 +278,31 @@ export default function Page() {
           onItemDelete(id);
           send({ type: 'TO_MAIN' });
         }}
-        id={state.context.id}
-        defaultValues={state.context.formValues}
         settingOptions={settingOptions}
+        modifierContext={state.context.modifier}
       />
 
       <AssetImport
         isOpen={state.matches('IMPORT')}
         onClose={() => {
-          send({ type: 'TO_MAIN' });
+          void send({ type: 'TO_MAIN' });
+        }}
+        onDone={() => {
+          void send({ type: 'TO_MAIN' });
+          assetRefetch();
+        }}
+        onImport={(payload) => {
+          void send({ payload, type: 'IMPORT_TASK_TO_QUEUE' });
         }}
         settingOptions={settingOptions}
+        state={
+          state.matches({ IMPORT: 'PREPARE' })
+            ? 'PREPARE'
+            : state.matches({ IMPORT: 'PROCESSING' })
+              ? 'PROCESSING'
+              : 'FINISH'
+        }
+        importContext={state.context.import}
       />
     </div>
   );

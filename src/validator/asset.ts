@@ -76,6 +76,7 @@ export abstract class AssetValidator {
     endMethodId: CommonValidator.FormOptionValidator.nullable(),
     endPlatformId: CommonValidator.FormOptionValidator.nullable(),
     isCensored: z.boolean(),
+    isLegalFileData: z.literal<boolean>(true),
     meta: CommonValidator.AssetMetaValidator,
     ownerId: CommonValidator.FormOptionValidator.nullable(),
     placeId: CommonValidator.FormOptionValidator.nullable(),
