@@ -32,7 +32,7 @@ export abstract class PlatformFetcher {
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/platforms' + id, { method: 'DELETE' });
+    const res = await fetch('/api/setting/platforms/' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
 
@@ -40,7 +40,7 @@ export abstract class PlatformFetcher {
   }
 
   public static async Update(payload: FPlace, id: MPlace['id']): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/platforms' + id, {
+    const res = await fetch('/api/setting/platforms/' + id, {
       body: JSON.stringify(payload),
       method: 'PUT',
     });

@@ -30,7 +30,7 @@ export abstract class TagFetcher {
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VTag>> {
-    const res = await fetch('/api/setting/tags' + id, { method: 'DELETE' });
+    const res = await fetch('/api/setting/tags/' + id, { method: 'DELETE' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VTag>>;
 
@@ -38,7 +38,7 @@ export abstract class TagFetcher {
   }
 
   public static async Update(payload: FTag, id: MTag['id']): Promise<GeneralResponse<VTag>> {
-    const res = await fetch('/api/setting/tags' + id, {
+    const res = await fetch('/api/setting/tags/' + id, {
       body: JSON.stringify(payload),
       method: 'PUT',
     });

@@ -121,15 +121,15 @@ export default function AssetImport(props: Props) {
               )}
             </div>
 
-            <div>
-              <div className="flex gap-x-2">
+            <div className="gap-4 flex flex-col">
+              <div className="flex gap-4">
                 <BasicSelect options={settingOptions.brands} path="brandId" control={control} />
                 <BasicSelect options={settingOptions.categories} path="categoryId" control={control} />
                 <BasicSelect options={settingOptions.owners} path="ownerId" control={control} />
                 <BasicSelect options={settingOptions.places} path="placeId" control={control} />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <BasicSelect options={settingOptions.currencies} path="startCurrencyId" control={control} />
                 <BasicSelect options={settingOptions.platforms} path="startPlatformId" control={control} />
                 <BasicSelect options={settingOptions.startMethods} path="startMethodId" control={control} />
