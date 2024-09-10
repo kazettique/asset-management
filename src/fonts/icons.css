@@ -1,8 +1,8 @@
 @font-face {
     font-family: "icons";
-    src: url("./icons.ttf?b99ec38f44e4ca72e046c0fd69618739") format("truetype"),
-url("./icons.woff?b99ec38f44e4ca72e046c0fd69618739") format("woff"),
-url("./icons.woff2?b99ec38f44e4ca72e046c0fd69618739") format("woff2");
+    src: url("./icons.ttf?b235e7c2adb755e558b5d8354c5d59b5") format("truetype"),
+url("./icons.woff?b235e7c2adb755e558b5d8354c5d59b5") format("woff"),
+url("./icons.woff2?b235e7c2adb755e558b5d8354c5d59b5") format("woff2");
 }
 
 i[class^="icon-"]:before, i[class*=" icon-"]:before {
@@ -28,195 +28,213 @@ i[class^="icon-"]:before, i[class*=" icon-"]:before {
 .icon-tag-solid:before {
     content: "\f104";
 }
-.icon-search:before {
+.icon-square-check-solid:before {
     content: "\f105";
 }
-.icon-question-circle:before {
+.icon-spinner-solid:before {
     content: "\f106";
 }
-.icon-plus-square:before {
+.icon-search:before {
     content: "\f107";
 }
-.icon-person:before {
+.icon-rectangle-xmark-solid:before {
     content: "\f108";
 }
-.icon-person-o:before {
+.icon-question-circle:before {
     content: "\f109";
 }
-.icon-person-circle:before {
+.icon-plus-square:before {
     content: "\f10a";
 }
-.icon-pen-to-square-solid:before {
+.icon-person:before {
     content: "\f10b";
 }
-.icon-more:before {
+.icon-person-o:before {
     content: "\f10c";
 }
-.icon-magnifying-glass-solid:before {
+.icon-person-circle:before {
     content: "\f10d";
 }
-.icon-location-dot-solid:before {
+.icon-pen-to-square-solid:before {
     content: "\f10e";
 }
-.icon-list:before {
+.icon-more:before {
     content: "\f10f";
 }
-.icon-link-45deg:before {
+.icon-magnifying-glass-solid:before {
     content: "\f110";
 }
-.icon-layer-group-solid:before {
+.icon-location-dot-solid:before {
     content: "\f111";
 }
-.icon-house-solid:before {
+.icon-list:before {
     content: "\f112";
 }
-.icon-hashtag-solid:before {
+.icon-link-45deg:before {
     content: "\f113";
 }
-.icon-handshake-regular:before {
+.icon-layer-group-solid:before {
     content: "\f114";
 }
-.icon-hand-thumbs-up:before {
+.icon-house-solid:before {
     content: "\f115";
 }
-.icon-hand-thumbs-up-fill:before {
+.icon-hashtag-solid:before {
     content: "\f116";
 }
-.icon-hammer-solid:before {
+.icon-handshake-regular:before {
     content: "\f117";
 }
-.icon-gift-fill:before {
+.icon-hand-thumbs-up:before {
     content: "\f118";
 }
-.icon-gear-solid:before {
+.icon-hand-thumbs-up-fill:before {
     content: "\f119";
 }
-.icon-file-import-solid:before {
+.icon-hammer-solid:before {
     content: "\f11a";
 }
-.icon-eye:before {
+.icon-gift-fill:before {
     content: "\f11b";
 }
-.icon-eye-slash:before {
+.icon-gear-solid:before {
     content: "\f11c";
 }
-.icon-eye-fill:before {
+.icon-file-import-solid:before {
     content: "\f11d";
 }
-.icon-exclamation-triangle:before {
+.icon-eye:before {
     content: "\f11e";
 }
-.icon-exclamation-circle:before {
+.icon-eye-slash:before {
     content: "\f11f";
 }
-.icon-envelope:before {
+.icon-eye-fill:before {
     content: "\f120";
 }
-.icon-envelope-fill:before {
+.icon-exclamation-triangle:before {
     content: "\f121";
 }
-.icon-dollar-sign-solid:before {
+.icon-exclamation-circle:before {
     content: "\f122";
 }
-.icon-desktop-solid:before {
+.icon-envelope:before {
     content: "\f123";
 }
-.icon-cubes-solid:before {
+.icon-envelope-fill:before {
     content: "\f124";
 }
-.icon-cube-solid:before {
+.icon-dollar-sign-solid:before {
     content: "\f125";
 }
-.icon-cross:before {
+.icon-desktop-solid:before {
     content: "\f126";
 }
-.icon-content-copy:before {
+.icon-cubes-solid:before {
     content: "\f127";
 }
-.icon-coin:before {
+.icon-cube-solid:before {
     content: "\f128";
 }
-.icon-clock:before {
+.icon-cross:before {
     content: "\f129";
 }
-.icon-check-lg:before {
+.icon-content-copy:before {
     content: "\f12a";
 }
-.icon-check-circle:before {
+.icon-coin:before {
     content: "\f12b";
 }
-.icon-chat-text:before {
+.icon-clock:before {
     content: "\f12c";
 }
-.icon-chart-pie-solid:before {
+.icon-circle-xmark-solid:before {
     content: "\f12d";
 }
-.icon-chart-line-solid:before {
+.icon-circle-pause-solid:before {
     content: "\f12e";
 }
-.icon-cart-shopping-solid:before {
+.icon-circle-check-solid:before {
     content: "\f12f";
 }
-.icon-building-shield-solid:before {
+.icon-check-lg:before {
     content: "\f130";
 }
-.icon-boxes-packing-solid:before {
+.icon-check-circle:before {
     content: "\f131";
 }
-.icon-box-solid:before {
+.icon-chat-text:before {
     content: "\f132";
 }
-.icon-box-arrow-in-right:before {
+.icon-chart-pie-solid:before {
     content: "\f133";
 }
-.icon-box-archive-solid:before {
+.icon-chart-line-solid:before {
     content: "\f134";
 }
-.icon-bookmark:before {
+.icon-cart-shopping-solid:before {
     content: "\f135";
 }
-.icon-bookmark-fill:before {
+.icon-building-shield-solid:before {
     content: "\f136";
 }
-.icon-arrows-rotate-solid:before {
+.icon-boxes-packing-solid:before {
     content: "\f137";
 }
-.icon-arrow-up-solid:before {
+.icon-box-solid:before {
     content: "\f138";
 }
-.icon-arrow-right-solid:before {
+.icon-box-arrow-in-right:before {
     content: "\f139";
 }
-.icon-arrow-left-solid:before {
+.icon-box-archive-solid:before {
     content: "\f13a";
 }
-.icon-arrow-left-right:before {
+.icon-bookmark:before {
     content: "\f13b";
 }
-.icon-arrow-down-solid:before {
+.icon-bookmark-fill:before {
     content: "\f13c";
 }
-.icon-angles-up-solid:before {
+.icon-arrows-rotate-solid:before {
     content: "\f13d";
 }
-.icon-angles-right-solid:before {
+.icon-arrow-up-solid:before {
     content: "\f13e";
 }
-.icon-angles-left-solid:before {
+.icon-arrow-right-solid:before {
     content: "\f13f";
 }
-.icon-angles-down-solid:before {
+.icon-arrow-left-solid:before {
     content: "\f140";
 }
-.icon-angle-up-solid:before {
+.icon-arrow-left-right:before {
     content: "\f141";
 }
-.icon-angle-right-solid:before {
+.icon-arrow-down-solid:before {
     content: "\f142";
 }
-.icon-angle-left-solid:before {
+.icon-angles-up-solid:before {
     content: "\f143";
 }
-.icon-angle-down-solid:before {
+.icon-angles-right-solid:before {
     content: "\f144";
+}
+.icon-angles-left-solid:before {
+    content: "\f145";
+}
+.icon-angles-down-solid:before {
+    content: "\f146";
+}
+.icon-angle-up-solid:before {
+    content: "\f147";
+}
+.icon-angle-right-solid:before {
+    content: "\f148";
+}
+.icon-angle-left-solid:before {
+    content: "\f149";
+}
+.icon-angle-down-solid:before {
+    content: "\f14a";
 }
