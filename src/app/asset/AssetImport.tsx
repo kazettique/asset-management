@@ -84,7 +84,7 @@ export default function AssetImport(props: Props) {
             {...props}
             className="flex flex-col gap-y-4"
             onSubmit={handleSubmit((data) => {
-              onImport(importItems.map((importItem) => AssetTransformer.VAssetImportTransformer2(importItem, data)));
+              onImport(importItems.map((importItem) => AssetTransformer.VAssetImportTransformer(importItem, data)));
             })}
           >
             <div>

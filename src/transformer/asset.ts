@@ -186,30 +186,7 @@ export abstract class AssetTransformer {
     };
   }
 
-  // TODO: delete after import feature is finished
-  public static VAssetImportTransformer(src: VAssetImportItem): any {
-    return {
-      ...src,
-      brandId: '46241c99-a7f3-49d3-b2f1-6d2916b32e09',
-      categoryId: '28c40ba8-55c5-4171-a317-824c6aba09b3',
-      endCurrencyId: '8c468df4-bc10-4f2f-91f3-6bba0ed94d4e',
-      endDate: src.endDate ? dayjs(src.endDate).toDate() : null,
-      endMethodId: 'af0dff05-5bb0-4b18-bccc-9b54509edd10',
-      endPlatformId: '9bace7c8-d2b1-4487-8a3e-26190acc1c20',
-      endPrice: src.endPrice ? Number(src.endPrice) : 0,
-      isCensored: false,
-      meta: [],
-      ownerId: '59efb179-59f0-4e89-99e1-027ae46d187a',
-      placeId: '21a1d59e-c69d-4ec9-b7d4-304c7e216aa0',
-      startCurrencyId: '8c468df4-bc10-4f2f-91f3-6bba0ed94d4e',
-      startDate: src.startDate ? dayjs(src.startDate).toDate() : null,
-      startMethodId: 'af0dff05-5bb0-4b18-bccc-9b54509edd10',
-      startPlatformId: '9bace7c8-d2b1-4487-8a3e-26190acc1c20',
-      startPrice: src.startPrice ? Number(src.startPrice) : 0,
-    };
-  }
-
-  public static VAssetImportTransformer2(importItem: VAssetImportItem, importFormValues: FAssetImport): PAsset {
+  public static VAssetImportTransformer(importItem: VAssetImportItem, importFormValues: FAssetImport): PAsset {
     const asset: FAsset = {
       ...importItem,
       ...importFormValues,
