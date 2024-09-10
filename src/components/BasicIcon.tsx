@@ -22,7 +22,7 @@ export default function BasicIcon(props: Props) {
     <i
       data-disabled={disabled}
       onClick={handleClick}
-      className={`icon-${iconType} ${className} data-[disabled="true"]:cursor-not-allowed`}
+      className={`icon-${iconType} data-[disabled="true"]:cursor-not-allowed ${className}`}
       data-test-comp={BasicIcon.name}
     />
   );

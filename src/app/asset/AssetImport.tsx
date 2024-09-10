@@ -7,13 +7,14 @@ import { useForm, useWatch } from 'react-hook-form';
 import BasicButton from '@/components/BasicButton';
 import BasicDrawer from '@/components/BasicDrawer';
 import BasicFileReader from '@/components/BasicFileReader';
+import BasicIcon from '@/components/BasicIcon';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import Table, { ColumnProps } from '@/components/Table';
 import { AssetConstant } from '@/constant';
-import { MachineContext } from '@/machines/asset';
+import { MachineContext, TaskStatus } from '@/machines/asset';
 import { AssetTransformer } from '@/transformer';
-import { FAssetImport, FSettingOptions, PAsset, VAssetImportItem, VAssetImportTable } from '@/types';
+import { FAssetImport, FSettingOptions, IconType, PAsset, VAssetImportItem, VAssetImportTable } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
@@ -64,14 +65,32 @@ export default function AssetImport(props: Props) {
     { key: 'name', title: 'Name' },
     {
       key: 'status',
-      render: (column, item) => (
-        <div
-          data-status={item.status}
-          className='data-[status="DONE"]:text-green-500 data-[status="FAILED"]:text-red-500 data-[status="PROCESSING"]:text-blue-500'
-        >
-          {item.status}
-        </div>
-      ),
+      render: (column, item) => {
+        let statusIcon: IconType;
+        switch (item.status) {
+          case TaskStatus.FAILED:
+            statusIcon = 'circle-xmark-solid';
+            break;
+          case TaskStatus.PROCESSING:
+            statusIcon = 'spinner-solid';
+            break;
+          case TaskStatus.QUEUE:
+            statusIcon = 'circle-pause-solid';
+            break;
+          case TaskStatus.DONE:
+          default:
+            statusIcon = 'circle-check-solid';
+        }
+
+        return (
+          <div
+            data-status={item.status}
+            className='data-[status="DONE"]:text-green-500 data-[status="FAILED"]:text-red-500 data-[status="PROCESSING"]:text-blue-500 data-[status="PROCESSING"]:animate-spin w-fit h-fit'
+          >
+            <BasicIcon iconType={statusIcon} />
+          </div>
+        );
+      },
       title: 'Status',
     },
   ];

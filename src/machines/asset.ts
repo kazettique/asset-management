@@ -103,7 +103,7 @@ export const assetMachine = setup({
 
       const currentTask = tasks[currentTaskId];
 
-      await Utils.WaitTimer(200);
+      await Utils.WaitTimer(100);
       return await AssetFetcher.Create(currentTask.payload);
     }),
   },
