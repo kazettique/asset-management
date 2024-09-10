@@ -5,10 +5,10 @@ import { ReactElement, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
+import BasicDrawer from '@/components/BasicDrawer';
 import BasicFileReader from '@/components/BasicFileReader';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
-import Drawer from '@/components/Drawer';
 import Table, { ColumnProps } from '@/components/Table';
 import { AssetConstant } from '@/constant';
 import { MachineContext } from '@/machines/asset';
@@ -77,7 +77,7 @@ export default function AssetImport(props: Props) {
   ];
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} disableClose={state === 'PROCESSING'} title="import assets">
+    <BasicDrawer isOpen={isOpen} onClose={onClose} disableClose={state === 'PROCESSING'} title="import assets">
       <div data-test-comp={AssetImport.name} className={`p-4 ${className}`}>
         {state === 'PREPARE' ? (
           <form
@@ -137,6 +137,6 @@ export default function AssetImport(props: Props) {
           </div>
         )}
       </div>
-    </Drawer>
+    </BasicDrawer>
   );
 }

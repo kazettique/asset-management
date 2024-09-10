@@ -6,7 +6,7 @@ import { useState } from 'react';
 import JSONPretty from 'react-json-pretty';
 
 import BasicButton from '@/components/BasicButton';
-import Drawer from '@/components/Drawer';
+import BasicDrawer from '@/components/BasicDrawer';
 import Modal from '@/components/Modal';
 import { IMPORT_PAYLOAD, taskQueueMachine, TaskStatus } from '@/machines/test';
 import { Utils } from '@/utils';

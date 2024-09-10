@@ -3,9 +3,9 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
+import BasicDrawer from '@/components/BasicDrawer';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
-import Drawer from '@/components/Drawer';
 import { OwnerConstant } from '@/constant';
 import { FOwner, Id, NType } from '@/types';
 import { OwnerValidator } from '@/validator';
@@ -39,7 +39,7 @@ export default function OwnerModifier(props: Props) {
   const title = useMemo<string>(() => (mode ? `${mode} owner` : ''), [mode]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title={title}>
+    <BasicDrawer isOpen={isOpen} onClose={onClose} title={title}>
       <form
         onSubmit={handleSubmit((data) => {
           if (mode === 'create') onCreate(data);
@@ -68,6 +68,6 @@ export default function OwnerModifier(props: Props) {
           )}
         </div>
       </form>
-    </Drawer>
+    </BasicDrawer>
   );
 }

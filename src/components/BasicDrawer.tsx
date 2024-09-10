@@ -3,7 +3,6 @@
 import { Transition } from '@headlessui/react';
 import { ReactElement } from 'react';
 
-import BasicButton from './BasicButton';
 import BasicIcon from './BasicIcon';
 
 interface Props {
@@ -14,7 +13,7 @@ interface Props {
   title: string;
 }
 
-export default function Drawer(props: Props) {
+export default function BasicDrawer(props: Props) {
   const { isOpen, onClose, children, title, disableClose = false } = props;
 
   return (
@@ -22,7 +21,7 @@ export default function Drawer(props: Props) {
       <Transition show={isOpen}>
         <div
           className="absolute z-10 w-full h-full bg-gray-500 bg-opacity-75 top-0 left-0 transition duration-300 data-[closed]:opacity-0"
-          data-test-comp={Drawer.name}
+          data-test-comp={BasicDrawer.name}
         />
       </Transition>
 

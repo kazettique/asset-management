@@ -3,12 +3,12 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
+import BasicDrawer from '@/components/BasicDrawer';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
-import Drawer from '@/components/Drawer';
 import { AssetConstant } from '@/constant';
 import { MachineContext } from '@/machines/asset';
 import { FAsset, FSettingOptions, Id } from '@/types';
@@ -56,7 +56,7 @@ export default function AssetModifier(props: Props) {
   const title = useMemo<string>(() => (mode ? `${mode} asset` : ''), [mode]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title={title}>
+    <BasicDrawer isOpen={isOpen} onClose={onClose} title={title}>
       <div className={`p-4 flex flex-col gap-y-4 bg-gray-50 dark:bg-gray-800 w-[500px] ${className}`}>
         <form
           onSubmit={handleSubmit((data) => {
@@ -150,6 +150,6 @@ export default function AssetModifier(props: Props) {
           </div>
         </form>
       </div>
-    </Drawer>
+    </BasicDrawer>
   );
 }

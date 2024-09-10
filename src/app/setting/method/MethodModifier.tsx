@@ -4,10 +4,10 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
+import BasicDrawer from '@/components/BasicDrawer';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import BasicSelect from '@/components/BasicSelect';
-import Drawer from '@/components/Drawer';
 import { CommonConstant, MethodConstant } from '@/constant';
 import { FMethod, FormOption, Id, NType } from '@/types';
 import { MethodValidator } from '@/validator';
@@ -45,7 +45,7 @@ export default function MethodModifier(props: Props) {
   const title = useMemo<string>(() => (mode ? `${mode} method` : ''), [mode]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title={title}>
+    <BasicDrawer isOpen={isOpen} onClose={onClose} title={title}>
       <form
         onSubmit={handleSubmit((data) => {
           if (mode === 'create') onCreate(data);
@@ -78,6 +78,6 @@ export default function MethodModifier(props: Props) {
         </div>
         <div>{formState.errors.type?.message}</div>
       </form>
-    </Drawer>
+    </BasicDrawer>
   );
 }

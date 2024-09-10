@@ -3,8 +3,8 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
+import BasicDrawer from '@/components/BasicDrawer';
 import BasicInput from '@/components/BasicInput';
-import Drawer from '@/components/Drawer';
 import { CurrencyConstant } from '@/constant';
 import { FCurrency, Id, NType } from '@/types';
 import { CurrencyValidator } from '@/validator';
@@ -41,7 +41,7 @@ export default function CurrencyModifier(props: Props) {
   const title = useMemo<string>(() => (mode ? `${mode} currency` : ''), [mode]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title={title}>
+    <BasicDrawer isOpen={isOpen} onClose={onClose} title={title}>
       <form
         onSubmit={handleSubmit((data) => {
           if (mode === 'create') onCreate(data);
@@ -68,6 +68,6 @@ export default function CurrencyModifier(props: Props) {
         </div>
         <BasicButton type="submit">Submit</BasicButton>
       </form>
-    </Drawer>
+    </BasicDrawer>
   );
 }
