@@ -144,7 +144,7 @@ export default function AssetModifier(props: Props) {
                   if (modifierContext.id) onDelete(modifierContext.id);
                 }}
               >
-                <BasicIcon iconType="x-lg" />
+                <BasicIcon iconType="xmark-solid" />
               </BasicButton>
             )}
           </div>

@@ -43,7 +43,7 @@ export default function Component<Values extends FieldValues>(props: Props<Value
                 />
               ))}
             <button className="bg-red-100 hover:bg-red-200 rounded p-1" type="button">
-              <BasicIcon className="text-red-500" iconType="x-lg" onClick={() => remove(index)} />
+              <BasicIcon className="text-red-500" iconType="xmark-solid" onClick={() => remove(index)} />
             </button>
           </div>
         );

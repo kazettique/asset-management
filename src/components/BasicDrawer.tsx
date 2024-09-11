@@ -32,7 +32,7 @@ export default function BasicDrawer(props: Props) {
             <BasicIcon
               disabled={disableClose}
               onClick={onClose}
-              iconType="x-lg"
+              iconType="xmark-solid"
               className="cursor-pointer hover:bg-slate-200 rounded-sm transition-all p-1"
             />
           </div>

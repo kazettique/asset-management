@@ -63,7 +63,7 @@ export default function BrandModifier(props: Props) {
                 if (id) onDelete(id);
               }}
             >
-              <BasicIcon iconType="x-lg" />
+              <BasicIcon iconType="xmark-solid" />
             </BasicButton>
           )}
         </div>
