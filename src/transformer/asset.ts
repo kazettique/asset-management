@@ -2,8 +2,9 @@ import dayjs, { Dayjs } from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import { CommonConstant } from '@/constant';
+import { AssetConstant, CommonConstant } from '@/constant';
 import {
+  AssetLifeStatus,
   DAsset,
   FAsset,
   FAssetImport,
@@ -93,7 +94,7 @@ export abstract class AssetTransformer {
     return {
       ...src,
       brandId: convertEmptyStringToNull(src.brandId),
-      categoryId: String(src.categoryId.value),
+      categoryId: convertEmptyStringToNull(src.categoryId),
       endCurrencyId: convertEmptyStringToNull(src.endCurrencyId),
       endMethodId: convertEmptyStringToNull(src.endMethodId),
       endPlatformId: convertEmptyStringToNull(src.endPlatformId),
@@ -199,10 +200,52 @@ export abstract class AssetTransformer {
     return this.FPAssetTransformer(asset);
   }
 
-  public static PAssetFindTransformer(src: Record<string, any>): PAssetFind {
+  public static PAssetFindTransformer(src: {
+    filters: NString;
+    page: NString;
+    pageSize: NString;
+    sort: NString;
+  }): PAssetFind {
+    const parsedFilters: PAssetFind['filters'] =
+      src.filters !== null
+        ? src.filters
+            .split(',')
+            .filter((item) => item.length > 0)
+            .map((item) => item.split(':'))
+            .filter((item) => item.length === 2)
+            .reduce<PAssetFind['filters']>(
+              (acc, curr, _index, _arr) => {
+                if (curr[0] === 'lifeStatus') {
+                  return { ...acc, [curr[0]]: curr[1] as AssetLifeStatus };
+                } else if (curr[0] === 'startDateRange' || curr[0] === 'endDateRange') {
+                  const _value = curr[1].split('|').map((item) => {
+                    try {
+                      return JSON.parse(item);
+                    } catch (error) {
+                      return dayjs(item).toDate();
+                    }
+                  });
+                  return { ...acc, [curr[0]]: [_value[0], _value[1]] };
+                } else {
+                  return { ...acc, [curr[0]]: curr[1].split('|').filter((_item) => _item.length > 0) };
+                }
+              },
+
+              {},
+            )
+        : {};
+
+    let parsedSort: PAssetFind['sort'] | undefined = undefined;
+    if (src.sort !== null) {
+      const _parse = src.sort.split('|');
+      parsedSort = { key: _parse[0], order: _parse[1] } as unknown as PAssetFind['sort'];
+    }
+
     return {
-      page: src.page ? Number(src.page) : 1,
-      pageSize: src.pageSize ? Number(src.pageSize) : 10,
+      filters: parsedFilters,
+      page: src.page === null ? AssetConstant.P_ASSET_FIND_DEFAULT.page : Number(src.page),
+      pageSize: src.pageSize === null ? AssetConstant.P_ASSET_FIND_DEFAULT.pageSize : Number(src.pageSize),
+      sort: parsedSort,
     };
   }
 }

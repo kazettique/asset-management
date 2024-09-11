@@ -11,6 +11,12 @@ export abstract class CommonConstant {
 
   public static readonly DEFAULT_EMPTY_STRING: string = '--';
 
+  public static readonly MAX_PAGE_SIZE: number = 100;
+
+  public static readonly DEFAULT_PAGE_SIZE: number = 10;
+
+  public static readonly DEFAULT_PAGE: number = 1;
+
   public static readonly DEFAULT_SELECT_OPTION: FormOption = {
     label: 'Please choose',
     value: '',

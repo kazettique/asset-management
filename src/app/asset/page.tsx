@@ -50,7 +50,7 @@ export default function Page() {
     isPending: assetIsPending,
     refetch: assetRefetch,
   } = useQuery({
-    queryFn: () => AssetFetcher.FindMany({ page, pageSize: 10 }),
+    queryFn: () => AssetFetcher.FindMany({ filters: {}, page, pageSize: 10 }),
     queryKey: ['assetList', page],
   });
 
@@ -233,14 +233,10 @@ export default function Page() {
             <span>Import</span>
           </BasicButton>
 
-          <button
-            onClick={() => send({ type: 'TO_CREATE' })}
-            className="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
-          >
+          <BasicButton onClick={() => send({ type: 'TO_CREATE' })} className="flex gap-x-2">
             <BasicIcon iconType="cross" />
-
             <span>Create</span>
-          </button>
+          </BasicButton>
         </div>
       </div>
 

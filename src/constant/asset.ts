@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 
-import { FAsset, FAssetImport } from '@/types';
+import { FAsset, FAssetImport, PAssetFind } from '@/types';
 
 import { CommonConstant } from './common';
 
 export abstract class AssetConstant {
   public static readonly F_ASSET_INITIAL_VALUES: FAsset = {
     brandId: null,
-    categoryId: CommonConstant.DEFAULT_SELECT_OPTION,
+    categoryId: null,
     comment: '',
     endCurrencyId: null,
     endDate: null,
@@ -19,10 +19,10 @@ export abstract class AssetConstant {
     name: CommonConstant.DEFAULT_NAME,
     ownerId: null,
     placeId: null,
-    startCurrencyId: CommonConstant.DEFAULT_SELECT_OPTION,
+    startCurrencyId: null,
     startDate: dayjs().toDate(),
-    startMethodId: CommonConstant.DEFAULT_SELECT_OPTION,
-    startPlatformId: CommonConstant.DEFAULT_SELECT_OPTION,
+    startMethodId: null,
+    startPlatformId: null,
     startPrice: 0,
     tags: [],
   };
@@ -42,5 +42,11 @@ export abstract class AssetConstant {
     startMethodId: null,
     startPlatformId: null,
     tags: [],
+  };
+
+  public static readonly P_ASSET_FIND_DEFAULT: PAssetFind = {
+    filters: {},
+    page: CommonConstant.DEFAULT_PAGE,
+    pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
   };
 }

@@ -39,14 +39,17 @@ export default function Table<T>({ data, columns }: Props<T>) {
   ) : (
     data?.map((row, index) => {
       return (
-        <tr key={`row-${index}`}>
+        <tr
+          key={`row-${index}`}
+          className="text-gray-700 dark:text-gray-200 even:bg-gray-100 dark:even:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+        >
           {columns.map((column, index2) => {
             const value = column.render
               ? column.render(column, row as T)
               : (row[column.key as keyof typeof row] as string);
 
             return (
-              <td key={`cell-${index2}`} className="p-2 text-sm whitespace-nowrap text-gray-700 dark:text-gray-200">
+              <td key={`cell-${index2}`} className="p-2 text-sm whitespace-nowrap ">
                 {value}
               </td>
             );

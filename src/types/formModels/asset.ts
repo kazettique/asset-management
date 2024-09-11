@@ -1,11 +1,11 @@
-import { NType } from '../base';
-import { AssetMeta, Name, Price } from '../common';
+import { Name, NType, Price } from '../base';
+import { AssetMeta } from '../common';
 import { FormOption } from './common';
 
 // no null type in all properties
 export interface FAsset {
   brandId: NType<FormOption>;
-  categoryId: FormOption;
+  categoryId: NType<FormOption>;
   comment: string;
   endCurrencyId: NType<FormOption>;
   endDate: NType<Date>;

@@ -105,6 +105,14 @@ export abstract class Utils {
     }
   }
 
+  public static CalculateSkipCount(page: number, pageSize: number): number {
+    return (page - 1) * pageSize;
+  }
+
+  public static CalculateTotalPage(totalCount: number, pageSize: number): number {
+    return Math.ceil(totalCount / pageSize);
+  }
+
   // public static GetCircularReplacer() {
   //   const ancestors: any[] = [];
 

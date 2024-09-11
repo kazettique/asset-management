@@ -1,11 +1,13 @@
 import { Prisma } from '@prisma/client';
 
+import { CommonConstant } from '@/constant';
 import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
-import { DAsset, Id, MAsset, NType, PaginationBase, PAsset, PAssetFind } from '@/types';
+import { AssetLifeStatus, DAsset, Id, MAsset, NType, PaginationBase, PAsset, PAssetFind } from '@/types';
+import { Utils } from '@/utils';
 
-const queryObj = {
+const queryObj: Prisma.AssetSelect = {
   brandId: true,
   categoryId: true,
   comment: true,
@@ -41,21 +43,78 @@ export abstract class AssetRepository {
   }
 
   // ref: https://github.com/prisma/prisma/discussions/3087
-  public static async FindMany({ page = 1, pageSize = 10 }: PAssetFind): Promise<PaginationBase<MAsset>> {
-    const skipCount: number = (page - 1) * pageSize;
+  public static async FindMany({
+    page = CommonConstant.DEFAULT_PAGE,
+    pageSize = CommonConstant.DEFAULT_PAGE_SIZE,
+    filters,
+    sort,
+  }: PAssetFind): Promise<PaginationBase<MAsset>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const {
+      categories,
+      brands,
+      owners,
+      endMethods,
+      endDateRange,
+      endPlatforms,
+      endPriceRange,
+      startDateRange,
+      startMethods,
+      startPlatforms,
+      startPriceRange,
+      places,
+      lifeStatus,
+    } = filters;
+
+    const filterObj: Prisma.AssetWhereInput = {
+      brandId: { in: brands },
+      categoryId: { in: categories },
+      endDate: {
+        gte: endDateRange !== undefined && endDateRange[0] !== null ? endDateRange[0] : undefined,
+        lte: endDateRange !== undefined && endDateRange[1] !== null ? endDateRange[1] : undefined,
+      },
+      endMethodId: { in: endMethods },
+      endPlatformId: { in: endPlatforms },
+      endPrice: {
+        equals: lifeStatus === AssetLifeStatus.DEAD ? null : undefined,
+        gte: endPriceRange !== undefined && endPriceRange[0] !== null ? endPriceRange[0] : undefined,
+        lte: endPriceRange !== undefined && endPriceRange[1] !== null ? endPriceRange[1] : undefined,
+        not: lifeStatus === AssetLifeStatus.LIVE ? null : undefined,
+      },
+      ownerId: { in: owners },
+      placeId: { in: places },
+      startDate: {
+        gte: startDateRange !== undefined && startDateRange[0] !== null ? startDateRange[0] : undefined,
+        lte: startDateRange !== undefined && startDateRange[1] !== null ? startDateRange[1] : undefined,
+      },
+      startMethodId: { in: startMethods },
+      startPlatformId: { in: startPlatforms },
+      startPrice: {
+        gte: startPriceRange !== undefined && startPriceRange[0] !== null ? startPriceRange[0] : undefined,
+        lte: startPriceRange !== undefined && startPriceRange[1] !== null ? startPriceRange[1] : undefined,
+      },
+    };
+
+    const sortObj: Prisma.AssetOrderByWithRelationInput[] = [{ createdAt: Prisma.SortOrder.desc }];
+
+    if (sort) {
+      sortObj.unshift({ [sort.key]: sort.order });
+    }
 
     const raw = await db.$transaction([
-      db.asset.count(),
+      db.asset.count({ where: filterObj }),
       db.asset.findMany({
-        orderBy: [{ createdAt: 'desc' }],
+        orderBy: sortObj,
         select: queryObj,
         skip: skipCount,
         take: pageSize,
+        where: filterObj,
       }),
     ]);
 
     const [totalCount, rawData] = raw;
-    const totalPage: number = Math.ceil(totalCount / pageSize);
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
 
     const parsedData = rawData.map((asset) => AssetTransformer.DMAssetTransformer(asset));
 

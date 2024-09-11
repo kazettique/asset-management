@@ -1,6 +1,6 @@
 import { MethodType } from '@prisma/client';
 
-import { NString, NType } from './base';
+import { Id, Name, NString, NType, Price } from './base';
 import { IconType } from './iconTypes';
 
 export interface GeneralResponse<T> {
@@ -17,10 +17,6 @@ export interface PaginationBase<T> {
   totalCount: number;
   totalPage: number;
 }
-
-export type Id = string;
-export type Price = number;
-export type Name = string;
 
 export interface MenuItem {
   children: MenuItem[];

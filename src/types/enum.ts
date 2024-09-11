@@ -4,8 +4,7 @@ export enum GenderType {
   OTHERS,
 }
 
-// export enum MethodType {
-//   BOTH = 'BOTH',
-//   END = 'END',
-//   START = 'START',
-// }
+export enum AssetLifeStatus {
+  DEAD = 'DEAD',
+  LIVE = 'LIVE',
+}
