@@ -1,7 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { TagTransformer } from '@/transformer';
-import { DTag, Id, MTag, NType, PTag } from '@/types';
+import { DTag, Id, MTag, NString, NType } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -9,7 +8,6 @@ const queryObj = {
   name: true,
 };
 
-@backendImplements()
 export abstract class TagRepository {
   public static async FindAll(): Promise<MTag[]> {
     const rawData: DTag[] = await db.tag.findMany({
@@ -34,9 +32,9 @@ export abstract class TagRepository {
     }
   }
 
-  public static async Create(payload: PTag): Promise<MTag> {
+  public static async Create(name: string, comment: NString): Promise<MTag> {
     const rawData = await db.tag.create({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
     });
 
@@ -52,9 +50,9 @@ export abstract class TagRepository {
     return TagTransformer.DMTagTransformer(rawData);
   }
 
-  public static async Update(payload: PTag, id: MTag['id']): Promise<MTag> {
+  public static async Update(id: MTag['id'], name: string, comment: NString): Promise<MTag> {
     const rawData = await db.tag.update({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
       where: { id },
     });

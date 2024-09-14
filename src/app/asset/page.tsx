@@ -167,7 +167,7 @@ export default function Page() {
       key: 'action',
       render: (column, item) => (
         <BasicIcon
-          className="bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40 p-2 rounded-md text-white"
+          className="bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40 p-2 rounded-md text-white cursor-pointer"
           iconType="pen-to-square-solid"
           onClick={() =>
             void send({

@@ -30,8 +30,9 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   if (!requestValidation.success) {
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
+    const { name, display, symbol, comment } = requestValidation.data;
     // 3.2 if passed, fetch repository
-    const raw = await CurrencyService.Create(requestValidation.data);
+    const raw = await CurrencyService.Create(name, display, symbol, comment);
     const data = CurrencyTransformer.MVCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

@@ -1,7 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { PlatformTransformer } from '@/transformer';
-import { DPlatform, Id, MPlatform, NType, PPlatform } from '@/types';
+import { DPlatform, Id, MPlatform, NString, NType } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -9,7 +8,6 @@ const queryObj = {
   name: true,
 };
 
-@backendImplements()
 export abstract class PlatformRepository {
   public static async FindAll(): Promise<MPlatform[]> {
     const rawData: DPlatform[] = await db.platform.findMany({
@@ -34,9 +32,9 @@ export abstract class PlatformRepository {
     }
   }
 
-  public static async Create(payload: PPlatform): Promise<MPlatform> {
+  public static async Create(name: string, comment: NString): Promise<MPlatform> {
     const rawData = await db.platform.create({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
     });
 
@@ -52,9 +50,9 @@ export abstract class PlatformRepository {
     return PlatformTransformer.DMPlatformTransformer(rawData);
   }
 
-  public static async Update(payload: PPlatform, id: MPlatform['id']): Promise<MPlatform> {
+  public static async Update(id: MPlatform['id'], name: string, comment: NString): Promise<MPlatform> {
     const rawData = await db.platform.update({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
       where: { id },
     });

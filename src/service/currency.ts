@@ -1,8 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { CurrencyRepository } from '@/repository';
-import { Id, MCurrency, NType, PCurrency } from '@/types';
+import { Id, MCurrency, NString, NType } from '@/types';
 
-@backendImplements()
 export abstract class CurrencyService {
   public static async FindAll(): Promise<MCurrency[]> {
     return await CurrencyRepository.FindAll();
@@ -12,15 +10,21 @@ export abstract class CurrencyService {
     return await CurrencyRepository.Find(id);
   }
 
-  public static async Create(payload: PCurrency): Promise<MCurrency> {
-    return await CurrencyRepository.Create(payload);
+  public static async Create(name: string, display: string, symbol: string, comment: NString): Promise<MCurrency> {
+    return await CurrencyRepository.Create(name, display, symbol, comment);
   }
 
   public static async Delete(id: Id): Promise<MCurrency> {
     return await CurrencyRepository.Delete(id);
   }
 
-  public static async Update(payload: PCurrency, id: MCurrency['id']): Promise<MCurrency> {
-    return await CurrencyRepository.Update(payload, id);
+  public static async Update(
+    id: MCurrency['id'],
+    name: string,
+    display: string,
+    symbol: string,
+    comment: NString,
+  ): Promise<MCurrency> {
+    return await CurrencyRepository.Update(id, name, display, symbol, comment);
   }
 }

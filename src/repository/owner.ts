@@ -1,7 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { OwnerTransformer } from '@/transformer';
-import { DOwner, Id, MOwner, NType, POwner } from '@/types';
+import { DOwner, Id, MOwner, NString, NType } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -9,7 +8,6 @@ const queryObj = {
   name: true,
 };
 
-@backendImplements()
 export abstract class OwnerRepository {
   public static async FindAll(): Promise<MOwner[]> {
     const rawData: DOwner[] = await db.owner.findMany({
@@ -34,9 +32,9 @@ export abstract class OwnerRepository {
     }
   }
 
-  public static async Create(payload: POwner): Promise<MOwner> {
+  public static async Create(name: string, comment: NString): Promise<MOwner> {
     const rawData = await db.owner.create({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
     });
 
@@ -52,9 +50,9 @@ export abstract class OwnerRepository {
     return OwnerTransformer.DMOwnerTransformer(rawData);
   }
 
-  public static async Update(payload: POwner, id: MOwner['id']): Promise<MOwner> {
+  public static async Update(id: MOwner['id'], name: string, comment: NString): Promise<MOwner> {
     const rawData = await db.owner.update({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
       where: { id },
     });

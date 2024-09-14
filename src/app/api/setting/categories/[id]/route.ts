@@ -64,7 +64,8 @@ export async function PUT(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await CategoryService.Update(requestValidation.data, idValidation.data);
+    const { name, comment } = requestValidation.data;
+    const raw = await CategoryService.Update(idValidation.data, name, comment);
     const data = CategoryTransformer.MVCategoryTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

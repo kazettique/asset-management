@@ -1,7 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { CategoryTransformer } from '@/transformer';
-import { DCategory, Id, MCategory, NType, PCategory } from '@/types';
+import { DCategory, Id, MCategory, NString, NType, PCategory } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -9,7 +8,6 @@ const queryObj = {
   name: true,
 };
 
-@backendImplements()
 export abstract class CategoryRepository {
   public static async FindAll(): Promise<MCategory[]> {
     const rawData: DCategory[] = await db.category.findMany({
@@ -36,9 +34,9 @@ export abstract class CategoryRepository {
     }
   }
 
-  public static async Create(payload: PCategory): Promise<MCategory> {
+  public static async Create(name: string, comment: NString): Promise<MCategory> {
     const rawData = await db.category.create({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
     });
 
@@ -54,9 +52,9 @@ export abstract class CategoryRepository {
     return CategoryTransformer.DMCategoryTransformer(rawData);
   }
 
-  public static async Update(payload: PCategory, id: MCategory['id']): Promise<MCategory> {
+  public static async Update(id: MCategory['id'], name: string, comment: NString): Promise<MCategory> {
     const rawData = await db.category.update({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
       where: { id },
     });

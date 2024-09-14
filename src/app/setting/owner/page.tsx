@@ -2,7 +2,6 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMachine } from '@xstate/react';
-import { useState } from 'react';
 
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
@@ -11,7 +10,7 @@ import Table, { ColumnProps } from '@/components/Table';
 import { OwnerFetcher } from '@/fetcher';
 import { ownerMachine } from '@/machines';
 import { OwnerTransformer } from '@/transformer';
-import { FOwner, Id, NType, VOwner, VOwnerTable } from '@/types';
+import { FOwner, Id, VOwner, VOwnerTable } from '@/types';
 
 import OwnerModifier from './OwnerModifier';
 
@@ -78,14 +77,13 @@ export default function Page() {
     {
       key: 'action',
       render: (column, item) => (
-        <BasicButton
-          variant="secondary"
+        <BasicIcon
+          className="bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40 p-2 rounded-md text-white cursor-pointer"
+          iconType="pen-to-square-solid"
           onClick={() =>
-            send({ formValues: OwnerTransformer.VFOwnerTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
+            void send({ formValues: OwnerTransformer.VFOwnerTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
           }
-        >
-          <BasicIcon iconType="pen-to-square-solid" />
-        </BasicButton>
+        />
       ),
       title: 'Action',
     },
@@ -94,7 +92,7 @@ export default function Page() {
   return (
     <div className="p-5">
       <div className="flex justify-between">
-        <h2 className="text-lg font-medium text-gray-800 dark:text-white">Categories</h2>
+        <h2 className="text-lg font-medium text-gray-800 dark:text-white">Owner</h2>
         <BasicButton onClick={() => send({ type: 'TO_CREATE' })}>Create</BasicButton>
       </div>
 

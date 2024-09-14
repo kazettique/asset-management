@@ -64,7 +64,8 @@ export async function PUT(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await TagService.Update(requestValidation.data, idValidation.data);
+    const { name, comment } = requestValidation.data;
+    const raw = await TagService.Update(idValidation.data, name, comment);
     const data = TagTransformer.MVTagTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

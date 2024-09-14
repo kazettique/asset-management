@@ -63,7 +63,8 @@ export async function PUT(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await BrandService.Update(requestValidation.data, idValidation.data);
+    const { name, comment } = requestValidation.data;
+    const raw = await BrandService.Update(idValidation.data, name, comment);
     const data = BrandTransformer.MVBrandTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

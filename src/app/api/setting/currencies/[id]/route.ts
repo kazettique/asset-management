@@ -64,7 +64,8 @@ export async function PUT(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await CurrencyService.Update(requestValidation.data, idValidation.data);
+    const { name, display, symbol, comment } = requestValidation.data;
+    const raw = await CurrencyService.Update(idValidation.data, name, display, symbol, comment);
     const data = CurrencyTransformer.MVCurrencyTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

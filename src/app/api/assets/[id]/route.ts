@@ -63,7 +63,50 @@ export async function PUT(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await AssetService.Update(requestValidation.data, idValidation.data);
+    const {
+      brandId,
+      categoryId,
+      comment,
+      endCurrencyId,
+      endDate,
+      endMethodId,
+      endPlatformId,
+      endPrice,
+      isCensored,
+      meta,
+      name,
+      ownerId,
+      placeId,
+      startCurrencyId,
+      startDate,
+      startMethodId,
+      startPlatformId,
+      startPrice,
+      tags,
+    } = requestValidation.data;
+
+    const raw = await AssetService.Update(
+      idValidation.data,
+      brandId,
+      categoryId,
+      comment,
+      endCurrencyId,
+      endDate,
+      endMethodId,
+      endPlatformId,
+      endPrice,
+      isCensored,
+      meta,
+      name,
+      ownerId,
+      placeId,
+      startCurrencyId,
+      startDate,
+      startMethodId,
+      startPlatformId,
+      startPrice,
+      tags,
+    );
     const data = AssetTransformer.MVAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

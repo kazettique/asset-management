@@ -81,14 +81,13 @@ export default function Page() {
     {
       key: 'action',
       render: (column, item) => (
-        <BasicButton
-          variant="secondary"
+        <BasicIcon
+          className="bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40 p-2 rounded-md text-white cursor-pointer"
+          iconType="pen-to-square-solid"
           onClick={() =>
-            send({ formValues: MethodTransformer.VFMethodTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
+            void send({ formValues: MethodTransformer.VFMethodTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
           }
-        >
-          <BasicIcon iconType="pen-to-square-solid" />
-        </BasicButton>
+        />
       ),
       title: 'Action',
     },

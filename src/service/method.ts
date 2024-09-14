@@ -1,8 +1,8 @@
-import { backendImplements } from '@/decorator';
-import { MethodRepository } from '@/repository';
-import { Id, MMethod, NType, PMethod } from '@/types';
+import { MethodType } from '@prisma/client';
 
-@backendImplements()
+import { MethodRepository } from '@/repository';
+import { Id, MMethod, NString, NType } from '@/types';
+
 export abstract class MethodService {
   public static async FindAll(): Promise<MMethod[]> {
     return await MethodRepository.FindAll();
@@ -12,15 +12,15 @@ export abstract class MethodService {
     return await MethodRepository.Find(id);
   }
 
-  public static async Create(payload: PMethod): Promise<MMethod> {
-    return await MethodRepository.Create(payload);
+  public static async Create(name: string, type: MethodType, comment: NString): Promise<MMethod> {
+    return await MethodRepository.Create(name, type, comment);
   }
 
   public static async Delete(id: Id): Promise<MMethod> {
     return await MethodRepository.Delete(id);
   }
 
-  public static async Update(payload: PMethod, id: MMethod['id']): Promise<MMethod> {
-    return await MethodRepository.Update(payload, id);
+  public static async Update(id: MMethod['id'], name: string, type: MethodType, comment: NString): Promise<MMethod> {
+    return await MethodRepository.Update(id, name, type, comment);
   }
 }

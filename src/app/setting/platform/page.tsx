@@ -2,17 +2,15 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMachine } from '@xstate/react';
-import { useState } from 'react';
 
 import BasicButton from '@/components/BasicButton';
-import BasicFileReaderComp from '@/components/BasicFileReader';
 import BasicIcon from '@/components/BasicIcon';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Table, { ColumnProps } from '@/components/Table';
 import { PlatformFetcher } from '@/fetcher';
 import { placeMachine } from '@/machines/place';
 import { PlaceTransformer, PlatformTransformer } from '@/transformer';
-import { FPlatform, Id, NType, VPlatform, VPlatformTable } from '@/types';
+import { FPlatform, Id, VPlatform, VPlatformTable } from '@/types';
 
 import PlatformModifier from './PlatformModifier';
 
@@ -81,14 +79,13 @@ export default function Page() {
     {
       key: 'action',
       render: (column, item) => (
-        <BasicButton
-          variant="secondary"
+        <BasicIcon
+          className="bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40 p-2 rounded-md text-white cursor-pointer"
+          iconType="pen-to-square-solid"
           onClick={() =>
-            send({ formValues: PlaceTransformer.VFPlaceTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
+            void send({ formValues: PlaceTransformer.VFPlaceTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
           }
-        >
-          <BasicIcon iconType="pen-to-square-solid" />
-        </BasicButton>
+        />
       ),
       title: 'Action',
     },

@@ -47,8 +47,50 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   if (!requestValidation.success) {
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
+    const {
+      brandId,
+      categoryId,
+      comment,
+      endCurrencyId,
+      endDate,
+      endMethodId,
+      endPlatformId,
+      endPrice,
+      isCensored,
+      meta,
+      name,
+      ownerId,
+      placeId,
+      startCurrencyId,
+      startDate,
+      startMethodId,
+      startPlatformId,
+      startPrice,
+      tags,
+    } = requestValidation.data;
+
     // 3.2 if passed, fetch repository
-    const raw = await AssetService.Create(requestValidation.data);
+    const raw = await AssetService.Create(
+      brandId,
+      categoryId,
+      comment,
+      endCurrencyId,
+      endDate,
+      endMethodId,
+      endPlatformId,
+      endPrice,
+      isCensored,
+      meta,
+      name,
+      ownerId,
+      placeId,
+      startCurrencyId,
+      startDate,
+      startMethodId,
+      startPlatformId,
+      startPrice,
+      tags,
+    );
     const data = AssetTransformer.MVAssetTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

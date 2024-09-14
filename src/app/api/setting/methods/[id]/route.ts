@@ -64,7 +64,8 @@ export async function PUT(
       status: HttpStatusCode.BAD_REQUEST,
     });
   } else {
-    const raw = await MethodService.Update(requestValidation.data, idValidation.data);
+    const { name, type, comment } = requestValidation.data;
+    const raw = await MethodService.Update(idValidation.data, name, type, comment);
     const data = MethodTransformer.MVMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

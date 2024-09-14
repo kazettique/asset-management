@@ -1,8 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { AssetRepository } from '@/repository';
-import { Id, MAsset, NType, PaginationBase, PAsset, PAssetFind } from '@/types';
+import { AssetMeta, DTag, Id, MAsset, Name, NString, NType, PaginationBase, PAssetFind, Price } from '@/types';
 
-@backendImplements()
 export abstract class AssetService {
   public static async FindAll(): Promise<MAsset[]> {
     return await AssetRepository.FindAll();
@@ -16,15 +14,103 @@ export abstract class AssetService {
     return await AssetRepository.Find(id);
   }
 
-  public static async Create(payload: PAsset): Promise<MAsset> {
-    return await AssetRepository.Create(payload);
+  public static async Create(
+    brandId: NType<Id>,
+    categoryId: NType<Id>,
+    comment: NString,
+    endCurrencyId: NType<Id>,
+    endDate: NType<Date>,
+    endMethodId: NType<Id>,
+    endPlatformId: NType<Id>,
+    endPrice: NType<Price>,
+    isCensored: boolean,
+    meta: AssetMeta,
+    name: Name,
+    ownerId: NType<Id>,
+    placeId: NType<Id>,
+    startCurrencyId: NType<Id>,
+    startDate: NType<Date>,
+    startMethodId: NType<Id>,
+    startPlatformId: NType<Id>,
+    startPrice: NType<Price>,
+    tags: {
+      connect: Pick<DTag, 'id'>[];
+      create: { name: string }[];
+    },
+  ): Promise<MAsset> {
+    return await AssetRepository.Create(
+      brandId,
+      categoryId,
+      comment,
+      endCurrencyId,
+      endDate,
+      endMethodId,
+      endPlatformId,
+      endPrice,
+      isCensored,
+      meta,
+      name,
+      ownerId,
+      placeId,
+      startCurrencyId,
+      startDate,
+      startMethodId,
+      startPlatformId,
+      startPrice,
+      tags,
+    );
   }
 
   public static async Delete(id: Id): Promise<MAsset> {
     return await AssetRepository.Delete(id);
   }
 
-  public static async Update(payload: PAsset, id: MAsset['id']): Promise<MAsset> {
-    return await AssetRepository.Update(payload, id);
+  public static async Update(
+    id: MAsset['id'],
+    brandId: NType<Id>,
+    categoryId: NType<Id>,
+    comment: NString,
+    endCurrencyId: NType<Id>,
+    endDate: NType<Date>,
+    endMethodId: NType<Id>,
+    endPlatformId: NType<Id>,
+    endPrice: NType<Price>,
+    isCensored: boolean,
+    meta: AssetMeta,
+    name: Name,
+    ownerId: NType<Id>,
+    placeId: NType<Id>,
+    startCurrencyId: NType<Id>,
+    startDate: NType<Date>,
+    startMethodId: NType<Id>,
+    startPlatformId: NType<Id>,
+    startPrice: NType<Price>,
+    tags: {
+      connect: Pick<DTag, 'id'>[];
+      create: { name: string }[];
+    },
+  ): Promise<MAsset> {
+    return await AssetRepository.Update(
+      id,
+      brandId,
+      categoryId,
+      comment,
+      endCurrencyId,
+      endDate,
+      endMethodId,
+      endPlatformId,
+      endPrice,
+      isCensored,
+      meta,
+      name,
+      ownerId,
+      placeId,
+      startCurrencyId,
+      startDate,
+      startMethodId,
+      startPlatformId,
+      startPrice,
+      tags,
+    );
   }
 }

@@ -1,9 +1,6 @@
-import { Prisma } from '@prisma/client';
-
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { CurrencyTransformer } from '@/transformer';
-import { DCurrency, Id, MCurrency, NType, PCurrency } from '@/types';
+import { DCurrency, Id, MCurrency, NString, NType, PCurrency } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -13,7 +10,6 @@ const queryObj = {
   symbol: true,
 };
 
-@backendImplements()
 export abstract class CurrencyRepository {
   public static async FindAll(): Promise<MCurrency[]> {
     const rawData: DCurrency[] = await db.currency.findMany({
@@ -38,9 +34,9 @@ export abstract class CurrencyRepository {
     }
   }
 
-  public static async Create(payload: PCurrency): Promise<MCurrency> {
+  public static async Create(name: string, display: string, symbol: string, comment: NString): Promise<MCurrency> {
     const rawData = await db.currency.create({
-      data: payload,
+      data: { comment, display, name, symbol },
       select: queryObj,
     });
 
@@ -56,9 +52,15 @@ export abstract class CurrencyRepository {
     return CurrencyTransformer.DMCurrencyTransformer(rawData);
   }
 
-  public static async Update(payload: PCurrency, id: MCurrency['id']): Promise<MCurrency> {
+  public static async Update(
+    id: MCurrency['id'],
+    name: string,
+    display: string,
+    symbol: string,
+    comment: NString,
+  ): Promise<MCurrency> {
     const rawData = await db.currency.update({
-      data: payload,
+      data: { comment, display, name, symbol },
       select: queryObj,
       where: { id },
     });

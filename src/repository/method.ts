@@ -1,7 +1,8 @@
-import { backendImplements } from '@/decorator';
+import { MethodType } from '@prisma/client';
+
 import { db } from '@/lib/db';
 import { MethodTransformer } from '@/transformer';
-import { DMethod, Id, MMethod, NType, PMethod } from '@/types';
+import { DMethod, Id, MMethod, NString, NType, PMethod } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -10,7 +11,6 @@ const queryObj = {
   type: true,
 };
 
-@backendImplements()
 export abstract class MethodRepository {
   public static async FindAll(): Promise<MMethod[]> {
     const rawData: DMethod[] = await db.method.findMany({
@@ -35,9 +35,9 @@ export abstract class MethodRepository {
     }
   }
 
-  public static async Create(payload: PMethod): Promise<MMethod> {
+  public static async Create(name: string, type: MethodType, comment: NString): Promise<MMethod> {
     const rawData = await db.method.create({
-      data: payload,
+      data: { comment, name, type },
       select: queryObj,
     });
 
@@ -53,9 +53,9 @@ export abstract class MethodRepository {
     return MethodTransformer.DMMethodTransformer(rawData);
   }
 
-  public static async Update(payload: PMethod, id: MMethod['id']): Promise<MMethod> {
+  public static async Update(id: MMethod['id'], name: string, type: MethodType, comment: NString): Promise<MMethod> {
     const rawData = await db.method.update({
-      data: payload,
+      data: { comment, name, type },
       select: queryObj,
       where: { id },
     });

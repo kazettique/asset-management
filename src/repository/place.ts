@@ -1,7 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { PlaceTransformer } from '@/transformer';
-import { DPlace, Id, MPlace, NType, PPlace } from '@/types';
+import { DPlace, Id, MPlace, NString, NType, PPlace } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -9,7 +8,6 @@ const queryObj = {
   name: true,
 };
 
-@backendImplements()
 export abstract class PlaceRepository {
   public static async FindAll(): Promise<MPlace[]> {
     const rawData: DPlace[] = await db.place.findMany({
@@ -34,9 +32,9 @@ export abstract class PlaceRepository {
     }
   }
 
-  public static async Create(payload: PPlace): Promise<MPlace> {
+  public static async Create(name: string, comment: NString): Promise<MPlace> {
     const rawData = await db.place.create({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
     });
 
@@ -52,9 +50,9 @@ export abstract class PlaceRepository {
     return PlaceTransformer.DMPlaceTransformer(rawData);
   }
 
-  public static async Update(payload: PPlace, id: MPlace['id']): Promise<MPlace> {
+  public static async Update(id: MPlace['id'], name: string, comment: NString): Promise<MPlace> {
     const rawData = await db.place.update({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
       where: { id },
     });

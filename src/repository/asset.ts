@@ -1,10 +1,23 @@
 import { Prisma } from '@prisma/client';
 
 import { CommonConstant } from '@/constant';
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { AssetTransformer } from '@/transformer';
-import { AssetLifeStatus, DAsset, Id, MAsset, NType, PaginationBase, PAsset, PAssetFind } from '@/types';
+import {
+  AssetLifeStatus,
+  AssetMeta,
+  DAsset,
+  DTag,
+  Id,
+  MAsset,
+  Name,
+  NString,
+  NType,
+  PaginationBase,
+  PAsset,
+  PAssetFind,
+  Price,
+} from '@/types';
 import { Utils } from '@/utils';
 
 const queryObj: Prisma.AssetSelect = {
@@ -50,7 +63,6 @@ const queryObj: Prisma.AssetSelect = {
   tags: { select: { id: true, name: true } },
 };
 
-@backendImplements()
 export abstract class AssetRepository {
   public static async FindAll(): Promise<MAsset[]> {
     const rawData: DAsset[] = await db.asset.findMany({
@@ -154,9 +166,52 @@ export abstract class AssetRepository {
     }
   }
 
-  public static async Create(payload: PAsset): Promise<MAsset> {
+  public static async Create(
+    brandId: NType<Id>,
+    categoryId: NType<Id>,
+    comment: NString,
+    endCurrencyId: NType<Id>,
+    endDate: NType<Date>,
+    endMethodId: NType<Id>,
+    endPlatformId: NType<Id>,
+    endPrice: NType<Price>,
+    isCensored: boolean,
+    meta: AssetMeta,
+    name: Name,
+    ownerId: NType<Id>,
+    placeId: NType<Id>,
+    startCurrencyId: NType<Id>,
+    startDate: NType<Date>,
+    startMethodId: NType<Id>,
+    startPlatformId: NType<Id>,
+    startPrice: NType<Price>,
+    tags: {
+      connect: Pick<DTag, 'id'>[];
+      create: { name: string }[];
+    },
+  ): Promise<MAsset> {
     const rawData = await db.asset.create({
-      data: payload,
+      data: {
+        brandId,
+        categoryId,
+        comment,
+        endCurrencyId,
+        endDate,
+        endMethodId,
+        endPlatformId,
+        endPrice,
+        isCensored,
+        meta,
+        name,
+        ownerId,
+        placeId,
+        startCurrencyId,
+        startDate,
+        startMethodId,
+        startPlatformId,
+        startPrice,
+        tags,
+      },
       select: queryObj,
     });
 
@@ -172,9 +227,53 @@ export abstract class AssetRepository {
     return AssetTransformer.DMAssetTransformer(rawData);
   }
 
-  public static async Update(payload: PAsset, id: MAsset['id']): Promise<MAsset> {
+  public static async Update(
+    id: MAsset['id'],
+    brandId: NType<Id>,
+    categoryId: NType<Id>,
+    comment: NString,
+    endCurrencyId: NType<Id>,
+    endDate: NType<Date>,
+    endMethodId: NType<Id>,
+    endPlatformId: NType<Id>,
+    endPrice: NType<Price>,
+    isCensored: boolean,
+    meta: AssetMeta,
+    name: Name,
+    ownerId: NType<Id>,
+    placeId: NType<Id>,
+    startCurrencyId: NType<Id>,
+    startDate: NType<Date>,
+    startMethodId: NType<Id>,
+    startPlatformId: NType<Id>,
+    startPrice: NType<Price>,
+    tags: {
+      connect: Pick<DTag, 'id'>[];
+      create: { name: string }[];
+    },
+  ): Promise<MAsset> {
     const rawData = await db.asset.update({
-      data: payload,
+      data: {
+        brandId,
+        categoryId,
+        comment,
+        endCurrencyId,
+        endDate,
+        endMethodId,
+        endPlatformId,
+        endPrice,
+        isCensored,
+        meta,
+        name,
+        ownerId,
+        placeId,
+        startCurrencyId,
+        startDate,
+        startMethodId,
+        startPlatformId,
+        startPrice,
+        tags,
+      },
       select: queryObj,
       where: { id },
     });

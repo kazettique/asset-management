@@ -30,8 +30,9 @@ export async function POST(request: Request): Promise<Response | NextResponse<Ge
   if (!requestValidation.success) {
     return new Response(JSON.stringify(requestValidation.error), { status: HttpStatusCode.BAD_REQUEST });
   } else {
+    const { name, type, comment } = requestValidation.data;
     // 3.2 if passed, fetch repository
-    const raw = await MethodService.Create(requestValidation.data);
+    const raw = await MethodService.Create(name, type, comment);
     const data = MethodTransformer.MVMethodTransformer(raw);
 
     return NextResponse.json(CommonTransformer.ResponseTransformer(data));

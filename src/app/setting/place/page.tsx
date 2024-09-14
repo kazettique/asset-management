@@ -10,7 +10,7 @@ import Table, { ColumnProps } from '@/components/Table';
 import { PlaceFetcher } from '@/fetcher';
 import { placeMachine } from '@/machines/place';
 import { PlaceTransformer } from '@/transformer';
-import { FPlace, Id, NType, VPlace, VPlaceTable } from '@/types';
+import { FPlace, Id, VPlace, VPlaceTable } from '@/types';
 
 import PlaceModifier from './PlaceModifier';
 
@@ -77,14 +77,13 @@ export default function Page() {
     {
       key: 'action',
       render: (column, item) => (
-        <BasicButton
-          variant="secondary"
+        <BasicIcon
+          className="bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40 p-2 rounded-md text-white cursor-pointer"
+          iconType="pen-to-square-solid"
           onClick={() =>
-            send({ formValues: PlaceTransformer.VFPlaceTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
+            void send({ formValues: PlaceTransformer.VFPlaceTransformer(item.raw), id: item.raw.id, type: 'TO_EDIT' })
           }
-        >
-          <BasicIcon iconType="pen-to-square-solid" />
-        </BasicButton>
+        />
       ),
       title: 'Action',
     },

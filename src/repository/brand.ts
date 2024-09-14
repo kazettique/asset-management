@@ -1,7 +1,6 @@
-import { backendImplements } from '@/decorator';
 import { db } from '@/lib/db';
 import { BrandTransformer } from '@/transformer';
-import { DBrand, Id, MBrand, NType, PBrand } from '@/types';
+import { DBrand, Id, MBrand, NString, NType, PBrand } from '@/types';
 
 const queryObj = {
   comment: true,
@@ -9,7 +8,6 @@ const queryObj = {
   name: true,
 };
 
-@backendImplements()
 export abstract class BrandRepository {
   public static async FindAll(): Promise<MBrand[]> {
     const rawData: DBrand[] = await db.brand.findMany({
@@ -34,9 +32,9 @@ export abstract class BrandRepository {
     }
   }
 
-  public static async Create(payload: PBrand): Promise<MBrand> {
+  public static async Create(name: string, comment: NString): Promise<MBrand> {
     const rawData = await db.brand.create({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
     });
 
@@ -52,9 +50,9 @@ export abstract class BrandRepository {
     return BrandTransformer.DMBrandTransformer(rawData);
   }
 
-  public static async Update(payload: PBrand, id: MBrand['id']): Promise<MBrand> {
+  public static async Update(id: MBrand['id'], name: string, comment: NString): Promise<MBrand> {
     const rawData = await db.brand.update({
-      data: payload,
+      data: { comment, name },
       select: queryObj,
       where: { id },
     });
