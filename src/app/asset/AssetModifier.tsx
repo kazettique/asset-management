@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
-import JSONPretty from 'react-json-pretty';
+import { useForm } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
 import BasicDrawer from '@/components/BasicDrawer';
@@ -54,8 +53,6 @@ export default function AssetModifier(props: Props) {
     reset(_defaultValues);
   }, [_defaultValues, reset]);
 
-  const values = useWatch({ control });
-
   const title = useMemo<string>(() => (mode ? `${mode} asset` : ''), [mode]);
 
   return (
@@ -74,25 +71,20 @@ export default function AssetModifier(props: Props) {
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">basic info</div>
               <BasicInput register={register} path="name" />
               <div className="flex gap-2">
-                <BasicSelect className="grow" options={props.settingOptions.brands} path="brandId" control={control} />
-                <BasicSelect
-                  className="grow"
-                  options={props.settingOptions.categories}
-                  path="categoryId"
-                  control={control}
-                />
+                <BasicSelect className="grow" options={settingOptions.brands} path="brandId" control={control} />
+                <BasicSelect className="grow" options={settingOptions.categories} path="categoryId" control={control} />
               </div>
               <div className="flex gap-2">
                 <BasicSelect
                   className="grow"
-                  options={props.settingOptions.owners}
+                  options={settingOptions.owners}
                   path="ownerId"
                   control={control}
                   isCreatable
                 />
-                <BasicSelect className="grow" options={props.settingOptions.places} path="placeId" control={control} />
+                <BasicSelect className="grow" options={settingOptions.places} path="placeId" control={control} />
               </div>
-              <BasicSelect options={props.settingOptions.tags} isCreatable isMulti path="tags" control={control} />
+              <BasicSelect options={settingOptions.tags} isCreatable isMulti path="tags" control={control} />
               <BasicInputList
                 control={control}
                 path="meta"
@@ -109,12 +101,12 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="startDate" />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={props.settingOptions.currencies} path="startCurrencyId" control={control} />
+                  <BasicSelect options={settingOptions.currencies} path="startCurrencyId" control={control} />
                   <BasicInput register={register} path="startPrice" />
                 </div>
 
-                <BasicSelect options={props.settingOptions.startMethods} path="startMethodId" control={control} />
-                <BasicSelect options={props.settingOptions.platforms} path="startPlatformId" control={control} />
+                <BasicSelect options={settingOptions.startMethods} path="startMethodId" control={control} />
+                <BasicSelect options={settingOptions.platforms} path="startPlatformId" control={control} />
               </div>
             </div>
 
@@ -124,12 +116,12 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="endDate" />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={props.settingOptions.currencies} path="endCurrencyId" control={control} />
+                  <BasicSelect options={settingOptions.currencies} path="endCurrencyId" control={control} />
                   <BasicInput register={register} path="endPrice" />
                 </div>
 
-                <BasicSelect options={props.settingOptions.endMethods} path="endMethodId" control={control} />
-                <BasicSelect options={props.settingOptions.platforms} path="endPlatformId" control={control} />
+                <BasicSelect options={settingOptions.endMethods} path="endMethodId" control={control} />
+                <BasicSelect options={settingOptions.platforms} path="endPlatformId" control={control} />
               </div>
             </div>
           </div>
@@ -152,10 +144,6 @@ export default function AssetModifier(props: Props) {
             )}
           </div>
         </form>
-
-        <JSONPretty data={formState.errors} />
-        <hr />
-        <JSONPretty data={values} />
       </div>
     </BasicDrawer>
   );

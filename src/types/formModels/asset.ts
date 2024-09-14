@@ -32,9 +32,9 @@ export type FAssetImport = Omit<FAsset, 'name' | 'startDate' | 'startPrice' | 'e
 };
 
 export interface FAssetFindPrimaryFilter {
-  categories: FormOption[];
+  categories: string[];
   lifeStatus: AssetLifeStatus;
-  owners: FormOption[];
+  owners: string[];
 }
 
 export interface FAssetFindSecondaryFilter {
@@ -42,12 +42,12 @@ export interface FAssetFindSecondaryFilter {
   endDateRange: [string, string];
   endMethods: FormOption[];
   endPlatforms: FormOption[];
-  endPriceRange: [number, number];
+  endPriceRange: [string, string];
   places: FormOption[];
   startDateRange: [string, string];
   startMethods: FormOption[];
   startPlatforms: FormOption[];
-  startPriceRange: [number, number];
+  startPriceRange: [string, string];
 }
 
 export interface FAssetFindFilter extends FAssetFindPrimaryFilter, FAssetFindSecondaryFilter {}

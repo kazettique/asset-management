@@ -7,15 +7,15 @@ interface Props extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement
 }
 
 export default function BasicButton(props: Props) {
-  const { children, variant = 'primary', className, type = 'button' } = props;
+  const { children, variant = 'primary', className, type = 'button', ...rest } = props;
 
   return (
     <button
-      {...props}
       data-test-comp={BasicButton.name}
       className={`basicButton ${className}`}
       type={type}
       data-variant={variant}
+      {...rest}
     >
       {children}
     </button>

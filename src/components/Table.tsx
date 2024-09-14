@@ -52,7 +52,7 @@ export default function Table<T>(props: Props<T>) {
               : (row[column.key as keyof typeof row] as string);
 
             return (
-              <td key={`cell-${index2}`} className="p-2 text-sm whitespace-nowrap ">
+              <td key={`cell-${index2}`} className="p-2 text-sm whitespace-nowrap">
                 {value}
               </td>
             );

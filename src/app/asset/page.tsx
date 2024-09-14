@@ -43,34 +43,39 @@ export default function Page() {
     {
       key: 'startInfo',
       render: (column, item) => (
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="calendar-days-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.startInfo.startDate}</div>
+        <div className="flex gap-1">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="calendar-days-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.startInfo.startDate}</div>
+            </div>
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="dollar-sign-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.startInfo.startPrice}</div>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="dollar-sign-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.startInfo.startPrice}</div>
-          </div>
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="hammer-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.startInfo.startMethod}</div>
-          </div>
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="desktop-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.startInfo.startPlatform}</div>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="hammer-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.startInfo.startMethod}</div>
+            </div>
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="desktop-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.startInfo.startPlatform}</div>
+            </div>
           </div>
         </div>
       ),
@@ -79,54 +84,43 @@ export default function Page() {
     {
       key: 'endInfo',
       render: (column, item) => (
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="calendar-days-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.endInfo.endDate}</div>
+        <div className="flex gap-1">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="calendar-days-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.endInfo.endDate}</div>
+            </div>
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="dollar-sign-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.endInfo.endPrice}</div>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="dollar-sign-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.endInfo.endPrice}</div>
-          </div>
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="hammer-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.endInfo.endMethod}</div>
-          </div>
-          <div className="flex items-center gap-1">
-            <BasicIcon
-              iconType="desktop-solid"
-              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 p-1 w-5"
-            />
-            <div>{item.endInfo.endPlatform}</div>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="hammer-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.endInfo.endMethod}</div>
+            </div>
+            <div className="flex items-center gap-1">
+              <BasicIcon
+                iconType="desktop-solid"
+                className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+              />
+              <div>{item.endInfo.endPlatform}</div>
+            </div>
           </div>
         </div>
       ),
       title: 'End Info',
-    },
-    {
-      key: 'meta',
-      render: (column, item) => (
-        <>
-          {item.meta.map((_item, index) => {
-            const { key, value } = _item;
-            return (
-              <div key={index}>
-                {key}: {value}
-              </div>
-            );
-          })}
-        </>
-      ),
-      title: 'Meta',
     },
     {
       key: 'priceDifference',
@@ -143,6 +137,22 @@ export default function Page() {
     {
       key: 'owner',
       title: 'owner',
+    },
+    {
+      key: 'meta',
+      render: (column, item) => (
+        <>
+          {item.meta.map((_item, index) => {
+            const { key, value } = _item;
+            return (
+              <div key={index}>
+                {key}: {value}
+              </div>
+            );
+          })}
+        </>
+      ),
+      title: 'Meta',
     },
     {
       key: 'tags',
@@ -185,19 +195,18 @@ export default function Page() {
   return (
     <div className="p-4 relative overflow-y-auto h-full flex flex-col">
       <div className="sm:flex sm:items-center sm:justify-between">
-        <div className="flx items-center">
-          <div className="flex items-center gap-x-3">
-            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Assets</h2>
+        <div className="flex items-center gap-x-3 min-w-[160px]">
+          <h2 className="text-lg font-medium text-gray-800 dark:text-white">Assets</h2>
 
-            <div className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
-              <span>{assetData ? assetData.totalCount : 0}</span>
-              <span>&nbsp;assets</span>
-            </div>
+          <div className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+            <span>{assetData ? assetData.totalCount : 0}</span>
+            <span>&nbsp;assets</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-x-3">
+        <div className="flex items-center gap-x-3 w-full overflow-hidden">
           <AssetSearchBar
+            className="grow mx-2 px-2 py-2"
             settingOptions={settingOptions}
             onSearch={(payload) => {
               send({ payload, type: 'UPDATE_SEARCH_PRIMARY_FILTER' });

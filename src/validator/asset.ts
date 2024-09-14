@@ -237,9 +237,9 @@ export abstract class AssetValidator {
     .and(CommonValidator.PFindPageValidator);
 
   public static readonly FAssetFindPrimaryValidator: z.ZodSchema<FAssetFindPrimaryFilter> = z.object({
-    categories: CommonValidator.FormOptionValidator.array(),
+    categories: z.string().array(),
     lifeStatus: z.nativeEnum(AssetLifeStatus),
-    owners: CommonValidator.FormOptionValidator.array(),
+    owners: z.string().array(),
   });
 
   public static readonly FAssetFindSecondaryFilter: z.ZodSchema<FAssetFindSecondaryFilter> = z.object({
@@ -247,12 +247,12 @@ export abstract class AssetValidator {
     endDateRange: z.tuple([z.string(), z.string()]),
     endMethods: CommonValidator.FormOptionValidator.array(),
     endPlatforms: CommonValidator.FormOptionValidator.array(),
-    endPriceRange: z.tuple([CommonValidator.PriceValidator, CommonValidator.PriceValidator]),
+    endPriceRange: z.tuple([z.string(), z.string()]),
     places: CommonValidator.FormOptionValidator.array(),
     startDateRange: z.tuple([z.string(), z.string()]),
     startMethods: CommonValidator.FormOptionValidator.array(),
     startPlatforms: CommonValidator.FormOptionValidator.array(),
-    startPriceRange: z.tuple([CommonValidator.PriceValidator, CommonValidator.PriceValidator]),
+    startPriceRange: z.tuple([z.string(), z.string()]),
   });
 
   public static readonly FAssetFindSortValidator: z.ZodSchema<FAssetFindSort> = this.PAssetFindSortValidator;

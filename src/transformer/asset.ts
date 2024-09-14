@@ -279,9 +279,9 @@ export abstract class AssetTransformer {
     src: FAssetFindPrimaryFilter,
   ): Pick<PAssetFindFilter, 'categories' | 'lifeStatus' | 'owners'> {
     return {
-      categories: src.categories.map(CommonTransformer.ConvertFormOptionToId),
+      categories: src.categories,
       lifeStatus: src.lifeStatus,
-      owners: src.owners.map(CommonTransformer.ConvertFormOptionToId),
+      owners: src.owners,
     };
   }
 
@@ -293,12 +293,18 @@ export abstract class AssetTransformer {
       endDateRange: [dayjs(src.endDateRange[0]).toDate(), dayjs(src.endDateRange[1]).toDate()],
       endMethods: src.endMethods.map(CommonTransformer.ConvertFormOptionToId),
       endPlatforms: src.endPlatforms.map(CommonTransformer.ConvertFormOptionToId),
-      endPriceRange: src.endPriceRange,
+      endPriceRange: [
+        src.endPriceRange[0].length > 0 ? Number(src.endPriceRange[0]) : null,
+        src.endPriceRange[1].length > 0 ? Number(src.endPriceRange[1]) : null,
+      ],
       places: src.places.map(CommonTransformer.ConvertFormOptionToId),
       startDateRange: [dayjs(src.startDateRange[0]).toDate(), dayjs(src.startDateRange[1]).toDate()],
       startMethods: src.startMethods.map(CommonTransformer.ConvertFormOptionToId),
       startPlatforms: src.startPlatforms.map(CommonTransformer.ConvertFormOptionToId),
-      startPriceRange: src.startPriceRange,
+      startPriceRange: [
+        src.startPriceRange[0].length > 0 ? Number(src.startPriceRange[0]) : null,
+        src.startPriceRange[1].length > 0 ? Number(src.startPriceRange[1]) : null,
+      ],
     };
   }
 }
