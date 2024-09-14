@@ -13,7 +13,7 @@ export abstract class AssetConstant {
     endDate: null,
     endMethodId: null,
     endPlatformId: null,
-    endPrice: 0,
+    endPrice: '',
     isCensored: false,
     meta: [],
     name: CommonConstant.DEFAULT_NAME,
@@ -23,7 +23,7 @@ export abstract class AssetConstant {
     startDate: dayjs().toDate(),
     startMethodId: null,
     startPlatformId: null,
-    startPrice: 0,
+    startPrice: '',
     tags: [],
   };
 

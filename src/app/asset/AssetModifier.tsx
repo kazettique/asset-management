@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
+import JSONPretty from 'react-json-pretty';
 
 import BasicButton from '@/components/BasicButton';
 import BasicDrawer from '@/components/BasicDrawer';
@@ -43,7 +44,7 @@ export default function AssetModifier(props: Props) {
     return modifierContext.formValues || AssetConstant.F_ASSET_INITIAL_VALUES;
   }, [modifierContext.formValues]);
 
-  const { register, handleSubmit, reset, control } = useForm<FAsset>({
+  const { register, handleSubmit, reset, control, formState } = useForm<FAsset>({
     defaultValues: _defaultValues,
     resolver: zodResolver(AssetValidator.FAssetValidator),
   });
@@ -52,6 +53,8 @@ export default function AssetModifier(props: Props) {
   useEffect(() => {
     reset(_defaultValues);
   }, [_defaultValues, reset]);
+
+  const values = useWatch({ control });
 
   const title = useMemo<string>(() => (mode ? `${mode} asset` : ''), [mode]);
 
@@ -107,7 +110,7 @@ export default function AssetModifier(props: Props) {
 
                 <div className="flex gap-2">
                   <BasicSelect options={props.settingOptions.currencies} path="startCurrencyId" control={control} />
-                  <BasicInput type="number" register={register} path="startPrice" />
+                  <BasicInput register={register} path="startPrice" />
                 </div>
 
                 <BasicSelect options={props.settingOptions.startMethods} path="startMethodId" control={control} />
@@ -122,7 +125,7 @@ export default function AssetModifier(props: Props) {
 
                 <div className="flex gap-2">
                   <BasicSelect options={props.settingOptions.currencies} path="endCurrencyId" control={control} />
-                  <BasicInput type="number" register={register} path="endPrice" />
+                  <BasicInput register={register} path="endPrice" />
                 </div>
 
                 <BasicSelect options={props.settingOptions.endMethods} path="endMethodId" control={control} />
@@ -149,6 +152,10 @@ export default function AssetModifier(props: Props) {
             )}
           </div>
         </form>
+
+        <JSONPretty data={formState.errors} />
+        <hr />
+        <JSONPretty data={values} />
       </div>
     </BasicDrawer>
   );

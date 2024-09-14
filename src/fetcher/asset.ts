@@ -1,7 +1,5 @@
 'use client';
 
-import { Prisma } from '@prisma/client';
-
 import { backendImplements } from '@/decorator';
 import { AssetTransformer } from '@/transformer';
 import { GeneralResponse, Id, MAsset, PaginationBase, PAsset, PAssetFind, VAsset } from '@/types';

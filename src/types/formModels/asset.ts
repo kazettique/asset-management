@@ -1,4 +1,4 @@
-import { Name, NType, Price } from '../base';
+import { Name, NType } from '../base';
 import { AssetMeta } from '../common';
 import { AssetLifeStatus } from '../enum';
 import { PAssetFindSort } from '../payloadModels';

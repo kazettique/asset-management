@@ -57,35 +57,35 @@ export abstract class AssetTransformer {
   public static VFAssetTransformer(src: VAsset, settingOptions: FSettingOptions): FAsset {
     const convert = (_src: { id: string; name: string }): FormOption => ({ label: _src.name, value: _src.id });
 
-    const findBrand = settingOptions.brands.find((_item) => _item.value === src.brandId);
-    const findStartMethod = settingOptions.startMethods.find((_item) => _item.value === src.startMethodId);
-    const findStartPlatform = settingOptions.platforms.find((_item) => _item.value === src.startPlatformId);
-    const findStartCurrencyId = settingOptions.currencies.find((_item) => _item.value === src.startCurrencyId);
-    const findEndMethod = settingOptions.endMethods.find((_item) => _item.value === src.endMethodId);
-    const findEndPlatform = settingOptions.platforms.find((_item) => _item.value === src.endPlatformId);
-    const findEndCurrencyId = settingOptions.currencies.find((_item) => _item.value === src.endCurrencyId);
-    const findPlace = settingOptions.places.find((_item) => _item.value === src.placeId);
-    const findOwner = settingOptions.owners.find((_item) => _item.value === src.ownerId);
-    const findCategory = settingOptions.categories.find((_item) => _item.value === src.ownerId);
+    const findBrand = settingOptions.brands.find((_item) => _item.value === src.brand?.id);
+    const findStartMethod = settingOptions.startMethods.find((_item) => _item.value === src.startMethod?.id);
+    const findStartPlatform = settingOptions.platforms.find((_item) => _item.value === src.startPlatform?.id);
+    const findStartCurrencyId = settingOptions.currencies.find((_item) => _item.value === src.startCurrency?.id);
+    const findEndMethod = settingOptions.endMethods.find((_item) => _item.value === src.endMethod?.id);
+    const findEndPlatform = settingOptions.platforms.find((_item) => _item.value === src.endPlatform?.id);
+    const findEndCurrencyId = settingOptions.currencies.find((_item) => _item.value === src.endCurrency?.id);
+    const findPlace = settingOptions.places.find((_item) => _item.value === src.place?.id);
+    const findOwner = settingOptions.owners.find((_item) => _item.value === src.owner?.id);
+    const findCategory = settingOptions.categories.find((_item) => _item.value === src.category?.id);
 
     return {
-      brandId: findBrand || CommonConstant.DEFAULT_SELECT_OPTION,
-      categoryId: findCategory || CommonConstant.DEFAULT_SELECT_OPTION,
+      brandId: findBrand || null,
+      categoryId: findCategory || null,
       comment: src.comment ?? '',
-      endCurrencyId: findEndCurrencyId || CommonConstant.DEFAULT_SELECT_OPTION,
+      endCurrencyId: findEndCurrencyId || null,
       endDate: src.endDate,
-      endMethodId: findEndMethod || CommonConstant.DEFAULT_SELECT_OPTION,
-      endPlatformId: findEndPlatform || CommonConstant.DEFAULT_SELECT_OPTION,
+      endMethodId: findEndMethod || null,
+      endPlatformId: findEndPlatform || null,
       endPrice: src.endPrice !== null ? String(src.endPrice) : '',
       isCensored: src.isCensored,
       meta: src.meta,
       name: src.name,
-      ownerId: findOwner || CommonConstant.DEFAULT_SELECT_OPTION,
-      placeId: findPlace || CommonConstant.DEFAULT_SELECT_OPTION,
-      startCurrencyId: findStartCurrencyId || CommonConstant.DEFAULT_SELECT_OPTION,
+      ownerId: findOwner || null,
+      placeId: findPlace || null,
+      startCurrencyId: findStartCurrencyId || null,
       startDate: src.startDate,
-      startMethodId: findStartMethod || CommonConstant.DEFAULT_SELECT_OPTION,
-      startPlatformId: findStartPlatform || CommonConstant.DEFAULT_SELECT_OPTION,
+      startMethodId: findStartMethod || null,
+      startPlatformId: findStartPlatform || null,
       startPrice: src.startPrice !== null ? String(src.startPrice) : '',
       tags: src.tags.map((item) => convert(item)),
     };
@@ -119,71 +119,66 @@ export abstract class AssetTransformer {
   }
 
   // view model -> table model
-  public static VTAssetTransformer(src: VAsset, settingOptions: FSettingOptions): VAssetTable {
-    const findBrand = settingOptions.brands.find((_item) => _item.value === src.brandId);
-    const findStartMethod = settingOptions.startMethods.find((_item) => _item.value === src.startMethodId);
-    const findStartPlatform = settingOptions.platforms.find((_item) => _item.value === src.startPlatformId);
-    const findEndMethod = settingOptions.endMethods.find((_item) => _item.value === src.endMethodId);
-    const findEndPlatform = settingOptions.platforms.find((_item) => _item.value === src.endPlatformId);
-    const findPlace = settingOptions.places.find((_item) => _item.value === src.placeId);
-    const findOwner = settingOptions.owners.find((_item) => _item.value === src.ownerId);
-    const findCategory = settingOptions.categories.find((_item) => _item.value === src.categoryId);
-
+  public static VTAssetTransformer(src: VAsset): VAssetTable {
     // startDate
     const _startDate: NType<Dayjs> = src.startDate !== null ? dayjs(src.startDate) : null;
-    // startPrice
-    const startCurrency = settingOptions.currencies.find((_item) => _item.value === src.startCurrencyId);
     // endDate
     const _endDate: NType<Dayjs> = src.endDate !== null ? dayjs(src.endDate) : null;
-    // endPrice
-    const endCurrency = settingOptions.currencies.find((_item) => _item.value === src.endCurrencyId);
 
     const _priceDifference: number =
-      src.startCurrencyId === src.endCurrencyId && src.endPrice && src.startPrice ? src.startPrice - src.endPrice : 0;
+      src.startCurrency &&
+      src.endCurrency &&
+      src.endPrice &&
+      src.startPrice &&
+      src.startCurrency.id === src.endCurrency.id
+        ? src.startPrice - src.endPrice
+        : 0;
 
     let monthlyCost: string = '';
 
-    if (startCurrency) {
+    if (src.startCurrency) {
       const endDate: Dayjs = src.endDate !== null ? dayjs(src.endDate) : dayjs();
       const startDate: Dayjs = dayjs(src.startDate);
       const monthCount: number = endDate.diff(startDate, 'month');
 
       if (monthCount > 0) {
-        monthlyCost = startCurrency.label + Utils.NumberWithCommas(Math.round(_priceDifference / monthCount));
+        const calculateMonthlyCost = Utils.NumberWithCommas(Math.round(_priceDifference / monthCount));
+        monthlyCost = `(${src.startCurrency.display}) ${src.startCurrency.symbol}${calculateMonthlyCost}`;
       } else {
-        monthlyCost = startCurrency.label + Utils.NumberWithCommas(_priceDifference);
+        const calculateMonthlyCost = Utils.NumberWithCommas(_priceDifference);
+        monthlyCost = `(${src.startCurrency.display}) ${src.startCurrency.symbol}${calculateMonthlyCost}`;
       }
     }
 
     return {
-      brand: findBrand ? findBrand.label : CommonConstant.DEFAULT_EMPTY_STRING,
-      category: findCategory ? findCategory.label : CommonConstant.DEFAULT_EMPTY_STRING,
+      brand: src.brand ? src.brand.name : CommonConstant.DEFAULT_EMPTY_STRING,
+      category: src.category ? src.category.name : CommonConstant.DEFAULT_EMPTY_STRING,
       comment: src.comment ?? '',
       endInfo: {
         endDate: src.endDate ? Utils.GetDateTimeString(src.endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
-        endMethod: findEndMethod ? findEndMethod.label : CommonConstant.DEFAULT_EMPTY_STRING,
-        endPlatform: findEndPlatform ? findEndPlatform.label : CommonConstant.DEFAULT_EMPTY_STRING,
+        endMethod: src.endMethod ? src.endMethod.name : CommonConstant.DEFAULT_EMPTY_STRING,
+        endPlatform: src.endPlatform ? src.endPlatform.name : CommonConstant.DEFAULT_EMPTY_STRING,
         endPrice:
-          endCurrency && src.endPrice
-            ? `${endCurrency.label} ${Utils.NumberWithCommas(src.endPrice)}`
+          src.endCurrency && src.endPrice
+            ? `(${src.endCurrency.display}) ${src.endCurrency.symbol}${Utils.NumberWithCommas(src.endPrice)}`
             : CommonConstant.DEFAULT_EMPTY_STRING,
       },
       meta: src.meta ?? [],
       monthlyCost,
       name: src.name,
-      owner: findOwner ? findOwner.label : CommonConstant.DEFAULT_EMPTY_STRING,
-      place: findPlace ? findPlace.label : CommonConstant.DEFAULT_EMPTY_STRING,
-      priceDifference: startCurrency
-        ? startCurrency.label + Utils.NumberWithCommas(_priceDifference)
+      owner: src.owner ? src.owner.name : CommonConstant.DEFAULT_EMPTY_STRING,
+      place: src.place ? src.place.name : CommonConstant.DEFAULT_EMPTY_STRING,
+      priceDifference: src.startCurrency
+        ? src.startCurrency.symbol + Utils.NumberWithCommas(_priceDifference)
         : CommonConstant.DEFAULT_EMPTY_STRING,
       raw: src,
       startInfo: {
         startDate: _startDate ? Utils.GetDateTimeString(_startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
-        startMethod: findStartMethod ? findStartMethod.label : CommonConstant.DEFAULT_EMPTY_STRING,
-        startPlatform: findStartPlatform ? findStartPlatform.label : CommonConstant.DEFAULT_EMPTY_STRING,
+        startMethod: src.startMethod ? src.startMethod.name : CommonConstant.DEFAULT_EMPTY_STRING,
+        startPlatform: src.startPlatform ? src.startPlatform.name : CommonConstant.DEFAULT_EMPTY_STRING,
         startPrice:
-          startCurrency && src.startPrice
-            ? `${startCurrency.label} ${Utils.NumberWithCommas(src.startPrice)}`
+          src.startCurrency && src.startPrice
+            ? `(${src.startCurrency.display}) ${src.startCurrency.symbol}${Utils.NumberWithCommas(src.startPrice)}`
             : CommonConstant.DEFAULT_EMPTY_STRING,
       },
       tags: src.tags.map((item) => item.name),
@@ -256,7 +251,7 @@ export abstract class AssetTransformer {
 
   public static PAssetFindQueryStringTransformer(src: PAssetFind): Record<string, string> {
     // TODO: need refactor this
-    const parsedFilters = Object.entries(src.filters).reduce<string>((acc, curr, index, arr) => {
+    const parsedFilters = Object.entries(src.filters).reduce<string>((acc, curr, _index, _arr) => {
       const [key, value] = curr;
       let _value: string;
 

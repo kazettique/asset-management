@@ -4,6 +4,7 @@ import { FormOption, MenuItem, Name } from '@/types';
 
 export abstract class CommonConstant {
   public static readonly MSG_DIRTY_DATA: string = 'dirty data';
+  public static readonly MSG_CURRENCY_PRICE_PAIR: string = 'price and currency should both exist or not.';
 
   public static readonly DEFAULT_NAME: Name = '';
 

@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import dayjs from 'dayjs';
 import { z } from 'zod';
 
 import { CommonConstant } from '@/constant';
@@ -25,31 +26,111 @@ import { CommonValidator } from './common';
 export abstract class AssetValidator {
   public static readonly DAssetValidator: z.ZodSchema<DAsset> = z
     .object({
+      brand: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      comment: z.string().nullable(),
+      endCurrency: z
+        .object({
+          display: z.string(),
+          id: CommonValidator.IdValidator,
+          name: z.string(),
+          symbol: z.string(),
+        })
+        .nullable(),
+      endDate: z.date().nullable(),
+      endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      endPrice: CommonValidator.PriceValidator.nullable(),
+      isCensored: z.boolean(),
       meta: z.record(z.string(), z.any()).nullable(),
+      name: CommonValidator.NameValidator,
+      owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      startCurrency: z
+        .object({ display: z.string(), id: CommonValidator.IdValidator, name: z.string(), symbol: z.string() })
+        .nullable(),
+      startDate: z.date().nullable(),
+      startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      startPrice: CommonValidator.PriceValidator.nullable(),
       tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
-    .and(CommonValidator.DbBaseValidator)
-    .and(CommonValidator.AssetCommonValidator);
+    .and(CommonValidator.DbBaseValidator);
 
   public static readonly MAssetValidator: z.ZodSchema<MAsset> = z
     .object({
+      brand: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      comment: z.string().nullable(),
+      endCurrency: z
+        .object({
+          display: z.string(),
+          id: CommonValidator.IdValidator,
+          name: z.string(),
+          symbol: z.string(),
+        })
+        .nullable(),
+      endDate: z.date().nullable(),
+      endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      endPrice: CommonValidator.PriceValidator.nullable(),
+      isCensored: z.boolean(),
       meta: CommonValidator.AssetMetaValidator.nullable(),
+      name: CommonValidator.NameValidator,
+      owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      startCurrency: z
+        .object({ display: z.string(), id: CommonValidator.IdValidator, name: z.string(), symbol: z.string() })
+        .nullable(),
+      startDate: z.date().nullable(),
+      startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+      startPrice: CommonValidator.PriceValidator.nullable(),
       tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
-    .and(CommonValidator.DbBaseValidator)
-    .and(CommonValidator.AssetCommonValidator);
+    .and(CommonValidator.DbBaseValidator);
 
   public static readonly VAssetValidator: z.ZodSchema<VAsset> = this.MAssetValidator;
 
   public static readonly PAssetValidator: z.ZodSchema<PAsset> = z
     .object({
+      brandId: CommonValidator.IdValidator.nullable(),
+      categoryId: CommonValidator.IdValidator.nullable(),
+      comment: z.string().nullable(),
+      endCurrencyId: CommonValidator.IdValidator.nullable(),
+      endDate: z.coerce.date().nullable(),
+      endMethodId: CommonValidator.IdValidator.nullable(),
+      endPlatformId: CommonValidator.IdValidator.nullable(),
+      endPrice: CommonValidator.PriceValidator.nullable(),
+      isCensored: z.boolean(),
       meta: CommonValidator.AssetMetaValidator,
+      name: CommonValidator.NameValidator,
+      ownerId: CommonValidator.IdValidator.nullable(),
+      placeId: CommonValidator.IdValidator.nullable(),
+      startCurrencyId: CommonValidator.IdValidator.nullable(),
+      startDate: z.coerce.date().nullable(),
+      startMethodId: CommonValidator.IdValidator.nullable(),
+      startPlatformId: CommonValidator.IdValidator.nullable(),
+      startPrice: CommonValidator.PriceValidator.nullable(),
       tags: z.object({
         connect: z.object({ id: CommonValidator.IdValidator }).array(),
         create: z.object({ name: CommonValidator.NameValidator }).array(),
       }),
     })
-    .and(CommonValidator.AssetCommonValidator);
+    .superRefine((values, context) => {
+      if (values.endDate !== null) {
+        const startDate = dayjs(values.startDate);
+        const endDate = dayjs(values.endDate);
+
+        if (startDate.isAfter(endDate)) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'End date should be after start date.',
+            path: ['endDate'],
+          });
+        }
+      }
+    });
 
   public static readonly FAssetValidator: z.ZodSchema<FAsset> = z
     .object({
@@ -73,7 +154,29 @@ export abstract class AssetValidator {
       startPrice: z.string(),
       tags: CommonValidator.FormOptionValidator.array(),
     })
-    .superRefine((values, context) => {});
+    .superRefine((values, context) => {
+      if (
+        (values.startPrice.length !== 0 && values.startCurrencyId === null) ||
+        (values.startPrice.length === 0 && values.startCurrencyId !== null)
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: CommonConstant.MSG_CURRENCY_PRICE_PAIR,
+          path: ['startCurrencyId'],
+        });
+      }
+
+      if (
+        (values.endPrice.length !== 0 && values.endCurrencyId === null) ||
+        (values.endPrice.length === 0 && values.endCurrencyId !== null)
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: CommonConstant.MSG_CURRENCY_PRICE_PAIR,
+          path: ['endCurrencyId'],
+        });
+      }
+    });
 
   public static readonly VAssetImportItemValidator: z.ZodSchema<VAssetImportItem> = z.object({
     comment: z.string(),

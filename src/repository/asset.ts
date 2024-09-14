@@ -8,24 +8,44 @@ import { AssetLifeStatus, DAsset, Id, MAsset, NType, PaginationBase, PAsset, PAs
 import { Utils } from '@/utils';
 
 const queryObj: Prisma.AssetSelect = {
-  brandId: true,
-  categoryId: true,
+  brand: {
+    select: { id: true, name: true },
+  },
+  category: {
+    select: { id: true, name: true },
+  },
   comment: true,
-  endCurrencyId: true,
+  endCurrency: {
+    select: { display: true, id: true, name: true, symbol: true },
+  },
   endDate: true,
-  endMethodId: true,
-  endPlatformId: true,
+  endMethod: {
+    select: { id: true, name: true },
+  },
+  endPlatform: {
+    select: { id: true, name: true },
+  },
   endPrice: true,
   id: true,
   isCensored: true,
   meta: true,
   name: true,
-  ownerId: true,
-  placeId: true,
-  startCurrencyId: true,
+  owner: {
+    select: { id: true, name: true },
+  },
+  place: {
+    select: { id: true, name: true },
+  },
+  startCurrency: {
+    select: { display: true, id: true, name: true, symbol: true },
+  },
   startDate: true,
-  startMethodId: true,
-  startPlatformId: true,
+  startMethod: {
+    select: { id: true, name: true },
+  },
+  startPlatform: {
+    select: { id: true, name: true },
+  },
   startPrice: true,
   tags: { select: { id: true, name: true } },
 };

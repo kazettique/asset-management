@@ -2,6 +2,7 @@ import { MethodType } from '@prisma/client';
 
 import { Id, Name, NString, NType, Price } from './base';
 import { IconType } from './iconTypes';
+import { MBrand, MCategory } from './models';
 
 export interface GeneralResponse<T> {
   data: T;
@@ -44,22 +45,23 @@ export interface MethodCommon extends SettingBase {
 
 export type AssetMeta = { key: string; value: string | number }[];
 
-export interface AssetCommon {
-  brandId: NType<Id>;
-  categoryId: NType<Id>;
-  comment: NString;
-  endCurrencyId: NType<Id>;
-  endDate: NType<Date>;
-  endMethodId: NType<Id>;
-  endPlatformId: NType<Id>;
-  endPrice: NType<Price>;
-  isCensored: boolean;
-  name: Name;
-  ownerId: NType<Id>;
-  placeId: NType<Id>;
-  startCurrencyId: NType<Id>;
-  startDate: NType<Date>;
-  startMethodId: NType<Id>;
-  startPlatformId: NType<Id>;
-  startPrice: NType<Price>;
-}
+// TODO: remove later
+// export interface AssetCommon {
+//   brandId: NType<Id>;
+//   categoryId: NType<Id>;
+//   comment: NString;
+//   endCurrencyId: NType<Id>;
+//   endDate: NType<Date>;
+//   endMethodId: NType<Id>;
+//   endPlatformId: NType<Id>;
+//   endPrice: NType<Price>;
+//   isCensored: boolean;
+//   name: Name;
+//   ownerId: NType<Id>;
+//   placeId: NType<Id>;
+//   startCurrencyId: NType<Id>;
+//   startDate: NType<Date>;
+//   startMethodId: NType<Id>;
+//   startPlatformId: NType<Id>;
+//   startPrice: NType<Price>;
+// }

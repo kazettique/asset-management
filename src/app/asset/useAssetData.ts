@@ -84,7 +84,7 @@ export default function useAssetData() {
   };
 
   const tableData: VAssetTable[] = assetData
-    ? assetData.data.map((item) => AssetTransformer.VTAssetTransformer(item, settingOptions))
+    ? assetData.data.map((item) => AssetTransformer.VTAssetTransformer(item))
     : [];
 
   return {
