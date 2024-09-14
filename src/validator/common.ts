@@ -2,6 +2,7 @@ import { MethodType } from '@prisma/client';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
+import { CommonConstant } from '@/constant';
 import {
   AssetCommon,
   AssetMeta,
@@ -11,6 +12,7 @@ import {
   Id,
   MethodCommon,
   Name,
+  PFindPagination,
   Price,
   SettingBase,
 } from '@/types';
@@ -20,6 +22,10 @@ export abstract class CommonValidator {
   public static readonly PriceValidator: z.ZodSchema<Price> = z.coerce.number().nonnegative();
   // TODO: add more detailed validation, ex: no symbols, no whitespace ...etc
   public static readonly NameValidator: z.ZodSchema<Name> = z.string().min(1);
+  public static readonly PFindPageValidator: z.ZodSchema<PFindPagination> = z.object({
+    page: z.coerce.number().int().positive().optional(),
+    pageSize: z.coerce.number().int().positive().max(CommonConstant.MAX_PAGE_SIZE).optional(),
+  });
 
   public static readonly DbBaseValidator: z.ZodSchema<DbBase> = z.object({
     id: this.IdValidator,

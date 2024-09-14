@@ -5,6 +5,7 @@ export enum GenderType {
 }
 
 export enum AssetLifeStatus {
+  ALL = 'ALL',
   DEAD = 'DEAD',
   LIVE = 'LIVE',
 }

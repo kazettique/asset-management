@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { FAsset, FAssetImport, PAssetFind } from '@/types';
+import { AssetLifeStatus, FAsset, FAssetFindPrimaryFilter, FAssetImport, PAssetFind } from '@/types';
 
 import { CommonConstant } from './common';
 
@@ -29,7 +29,7 @@ export abstract class AssetConstant {
 
   public static readonly F_ASSET_IMPORT_INITIAL_VALUES: FAssetImport = {
     brandId: null,
-    categoryId: CommonConstant.DEFAULT_SELECT_OPTION,
+    categoryId: null,
     endCurrencyId: null,
     endMethodId: null,
     endPlatformId: null,
@@ -45,8 +45,16 @@ export abstract class AssetConstant {
   };
 
   public static readonly P_ASSET_FIND_DEFAULT: PAssetFind = {
-    filters: {},
+    filters: {
+      lifeStatus: AssetLifeStatus.ALL,
+    },
     page: CommonConstant.DEFAULT_PAGE,
     pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
+  };
+
+  public static readonly F_ASSET_FIND_PRIMARY_FILTER_INITIAL_VALUES: FAssetFindPrimaryFilter = {
+    categories: [],
+    lifeStatus: AssetLifeStatus.ALL,
+    owners: [],
   };
 }

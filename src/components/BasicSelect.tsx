@@ -19,7 +19,7 @@ export interface Props<
   options: OptionsOrGroups<Option, Group>;
   path: Path<Values>;
   placeholder?: string;
-  // register: UseFormRegister<T>;
+  showLabel?: boolean;
 }
 
 export default function BasicSelect<
@@ -37,6 +37,7 @@ export default function BasicSelect<
     isMulti = false,
     isCreatable = false,
     control,
+    showLabel = true,
     ...rest
   } = props;
 
@@ -56,7 +57,7 @@ export default function BasicSelect<
           render={({ field, fieldState, formState }) => (
             <div className={className}>
               <label className="block text-gray-700 dark:text-gray-50" htmlFor={path}>
-                {label || path}
+                {showLabel && (label || path)}
                 {isCreatable ? (
                   <CreatableSelect
                     className="mt-1"

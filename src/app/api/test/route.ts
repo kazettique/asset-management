@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { AssetService } from '@/service';
-import { AssetTransformer } from '@/transformer';
+import { AssetTransformer, CommonTransformer } from '@/transformer';
 import { HttpStatusCode } from '@/types';
 import { AssetValidator } from '@/validator';
 
@@ -14,12 +14,18 @@ export async function GET(request: NextRequest) {
 
   const parseParams = AssetTransformer.PAssetFindTransformer({ filters, page, pageSize, sort });
 
-  const payloadValidation = AssetValidator.PAssetFindValidator.safeParse(parseParams);
+  // console.log('parseParams', parseParams);
 
-  if (!payloadValidation.success) {
-    return new Response('', { status: HttpStatusCode.BAD_REQUEST });
-  } else {
-    const rawData = await AssetService.FindMany(payloadValidation.data);
-    return NextResponse.json(rawData);
-  }
+  const temp = AssetTransformer.PAssetFindQueryStringTransformer(parseParams);
+
+  // const payloadValidation = AssetValidator.PAssetFindValidator.safeParse(parseParams);
+
+  // if (!payloadValidation.success) {
+  //   return new Response('', { status: HttpStatusCode.BAD_REQUEST });
+  // } else {
+  //   const rawData = await AssetService.FindMany(payloadValidation.data);
+  //   return NextResponse.json(rawData);
+  // }
+
+  return NextResponse.json(CommonTransformer.ResponseTransformer(temp));
 }

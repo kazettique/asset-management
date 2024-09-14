@@ -3,6 +3,7 @@
 import { Prisma } from '@prisma/client';
 
 import { backendImplements } from '@/decorator';
+import { AssetTransformer } from '@/transformer';
 import { GeneralResponse, Id, MAsset, PaginationBase, PAsset, PAssetFind, VAsset } from '@/types';
 
 @backendImplements()
@@ -17,8 +18,7 @@ export abstract class AssetFetcher {
 
   public static async FindMany(payload: PAssetFind): Promise<PaginationBase<MAsset>> {
     const res = await fetch(
-      '/api/assets?' +
-        new URLSearchParams({ page: String(payload.page), pageSize: String(payload.pageSize) }).toString(),
+      '/api/assets?' + new URLSearchParams(AssetTransformer.PAssetFindQueryStringTransformer(payload)).toString(),
     );
 
     const data = (await res.json()) as PaginationBase<MAsset>;

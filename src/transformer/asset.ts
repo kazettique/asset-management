@@ -7,6 +7,8 @@ import {
   AssetLifeStatus,
   DAsset,
   FAsset,
+  FAssetFindPrimaryFilter,
+  FAssetFindSecondaryFilter,
   FAssetImport,
   FormOption,
   FSettingOptions,
@@ -15,12 +17,15 @@ import {
   NType,
   PAsset,
   PAssetFind,
+  PAssetFindFilter,
   VAsset,
   VAssetImportItem,
   VAssetTable,
 } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
+
+import { CommonTransformer } from './common';
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
@@ -71,7 +76,7 @@ export abstract class AssetTransformer {
       endDate: src.endDate,
       endMethodId: findEndMethod || CommonConstant.DEFAULT_SELECT_OPTION,
       endPlatformId: findEndPlatform || CommonConstant.DEFAULT_SELECT_OPTION,
-      endPrice: src.endPrice ?? 0,
+      endPrice: src.endPrice !== null ? String(src.endPrice) : '',
       isCensored: src.isCensored,
       meta: src.meta,
       name: src.name,
@@ -81,7 +86,7 @@ export abstract class AssetTransformer {
       startDate: src.startDate,
       startMethodId: findStartMethod || CommonConstant.DEFAULT_SELECT_OPTION,
       startPlatformId: findStartPlatform || CommonConstant.DEFAULT_SELECT_OPTION,
-      startPrice: src.startPrice ?? 0,
+      startPrice: src.startPrice !== null ? String(src.startPrice) : '',
       tags: src.tags.map((item) => convert(item)),
     };
   }
@@ -98,13 +103,14 @@ export abstract class AssetTransformer {
       endCurrencyId: convertEmptyStringToNull(src.endCurrencyId),
       endMethodId: convertEmptyStringToNull(src.endMethodId),
       endPlatformId: convertEmptyStringToNull(src.endPlatformId),
-      endPrice: src.endPrice,
+      endPrice: src.endPrice.length > 0 ? Number(src.endPrice) : null,
       meta: src.meta ?? [],
       ownerId: convertEmptyStringToNull(src.ownerId),
       placeId: convertEmptyStringToNull(src.placeId),
       startCurrencyId: convertEmptyStringToNull(src.startCurrencyId),
       startMethodId: convertEmptyStringToNull(src.startMethodId),
       startPlatformId: convertEmptyStringToNull(src.startPlatformId),
+      startPrice: src.startPrice.length > 0 ? Number(src.startPrice) : null,
       tags: {
         connect: src.tags.filter((item) => !item.__isNew__).map((item) => ({ id: String(item.value) })),
         create: src.tags.filter((item) => item.__isNew__ === true).map((item) => ({ name: item.label })),
@@ -129,7 +135,6 @@ export abstract class AssetTransformer {
     const startCurrency = settingOptions.currencies.find((_item) => _item.value === src.startCurrencyId);
     // endDate
     const _endDate: NType<Dayjs> = src.endDate !== null ? dayjs(src.endDate) : null;
-
     // endPrice
     const endCurrency = settingOptions.currencies.find((_item) => _item.value === src.endCurrencyId);
 
@@ -192,9 +197,9 @@ export abstract class AssetTransformer {
       ...importItem,
       ...importFormValues,
       endDate: importItem.endDate ? dayjs(importItem.endDate).toDate() : null,
-      endPrice: importItem.endPrice ? Number(importItem.endPrice) : 0,
+      endPrice: importItem.endPrice,
       startDate: importItem.startDate ? dayjs(importItem.startDate).toDate() : null,
-      startPrice: importItem.startPrice ? Number(importItem.startPrice) : 0,
+      startPrice: importItem.startPrice,
     };
 
     return this.FPAssetTransformer(asset);
@@ -246,6 +251,59 @@ export abstract class AssetTransformer {
       page: src.page === null ? AssetConstant.P_ASSET_FIND_DEFAULT.page : Number(src.page),
       pageSize: src.pageSize === null ? AssetConstant.P_ASSET_FIND_DEFAULT.pageSize : Number(src.pageSize),
       sort: parsedSort,
+    };
+  }
+
+  public static PAssetFindQueryStringTransformer(src: PAssetFind): Record<string, string> {
+    // TODO: need refactor this
+    const parsedFilters = Object.entries(src.filters).reduce<string>((acc, curr, index, arr) => {
+      const [key, value] = curr;
+      let _value: string;
+
+      if (Array.isArray(value)) {
+        _value = value.map((item) => (item instanceof Date ? Utils.GetDateTimeString(item) : String(item))).join('|');
+      } else {
+        _value = value;
+      }
+
+      if (acc.length === 0) return [key, _value].join(':');
+      if (Array.isArray(value) && value.length === 0) return acc;
+
+      const newValue = [key, _value].join(':');
+      return [acc, newValue].join(',');
+    }, '');
+
+    return {
+      filters: parsedFilters,
+      page: String(src.page),
+      pageSize: String(src.pageSize),
+    };
+  }
+
+  public static FPAssetFindPrimaryFilterTransformer(
+    src: FAssetFindPrimaryFilter,
+  ): Pick<PAssetFindFilter, 'categories' | 'lifeStatus' | 'owners'> {
+    return {
+      categories: src.categories.map(CommonTransformer.ConvertFormOptionToId),
+      lifeStatus: src.lifeStatus,
+      owners: src.owners.map(CommonTransformer.ConvertFormOptionToId),
+    };
+  }
+
+  public static FPAssetFindSecondaryFilterTransformer(
+    src: FAssetFindSecondaryFilter,
+  ): Omit<PAssetFindFilter, 'categories' | 'lifeStatus' | 'owners'> {
+    return {
+      brands: src.brands.map(CommonTransformer.ConvertFormOptionToId),
+      endDateRange: [dayjs(src.endDateRange[0]).toDate(), dayjs(src.endDateRange[1]).toDate()],
+      endMethods: src.endMethods.map(CommonTransformer.ConvertFormOptionToId),
+      endPlatforms: src.endPlatforms.map(CommonTransformer.ConvertFormOptionToId),
+      endPriceRange: src.endPriceRange,
+      places: src.places.map(CommonTransformer.ConvertFormOptionToId),
+      startDateRange: [dayjs(src.startDateRange[0]).toDate(), dayjs(src.startDateRange[1]).toDate()],
+      startMethods: src.startMethods.map(CommonTransformer.ConvertFormOptionToId),
+      startPlatforms: src.startPlatforms.map(CommonTransformer.ConvertFormOptionToId),
+      startPriceRange: src.startPriceRange,
     };
   }
 }

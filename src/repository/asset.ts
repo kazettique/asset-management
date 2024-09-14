@@ -77,10 +77,10 @@ export abstract class AssetRepository {
       endMethodId: { in: endMethods },
       endPlatformId: { in: endPlatforms },
       endPrice: {
-        equals: lifeStatus === AssetLifeStatus.DEAD ? null : undefined,
+        equals: lifeStatus === AssetLifeStatus.LIVE ? null : undefined,
         gte: endPriceRange !== undefined && endPriceRange[0] !== null ? endPriceRange[0] : undefined,
         lte: endPriceRange !== undefined && endPriceRange[1] !== null ? endPriceRange[1] : undefined,
-        not: lifeStatus === AssetLifeStatus.LIVE ? null : undefined,
+        not: lifeStatus === AssetLifeStatus.DEAD ? null : undefined,
       },
       ownerId: { in: owners },
       placeId: { in: places },

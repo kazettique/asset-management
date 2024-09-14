@@ -1,8 +1,22 @@
 import { v4 as uuidv4 } from 'uuid';
 import { assign, fromPromise, setup } from 'xstate';
 
+import { AssetConstant } from '@/constant';
 import { AssetFetcher } from '@/fetcher';
-import { FAsset, Id, NNumber, NType, PAsset } from '@/types';
+import { AssetTransformer } from '@/transformer';
+import {
+  FAsset,
+  FAssetFindPagination,
+  FAssetFindPrimaryFilter,
+  FAssetFindSecondaryFilter,
+  FAssetFindSort,
+  FAssetImport,
+  Id,
+  NNumber,
+  NType,
+  PAsset,
+  PAssetFind,
+} from '@/types';
 import { Utils } from '@/utils';
 
 export enum TaskStatus {
@@ -29,6 +43,7 @@ export type MachineContext = {
     formValues: NType<FAsset>;
     id: NType<Id>;
   };
+  searchPayload: PAssetFind;
 };
 
 type MachineEvents =
@@ -37,11 +52,18 @@ type MachineEvents =
   | { type: 'TO_MAIN' }
   | { type: 'TO_IMPORT' }
   | { id: number; type: 'UPDATE_TASKS_PRIORITY' }
-  | { payload: PAsset[]; type: 'IMPORT_TASK_TO_QUEUE' };
+  | { payload: PAsset[]; type: 'IMPORT_TASK_TO_QUEUE' }
+  | { payload: FAssetFindPrimaryFilter; type: 'UPDATE_SEARCH_PRIMARY_FILTER' }
+  | { payload: FAssetFindSecondaryFilter; type: 'UPDATE_SEARCH_SECONDARY_FILTER' }
+  | { payload: FAssetFindSort; type: 'UPDATE_SEARCH_SORT' }
+  | { type: 'NEXT_PAGE' }
+  | { type: 'PREV_PAGE' }
+  | { payload: number; type: 'JUMP_PAGE' };
 
 const INITIAL_CONTEXT: MachineContext = {
   import: { currentTaskId: null, queue: [], tasks: {} },
   modifier: { formValues: null, id: null },
+  searchPayload: AssetConstant.P_ASSET_FIND_DEFAULT,
 };
 
 export const assetMachine = setup({
@@ -82,6 +104,30 @@ export const assetMachine = setup({
         };
       },
     }),
+    JUMP_PAGE: assign({
+      searchPayload: ({ context }, params: { payload: number }) => {
+        return {
+          ...context.searchPayload,
+          page: params.payload,
+        };
+      },
+    }),
+    NEXT_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page + 1 : context.searchPayload.page,
+        };
+      },
+    }),
+    PREV_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page - 1 : context.searchPayload.page,
+        };
+      },
+    }),
     RESET_CONTEXT: assign(INITIAL_CONTEXT),
     RESET_CURRENT_TASK: assign({
       import: ({ context }) => ({ ...context.import, currentTaskId: null }),
@@ -93,6 +139,30 @@ export const assetMachine = setup({
         queue: context.import.queue.slice(1),
       }),
     }),
+    UPDATE_SEARCH_PRIMARY_FILTER: assign({
+      searchPayload: ({ context }, params: { payload: FAssetFindPrimaryFilter }) => {
+        const transformedPayload = AssetTransformer.FPAssetFindPrimaryFilterTransformer(params.payload);
+
+        return {
+          ...AssetConstant.P_ASSET_FIND_DEFAULT,
+          filters: { ...context.searchPayload.filters, ...transformedPayload },
+        };
+      },
+    }),
+    UPDATE_SEARCH_SECONDARY_FILTER: assign({
+      searchPayload: ({ context }, params: { payload: FAssetFindSecondaryFilter }) => {
+        const transformedPayload = AssetTransformer.FPAssetFindSecondaryFilterTransformer(params.payload);
+        return {
+          ...AssetConstant.P_ASSET_FIND_DEFAULT,
+          filters: { ...context.searchPayload.filters, ...transformedPayload },
+        };
+      },
+    }),
+    UPDATE_SEARCH_SORT: assign({
+      searchPayload: ({ context }, params: { payload: FAssetFindSort }) => {
+        return { ...AssetConstant.P_ASSET_FIND_DEFAULT, sort: params.payload };
+      },
+    }),
   },
   actors: {
     PROCESS_TASK: fromPromise<any, MachineContext>(async (payload) => {
@@ -103,7 +173,7 @@ export const assetMachine = setup({
 
       const currentTask = tasks[currentTaskId];
 
-      await Utils.WaitTimer(100);
+      // await Utils.WaitTimer(100);
       return await AssetFetcher.Create(currentTask.payload);
     }),
   },
@@ -190,6 +260,18 @@ export const assetMachine = setup({
     },
     MAIN: {
       on: {
+        JUMP_PAGE: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'JUMP_PAGE',
+          },
+        },
+        NEXT_PAGE: {
+          actions: { type: 'NEXT_PAGE' },
+        },
+        PREV_PAGE: {
+          actions: { type: 'PREV_PAGE' },
+        },
         TO_CREATE: { target: 'CREATE' },
         TO_EDIT: {
           actions: assign({
@@ -198,6 +280,24 @@ export const assetMachine = setup({
           target: 'EDIT',
         },
         TO_IMPORT: { target: 'IMPORT' },
+        UPDATE_SEARCH_PRIMARY_FILTER: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'UPDATE_SEARCH_PRIMARY_FILTER',
+          },
+        },
+        UPDATE_SEARCH_SECONDARY_FILTER: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'UPDATE_SEARCH_SECONDARY_FILTER',
+          },
+        },
+        UPDATE_SEARCH_SORT: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'UPDATE_SEARCH_SORT',
+          },
+        },
       },
     },
   },

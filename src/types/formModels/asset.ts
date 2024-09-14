@@ -1,6 +1,8 @@
 import { Name, NType, Price } from '../base';
 import { AssetMeta } from '../common';
-import { FormOption } from './common';
+import { AssetLifeStatus } from '../enum';
+import { PAssetFindSort } from '../payloadModels';
+import { FFindPagination, FormOption } from './common';
 
 // no null type in all properties
 export interface FAsset {
@@ -11,7 +13,7 @@ export interface FAsset {
   endDate: NType<Date>;
   endMethodId: NType<FormOption>;
   endPlatformId: NType<FormOption>;
-  endPrice: Price;
+  endPrice: string;
   isCensored: boolean;
   meta: NType<AssetMeta>;
   name: Name;
@@ -21,10 +23,40 @@ export interface FAsset {
   startDate: NType<Date>;
   startMethodId: NType<FormOption>;
   startPlatformId: NType<FormOption>;
-  startPrice: Price;
+  startPrice: string;
   tags: FormOption[];
 }
 
 export type FAssetImport = Omit<FAsset, 'name' | 'startDate' | 'startPrice' | 'endDate' | 'endPrice' | 'comment'> & {
   isLegalFileData: boolean | null;
 };
+
+export interface FAssetFindPrimaryFilter {
+  categories: FormOption[];
+  lifeStatus: AssetLifeStatus;
+  owners: FormOption[];
+}
+
+export interface FAssetFindSecondaryFilter {
+  brands: FormOption[];
+  endDateRange: [string, string];
+  endMethods: FormOption[];
+  endPlatforms: FormOption[];
+  endPriceRange: [number, number];
+  places: FormOption[];
+  startDateRange: [string, string];
+  startMethods: FormOption[];
+  startPlatforms: FormOption[];
+  startPriceRange: [number, number];
+}
+
+export interface FAssetFindFilter extends FAssetFindPrimaryFilter, FAssetFindSecondaryFilter {}
+
+export interface FAssetFindSort extends PAssetFindSort {}
+
+export interface FAssetFindPagination extends FFindPagination {}
+
+export interface FAssetFind extends FAssetFindPagination {
+  filters: FAssetFindFilter;
+  sort?: FAssetFindSort;
+}
