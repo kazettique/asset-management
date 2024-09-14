@@ -1,4 +1,7 @@
+import { Transition } from '@headlessui/react';
 import { ReactElement } from 'react';
+
+import LoadingSpinner from './LoadingSpinner';
 
 export interface ColumnProps<T> {
   key: string;
@@ -10,13 +13,14 @@ type Props<T> = {
   className?: string;
   columns: Array<ColumnProps<T>>;
   data?: T[];
+  isLoading?: boolean;
 };
 
 // ref: https://medium.com/@thashwiniwattuhewa/generic-react-table-component-1407a6fc2179
 // ref: https://www.bekk.christmas/post/2020/22/create-a-generic-table-with-react-and-typescript
 // ref: https://www.creative-tim.com/twcomponents/component/table-with-filter-and-search
 export default function Table<T>(props: Props<T>) {
-  const { data, columns, className } = props;
+  const { data, columns, className, isLoading = false } = props;
 
   const headers = columns.map((column, index) => {
     return (
@@ -63,7 +67,7 @@ export default function Table<T>(props: Props<T>) {
   );
 
   return (
-    <div className={`overflow-auto border border-gray-200 dark:border-gray-700 md:rounded-lg ${className}`}>
+    <div className={`overflow-auto border border-gray-200 dark:border-gray-700 md:rounded-lg relative ${className}`}>
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0 shadow">
           <tr>{headers}</tr>
@@ -71,6 +75,12 @@ export default function Table<T>(props: Props<T>) {
 
         <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">{rows}</tbody>
       </table>
+
+      <Transition show={isLoading}>
+        <div className="absolute w-full h-full top-0 left-0 bg-gray-500 bg-opacity-75 flex items-center justify-center transition duration-75 data-[closed]:opacity-0">
+          <LoadingSpinner />
+        </div>
+      </Transition>
     </div>
   );
 }

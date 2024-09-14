@@ -53,6 +53,7 @@ type MachineEvents =
   | { payload: FAssetFindPrimaryFilter; type: 'UPDATE_SEARCH_PRIMARY_FILTER' }
   | { payload: FAssetFindSecondaryFilter; type: 'UPDATE_SEARCH_SECONDARY_FILTER' }
   | { payload: FAssetFindSort; type: 'UPDATE_SEARCH_SORT' }
+  | { type: 'RESET_SEARCH_CONDITION' }
   | { type: 'NEXT_PAGE' }
   | { type: 'PREV_PAGE' }
   | { payload: number; type: 'JUMP_PAGE' };
@@ -128,6 +129,9 @@ export const assetMachine = setup({
     RESET_CONTEXT: assign(INITIAL_CONTEXT),
     RESET_CURRENT_TASK: assign({
       import: ({ context }) => ({ ...context.import, currentTaskId: null }),
+    }),
+    RESET_SEARCH_CONDITION: assign({
+      searchPayload: ({ context }) => AssetConstant.P_ASSET_FIND_DEFAULT,
     }),
     TAKE_TASK_FROM_QUEUE: assign({
       import: ({ context }) => ({
@@ -268,6 +272,11 @@ export const assetMachine = setup({
         },
         PREV_PAGE: {
           actions: { type: 'PREV_PAGE' },
+        },
+        RESET_SEARCH_CONDITION: {
+          actions: {
+            type: 'RESET_SEARCH_CONDITION',
+          },
         },
         TO_CREATE: { target: 'CREATE' },
         TO_EDIT: {

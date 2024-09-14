@@ -226,6 +226,15 @@ export abstract class AssetTransformer {
                     }
                   });
                   return { ...acc, [curr[0]]: [_value[0], _value[1]] };
+                } else if (curr[0] === 'startPriceRange' || curr[0] === 'endPriceRange') {
+                  const _value = curr[1].split('|').map((item) => {
+                    try {
+                      return JSON.parse(item);
+                    } catch (error) {
+                      return Number(item);
+                    }
+                  });
+                  return { ...acc, [curr[0]]: [_value[0], _value[1]] };
                 } else {
                   return { ...acc, [curr[0]]: curr[1].split('|').filter((_item) => _item.length > 0) };
                 }
@@ -290,7 +299,10 @@ export abstract class AssetTransformer {
   ): Omit<PAssetFindFilter, 'categories' | 'lifeStatus' | 'owners'> {
     return {
       brands: src.brands.map(CommonTransformer.ConvertFormOptionToId),
-      endDateRange: [dayjs(src.endDateRange[0]).toDate(), dayjs(src.endDateRange[1]).toDate()],
+      endDateRange: [
+        src.endDateRange[0].length > 0 ? dayjs(src.endDateRange[0]).toDate() : null,
+        src.endDateRange[1].length > 0 ? dayjs(src.endDateRange[1]).toDate() : null,
+      ],
       endMethods: src.endMethods.map(CommonTransformer.ConvertFormOptionToId),
       endPlatforms: src.endPlatforms.map(CommonTransformer.ConvertFormOptionToId),
       endPriceRange: [
@@ -298,7 +310,10 @@ export abstract class AssetTransformer {
         src.endPriceRange[1].length > 0 ? Number(src.endPriceRange[1]) : null,
       ],
       places: src.places.map(CommonTransformer.ConvertFormOptionToId),
-      startDateRange: [dayjs(src.startDateRange[0]).toDate(), dayjs(src.startDateRange[1]).toDate()],
+      startDateRange: [
+        src.startDateRange[0].length > 0 ? dayjs(src.startDateRange[0]).toDate() : null,
+        src.startDateRange[1].length > 0 ? dayjs(src.startDateRange[1]).toDate() : null,
+      ],
       startMethods: src.startMethods.map(CommonTransformer.ConvertFormOptionToId),
       startPlatforms: src.startPlatforms.map(CommonTransformer.ConvertFormOptionToId),
       startPriceRange: [

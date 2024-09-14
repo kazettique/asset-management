@@ -57,25 +57,11 @@ export default function BasicSelect<
           render={({ field, fieldState, formState }) => (
             <div className={className}>
               <label className="block text-gray-700 dark:text-gray-50" htmlFor={path}>
-                {showLabel && (label || path)}
+                {showLabel && <span className="mb-1">{label || path}</span>}
                 {isCreatable ? (
-                  <CreatableSelect
-                    className="mt-1"
-                    {...field}
-                    id={id}
-                    isMulti={isMulti}
-                    options={options}
-                    placeholder={placeholder}
-                  />
+                  <CreatableSelect {...field} id={id} isMulti={isMulti} options={options} placeholder={placeholder} />
                 ) : (
-                  <Select
-                    className="mt-1"
-                    {...field}
-                    id={id}
-                    isMulti={isMulti}
-                    options={options}
-                    placeholder={placeholder}
-                  />
+                  <Select {...field} id={id} isMulti={isMulti} options={options} placeholder={placeholder} />
                 )}
               </label>
               {/* <ErrorMessage errors={formState.errors} name="hello" /> */}

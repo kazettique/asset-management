@@ -24,6 +24,7 @@ export default function Page() {
     assetRefetch,
     state,
     send,
+    assetIsPending,
   } = useAssetData();
 
   const columns: ColumnProps<VAssetTable>[] = [
@@ -208,9 +209,9 @@ export default function Page() {
           <AssetSearchBar
             className="grow mx-2 px-2 py-2"
             settingOptions={settingOptions}
-            onSearch={(payload) => {
-              send({ payload, type: 'UPDATE_SEARCH_PRIMARY_FILTER' });
-            }}
+            onUpdatePrimaryFilter={(payload) => void send({ payload, type: 'UPDATE_SEARCH_PRIMARY_FILTER' })}
+            onUpdateSecondaryFilter={(payload) => void send({ payload, type: 'UPDATE_SEARCH_SECONDARY_FILTER' })}
+            onResetSearchCondition={() => void send({ type: 'RESET_SEARCH_CONDITION' })}
           />
 
           <BasicButton variant="secondary" onClick={() => send({ type: 'TO_IMPORT' })} className="flex gap-x-2">
@@ -226,22 +227,16 @@ export default function Page() {
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
-        {!assetData ? (
-          <LoadingSpinner className="h-full" />
-        ) : (
-          <>
-            <Table data={tableData} columns={columns} className="h-full" />
-            {state.context.searchPayload.page && (
-              <Pagination
-                page={state.context.searchPayload.page}
-                totalPage={assetData.totalPage}
-                onNext={() => void send({ type: 'NEXT_PAGE' })}
-                onPrev={() => void send({ type: 'PREV_PAGE' })}
-                onFirst={() => void send({ payload: 1, type: 'JUMP_PAGE' })}
-                onLast={() => void send({ payload: assetData.totalPage, type: 'JUMP_PAGE' })}
-              />
-            )}
-          </>
+        <Table data={tableData} columns={columns} className="h-full" isLoading={assetIsPending} />
+        {assetData && state.context.searchPayload.page && (
+          <Pagination
+            page={state.context.searchPayload.page}
+            totalPage={assetData.totalPage}
+            onNext={() => void send({ type: 'NEXT_PAGE' })}
+            onPrev={() => void send({ type: 'PREV_PAGE' })}
+            onFirst={() => void send({ payload: 1, type: 'JUMP_PAGE' })}
+            onLast={() => void send({ payload: assetData.totalPage, type: 'JUMP_PAGE' })}
+          />
         )}
       </div>
 

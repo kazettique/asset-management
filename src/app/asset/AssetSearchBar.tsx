@@ -22,7 +22,9 @@ import { AssetValidator } from '@/validator';
 
 export interface Props {
   className?: string;
-  onSearch: (payload: FAssetFindPrimaryFilter) => void;
+  onResetSearchCondition: () => void;
+  onUpdatePrimaryFilter: (payload: FAssetFindPrimaryFilter) => void;
+  onUpdateSecondaryFilter: (payload: FAssetFindSecondaryFilter) => void;
   settingOptions: FSettingOptions;
 }
 
@@ -33,8 +35,13 @@ const LIFE_STATUS_OPTIONS: FormOption<AssetLifeStatus>[] = [
 ];
 
 export default function AssetSearchBar(props: Props) {
-  const { className = '', settingOptions, onSearch } = props;
-  // const [isSecondaryFilterOpen, setIsSecondaryFilterOpen] = useState<boolean>(false);
+  const {
+    className = '',
+    settingOptions,
+    onUpdatePrimaryFilter,
+    onUpdateSecondaryFilter,
+    onResetSearchCondition,
+  } = props;
 
   const {
     register: primaryRegister,
@@ -59,9 +66,15 @@ export default function AssetSearchBar(props: Props) {
   const primaryValues = useWatch({ control: primaryControl });
 
   useEffect(() => {
-    onSearch(primaryValues as FAssetFindPrimaryFilter);
+    onUpdatePrimaryFilter(primaryValues as FAssetFindPrimaryFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [primaryValues]);
+
+  const handleResetCondition = () => {
+    onResetSearchCondition();
+    primaryReset();
+    secondaryReset();
+  };
 
   return (
     <div className={`flex gap-x-2 overflow-x-auto items-center ${className}`} data-test-comp={AssetSearchBar.name}>
@@ -92,14 +105,12 @@ export default function AssetSearchBar(props: Props) {
           <PopoverButton>
             <BasicIcon
               iconType="filter-solid"
-              className="shadow-md py-1 px-2 bg-white dark:bg-gray-500 text-gray-600 dark:text-white rounded-md cursor-pointer"
+              className="shadow-md w-8 h-8 flex items-center justify-center bg-white hover:bg-gray-200 dark:hover:bg-gray-600 dark:bg-gray-500 text-gray-600 dark:text-white rounded-md cursor-pointer"
             />
           </PopoverButton>
-          <PopoverPanel anchor="bottom end" className="bg-white p-4 rounded-md shadow-md">
+          <PopoverPanel anchor="bottom end" className="bg-white p-4 rounded-md shadow-md dark:bg-gray-500">
             <form
-              onSubmit={secondaryHandleSubmit((data) => {
-                console.log('data', data);
-              })}
+              onSubmit={secondaryHandleSubmit((data) => void onUpdateSecondaryFilter(data))}
               className="grid grid-cols-2 gap-4"
             >
               <BasicSelect isMulti path="brands" control={secondaryControl} options={settingOptions.brands} />
@@ -134,6 +145,12 @@ export default function AssetSearchBar(props: Props) {
             </form>
           </PopoverPanel>
         </Popover>
+
+        <BasicIcon
+          iconType="filter-circle-xmark-solid"
+          className="shadow-md w-8 h-8 flex items-center justify-center bg-white hover:bg-gray-200 dark:hover:bg-gray-600 dark:bg-gray-500 text-gray-600 dark:text-white rounded-md cursor-pointer"
+          onClick={handleResetCondition}
+        />
       </div>
     </div>
   );

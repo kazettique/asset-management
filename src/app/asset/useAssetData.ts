@@ -1,14 +1,12 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { useMachine } from '@xstate/react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
 import { assetMachine } from '@/machines';
 import { AssetTransformer, SettingTransformer } from '@/transformer';
 import { FAsset, FSettingOptions, Id, VAsset, VAssetTable } from '@/types';
-
-import page from '../page';
 
 export default function useAssetData() {
   // const [page, setPage] = useState<number>(1);
@@ -36,6 +34,7 @@ export default function useAssetData() {
     isPending: assetIsPending,
     refetch: assetRefetch,
   } = useQuery({
+    placeholderData: keepPreviousData,
     queryFn: () => AssetFetcher.FindMany(state.context.searchPayload),
     queryKey: ['assetList', state.context.searchPayload],
   });
@@ -89,6 +88,7 @@ export default function useAssetData() {
 
   return {
     assetData,
+    assetIsPending,
     assetRefetch,
     onCreateSubmit,
     onItemDelete,
