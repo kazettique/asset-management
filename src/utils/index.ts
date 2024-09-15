@@ -113,6 +113,21 @@ export abstract class Utils {
     return Math.ceil(totalCount / pageSize);
   }
 
+  // ref: https://stackoverflow.com/questions/8495687/split-array-into-chunks
+  public static SplitArrayIntoChunks<T>(src: T[], perChunk: number = 1): T[][] {
+    return src.reduce<T[][]>((resultArray, item, index) => {
+      const chunkIndex = Math.floor(index / perChunk);
+
+      if (!resultArray[chunkIndex]) {
+        resultArray[chunkIndex] = []; // start a new chunk
+      }
+
+      resultArray[chunkIndex].push(item);
+
+      return resultArray;
+    }, []);
+  }
+
   // public static GetCircularReplacer() {
   //   const ancestors: any[] = [];
 
