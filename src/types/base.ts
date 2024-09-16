@@ -16,3 +16,4 @@ export type NType<T> = T | null;
 export type Id = string;
 export type Price = number;
 export type Name = string;
+export type CurrencyExchangeRate = number;

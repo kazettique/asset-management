@@ -1,5 +1,4 @@
 'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactElement, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -11,7 +10,7 @@ import BasicIcon from '@/components/BasicIcon';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import Table, { ColumnProps } from '@/components/Table';
-import { AssetConstant } from '@/constant';
+import { AssetConstant, CommonConstant } from '@/constant';
 import { MachineContext, TaskStatus } from '@/machines/asset';
 import { AssetTransformer } from '@/transformer';
 import { FAssetImport, FSettingOptions, IconType, PAsset, VAssetImportItem, VAssetImportTable } from '@/types';
@@ -130,10 +129,10 @@ export default function AssetImport(props: Props) {
               </div>
 
               <div className="grid grid-cols-3 gap-4">
-                {/* <BasicSelect options={settingOptions.currencies} path="startCurrency" control={control} /> */}
+                <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="startCurrency" control={control} />
                 <BasicSelect options={settingOptions.platforms} path="startPlatformId" control={control} />
                 <BasicSelect options={settingOptions.startMethods} path="startMethodId" control={control} />
-                {/* <BasicSelect options={settingOptions.currencies} path="endCurrency" control={control} /> */}
+                <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="endCurrency" control={control} />
                 <BasicSelect options={settingOptions.platforms} path="endPlatformId" control={control} />
                 <BasicSelect options={settingOptions.endMethods} path="endMethodId" control={control} />
               </div>

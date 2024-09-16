@@ -1,6 +1,6 @@
 import { TaskStatus } from '@/machines/asset';
 
-import { AssetMeta, Name } from '..';
+import { AssetMeta, CurrencyExchangeRate, Name } from '..';
 import { MAsset } from '../models';
 
 export interface VAsset extends MAsset {}
@@ -10,6 +10,7 @@ export interface VAssetTable {
   category: string;
   comment: string;
   endInfo: {
+    endCurrencyExchangeRate: CurrencyExchangeRate;
     endDate: string;
     endMethod: string;
     endPlatform: string;
@@ -23,6 +24,7 @@ export interface VAssetTable {
   priceDifference: string;
   raw: VAsset;
   startInfo: {
+    startCurrencyExchangeRate: CurrencyExchangeRate;
     startDate: string;
     startMethod: string;
     startPlatform: string;

@@ -1,6 +1,6 @@
 import { assign, fromPromise, setup } from 'xstate';
 
-import { FAsset, Id, NType, VAssetImportItem } from '@/types';
+import { VAssetImportItem } from '@/types';
 
 type MachineContext = {
   error: unknown;

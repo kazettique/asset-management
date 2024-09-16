@@ -9,7 +9,7 @@ import BasicInput from '@/components/BasicInput';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
-import { AssetConstant } from '@/constant';
+import { AssetConstant, CommonConstant } from '@/constant';
 import { MachineContext } from '@/machines/asset';
 import { FAsset, FSettingOptions, Id } from '@/types';
 import { AssetValidator } from '@/validator';
@@ -101,7 +101,7 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="startDate" />
 
                 <div className="flex gap-2">
-                  {/* <BasicSelect options={settingOptions.currencies} path="startCurrency" control={control} /> */}
+                  <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="startCurrency" control={control} />
                   <BasicInput register={register} path="startPrice" />
                 </div>
 
@@ -116,7 +116,7 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="endDate" />
 
                 <div className="flex gap-2">
-                  {/* <BasicSelect options={settingOptions.currencies} path="endCurrency" control={control} /> */}
+                  <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="endCurrency" control={control} />
                   <BasicInput register={register} path="endPrice" />
                 </div>
 

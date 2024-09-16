@@ -5,6 +5,7 @@ import BasicIcon from '@/components/BasicIcon';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Pagination from '@/components/Pagination';
 import Table, { ColumnProps } from '@/components/Table';
+import { CommonConstant } from '@/constant';
 import { AssetTransformer } from '@/transformer';
 import { VAssetTable } from '@/types';
 
@@ -182,7 +183,11 @@ export default function Page() {
           iconType="pen-to-square-solid"
           onClick={() =>
             void send({
-              formValues: AssetTransformer.VFAssetTransformer(item.raw, settingOptions),
+              formValues: AssetTransformer.VFAssetTransformer(
+                item.raw,
+                settingOptions,
+                CommonConstant.CURRENCY_CODE_OPTIONS,
+              ),
               id: item.raw.id,
               type: 'TO_EDIT',
             })

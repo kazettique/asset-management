@@ -14,7 +14,6 @@ import {
   NString,
   NType,
   PaginationBase,
-  PAsset,
   PAssetFind,
   Price,
 } from '@/types';
@@ -28,6 +27,8 @@ const queryObj: Prisma.AssetSelect = {
     select: { id: true, name: true },
   },
   comment: true,
+  endCurrency: true,
+  endCurrencyExchangeRate: true,
   endDate: true,
   endMethod: {
     select: { id: true, name: true },
@@ -46,6 +47,8 @@ const queryObj: Prisma.AssetSelect = {
   place: {
     select: { id: true, name: true },
   },
+  startCurrency: true,
+  startCurrencyExchangeRate: true,
   startDate: true,
   startMethod: {
     select: { id: true, name: true },

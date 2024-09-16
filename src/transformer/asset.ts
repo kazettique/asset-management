@@ -54,7 +54,11 @@ export abstract class AssetTransformer {
   }
 
   // view model -> form model
-  public static VFAssetTransformer(src: VAsset, settingOptions: FSettingOptions): FAsset {
+  public static VFAssetTransformer(
+    src: VAsset,
+    settingOptions: FSettingOptions,
+    currencyCodeOptions: FormOption[],
+  ): FAsset {
     const convert = (_src: { id: string; name: string }): FormOption => ({ label: _src.name, value: _src.id });
 
     const findBrand = settingOptions.brands.find((_item) => _item.value === src.brand?.id);
@@ -65,12 +69,14 @@ export abstract class AssetTransformer {
     const findPlace = settingOptions.places.find((_item) => _item.value === src.place?.id);
     const findOwner = settingOptions.owners.find((_item) => _item.value === src.owner?.id);
     const findCategory = settingOptions.categories.find((_item) => _item.value === src.category?.id);
+    const findStartCurrency = currencyCodeOptions.find((_item) => _item.value === src.startCurrency);
+    const findEndCurrency = currencyCodeOptions.find((_item) => _item.value === src.endCurrency);
 
     return {
       brandId: findBrand || null,
       categoryId: findCategory || null,
       comment: src.comment ?? '',
-      endCurrency: src.endCurrency,
+      endCurrency: findStartCurrency ?? null,
       endDate: src.endDate,
       endMethodId: findEndMethod || null,
       endPlatformId: findEndPlatform || null,
@@ -80,7 +86,7 @@ export abstract class AssetTransformer {
       name: src.name,
       ownerId: findOwner || null,
       placeId: findPlace || null,
-      startCurrency: src.startCurrency,
+      startCurrency: findEndCurrency ?? null,
       startDate: src.startDate,
       startMethodId: findStartMethod || null,
       startPlatformId: findStartPlatform || null,
@@ -98,14 +104,14 @@ export abstract class AssetTransformer {
       ...src,
       brandId: convertEmptyStringToNull(src.brandId),
       categoryId: convertEmptyStringToNull(src.categoryId),
-      endCurrency: src.endCurrency,
+      endCurrency: src.endCurrency !== null ? src.endCurrency.value : null,
       endMethodId: convertEmptyStringToNull(src.endMethodId),
       endPlatformId: convertEmptyStringToNull(src.endPlatformId),
       endPrice: src.endPrice.length > 0 ? Number(src.endPrice) : null,
       meta: src.meta ?? [],
       ownerId: convertEmptyStringToNull(src.ownerId),
       placeId: convertEmptyStringToNull(src.placeId),
-      startCurrency: src.startCurrency,
+      startCurrency: src.startCurrency !== null ? src.startCurrency.value : null,
       startMethodId: convertEmptyStringToNull(src.startMethodId),
       startPlatformId: convertEmptyStringToNull(src.startPlatformId),
       startPrice: src.startPrice.length > 0 ? Number(src.startPrice) : null,
@@ -146,6 +152,7 @@ export abstract class AssetTransformer {
       category: src.category ? src.category.name : CommonConstant.DEFAULT_EMPTY_STRING,
       comment: src.comment ?? '',
       endInfo: {
+        endCurrencyExchangeRate: src.endCurrencyExchangeRate,
         endDate: src.endDate ? Utils.GetDateTimeString(src.endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
         endMethod: src.endMethod ? src.endMethod.name : CommonConstant.DEFAULT_EMPTY_STRING,
         endPlatform: src.endPlatform ? src.endPlatform.name : CommonConstant.DEFAULT_EMPTY_STRING,
@@ -162,6 +169,7 @@ export abstract class AssetTransformer {
       priceDifference: Utils.NumberWithCommas(_priceDifference),
       raw: src,
       startInfo: {
+        startCurrencyExchangeRate: src.startCurrencyExchangeRate,
         startDate: _startDate ? Utils.GetDateTimeString(_startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
         startMethod: src.startMethod ? src.startMethod.name : CommonConstant.DEFAULT_EMPTY_STRING,
         startPlatform: src.startPlatform ? src.startPlatform.name : CommonConstant.DEFAULT_EMPTY_STRING,

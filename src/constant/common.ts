@@ -1,4 +1,5 @@
 import { MethodType } from '@prisma/client';
+import currencyCodes from 'currency-codes-ts';
 
 import { FormOption, MenuItem, Name } from '@/types';
 
@@ -97,4 +98,9 @@ export abstract class CommonConstant {
       value: MethodType.END,
     },
   ];
+
+  public static readonly CURRENCY_CODE_OPTIONS: FormOption[] = currencyCodes.data.map((item) => ({
+    label: item.code,
+    value: item.code,
+  }));
 }

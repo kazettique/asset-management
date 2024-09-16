@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-import { Name, NString, NType, Price } from '../base';
+import { CurrencyExchangeRate, Name, NString, NType, Price } from '../base';
 import { DbBase } from '../common';
 import { DBrand } from './brand';
 import { DCategory } from './category';
@@ -15,6 +15,7 @@ export interface DAsset extends DbBase {
   category: NType<Omit<DCategory, 'comment'>>;
   comment: NString;
   endCurrency: NString;
+  endCurrencyExchangeRate: CurrencyExchangeRate;
   endDate: NType<Date>;
   endMethod: NType<Pick<DMethod, 'name' | 'id'>>;
   endPlatform: NType<Omit<DPlatform, 'comment'>>;
@@ -25,6 +26,7 @@ export interface DAsset extends DbBase {
   owner: NType<Omit<DOwner, 'comment'>>;
   place: NType<Omit<DPlace, 'comment'>>;
   startCurrency: NString;
+  startCurrencyExchangeRate: CurrencyExchangeRate;
   startDate: NType<Date>;
   startMethod: NType<Pick<DMethod, 'name' | 'id'>>;
   startPlatform: NType<Pick<DPlatform, 'name' | 'id'>>;

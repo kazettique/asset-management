@@ -1,4 +1,4 @@
-import { Name, NString, NType } from '../base';
+import { Name, NType } from '../base';
 import { AssetMeta } from '../common';
 import { AssetLifeStatus } from '../enum';
 import { PAssetFindSort } from '../payloadModels';
@@ -9,7 +9,7 @@ export interface FAsset {
   brandId: NType<FormOption>;
   categoryId: NType<FormOption>;
   comment: string;
-  endCurrency: NString;
+  endCurrency: NType<FormOption>;
   endDate: NType<Date>;
   endMethodId: NType<FormOption>;
   endPlatformId: NType<FormOption>;
@@ -19,7 +19,7 @@ export interface FAsset {
   name: Name;
   ownerId: NType<FormOption>;
   placeId: NType<FormOption>;
-  startCurrency: NString;
+  startCurrency: NType<FormOption>;
   startDate: NType<Date>;
   startMethodId: NType<FormOption>;
   startPlatformId: NType<FormOption>;
