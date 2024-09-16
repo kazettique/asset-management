@@ -5,7 +5,6 @@ import {
   FSettingOptions,
   MBrand,
   MCategory,
-  MCurrency,
   MMethod,
   MOwner,
   MPlace,
@@ -17,7 +16,6 @@ import {
 
 import { BrandTransformer } from './brand';
 import { CategoryTransformer } from './category';
-import { CurrencyTransformer } from './currency';
 import { MethodTransformer } from './method';
 import { OwnerTransformer } from './owner';
 import { PlaceTransformer } from './place';
@@ -29,7 +27,6 @@ export abstract class SettingTransformer {
     return {
       brands: src.brands.map((item) => BrandTransformer.DMBrandTransformer(item)),
       categories: src.categories.map((item) => CategoryTransformer.DMCategoryTransformer(item)),
-      currencies: src.currencies.map((item) => CurrencyTransformer.DMCurrencyTransformer(item)),
       methods: src.methods.map((item) => MethodTransformer.DMMethodTransformer(item)),
       owners: src.owners.map((item) => OwnerTransformer.DMOwnerTransformer(item)),
       places: src.places.map((item) => PlaceTransformer.DMPlaceTransformer(item)),
@@ -42,7 +39,6 @@ export abstract class SettingTransformer {
     return {
       brands: src.brands,
       categories: src.categories,
-      currencies: src.currencies,
       endMethods: src.methods.filter((item) => item.type !== MethodType.START),
       owners: src.owners,
       places: src.places,
@@ -53,8 +49,6 @@ export abstract class SettingTransformer {
   }
 
   public static FSettingOptionsTransformer(src: VSetting): FSettingOptions {
-    const parseCurrency = (currency: MCurrency) => `(${currency.display})${currency.symbol}`;
-
     const parseOptions = (_item: MBrand | MCategory | MMethod | MOwner | MPlace | MPlatform | MTag) => ({
       label: _item.name,
       value: _item.id,
@@ -63,7 +57,6 @@ export abstract class SettingTransformer {
     return {
       brands: src.brands.map((item) => parseOptions(item)),
       categories: src.categories.map((item) => parseOptions(item)),
-      currencies: src.currencies.map((item) => ({ label: parseCurrency(item), value: item.id })),
       endMethods: src.endMethods.map((item) => parseOptions(item)),
       owners: src.owners.map((item) => parseOptions(item)),
       places: src.places.map((item) => parseOptions(item)),

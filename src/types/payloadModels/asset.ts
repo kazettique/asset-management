@@ -11,7 +11,7 @@ export interface PAsset {
   brandId: NType<Id>;
   categoryId: NType<Id>;
   comment: NString;
-  endCurrencyId: NType<Id>;
+  endCurrency: NString;
   endDate: NType<Date>;
   endMethodId: NType<Id>;
   endPlatformId: NType<Id>;
@@ -21,7 +21,7 @@ export interface PAsset {
   name: Name;
   ownerId: NType<Id>;
   placeId: NType<Id>;
-  startCurrencyId: NType<Id>;
+  startCurrency: NString;
   startDate: NType<Date>;
   startMethodId: NType<Id>;
   startPlatformId: NType<Id>;

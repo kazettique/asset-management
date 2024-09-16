@@ -130,10 +130,10 @@ export default function AssetImport(props: Props) {
               </div>
 
               <div className="grid grid-cols-3 gap-4">
-                <BasicSelect options={settingOptions.currencies} path="startCurrencyId" control={control} />
+                {/* <BasicSelect options={settingOptions.currencies} path="startCurrency" control={control} /> */}
                 <BasicSelect options={settingOptions.platforms} path="startPlatformId" control={control} />
                 <BasicSelect options={settingOptions.startMethods} path="startMethodId" control={control} />
-                <BasicSelect options={settingOptions.currencies} path="endCurrencyId" control={control} />
+                {/* <BasicSelect options={settingOptions.currencies} path="endCurrency" control={control} /> */}
                 <BasicSelect options={settingOptions.platforms} path="endPlatformId" control={control} />
                 <BasicSelect options={settingOptions.endMethods} path="endMethodId" control={control} />
               </div>

@@ -29,14 +29,7 @@ export abstract class AssetValidator {
       brand: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       comment: z.string().nullable(),
-      endCurrency: z
-        .object({
-          display: z.string(),
-          id: CommonValidator.IdValidator,
-          name: z.string(),
-          symbol: z.string(),
-        })
-        .nullable(),
+      endCurrency: z.string().nullable(),
       endDate: z.date().nullable(),
       endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
@@ -46,9 +39,7 @@ export abstract class AssetValidator {
       name: CommonValidator.NameValidator,
       owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startCurrency: z
-        .object({ display: z.string(), id: CommonValidator.IdValidator, name: z.string(), symbol: z.string() })
-        .nullable(),
+      startCurrency: z.string().nullable(),
       startDate: z.date().nullable(),
       startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
@@ -62,14 +53,7 @@ export abstract class AssetValidator {
       brand: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       comment: z.string().nullable(),
-      endCurrency: z
-        .object({
-          display: z.string(),
-          id: CommonValidator.IdValidator,
-          name: z.string(),
-          symbol: z.string(),
-        })
-        .nullable(),
+      endCurrency: z.string().nullable(),
       endDate: z.date().nullable(),
       endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
@@ -79,9 +63,7 @@ export abstract class AssetValidator {
       name: CommonValidator.NameValidator,
       owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startCurrency: z
-        .object({ display: z.string(), id: CommonValidator.IdValidator, name: z.string(), symbol: z.string() })
-        .nullable(),
+      startCurrency: z.string().nullable(),
       startDate: z.date().nullable(),
       startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
@@ -97,7 +79,7 @@ export abstract class AssetValidator {
       brandId: CommonValidator.IdValidator.nullable(),
       categoryId: CommonValidator.IdValidator.nullable(),
       comment: z.string().nullable(),
-      endCurrencyId: CommonValidator.IdValidator.nullable(),
+      endCurrency: z.string().nullable(),
       endDate: z.coerce.date().nullable(),
       endMethodId: CommonValidator.IdValidator.nullable(),
       endPlatformId: CommonValidator.IdValidator.nullable(),
@@ -107,7 +89,7 @@ export abstract class AssetValidator {
       name: CommonValidator.NameValidator,
       ownerId: CommonValidator.IdValidator.nullable(),
       placeId: CommonValidator.IdValidator.nullable(),
-      startCurrencyId: CommonValidator.IdValidator.nullable(),
+      startCurrency: z.string().nullable(),
       startDate: z.coerce.date().nullable(),
       startMethodId: CommonValidator.IdValidator.nullable(),
       startPlatformId: CommonValidator.IdValidator.nullable(),
@@ -137,7 +119,7 @@ export abstract class AssetValidator {
       brandId: CommonValidator.FormOptionValidator.nullable(),
       categoryId: CommonValidator.FormOptionValidator.nullable(),
       comment: z.string(),
-      endCurrencyId: CommonValidator.FormOptionValidator.nullable(),
+      endCurrency: z.string().nullable(),
       endDate: z.date().nullable(),
       endMethodId: CommonValidator.FormOptionValidator.nullable(),
       endPlatformId: CommonValidator.FormOptionValidator.nullable(),
@@ -147,7 +129,7 @@ export abstract class AssetValidator {
       name: CommonValidator.NameValidator,
       ownerId: CommonValidator.FormOptionValidator.nullable(),
       placeId: CommonValidator.FormOptionValidator.nullable(),
-      startCurrencyId: CommonValidator.FormOptionValidator.nullable(),
+      startCurrency: z.string().nullable(),
       startDate: z.date().nullable(),
       startMethodId: CommonValidator.FormOptionValidator.nullable(),
       startPlatformId: CommonValidator.FormOptionValidator.nullable(),
@@ -156,24 +138,24 @@ export abstract class AssetValidator {
     })
     .superRefine((values, context) => {
       if (
-        (values.startPrice.length !== 0 && values.startCurrencyId === null) ||
-        (values.startPrice.length === 0 && values.startCurrencyId !== null)
+        (values.startPrice.length !== 0 && values.startCurrency === null) ||
+        (values.startPrice.length === 0 && values.startCurrency !== null)
       ) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
           message: CommonConstant.MSG_CURRENCY_PRICE_PAIR,
-          path: ['startCurrencyId'],
+          path: ['startCurrency'],
         });
       }
 
       if (
-        (values.endPrice.length !== 0 && values.endCurrencyId === null) ||
-        (values.endPrice.length === 0 && values.endCurrencyId !== null)
+        (values.endPrice.length !== 0 && values.endCurrency === null) ||
+        (values.endPrice.length === 0 && values.endCurrency !== null)
       ) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
           message: CommonConstant.MSG_CURRENCY_PRICE_PAIR,
-          path: ['endCurrencyId'],
+          path: ['endCurrency'],
         });
       }
     });
@@ -190,7 +172,7 @@ export abstract class AssetValidator {
   public static readonly FAssetImportValidator: z.ZodSchema<FAssetImport> = z.object({
     brandId: CommonValidator.FormOptionValidator.nullable(),
     categoryId: CommonValidator.FormOptionValidator.nullable(),
-    endCurrencyId: CommonValidator.FormOptionValidator.nullable(),
+    endCurrency: z.string().nullable(),
     endMethodId: CommonValidator.FormOptionValidator.nullable(),
     endPlatformId: CommonValidator.FormOptionValidator.nullable(),
     isCensored: z.boolean(),
@@ -198,7 +180,7 @@ export abstract class AssetValidator {
     meta: CommonValidator.AssetMetaValidator,
     ownerId: CommonValidator.FormOptionValidator.nullable(),
     placeId: CommonValidator.FormOptionValidator.nullable(),
-    startCurrencyId: CommonValidator.FormOptionValidator.nullable(),
+    startCurrency: z.string().nullable(),
     startMethodId: CommonValidator.FormOptionValidator.nullable(),
     startPlatformId: CommonValidator.FormOptionValidator.nullable(),
     tags: CommonValidator.FormOptionValidator.array(),

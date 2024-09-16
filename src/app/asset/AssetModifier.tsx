@@ -101,7 +101,7 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="startDate" />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={settingOptions.currencies} path="startCurrencyId" control={control} />
+                  {/* <BasicSelect options={settingOptions.currencies} path="startCurrency" control={control} /> */}
                   <BasicInput register={register} path="startPrice" />
                 </div>
 
@@ -116,7 +116,7 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="endDate" />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={settingOptions.currencies} path="endCurrencyId" control={control} />
+                  {/* <BasicSelect options={settingOptions.currencies} path="endCurrency" control={control} /> */}
                   <BasicInput register={register} path="endPrice" />
                 </div>
 

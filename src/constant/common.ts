@@ -52,12 +52,6 @@ export abstract class CommonConstant {
         },
         {
           children: [],
-          icon: 'dollar-sign-solid',
-          label: 'currency',
-          link: '/setting/currency',
-        },
-        {
-          children: [],
           icon: 'hammer-solid',
           label: 'method',
           link: '/setting/method',
