@@ -1,15 +1,18 @@
 import { Prisma } from '@prisma/client';
+import dayjs from 'dayjs';
 
 import { CommonConstant } from '@/constant';
 import { db } from '@/lib/db';
-import { AssetTransformer } from '@/transformer';
+import { AssetTransformer, DashboardTransformer } from '@/transformer';
 import {
   AssetLifeStatus,
   AssetMeta,
   DAsset,
+  DDashboardAggregate,
   DTag,
   Id,
   MAsset,
+  MDashboardAggregate,
   Name,
   NString,
   NType,
@@ -276,5 +279,77 @@ export abstract class AssetRepository {
     });
 
     return AssetTransformer.DMAssetTransformer(rawData);
+  }
+
+  public static async FindAggregate(): Promise<MDashboardAggregate> {
+    const general = await db.asset.aggregate({
+      _avg: { endPrice: true, startPrice: true },
+      _max: { endPrice: true, startPrice: true },
+      _sum: { endPrice: true, startPrice: true },
+    });
+
+    const startCurrency = await db.asset.groupBy({
+      _count: { startCurrency: true },
+      by: ['startCurrency'],
+      orderBy: { startCurrency: 'desc' },
+      where: { startCurrency: { not: null } },
+    });
+
+    const endCurrency = await db.asset.groupBy({
+      _count: { endCurrency: true },
+      by: ['endCurrency'],
+      orderBy: { endCurrency: 'desc' },
+      where: { endCurrency: { not: null } },
+    });
+
+    const category = await db.asset.groupBy({
+      _avg: { endPrice: true, startPrice: true },
+      _count: { categoryId: true },
+      _max: { endPrice: true, startPrice: true },
+      _sum: { endPrice: true, startPrice: true },
+      by: ['categoryId'],
+      orderBy: { categoryId: 'desc' },
+      where: {
+        categoryId: { not: null },
+      },
+    });
+
+    const ranking = await db.asset.findMany({
+      orderBy: { startPrice: 'desc' },
+      select: {
+        category: { select: { name: true } },
+        name: true,
+        startCurrency: true,
+        startDate: true,
+        startPrice: true,
+      },
+      take: 10,
+    });
+
+    const rawData: DDashboardAggregate = {
+      category,
+      endCurrency,
+      general,
+      ranking,
+      startCurrency,
+    };
+
+    return DashboardTransformer.DMDashboardAggregateTransformer(rawData);
+  }
+
+  public static async TimeLineData() {
+    const calendar = await db.asset.findMany({
+      select: {
+        endDate: true,
+        endPrice: true,
+        name: true,
+        startDate: true,
+        startPrice: true,
+      },
+      where: {
+        endDate: { gte: dayjs().startOf('month').toDate(), lte: dayjs().endOf('month').toDate() },
+        startDate: { gte: dayjs().startOf('month').toDate(), lte: dayjs().endOf('month').toDate() },
+      },
+    });
   }
 }

@@ -33,11 +33,6 @@ export interface SettingBase {
   name: string;
 }
 
-export interface CurrencyCommon extends SettingBase {
-  display: string;
-  symbol: string;
-}
-
 export interface MethodCommon extends SettingBase {
   type: MethodType;
 }

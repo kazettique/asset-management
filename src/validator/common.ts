@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { CommonConstant } from '@/constant';
 import {
   AssetMeta,
-  CurrencyCommon,
   CurrencyExchangeRate,
   DbBase,
   FormOption,
@@ -39,13 +38,6 @@ export abstract class CommonValidator {
     comment: z.string().nullable(),
     name: this.NameValidator,
   });
-
-  public static readonly CurrencyCommonValidator: z.ZodSchema<CurrencyCommon> = z
-    .object({
-      display: z.string(),
-      symbol: z.string(),
-    })
-    .and(this.SettingBaseValidator);
 
   public static readonly MethodCommonValidator: z.ZodSchema<MethodCommon> = z
     .object({
