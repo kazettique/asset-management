@@ -32,23 +32,23 @@ model Asset {
 
   // lifespan
   // multiple columns to same table, ref: https://github.com/prisma/prisma/discussions/17004
-  startDate                 DateTime?
-  startPrice                Float?
-  startCurrency             String?
-  startCurrencyExchangeRate Float     @default(1)
-  startMethodId             String?
-  startMethod               Method?   @relation("AssetStartMethod", fields: [startMethodId], references: [id])
-  startPlatformId           String?
-  startPlatform             Platform? @relation("AssetStartPlatform", fields: [startPlatformId], references: [id])
+  startDate           DateTime?
+  startPrice          Float?
+  startMethodId       String?
+  startMethod         Method?       @relation("AssetStartMethod", fields: [startMethodId], references: [id])
+  startPlatformId     String?
+  startPlatform       Platform?     @relation("AssetStartPlatform", fields: [startPlatformId], references: [id])
+  startExchangeRateId String?
+  startExchangeRate   ExchangeRate? @relation("AssetStartExchangeRate", fields: [startExchangeRateId], references: [id])
 
-  endDate                 DateTime?
-  endPrice                Float?
-  endCurrency             String?
-  endCurrencyExchangeRate Float     @default(1)
-  endMethodId             String?
-  endMethod               Method?   @relation("AssetEndMethod", fields: [endMethodId], references: [id])
-  endPlatformId           String?
-  endPlatform             Platform? @relation("AssetEndPlatform", fields: [endPlatformId], references: [id])
+  endDate           DateTime?
+  endPrice          Float?
+  endMethodId       String?
+  endMethod         Method?       @relation("AssetEndMethod", fields: [endMethodId], references: [id])
+  endPlatformId     String?
+  endPlatform       Platform?     @relation("AssetEndPlatform", fields: [endPlatformId], references: [id])
+  endExchangeRateId String?
+  endExchangeRate   ExchangeRate? @relation("AssetEndExchangeRate", fields: [endExchangeRateId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -156,9 +156,8 @@ model Tag {
 model OwnershipHistory {
   id String @id @default(uuid())
 
-  ownerId   Owner     @relation(fields: [id], references: [id])
+  ownerId   Owner    @relation(fields: [id], references: [id])
   startDate DateTime
-  endDate   DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -173,5 +172,18 @@ model PriceHistory {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   String?  @db.TinyText
+}
+
+model ExchangeRate {
+  id String @id @default(uuid())
+
+  date           DateTime
+  targetCurrency String
+  rate           Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  StartExchangeRate Asset[] @relation("AssetStartExchangeRate")
+  EndExchangeRate   Asset[] @relation("AssetEndExchangeRate")
 }
