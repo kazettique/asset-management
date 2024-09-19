@@ -1,4 +1,4 @@
-import { Id, NNumber, NString, NType } from '../base';
+import { Id, NNumber, NType } from '../base';
 
 export interface DDashboardAggregate {
   category: {
@@ -19,10 +19,6 @@ export interface DDashboardAggregate {
     };
     categoryId: NType<Id>;
   }[];
-  endCurrency: {
-    _count: { endCurrency: NNumber };
-    endCurrency: NString;
-  }[];
   general: {
     _avg: {
       endPrice: NNumber;
@@ -40,12 +36,8 @@ export interface DDashboardAggregate {
   ranking: {
     category: { name: string } | null;
     name: string;
-    startCurrency: NString;
     startDate: NType<Date>;
+    startExchangeRate: NType<{ rate: number; targetCurrency: string }>;
     startPrice: NNumber;
-  }[];
-  startCurrency: {
-    _count: { startCurrency: NNumber };
-    startCurrency: NString;
   }[];
 }

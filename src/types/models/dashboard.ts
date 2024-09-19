@@ -35,10 +35,6 @@ export interface MDashboardAggregate {
       startPrice: NNumber;
     };
   }[];
-  endCurrency: {
-    assetCount: NNumber;
-    currencyName: NString;
-  }[];
   general: {
     avg: {
       endPrice: NNumber;
@@ -56,12 +52,8 @@ export interface MDashboardAggregate {
   ranking: {
     categoryName: NString;
     name: string;
-    startCurrency: NString;
     startDate: NType<Date>;
+    startExchangeRate: NType<{ rate: number; targetCurrency: string }>;
     startPrice: NNumber;
-  }[];
-  startCurrency: {
-    assetCount: NNumber;
-    currencyName: NString;
   }[];
 }

@@ -30,9 +30,8 @@ const queryObj: Prisma.AssetSelect = {
     select: { id: true, name: true },
   },
   comment: true,
-  endCurrency: true,
-  endCurrencyExchangeRate: true,
   endDate: true,
+  endExchangeRate: { select: { rate: true, targetCurrency: true } },
   endMethod: {
     select: { id: true, name: true },
   },
@@ -50,9 +49,8 @@ const queryObj: Prisma.AssetSelect = {
   place: {
     select: { id: true, name: true },
   },
-  startCurrency: true,
-  startCurrencyExchangeRate: true,
   startDate: true,
+  startExchangeRate: { select: { rate: true, targetCurrency: true } },
   startMethod: {
     select: { id: true, name: true },
   },
@@ -195,7 +193,6 @@ export abstract class AssetRepository {
         brandId,
         categoryId,
         comment,
-        endCurrency,
         endDate,
         endMethodId,
         endPlatformId,
@@ -205,7 +202,6 @@ export abstract class AssetRepository {
         name,
         ownerId,
         placeId,
-        startCurrency,
         startDate,
         startMethodId,
         startPlatformId,
@@ -257,7 +253,6 @@ export abstract class AssetRepository {
         brandId,
         categoryId,
         comment,
-        endCurrency,
         endDate,
         endMethodId,
         endPlatformId,
@@ -267,7 +262,6 @@ export abstract class AssetRepository {
         name,
         ownerId,
         placeId,
-        startCurrency,
         startDate,
         startMethodId,
         startPlatformId,
@@ -288,19 +282,19 @@ export abstract class AssetRepository {
       _sum: { endPrice: true, startPrice: true },
     });
 
-    const startCurrency = await db.asset.groupBy({
-      _count: { startCurrency: true },
-      by: ['startCurrency'],
-      orderBy: { startCurrency: 'desc' },
-      where: { startCurrency: { not: null } },
-    });
+    // const startCurrency = await db.asset.groupBy({
+    //   _count: { startExchangeRateId: true },
+    //   by: ['startCurrency'],
+    //   orderBy: { startCurrency: 'desc' },
+    //   where: { startCurrency: { not: null } },
+    // });
 
-    const endCurrency = await db.asset.groupBy({
-      _count: { endCurrency: true },
-      by: ['endCurrency'],
-      orderBy: { endCurrency: 'desc' },
-      where: { endCurrency: { not: null } },
-    });
+    // const endCurrency = await db.asset.groupBy({
+    //   _count: { endCurrency: true },
+    //   by: ['endCurrency'],
+    //   orderBy: { endCurrency: 'desc' },
+    //   where: { endCurrency: { not: null } },
+    // });
 
     const category = await db.asset.groupBy({
       _avg: { endPrice: true, startPrice: true },
@@ -319,8 +313,8 @@ export abstract class AssetRepository {
       select: {
         category: { select: { name: true } },
         name: true,
-        startCurrency: true,
         startDate: true,
+        startExchangeRate: { select: { rate: true, targetCurrency: true } },
         startPrice: true,
       },
       take: 10,
@@ -328,10 +322,8 @@ export abstract class AssetRepository {
 
     const rawData: DDashboardAggregate = {
       category,
-      endCurrency,
       general,
       ranking,
-      startCurrency,
     };
 
     return DashboardTransformer.DMDashboardAggregateTransformer(rawData);

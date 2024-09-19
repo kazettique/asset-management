@@ -99,8 +99,10 @@ export abstract class CommonConstant {
     },
   ];
 
-  public static readonly CURRENCY_CODE_OPTIONS: FormOption[] = currencyCodes.data.map((item) => ({
-    label: item.code,
-    value: item.code,
-  }));
+  public static readonly CURRENCY_CODE_OPTIONS: FormOption[] = currencyCodes.data
+    .filter((item) => ['TWD', 'USD', 'JPY'].includes(item.code))
+    .map((item) => ({
+      label: item.code,
+      value: item.code,
+    }));
 }

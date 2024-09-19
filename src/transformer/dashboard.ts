@@ -11,10 +11,6 @@ export abstract class DashboardTransformer {
         max: item._max,
         sum: item._sum,
       })),
-      endCurrency: src.endCurrency.map((item) => ({
-        assetCount: item._count.endCurrency,
-        currencyName: item.endCurrency,
-      })),
       general: {
         avg: src.general._avg,
         max: src.general._max,
@@ -23,13 +19,9 @@ export abstract class DashboardTransformer {
       ranking: src.ranking.map((item) => ({
         categoryName: item.category ? item.category.name : null,
         name: item.name,
-        startCurrency: item.startCurrency,
         startDate: item.startDate,
+        startExchangeRate: item.startExchangeRate,
         startPrice: item.startPrice,
-      })),
-      startCurrency: src.startCurrency.map((item) => ({
-        assetCount: item._count.startCurrency,
-        currencyName: item.startCurrency,
       })),
     };
   }

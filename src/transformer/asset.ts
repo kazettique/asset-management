@@ -69,8 +69,10 @@ export abstract class AssetTransformer {
     const findPlace = settingOptions.places.find((_item) => _item.value === src.place?.id);
     const findOwner = settingOptions.owners.find((_item) => _item.value === src.owner?.id);
     const findCategory = settingOptions.categories.find((_item) => _item.value === src.category?.id);
-    const findStartCurrency = currencyCodeOptions.find((_item) => _item.value === src.startCurrency);
-    const findEndCurrency = currencyCodeOptions.find((_item) => _item.value === src.endCurrency);
+    const findStartCurrency = currencyCodeOptions.find(
+      (_item) => _item.value === src.startExchangeRate?.targetCurrency,
+    );
+    const findEndCurrency = currencyCodeOptions.find((_item) => _item.value === src.endExchangeRate?.targetCurrency);
 
     return {
       brandId: findBrand || null,
@@ -133,17 +135,41 @@ export abstract class AssetTransformer {
 
     let monthlyCost: string = '';
 
-    if (src.startCurrency) {
+    if (src.startExchangeRate) {
       const endDate: Dayjs = src.endDate !== null ? dayjs(src.endDate) : dayjs();
       const startDate: Dayjs = dayjs(src.startDate);
       const monthCount: number = endDate.diff(startDate, 'month');
 
       if (monthCount > 0) {
         const calculateMonthlyCost = Utils.NumberWithCommas(Math.round(_priceDifference / monthCount));
-        monthlyCost = `(${src.startCurrency}) ${calculateMonthlyCost}`;
+        monthlyCost = `(${src.startExchangeRate.targetCurrency}) ${calculateMonthlyCost}`;
       } else {
         const calculateMonthlyCost = Utils.NumberWithCommas(_priceDifference);
-        monthlyCost = `(${src.startCurrency}) ${calculateMonthlyCost}`;
+        monthlyCost = `(${src.startExchangeRate.targetCurrency}) ${calculateMonthlyCost}`;
+      }
+    }
+
+    let displayEndPrice: string = CommonConstant.DEFAULT_EMPTY_STRING;
+
+    if (src.endPrice) {
+      if (src.endExchangeRate) {
+        const calculatedEndPrice: number = src.endExchangeRate.rate * src.endPrice;
+        displayEndPrice = `(${src.endExchangeRate.targetCurrency}) ${Utils.NumberWithCommas(calculatedEndPrice)}`;
+      } else {
+        // TODO: abstract to constant?
+        displayEndPrice = `(USD) ${Utils.NumberWithCommas(src.endPrice)}`;
+      }
+    }
+
+    let displayStartPrice: string = CommonConstant.DEFAULT_EMPTY_STRING;
+
+    if (src.startPrice) {
+      if (src.startExchangeRate) {
+        const calculatedStartPrice: number = src.startExchangeRate.rate * src.startPrice;
+        displayStartPrice = `(${src.startExchangeRate.targetCurrency}) ${Utils.NumberWithCommas(calculatedStartPrice)}`;
+      } else {
+        // TODO: abstract to constant?
+        displayStartPrice = `(USD) ${Utils.NumberWithCommas(src.startPrice)}`;
       }
     }
 
@@ -152,14 +178,10 @@ export abstract class AssetTransformer {
       category: src.category ? src.category.name : CommonConstant.DEFAULT_EMPTY_STRING,
       comment: src.comment ?? '',
       endInfo: {
-        endCurrencyExchangeRate: src.endCurrencyExchangeRate,
         endDate: src.endDate ? Utils.GetDateTimeString(src.endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
         endMethod: src.endMethod ? src.endMethod.name : CommonConstant.DEFAULT_EMPTY_STRING,
         endPlatform: src.endPlatform ? src.endPlatform.name : CommonConstant.DEFAULT_EMPTY_STRING,
-        endPrice:
-          src.endCurrency && src.endPrice
-            ? `(${src.endCurrency}) ${Utils.NumberWithCommas(src.endPrice)}`
-            : CommonConstant.DEFAULT_EMPTY_STRING,
+        endPrice: displayEndPrice,
       },
       meta: src.meta ?? [],
       monthlyCost,
@@ -169,14 +191,10 @@ export abstract class AssetTransformer {
       priceDifference: Utils.NumberWithCommas(_priceDifference),
       raw: src,
       startInfo: {
-        startCurrencyExchangeRate: src.startCurrencyExchangeRate,
         startDate: _startDate ? Utils.GetDateTimeString(_startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
         startMethod: src.startMethod ? src.startMethod.name : CommonConstant.DEFAULT_EMPTY_STRING,
         startPlatform: src.startPlatform ? src.startPlatform.name : CommonConstant.DEFAULT_EMPTY_STRING,
-        startPrice:
-          src.startCurrency && src.startPrice
-            ? `(${src.startCurrency}) ${Utils.NumberWithCommas(src.startPrice)}`
-            : CommonConstant.DEFAULT_EMPTY_STRING,
+        startPrice: displayStartPrice,
       },
       tags: src.tags.map((item) => item.name),
       usageTime:
