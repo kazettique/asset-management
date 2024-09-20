@@ -20,7 +20,7 @@ export abstract class DashboardTransformer {
         categoryName: item.category ? item.category.name : null,
         name: item.name,
         startDate: item.startDate,
-        startExchangeRate: item.startExchangeRate,
+        startForex: item.startForex,
         startPrice: item.startPrice,
       })),
     };

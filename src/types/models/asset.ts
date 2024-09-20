@@ -1,14 +1,14 @@
 import { Name, NString, NType, Price } from '../base';
 import { AssetMeta, DbBase } from '../common';
-import { DBrand, DCategory, DMethod, DOwner, DPlace, DPlatform, DTag } from '../dbModels';
-import { MExchangeRate } from './exchangeRate';
+import { DBrand, DCategory, DForex, DMethod, DOwner, DPlace, DPlatform, DTag } from '../dbModels';
+import { MForex } from './forex';
 
 export interface MAsset extends DbBase {
   brand: NType<Omit<DBrand, 'comment'>>;
   category: NType<Omit<DCategory, 'comment'>>;
   comment: NString;
   endDate: NType<Date>;
-  endExchangeRate: NType<MExchangeRate>;
+  endForex: NType<Pick<DForex, 'rate' | 'targetCurrency'>>;
   endMethod: NType<Pick<DMethod, 'name' | 'id'>>;
   endPlatform: NType<Omit<DPlatform, 'comment'>>;
   endPrice: NType<Price>;
@@ -18,7 +18,7 @@ export interface MAsset extends DbBase {
   owner: NType<Omit<DOwner, 'comment'>>;
   place: NType<Omit<DPlace, 'comment'>>;
   startDate: NType<Date>;
-  startExchangeRate: NType<MExchangeRate>;
+  startForex: NType<Pick<DForex, 'rate' | 'targetCurrency'>>;
   startMethod: NType<Pick<DMethod, 'name' | 'id'>>;
   startPlatform: NType<Pick<DPlatform, 'name' | 'id'>>;
   startPrice: NType<Price>;

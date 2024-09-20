@@ -37,7 +37,7 @@ export interface DDashboardAggregate {
     category: { name: string } | null;
     name: string;
     startDate: NType<Date>;
-    startExchangeRate: NType<{ rate: number; targetCurrency: string }>;
+    startForex: NType<{ rate: number; targetCurrency: string }>;
     startPrice: NNumber;
   }[];
 }

@@ -1,11 +1,15 @@
 import { MethodType } from '@prisma/client';
 import currencyCodes from 'currency-codes-ts';
+import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
 import { FormOption, MenuItem, Name } from '@/types';
 
 export abstract class CommonConstant {
   public static readonly MSG_DIRTY_DATA: string = 'dirty data';
   public static readonly MSG_CURRENCY_PRICE_PAIR: string = 'price and currency should both exist or not.';
+
+  public static readonly EXTERNAL_FOREX_API_ROUTE: string =
+    'https://currency-converter5.p.rapidapi.com/currency/historical';
 
   public static readonly DEFAULT_NAME: Name = '';
 
@@ -18,6 +22,8 @@ export abstract class CommonConstant {
   public static readonly DEFAULT_PAGE_SIZE: number = 10;
 
   public static readonly DEFAULT_PAGE: number = 1;
+
+  public static readonly BASE_CURRENCY: CurrencyCode = 'USD';
 
   public static readonly DEFAULT_SELECT_OPTION: FormOption = {
     label: 'Please choose',

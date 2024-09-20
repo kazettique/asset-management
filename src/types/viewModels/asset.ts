@@ -1,6 +1,6 @@
 import { TaskStatus } from '@/machines/asset';
 
-import { AssetMeta, CurrencyExchangeRate, Name, NType, VExchangeRate } from '..';
+import { AssetMeta, Name } from '..';
 import { MAsset } from '../models';
 
 export interface VAsset extends MAsset {}

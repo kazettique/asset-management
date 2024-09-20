@@ -22,7 +22,7 @@ import {
 } from '@/types';
 
 import { CommonValidator } from './common';
-import { ExchangeRateValidator } from './exchangeRate';
+import { ForexValidator } from './forex';
 
 export abstract class AssetValidator {
   public static readonly DAssetValidator: z.ZodSchema<DAsset> = z
@@ -31,7 +31,7 @@ export abstract class AssetValidator {
       category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       comment: z.string().nullable(),
       endDate: z.date().nullable(),
-      endExchangeRate: ExchangeRateValidator.DExchangeRateValidator.nullable(),
+      endForex: ForexValidator.DForexValidator.nullable(),
       endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       endPrice: CommonValidator.PriceValidator.nullable(),
@@ -41,7 +41,7 @@ export abstract class AssetValidator {
       owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startDate: z.date().nullable(),
-      startExchangeRate: ExchangeRateValidator.DExchangeRateValidator.nullable(),
+      startForex: ForexValidator.DForexValidator.nullable(),
       startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startPrice: CommonValidator.PriceValidator.nullable(),
@@ -55,7 +55,12 @@ export abstract class AssetValidator {
       category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       comment: z.string().nullable(),
       endDate: z.date().nullable(),
-      endExchangeRate: ExchangeRateValidator.DExchangeRateValidator.nullable(),
+      endForex: z
+        .object({
+          rate: CommonValidator.CurrencyForexValidator,
+          targetCurrency: z.string().length(3),
+        })
+        .nullable(),
       endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       endPrice: CommonValidator.PriceValidator.nullable(),
@@ -65,7 +70,12 @@ export abstract class AssetValidator {
       owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startDate: z.date().nullable(),
-      startExchangeRate: ExchangeRateValidator.DExchangeRateValidator.nullable(),
+      startForex: z
+        .object({
+          rate: CommonValidator.CurrencyForexValidator,
+          targetCurrency: z.string().length(3),
+        })
+        .nullable(),
       startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
       startPrice: CommonValidator.PriceValidator.nullable(),

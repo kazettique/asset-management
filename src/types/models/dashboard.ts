@@ -53,7 +53,7 @@ export interface MDashboardAggregate {
     categoryName: NString;
     name: string;
     startDate: NType<Date>;
-    startExchangeRate: NType<{ rate: number; targetCurrency: string }>;
+    startForex: NType<{ rate: number; targetCurrency: string }>;
     startPrice: NNumber;
   }[];
 }

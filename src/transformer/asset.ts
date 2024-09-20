@@ -13,6 +13,7 @@ import {
   FormOption,
   FSettingOptions,
   MAsset,
+  NNumber,
   NString,
   NType,
   PAsset,
@@ -69,30 +70,40 @@ export abstract class AssetTransformer {
     const findPlace = settingOptions.places.find((_item) => _item.value === src.place?.id);
     const findOwner = settingOptions.owners.find((_item) => _item.value === src.owner?.id);
     const findCategory = settingOptions.categories.find((_item) => _item.value === src.category?.id);
-    const findStartCurrency = currencyCodeOptions.find(
-      (_item) => _item.value === src.startExchangeRate?.targetCurrency,
-    );
-    const findEndCurrency = currencyCodeOptions.find((_item) => _item.value === src.endExchangeRate?.targetCurrency);
+    const findStartCurrency = currencyCodeOptions.find((_item) => _item.value === src.startForex?.targetCurrency);
+    const findEndCurrency = currencyCodeOptions.find((_item) => _item.value === src.endForex?.targetCurrency);
+
+    let startPrice: string = '';
+
+    if (src.startPrice !== null && src.startForex !== null) {
+      startPrice = String(Utils.ConvertToTargetCurrency(src.startPrice, src.startForex.rate));
+    }
+
+    let endPrice: string = '';
+
+    if (src.endPrice !== null && src.endForex !== null) {
+      endPrice = String(Utils.ConvertToTargetCurrency(src.endPrice, src.endForex.rate));
+    }
 
     return {
       brandId: findBrand || null,
       categoryId: findCategory || null,
       comment: src.comment ?? '',
-      endCurrency: findStartCurrency ?? null,
+      endCurrency: findEndCurrency ?? null,
       endDate: src.endDate,
       endMethodId: findEndMethod || null,
       endPlatformId: findEndPlatform || null,
-      endPrice: src.endPrice !== null ? String(src.endPrice) : '',
+      endPrice,
       isCensored: src.isCensored,
       meta: src.meta,
       name: src.name,
       ownerId: findOwner || null,
       placeId: findPlace || null,
-      startCurrency: findEndCurrency ?? null,
+      startCurrency: findStartCurrency ?? null,
       startDate: src.startDate,
       startMethodId: findStartMethod || null,
       startPlatformId: findStartPlatform || null,
-      startPrice: src.startPrice !== null ? String(src.startPrice) : '',
+      startPrice,
       tags: src.tags.map((item) => convert(item)),
     };
   }
@@ -131,45 +142,45 @@ export abstract class AssetTransformer {
     // endDate
     const _endDate: NType<Dayjs> = src.endDate !== null ? dayjs(src.endDate) : null;
 
-    const _priceDifference: number = src.endPrice && src.startPrice ? src.startPrice - src.endPrice : 0;
+    const _priceDifference: number = src.endPrice && src.startPrice ? Math.round(src.startPrice - src.endPrice) : 0;
 
     let monthlyCost: string = '';
 
-    if (src.startExchangeRate) {
+    if (src.startForex) {
       const endDate: Dayjs = src.endDate !== null ? dayjs(src.endDate) : dayjs();
       const startDate: Dayjs = dayjs(src.startDate);
       const monthCount: number = endDate.diff(startDate, 'month');
 
       if (monthCount > 0) {
         const calculateMonthlyCost = Utils.NumberWithCommas(Math.round(_priceDifference / monthCount));
-        monthlyCost = `(${src.startExchangeRate.targetCurrency}) ${calculateMonthlyCost}`;
+        monthlyCost = `(${src.startForex.targetCurrency}) ${calculateMonthlyCost}`;
       } else {
         const calculateMonthlyCost = Utils.NumberWithCommas(_priceDifference);
-        monthlyCost = `(${src.startExchangeRate.targetCurrency}) ${calculateMonthlyCost}`;
+        monthlyCost = `(${src.startForex.targetCurrency}) ${calculateMonthlyCost}`;
       }
     }
 
     let displayEndPrice: string = CommonConstant.DEFAULT_EMPTY_STRING;
 
     if (src.endPrice) {
-      if (src.endExchangeRate) {
-        const calculatedEndPrice: number = src.endExchangeRate.rate * src.endPrice;
-        displayEndPrice = `(${src.endExchangeRate.targetCurrency}) ${Utils.NumberWithCommas(calculatedEndPrice)}`;
+      if (src.endForex) {
+        const calculatedEndPrice: number = Utils.ConvertToTargetCurrency(src.endPrice, src.endForex.rate);
+        displayEndPrice = `(${src.endForex.targetCurrency}) ${Utils.NumberWithCommas(calculatedEndPrice)}`;
       } else {
-        // TODO: abstract to constant?
-        displayEndPrice = `(USD) ${Utils.NumberWithCommas(src.endPrice)}`;
+        const calculatedEndPrice: number = Utils.ConvertToTargetCurrency(src.endPrice);
+        displayEndPrice = `(${CommonConstant.BASE_CURRENCY}) ${Utils.NumberWithCommas(calculatedEndPrice)}`;
       }
     }
 
     let displayStartPrice: string = CommonConstant.DEFAULT_EMPTY_STRING;
 
     if (src.startPrice) {
-      if (src.startExchangeRate) {
-        const calculatedStartPrice: number = src.startExchangeRate.rate * src.startPrice;
-        displayStartPrice = `(${src.startExchangeRate.targetCurrency}) ${Utils.NumberWithCommas(calculatedStartPrice)}`;
+      if (src.startForex) {
+        const calculatedStartPrice: number = Utils.ConvertToTargetCurrency(src.startPrice, src.startForex.rate);
+        displayStartPrice = `(${src.startForex.targetCurrency}) ${Utils.NumberWithCommas(calculatedStartPrice)}`;
       } else {
-        // TODO: abstract to constant?
-        displayStartPrice = `(USD) ${Utils.NumberWithCommas(src.startPrice)}`;
+        const calculatedStartPrice: number = Utils.ConvertToTargetCurrency(src.startPrice);
+        displayStartPrice = `(${CommonConstant.BASE_CURRENCY}) ${Utils.NumberWithCommas(calculatedStartPrice)}`;
       }
     }
 

@@ -128,6 +128,14 @@ export abstract class Utils {
     }, []);
   }
 
+  public static ConvertToTargetCurrency(price: number, rate: number = 1): number {
+    return Math.round(price * rate);
+  }
+
+  public static ConvertToBaseCurrency(price: number, rate: number = 1): number {
+    return Math.round(price / rate);
+  }
+
   // public static GetCircularReplacer() {
   //   const ancestors: any[] = [];
 

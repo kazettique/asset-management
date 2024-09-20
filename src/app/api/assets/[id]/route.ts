@@ -1,9 +1,10 @@
+import { CurrencyCode } from 'currency-codes-ts/dist/types';
 import { NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
 import { AssetService } from '@/service';
 import { AssetTransformer, CommonTransformer } from '@/transformer';
-import { GeneralResponse, HttpStatusCode, Id, VAsset } from '@/types';
+import { GeneralResponse, HttpStatusCode, Id, NType, VAsset } from '@/types';
 import { AssetValidator, CommonValidator } from '@/validator';
 
 type Segments = { params: { id: Id } };
@@ -90,7 +91,7 @@ export async function PUT(
       brandId,
       categoryId,
       comment,
-      endCurrency,
+      endCurrency as NType<CurrencyCode>,
       endDate,
       endMethodId,
       endPlatformId,
@@ -100,7 +101,7 @@ export async function PUT(
       name,
       ownerId,
       placeId,
-      startCurrency,
+      startCurrency as NType<CurrencyCode>,
       startDate,
       startMethodId,
       startPlatformId,

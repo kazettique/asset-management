@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { CommonConstant } from '@/constant';
 import {
   AssetMeta,
-  CurrencyExchangeRate,
+  CurrencyForex,
   DbBase,
   FormOption,
   Id,
@@ -28,7 +28,7 @@ export abstract class CommonValidator {
     pageSize: z.coerce.number().int().positive().max(CommonConstant.MAX_PAGE_SIZE).optional(),
   });
 
-  public static readonly CurrencyExchangeRateValidator: z.ZodSchema<CurrencyExchangeRate> = z.number().positive();
+  public static readonly CurrencyForexValidator: z.ZodSchema<CurrencyForex> = z.number().positive();
 
   public static readonly DbBaseValidator: z.ZodSchema<DbBase> = z.object({
     id: this.IdValidator,
