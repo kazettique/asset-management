@@ -6,8 +6,8 @@ import { FFindPagination, FormOption } from './common';
 
 // no null type in all properties
 export interface FAsset {
-  brandId: NType<FormOption>;
-  categoryId: NType<FormOption>;
+  brandId: FormOption;
+  categoryId: FormOption;
   comment: string;
   endCurrency: NType<FormOption>;
   endDate: NType<Date>;
@@ -17,8 +17,8 @@ export interface FAsset {
   isCensored: boolean;
   meta: NType<AssetMeta>;
   name: Name;
-  ownerId: NType<FormOption>;
-  placeId: NType<FormOption>;
+  ownerId: FormOption;
+  placeId: FormOption;
   startCurrency: NType<FormOption>;
   startDate: NType<Date>;
   startMethodId: NType<FormOption>;

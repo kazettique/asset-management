@@ -1,27 +1,9 @@
-import { Name, NString, NType, Price } from '../base';
-import { AssetMeta, DbBase } from '../common';
-import { DAssetOwnership, DBrand, DCategory, DForex, DMethod, DOwner, DPlace, DPlatform, DTag } from '../dbModels';
+import { NType } from '../base';
+import { AssetCommon, AssetMeta, DbBase } from '../common';
+import { DAssetOwnership } from '../dbModels';
 
-export interface MAsset extends DbBase {
-  brand: NType<Omit<DBrand, 'comment'>>;
-  category: NType<Omit<DCategory, 'comment'>>;
-  comment: NString;
-  endDate: NType<Date>;
-  endForex: NType<Pick<DForex, 'rate' | 'targetCurrency'>>;
-  endMethod: NType<Pick<DMethod, 'name' | 'id'>>;
-  endPlatform: NType<Omit<DPlatform, 'comment'>>;
-  endPrice: NType<Price>;
-  isCensored: boolean;
+export interface MAsset extends DbBase, AssetCommon {
   meta: NType<AssetMeta>;
-  name: Name;
-  owner: NType<Omit<DOwner, 'comment'>>;
-  place: NType<Omit<DPlace, 'comment'>>;
-  startDate: NType<Date>;
-  startForex: NType<Pick<DForex, 'rate' | 'targetCurrency'>>;
-  startMethod: NType<Pick<DMethod, 'name' | 'id'>>;
-  startPlatform: NType<Pick<DPlatform, 'name' | 'id'>>;
-  startPrice: NType<Price>;
-  tags: Omit<DTag, 'comment'>[];
 }
 
 export interface MAssetOwnership extends DAssetOwnership {}

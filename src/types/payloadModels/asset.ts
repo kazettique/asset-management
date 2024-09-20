@@ -8,8 +8,8 @@ import { VAsset } from '../viewModels';
 import { PFindPagination } from './common';
 
 export interface PAsset {
-  brandId: NType<Id>;
-  categoryId: NType<Id>;
+  brandId: Id;
+  categoryId: Id;
   comment: NString;
   endCurrency: NString;
   endDate: NType<Date>;
@@ -19,8 +19,8 @@ export interface PAsset {
   isCensored: boolean;
   meta: AssetMeta;
   name: Name;
-  ownerId: NType<Id>;
-  placeId: NType<Id>;
+  ownerId: Id;
+  placeId: Id;
   startCurrency: NString;
   startDate: NType<Date>;
   startMethodId: NType<Id>;

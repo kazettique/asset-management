@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { CommonConstant } from '@/constant';
 import {
+  AssetCommon,
   AssetMeta,
   CurrencyForex,
   DbBase,
@@ -14,6 +15,8 @@ import {
   Price,
   SettingBase,
 } from '@/types';
+
+import { ForexValidator } from './forex';
 
 export abstract class CommonValidator {
   public static readonly IdValidator: z.ZodSchema<Id> = z.string().uuid();
@@ -54,4 +57,35 @@ export abstract class CommonValidator {
   public static readonly AssetMetaValidator: z.ZodSchema<AssetMeta> = z
     .object({ key: z.string(), value: z.string().or(z.number()) })
     .array();
+
+  public static readonly AssetCommonValidator: z.ZodSchema<AssetCommon> = z.object({
+    brand: z.object({ id: CommonValidator.IdValidator, name: z.string() }),
+    category: z.object({ id: CommonValidator.IdValidator, name: z.string() }),
+    comment: z.string().nullable(),
+    endDate: z.date().nullable(),
+    endForex: z
+      .object({
+        rate: CommonValidator.CurrencyForexValidator,
+        targetCurrency: z.string().length(3),
+      })
+      .nullable(),
+    endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+    endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+    endPrice: CommonValidator.PriceValidator.nullable(),
+    isCensored: z.boolean(),
+    name: CommonValidator.NameValidator,
+    owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }),
+    place: z.object({ id: CommonValidator.IdValidator, name: z.string() }),
+    startDate: z.date().nullable(),
+    startForex: z
+      .object({
+        rate: CommonValidator.CurrencyForexValidator,
+        targetCurrency: z.string().length(3),
+      })
+      .nullable(),
+    startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+    startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
+    startPrice: CommonValidator.PriceValidator.nullable(),
+    tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
+  });
 }

@@ -9,12 +9,16 @@ import {
   PAssetFind,
 } from '@/types';
 
+import { BrandConstant } from './brand';
+import { CategoryConstant } from './category';
 import { CommonConstant } from './common';
+import { OwnerConstant } from './owner';
+import { PlaceConstant } from './place';
 
 export abstract class AssetConstant {
   public static readonly F_ASSET_INITIAL_VALUES: FAsset = {
-    brandId: null,
-    categoryId: null,
+    brandId: BrandConstant.DEFAULT_BRAND_OPTION,
+    categoryId: CategoryConstant.DEFAULT_CATEGORY_OPTION,
     comment: '',
     endCurrency: null,
     endDate: null,
@@ -24,8 +28,8 @@ export abstract class AssetConstant {
     isCensored: false,
     meta: [],
     name: CommonConstant.DEFAULT_NAME,
-    ownerId: null,
-    placeId: null,
+    ownerId: OwnerConstant.DEFAULT_OWNER_OPTION,
+    placeId: PlaceConstant.DEFAULT_PLACE_OPTION,
     startCurrency: null,
     startDate: dayjs().toDate(),
     startMethodId: null,
@@ -35,16 +39,16 @@ export abstract class AssetConstant {
   };
 
   public static readonly F_ASSET_IMPORT_INITIAL_VALUES: FAssetImport = {
-    brandId: null,
-    categoryId: null,
+    brandId: BrandConstant.DEFAULT_BRAND_OPTION,
+    categoryId: CategoryConstant.DEFAULT_CATEGORY_OPTION,
     endCurrency: null,
     endMethodId: null,
     endPlatformId: null,
     isCensored: false,
     isLegalFileData: null,
     meta: [],
-    ownerId: null,
-    placeId: null,
+    ownerId: OwnerConstant.DEFAULT_OWNER_OPTION,
+    placeId: PlaceConstant.DEFAULT_PLACE_OPTION,
     startCurrency: null,
     startMethodId: null,
     startPlatformId: null,

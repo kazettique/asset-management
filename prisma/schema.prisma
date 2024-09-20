@@ -17,17 +17,17 @@ model Asset {
   id String @id @default(uuid())
 
   // information
-  name       String    @db.TinyText
-  isCensored Boolean   @default(false)
+  name       String   @db.TinyText
+  isCensored Boolean  @default(false)
   meta       Json?
-  brandId    String?
-  brand      Brand?    @relation(fields: [brandId], references: [id])
-  ownerId    String?
-  owner      Owner?    @relation(fields: [ownerId], references: [id])
-  categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id])
-  placeId    String?
-  place      Place?    @relation(fields: [placeId], references: [id])
+  brandId    String
+  brand      Brand    @relation(fields: [brandId], references: [id])
+  ownerId    String
+  owner      Owner    @relation(fields: [ownerId], references: [id])
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  placeId    String
+  place      Place    @relation(fields: [placeId], references: [id])
   tags       Tag[]
 
   // lifespan

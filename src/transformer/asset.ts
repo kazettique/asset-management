@@ -2,7 +2,14 @@ import dayjs, { Dayjs } from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import { AssetConstant, CommonConstant } from '@/constant';
+import {
+  AssetConstant,
+  BrandConstant,
+  CategoryConstant,
+  CommonConstant,
+  OwnerConstant,
+  PlaceConstant,
+} from '@/constant';
 import {
   AssetLifeStatus,
   DAsset,
@@ -88,8 +95,8 @@ export abstract class AssetTransformer {
     }
 
     return {
-      brandId: findBrand || null,
-      categoryId: findCategory || null,
+      brandId: findBrand || BrandConstant.DEFAULT_BRAND_OPTION,
+      categoryId: findCategory || CategoryConstant.DEFAULT_CATEGORY_OPTION,
       comment: src.comment ?? '',
       endCurrency: findEndCurrency ?? null,
       endDate: src.endDate,
@@ -99,8 +106,8 @@ export abstract class AssetTransformer {
       isCensored: src.isCensored,
       meta: src.meta,
       name: src.name,
-      ownerId: findOwner || null,
-      placeId: findPlace || null,
+      ownerId: findOwner || OwnerConstant.DEFAULT_OWNER_OPTION,
+      placeId: findPlace || PlaceConstant.DEFAULT_PLACE_OPTION,
       startCurrency: findStartCurrency ?? null,
       startDate: src.startDate,
       startMethodId: findStartMethod || null,
@@ -117,15 +124,15 @@ export abstract class AssetTransformer {
 
     return {
       ...src,
-      brandId: convertEmptyStringToNull(src.brandId),
-      categoryId: convertEmptyStringToNull(src.categoryId),
+      brandId: src.brandId.value,
+      categoryId: src.categoryId.value,
       endCurrency: src.endCurrency !== null ? src.endCurrency.value : null,
       endMethodId: convertEmptyStringToNull(src.endMethodId),
       endPlatformId: convertEmptyStringToNull(src.endPlatformId),
       endPrice: src.endPrice.length > 0 ? Number(src.endPrice) : null,
       meta: src.meta ?? [],
-      ownerId: convertEmptyStringToNull(src.ownerId),
-      placeId: convertEmptyStringToNull(src.placeId),
+      ownerId: src.ownerId.value,
+      placeId: src.placeId.value,
       startCurrency: src.startCurrency !== null ? src.startCurrency.value : null,
       startMethodId: convertEmptyStringToNull(src.startMethodId),
       startPlatformId: convertEmptyStringToNull(src.startPlatformId),

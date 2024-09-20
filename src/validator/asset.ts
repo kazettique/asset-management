@@ -27,68 +27,24 @@ import { ForexValidator } from './forex';
 export abstract class AssetValidator {
   public static readonly DAssetValidator: z.ZodSchema<DAsset> = z
     .object({
-      brand: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      comment: z.string().nullable(),
-      endDate: z.date().nullable(),
-      endForex: ForexValidator.DForexValidator.nullable(),
-      endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      endPrice: CommonValidator.PriceValidator.nullable(),
-      isCensored: z.boolean(),
       meta: z.record(z.string(), z.any()).nullable(),
-      name: CommonValidator.NameValidator,
-      owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startDate: z.date().nullable(),
-      startForex: ForexValidator.DForexValidator.nullable(),
-      startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startPrice: CommonValidator.PriceValidator.nullable(),
-      tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
-    .and(CommonValidator.DbBaseValidator);
+    .and(CommonValidator.DbBaseValidator)
+    .and(CommonValidator.AssetCommonValidator);
 
   public static readonly MAssetValidator: z.ZodSchema<MAsset> = z
     .object({
-      brand: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      category: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      comment: z.string().nullable(),
-      endDate: z.date().nullable(),
-      endForex: z
-        .object({
-          rate: CommonValidator.CurrencyForexValidator,
-          targetCurrency: z.string().length(3),
-        })
-        .nullable(),
-      endMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      endPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      endPrice: CommonValidator.PriceValidator.nullable(),
-      isCensored: z.boolean(),
       meta: CommonValidator.AssetMetaValidator.nullable(),
-      name: CommonValidator.NameValidator,
-      owner: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      place: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startDate: z.date().nullable(),
-      startForex: z
-        .object({
-          rate: CommonValidator.CurrencyForexValidator,
-          targetCurrency: z.string().length(3),
-        })
-        .nullable(),
-      startMethod: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
-      startPrice: CommonValidator.PriceValidator.nullable(),
-      tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
     })
-    .and(CommonValidator.DbBaseValidator);
+    .and(CommonValidator.DbBaseValidator)
+    .and(CommonValidator.AssetCommonValidator);
 
   public static readonly VAssetValidator: z.ZodSchema<VAsset> = this.MAssetValidator;
 
   public static readonly PAssetValidator: z.ZodSchema<PAsset> = z
     .object({
-      brandId: CommonValidator.IdValidator.nullable(),
-      categoryId: CommonValidator.IdValidator.nullable(),
+      brandId: CommonValidator.IdValidator,
+      categoryId: CommonValidator.IdValidator,
       comment: z.string().nullable(),
       endCurrency: z.string().nullable(),
       endDate: z.coerce.date().nullable(),
@@ -98,8 +54,8 @@ export abstract class AssetValidator {
       isCensored: z.boolean(),
       meta: CommonValidator.AssetMetaValidator,
       name: CommonValidator.NameValidator,
-      ownerId: CommonValidator.IdValidator.nullable(),
-      placeId: CommonValidator.IdValidator.nullable(),
+      ownerId: CommonValidator.IdValidator,
+      placeId: CommonValidator.IdValidator,
       startCurrency: z.string().nullable(),
       startDate: z.coerce.date().nullable(),
       startMethodId: CommonValidator.IdValidator.nullable(),
@@ -127,8 +83,8 @@ export abstract class AssetValidator {
 
   public static readonly FAssetValidator: z.ZodSchema<FAsset> = z
     .object({
-      brandId: CommonValidator.FormOptionValidator.nullable(),
-      categoryId: CommonValidator.FormOptionValidator.nullable(),
+      brandId: CommonValidator.FormOptionValidator,
+      categoryId: CommonValidator.FormOptionValidator,
       comment: z.string(),
       endCurrency: CommonValidator.FormOptionValidator.nullable(),
       endDate: z.date().nullable(),
@@ -138,8 +94,8 @@ export abstract class AssetValidator {
       isCensored: z.boolean(),
       meta: CommonValidator.AssetMetaValidator,
       name: CommonValidator.NameValidator,
-      ownerId: CommonValidator.FormOptionValidator.nullable(),
-      placeId: CommonValidator.FormOptionValidator.nullable(),
+      ownerId: CommonValidator.FormOptionValidator,
+      placeId: CommonValidator.FormOptionValidator,
       startCurrency: CommonValidator.FormOptionValidator.nullable(),
       startDate: z.date().nullable(),
       startMethodId: CommonValidator.FormOptionValidator.nullable(),
@@ -181,16 +137,16 @@ export abstract class AssetValidator {
   });
 
   public static readonly FAssetImportValidator: z.ZodSchema<FAssetImport> = z.object({
-    brandId: CommonValidator.FormOptionValidator.nullable(),
-    categoryId: CommonValidator.FormOptionValidator.nullable(),
+    brandId: CommonValidator.FormOptionValidator,
+    categoryId: CommonValidator.FormOptionValidator,
     endCurrency: CommonValidator.FormOptionValidator.nullable(),
     endMethodId: CommonValidator.FormOptionValidator.nullable(),
     endPlatformId: CommonValidator.FormOptionValidator.nullable(),
     isCensored: z.boolean(),
     isLegalFileData: z.literal<boolean>(true),
     meta: CommonValidator.AssetMetaValidator,
-    ownerId: CommonValidator.FormOptionValidator.nullable(),
-    placeId: CommonValidator.FormOptionValidator.nullable(),
+    ownerId: CommonValidator.FormOptionValidator,
+    placeId: CommonValidator.FormOptionValidator,
     startCurrency: CommonValidator.FormOptionValidator.nullable(),
     startMethodId: CommonValidator.FormOptionValidator.nullable(),
     startPlatformId: CommonValidator.FormOptionValidator.nullable(),
