@@ -54,7 +54,8 @@ model Asset {
   updatedAt DateTime @updatedAt
   comment   String?  @db.VarChar(1000)
 
-  PriceHistory PriceHistory[]
+  PriceHistory     PriceHistory[]
+  OwnershipHistory OwnershipHistory[]
 }
 
 model Brand {
@@ -156,6 +157,8 @@ model Tag {
 model OwnershipHistory {
   id String @id @default(uuid())
 
+  assetId   String
+  asset     Asset    @relation(fields: [assetId], references: [id])
   ownerId   String
   owner     Owner    @relation(fields: [ownerId], references: [id])
   startDate DateTime
