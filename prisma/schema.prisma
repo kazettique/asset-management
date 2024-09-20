@@ -156,7 +156,8 @@ model Tag {
 model OwnershipHistory {
   id String @id @default(uuid())
 
-  ownerId   Owner    @relation(fields: [id], references: [id])
+  ownerId   String
+  owner     Owner    @relation(fields: [ownerId], references: [id])
   startDate DateTime
 
   createdAt DateTime @default(now())
