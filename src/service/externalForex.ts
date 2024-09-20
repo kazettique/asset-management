@@ -5,6 +5,7 @@ import { CommonConstant } from '@/constant';
 import { ExternalForexTransformer } from '@/transformer';
 import { MExternalForex, NType, VExternalForex } from '@/types';
 import { Utils } from '@/utils';
+import { ExternalForexValidator, ForexValidator } from '@/validator';
 
 export abstract class ExternalForexService {
   public static async Find(
@@ -29,8 +30,14 @@ export abstract class ExternalForexService {
 
     const data = (await res.json()) as MExternalForex;
 
-    const transformedData = ExternalForexTransformer.MVExternalForexTransformer(data);
+    const validation = ExternalForexValidator.MExternalForexValidator.safeParse(data);
 
-    return transformedData;
+    if (!validation.success) {
+      return null;
+    } else {
+      const transformedData = ExternalForexTransformer.MVExternalForexTransformer(validation.data);
+
+      return transformedData;
+    }
   }
 }

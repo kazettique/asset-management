@@ -1,6 +1,7 @@
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
 import dayjs from 'dayjs';
 
+import { CommonConstant } from '@/constant';
 import { ForexRepository } from '@/repository';
 import { Id, MForex, NType, Price } from '@/types';
 
@@ -44,11 +45,11 @@ export abstract class ForexService {
   }> {
     let startForexId: NType<Id> = null;
     let endForexId: NType<Id> = null;
-    let startPriceInBaseCurrency: NType<Price> = null;
-    let endPriceInBaseCurrency: NType<Price> = null;
+    let startPriceInBaseCurrency: NType<Price> = startPrice;
+    let endPriceInBaseCurrency: NType<Price> = endPrice;
 
     // start
-    if (startCurrency && startDate && startPrice) {
+    if (startCurrency && startDate && startPrice && startCurrency !== CommonConstant.BASE_CURRENCY) {
       // step 1: check if forex existed in database
       const findForexData = await this.Find(startDate, startCurrency);
 
@@ -75,7 +76,7 @@ export abstract class ForexService {
     }
 
     // end
-    if (endCurrency && endDate && endPrice) {
+    if (endCurrency && endDate && endPrice && endCurrency !== CommonConstant.BASE_CURRENCY) {
       // step 1: check if forex existed in database
       const findForexData = await this.Find(endDate, endCurrency);
 

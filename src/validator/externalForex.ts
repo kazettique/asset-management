@@ -15,7 +15,7 @@ export abstract class ExternalForexValidator {
         rate_for_amount: z.string(),
       }),
     ),
-    status: z.string(),
+    status: z.union([z.literal('success'), z.literal('fail')]),
     updated_date: z.string(),
   });
 
