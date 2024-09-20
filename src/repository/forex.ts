@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
-import { db } from '@/lib/db';
+import { prisma } from '@/lib/db';
 import { ForexTransformer } from '@/transformer';
 import { DForex, Id, MForex, NType } from '@/types';
 
@@ -15,7 +15,7 @@ const queryObj: Prisma.ForexSelect = {
 
 export abstract class ForexRepository {
   public static async FindAll(): Promise<MForex[]> {
-    const rawData: DForex[] = await db.forex.findMany({
+    const rawData: DForex[] = await prisma.forex.findMany({
       select: queryObj,
     });
 
@@ -27,7 +27,7 @@ export abstract class ForexRepository {
   // TODO: add find many later (with pagination)
 
   public static async Find(date: Date, targetCurrency: CurrencyCode): Promise<NType<MForex>> {
-    const rawData: NType<DForex> = await db.forex.findFirst({
+    const rawData: NType<DForex> = await prisma.forex.findFirst({
       select: queryObj,
       where: {
         date: {
@@ -47,7 +47,7 @@ export abstract class ForexRepository {
   }
 
   public static async Create(date: Date, targetCurrency: string, rate: number): Promise<MForex> {
-    const rawData = await db.forex.create({
+    const rawData = await prisma.forex.create({
       data: { date: dayjs(date).startOf('date').toDate(), rate, targetCurrency },
       select: queryObj,
     });
@@ -56,7 +56,7 @@ export abstract class ForexRepository {
   }
 
   public static async Delete(id: Id): Promise<MForex> {
-    const rawData = await db.forex.delete({
+    const rawData = await prisma.forex.delete({
       select: queryObj,
       where: { id },
     });
@@ -65,7 +65,7 @@ export abstract class ForexRepository {
   }
 
   public static async Update(id: MForex['id'], date: Date, targetCurrency: string, rate: number): Promise<MForex> {
-    const rawData = await db.forex.update({
+    const rawData = await prisma.forex.update({
       data: { date, rate, targetCurrency },
       select: queryObj,
       where: { id },

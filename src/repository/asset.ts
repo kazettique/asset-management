@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import dayjs from 'dayjs';
 
 import { CommonConstant } from '@/constant';
-import { db } from '@/lib/db';
+import { prisma } from '@/lib/db';
 import { AssetTransformer, DashboardTransformer } from '@/transformer';
 import {
   AssetLifeStatus,
@@ -65,7 +65,7 @@ const queryObj: Prisma.AssetSelect = {
 
 export abstract class AssetRepository {
   public static async FindAll(): Promise<MAsset[]> {
-    const rawData: DAsset[] = await db.asset.findMany({
+    const rawData: DAsset[] = await prisma.asset.findMany({
       select: queryObj,
     });
 
@@ -134,9 +134,9 @@ export abstract class AssetRepository {
       sortObj.unshift({ [sort.key]: sort.order });
     }
 
-    const raw = await db.$transaction([
-      db.asset.count({ where: filterObj }),
-      db.asset.findMany({
+    const raw = await prisma.$transaction([
+      prisma.asset.count({ where: filterObj }),
+      prisma.asset.findMany({
         orderBy: sortObj,
         select: queryObj,
         skip: skipCount,
@@ -154,7 +154,7 @@ export abstract class AssetRepository {
   }
 
   public static async Find(id: Id): Promise<NType<MAsset>> {
-    const rawData: NType<DAsset> = await db.asset.findUnique({
+    const rawData: NType<DAsset> = await prisma.asset.findUnique({
       select: queryObj,
       where: { id },
     });
@@ -167,7 +167,7 @@ export abstract class AssetRepository {
   }
 
   public static async FindOwnership(id: Id): Promise<NType<MAssetOwnership>> {
-    const rawData: NType<DAssetOwnership> = await db.asset.findUnique({
+    const rawData: NType<DAssetOwnership> = await prisma.asset.findUnique({
       select: { id: true, ownerId: true },
       where: { id },
     });
@@ -180,8 +180,8 @@ export abstract class AssetRepository {
   }
 
   public static async Create(
-    brandId: NType<Id>,
-    categoryId: NType<Id>,
+    brandId: Id,
+    categoryId: Id,
     comment: NString,
     endDate: NType<Date>,
     endForexId: NType<Id>,
@@ -191,8 +191,8 @@ export abstract class AssetRepository {
     isCensored: boolean,
     meta: AssetMeta,
     name: Name,
-    ownerId: NType<Id>,
-    placeId: NType<Id>,
+    ownerId: Id,
+    placeId: Id,
     startDate: NType<Date>,
     startForexId: NType<Id>,
     startMethodId: NType<Id>,
@@ -203,7 +203,7 @@ export abstract class AssetRepository {
       create: { name: string }[];
     },
   ): Promise<MAsset> {
-    const rawData = await db.asset.create({
+    const rawData = await prisma.asset.create({
       data: {
         brandId,
         categoryId,
@@ -232,11 +232,11 @@ export abstract class AssetRepository {
   }
 
   public static async Delete(id: Id): Promise<MAsset> {
-    const transaction = await db.$transaction([
-      db.ownershipHistory.deleteMany({
+    const transaction = await prisma.$transaction([
+      prisma.ownershipHistory.deleteMany({
         where: { assetId: id },
       }),
-      db.asset.delete({
+      prisma.asset.delete({
         select: queryObj,
         where: { id },
       }),
@@ -247,8 +247,8 @@ export abstract class AssetRepository {
 
   public static async Update(
     id: MAsset['id'],
-    brandId: NType<Id>,
-    categoryId: NType<Id>,
+    brandId: Id,
+    categoryId: Id,
     comment: NString,
     endDate: NType<Date>,
     endForexId: NType<Id>,
@@ -258,8 +258,8 @@ export abstract class AssetRepository {
     isCensored: boolean,
     meta: AssetMeta,
     name: Name,
-    ownerId: NType<Id>,
-    placeId: NType<Id>,
+    ownerId: Id,
+    placeId: Id,
     startDate: NType<Date>,
     startForexId: NType<Id>,
     startMethodId: NType<Id>,
@@ -270,7 +270,7 @@ export abstract class AssetRepository {
       create: { name: string }[];
     },
   ): Promise<MAsset> {
-    const rawData = await db.asset.update({
+    const rawData = await prisma.asset.update({
       data: {
         brandId,
         categoryId,
@@ -300,7 +300,7 @@ export abstract class AssetRepository {
   }
 
   public static async FindAggregate(): Promise<MDashboardAggregate> {
-    const general = await db.asset.aggregate({
+    const general = await prisma.asset.aggregate({
       _avg: { endPrice: true, startPrice: true },
       _max: { endPrice: true, startPrice: true },
       _sum: { endPrice: true, startPrice: true },
@@ -320,19 +320,16 @@ export abstract class AssetRepository {
     //   where: { endCurrency: { not: null } },
     // });
 
-    const category = await db.asset.groupBy({
+    const category = await prisma.asset.groupBy({
       _avg: { endPrice: true, startPrice: true },
       _count: { categoryId: true },
       _max: { endPrice: true, startPrice: true },
       _sum: { endPrice: true, startPrice: true },
       by: ['categoryId'],
       orderBy: { categoryId: 'desc' },
-      where: {
-        categoryId: { not: null },
-      },
     });
 
-    const ranking = await db.asset.findMany({
+    const ranking = await prisma.asset.findMany({
       orderBy: { startPrice: 'desc' },
       select: {
         category: { select: { name: true } },
@@ -354,7 +351,7 @@ export abstract class AssetRepository {
   }
 
   public static async TimeLineData() {
-    const calendar = await db.asset.findMany({
+    const calendar = await prisma.asset.findMany({
       select: {
         endDate: true,
         endPrice: true,

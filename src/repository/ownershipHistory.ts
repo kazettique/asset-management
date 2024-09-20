@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-import { db } from '@/lib/db';
+import { prisma } from '@/lib/db';
 import { OwnershipHistoryTransformer } from '@/transformer';
 import { DOwnershipHistory, Id, MOwnershipHistory } from '@/types';
 
@@ -15,7 +15,7 @@ const queryObj: Prisma.OwnershipHistorySelect = {
 
 export abstract class OwnershipHistoryRepository {
   public static async FindAll(): Promise<MOwnershipHistory[]> {
-    const rawData: DOwnershipHistory[] = await db.ownershipHistory.findMany({
+    const rawData: DOwnershipHistory[] = await prisma.ownershipHistory.findMany({
       select: queryObj,
     });
 
@@ -32,7 +32,7 @@ export abstract class OwnershipHistoryRepository {
 
     const sortObj: Prisma.OwnershipHistoryOrderByWithRelationInput[] = [{ startDate: Prisma.SortOrder.asc }];
 
-    const rawData: DOwnershipHistory[] = await db.ownershipHistory.findMany({
+    const rawData: DOwnershipHistory[] = await prisma.ownershipHistory.findMany({
       orderBy: sortObj,
       select: queryObj,
       where: filterObj,
@@ -44,7 +44,7 @@ export abstract class OwnershipHistoryRepository {
   }
 
   public static async Create(assetId: Id, ownerId: Id, startDate: Date): Promise<MOwnershipHistory> {
-    const rawData = await db.ownershipHistory.create({
+    const rawData = await prisma.ownershipHistory.create({
       data: { assetId, ownerId, startDate },
       select: queryObj,
     });

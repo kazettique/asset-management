@@ -1,6 +1,6 @@
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
-import { AssetRepository, OwnershipHistoryRepository } from '@/repository';
+import { AssetRepository } from '@/repository';
 import {
   AssetMeta,
   DTag,
@@ -36,8 +36,8 @@ export abstract class AssetService {
   }
 
   public static async Create(
-    brandId: NType<Id>,
-    categoryId: NType<Id>,
+    brandId: Id,
+    categoryId: Id,
     comment: NString,
     endCurrency: NType<CurrencyCode>,
     endDate: NType<Date>,
@@ -47,8 +47,8 @@ export abstract class AssetService {
     isCensored: boolean,
     meta: AssetMeta,
     name: Name,
-    ownerId: NType<Id>,
-    placeId: NType<Id>,
+    ownerId: Id,
+    placeId: Id,
     startCurrency: NType<CurrencyCode>,
     startDate: NType<Date>,
     startMethodId: NType<Id>,
@@ -101,8 +101,8 @@ export abstract class AssetService {
 
   public static async Update(
     id: MAsset['id'],
-    brandId: NType<Id>,
-    categoryId: NType<Id>,
+    brandId: Id,
+    categoryId: Id,
     comment: NString,
     endCurrency: NType<CurrencyCode>,
     endDate: NType<Date>,
@@ -112,8 +112,8 @@ export abstract class AssetService {
     isCensored: boolean,
     meta: AssetMeta,
     name: Name,
-    ownerId: NType<Id>,
-    placeId: NType<Id>,
+    ownerId: Id,
+    placeId: Id,
     startCurrency: NType<CurrencyCode>,
     startDate: NType<Date>,
     startMethodId: NType<Id>,

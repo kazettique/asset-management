@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { prisma } from '@/lib/db';
 import { TagTransformer } from '@/transformer';
 import { DTag, Id, MTag, NString, NType } from '@/types';
 
@@ -10,7 +10,7 @@ const queryObj = {
 
 export abstract class TagRepository {
   public static async FindAll(): Promise<MTag[]> {
-    const rawData: DTag[] = await db.tag.findMany({
+    const rawData: DTag[] = await prisma.tag.findMany({
       select: queryObj,
     });
 
@@ -20,7 +20,7 @@ export abstract class TagRepository {
   }
 
   public static async Find(id: Id): Promise<NType<MTag>> {
-    const rawData: NType<DTag> = await db.tag.findUnique({
+    const rawData: NType<DTag> = await prisma.tag.findUnique({
       select: queryObj,
       where: { id },
     });
@@ -33,7 +33,7 @@ export abstract class TagRepository {
   }
 
   public static async Create(name: string, comment: NString): Promise<MTag> {
-    const rawData = await db.tag.create({
+    const rawData = await prisma.tag.create({
       data: { comment, name },
       select: queryObj,
     });
@@ -42,7 +42,7 @@ export abstract class TagRepository {
   }
 
   public static async Delete(id: Id): Promise<MTag> {
-    const rawData = await db.tag.delete({
+    const rawData = await prisma.tag.delete({
       select: queryObj,
       where: { id },
     });
@@ -51,7 +51,7 @@ export abstract class TagRepository {
   }
 
   public static async Update(id: MTag['id'], name: string, comment: NString): Promise<MTag> {
-    const rawData = await db.tag.update({
+    const rawData = await prisma.tag.update({
       data: { comment, name },
       select: queryObj,
       where: { id },

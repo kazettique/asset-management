@@ -1,10 +1,11 @@
-import { MethodType } from '@prisma/client';
+import { MethodType, Prisma } from '@prisma/client';
 
-import { db } from '@/lib/db';
+import { MethodConstant } from '@/constant';
+import { prisma } from '@/lib/db';
 import { MethodTransformer } from '@/transformer';
-import { DMethod, Id, MMethod, NString, NType, PMethod } from '@/types';
+import { DMethod, Id, MMethod, NString, NType } from '@/types';
 
-const queryObj = {
+const queryObj: Prisma.MethodSelect = {
   comment: true,
   id: true,
   name: true,
@@ -13,7 +14,7 @@ const queryObj = {
 
 export abstract class MethodRepository {
   public static async FindAll(): Promise<MMethod[]> {
-    const rawData: DMethod[] = await db.method.findMany({
+    const rawData: DMethod[] = await prisma.method.findMany({
       select: queryObj,
     });
 
@@ -23,7 +24,7 @@ export abstract class MethodRepository {
   }
 
   public static async Find(id: Id): Promise<NType<MMethod>> {
-    const rawData: NType<DMethod> = await db.method.findUnique({
+    const rawData: NType<DMethod> = await prisma.method.findUnique({
       select: queryObj,
       where: { id },
     });
@@ -36,7 +37,7 @@ export abstract class MethodRepository {
   }
 
   public static async Create(name: string, type: MethodType, comment: NString): Promise<MMethod> {
-    const rawData = await db.method.create({
+    const rawData = await prisma.method.create({
       data: { comment, name, type },
       select: queryObj,
     });
@@ -45,16 +46,28 @@ export abstract class MethodRepository {
   }
 
   public static async Delete(id: Id): Promise<MMethod> {
-    const rawData = await db.method.delete({
-      select: queryObj,
-      where: { id },
-    });
+    const transaction = await prisma.$transaction([
+      prisma.asset.updateMany({
+        data: {
+          endMethodId: MethodConstant.DEFAULT_METHOD.id,
+          startMethodId: MethodConstant.DEFAULT_METHOD.id,
+        },
+        where: {
+          endMethodId: { equals: id },
+          startMethodId: { equals: id },
+        },
+      }),
+      prisma.method.delete({
+        select: queryObj,
+        where: { id },
+      }),
+    ]);
 
-    return MethodTransformer.DMMethodTransformer(rawData);
+    return MethodTransformer.DMMethodTransformer(transaction[1]);
   }
 
   public static async Update(id: MMethod['id'], name: string, type: MethodType, comment: NString): Promise<MMethod> {
-    const rawData = await db.method.update({
+    const rawData = await prisma.method.update({
       data: { comment, name, type },
       select: queryObj,
       where: { id },

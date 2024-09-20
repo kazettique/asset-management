@@ -1,8 +1,11 @@
-import { db } from '@/lib/db';
-import { CategoryTransformer } from '@/transformer';
-import { DCategory, Id, MCategory, NString, NType, PCategory } from '@/types';
+import { Prisma } from '@prisma/client';
 
-const queryObj = {
+import { CategoryConstant } from '@/constant';
+import { prisma } from '@/lib/db';
+import { CategoryTransformer } from '@/transformer';
+import { DCategory, Id, MCategory, NString, NType } from '@/types';
+
+const queryObj: Prisma.CategorySelect = {
   comment: true,
   id: true,
   name: true,
@@ -10,11 +13,9 @@ const queryObj = {
 
 export abstract class CategoryRepository {
   public static async FindAll(): Promise<MCategory[]> {
-    const rawData: DCategory[] = await db.category.findMany({
+    const rawData: DCategory[] = await prisma.category.findMany({
       select: queryObj,
     });
-
-    // console.log('rawData', rawData);
 
     const parsedData = rawData.map((category) => CategoryTransformer.DMCategoryTransformer(category));
 
@@ -22,7 +23,7 @@ export abstract class CategoryRepository {
   }
 
   public static async Find(id: Id): Promise<NType<MCategory>> {
-    const rawData: NType<DCategory> = await db.category.findUnique({
+    const rawData: NType<DCategory> = await prisma.category.findUnique({
       select: queryObj,
       where: { id },
     });
@@ -35,7 +36,7 @@ export abstract class CategoryRepository {
   }
 
   public static async Create(name: string, comment: NString): Promise<MCategory> {
-    const rawData = await db.category.create({
+    const rawData = await prisma.category.create({
       data: { comment, name },
       select: queryObj,
     });
@@ -44,16 +45,26 @@ export abstract class CategoryRepository {
   }
 
   public static async Delete(id: Id): Promise<MCategory> {
-    const rawData = await db.category.delete({
-      select: queryObj,
-      where: { id },
-    });
+    const transaction = await prisma.$transaction([
+      prisma.asset.updateMany({
+        data: {
+          categoryId: CategoryConstant.DEFAULT_CATEGORY.id,
+        },
+        where: {
+          categoryId: { equals: id },
+        },
+      }),
+      prisma.category.delete({
+        select: queryObj,
+        where: { id },
+      }),
+    ]);
 
-    return CategoryTransformer.DMCategoryTransformer(rawData);
+    return CategoryTransformer.DMCategoryTransformer(transaction[1]);
   }
 
   public static async Update(id: MCategory['id'], name: string, comment: NString): Promise<MCategory> {
-    const rawData = await db.category.update({
+    const rawData = await prisma.category.update({
       data: { comment, name },
       select: queryObj,
       where: { id },
