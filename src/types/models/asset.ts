@@ -1,7 +1,6 @@
 import { Name, NString, NType, Price } from '../base';
 import { AssetMeta, DbBase } from '../common';
-import { DBrand, DCategory, DForex, DMethod, DOwner, DPlace, DPlatform, DTag } from '../dbModels';
-import { MForex } from './forex';
+import { DAssetOwnership, DBrand, DCategory, DForex, DMethod, DOwner, DPlace, DPlatform, DTag } from '../dbModels';
 
 export interface MAsset extends DbBase {
   brand: NType<Omit<DBrand, 'comment'>>;
@@ -24,3 +23,5 @@ export interface MAsset extends DbBase {
   startPrice: NType<Price>;
   tags: Omit<DTag, 'comment'>[];
 }
+
+export interface MAssetOwnership extends DAssetOwnership {}

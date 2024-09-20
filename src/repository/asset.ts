@@ -8,10 +8,12 @@ import {
   AssetLifeStatus,
   AssetMeta,
   DAsset,
+  DAssetOwnership,
   DDashboardAggregate,
   DTag,
   Id,
   MAsset,
+  MAssetOwnership,
   MDashboardAggregate,
   Name,
   NString,
@@ -161,6 +163,19 @@ export abstract class AssetRepository {
       return rawData;
     } else {
       return AssetTransformer.DMAssetTransformer(rawData);
+    }
+  }
+
+  public static async FindOwnership(id: Id): Promise<NType<MAssetOwnership>> {
+    const rawData: NType<DAssetOwnership> = await db.asset.findUnique({
+      select: { id: true, ownerId: true },
+      where: { id },
+    });
+
+    if (rawData === null) {
+      return rawData;
+    } else {
+      return AssetTransformer.DMAssetOwnershipTransformer(rawData);
     }
   }
 

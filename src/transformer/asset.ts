@@ -6,6 +6,7 @@ import { AssetConstant, CommonConstant } from '@/constant';
 import {
   AssetLifeStatus,
   DAsset,
+  DAssetOwnership,
   FAsset,
   FAssetFindPrimaryFilter,
   FAssetFindSecondaryFilter,
@@ -13,6 +14,7 @@ import {
   FormOption,
   FSettingOptions,
   MAsset,
+  MAssetOwnership,
   NNumber,
   NString,
   NType,
@@ -347,5 +349,9 @@ export abstract class AssetTransformer {
         src.startPriceRange[1].length > 0 ? Number(src.startPriceRange[1]) : null,
       ],
     };
+  }
+
+  public static DMAssetOwnershipTransformer(src: DAssetOwnership): MAssetOwnership {
+    return src;
   }
 }

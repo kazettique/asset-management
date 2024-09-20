@@ -1,9 +1,22 @@
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
-import { AssetRepository } from '@/repository';
-import { AssetMeta, DTag, Id, MAsset, Name, NString, NType, PaginationBase, PAssetFind, Price } from '@/types';
+import { AssetRepository, OwnershipHistoryRepository } from '@/repository';
+import {
+  AssetMeta,
+  DTag,
+  Id,
+  MAsset,
+  MAssetOwnership,
+  Name,
+  NString,
+  NType,
+  PaginationBase,
+  PAssetFind,
+  Price,
+} from '@/types';
 
 import { ForexService } from './forex';
+import { OwnershipHistoryService } from './ownershipHistory';
 
 export abstract class AssetService {
   public static async FindAll(): Promise<MAsset[]> {
@@ -16,6 +29,10 @@ export abstract class AssetService {
 
   public static async Find(id: Id): Promise<NType<MAsset>> {
     return await AssetRepository.Find(id);
+  }
+
+  public static async FindOwnership(id: Id): Promise<NType<MAssetOwnership>> {
+    return await AssetRepository.FindOwnership(id);
   }
 
   public static async Create(
@@ -48,7 +65,7 @@ export abstract class AssetService {
       endPrice,
     );
 
-    return await AssetRepository.Create(
+    const createResponse = await AssetRepository.Create(
       brandId,
       categoryId,
       comment,
@@ -69,6 +86,13 @@ export abstract class AssetService {
       startPriceInBaseCurrency,
       tags,
     );
+
+    if (createResponse.owner && createResponse.startDate) {
+      const { id, owner, startDate } = createResponse;
+      await OwnershipHistoryService.Create(id, owner.id, startDate);
+    }
+
+    return createResponse;
   }
 
   public static async Delete(id: Id): Promise<MAsset> {
@@ -108,6 +132,14 @@ export abstract class AssetService {
       endDate,
       endPrice,
     );
+
+    const prevOwnerId = await this.FindOwnership(id);
+
+    const isSameOwner: boolean = prevOwnerId?.ownerId === ownerId;
+
+    if (ownerId && startDate && !isSameOwner) {
+      await OwnershipHistoryService.Create(id, ownerId, startDate);
+    }
 
     return await AssetRepository.Update(
       id,

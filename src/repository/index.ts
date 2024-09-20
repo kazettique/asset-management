@@ -4,6 +4,7 @@ export * from './category';
 export * from './forex';
 export * from './method';
 export * from './owner';
+export * from './ownershipHistory';
 export * from './place';
 export * from './platform';
 export * from './tag';

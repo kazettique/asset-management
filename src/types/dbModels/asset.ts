@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
-import { CurrencyForex, Name, NString, NType, Price } from '../base';
+import { CurrencyForex, Id, Name, NString, NType, Price } from '../base';
 import { DbBase } from '../common';
 import { DBrand } from './brand';
 import { DCategory } from './category';
@@ -32,4 +32,8 @@ export interface DAsset extends DbBase {
   startPlatform: NType<Pick<DPlatform, 'name' | 'id'>>;
   startPrice: NType<Price>;
   tags: Omit<DTag, 'comment'>[];
+}
+
+export interface DAssetOwnership extends DbBase {
+  ownerId: NType<Id>;
 }
