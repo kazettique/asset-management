@@ -232,12 +232,17 @@ export abstract class AssetRepository {
   }
 
   public static async Delete(id: Id): Promise<MAsset> {
-    const rawData = await db.asset.delete({
-      select: queryObj,
-      where: { id },
-    });
+    const transaction = await db.$transaction([
+      db.ownershipHistory.deleteMany({
+        where: { assetId: id },
+      }),
+      db.asset.delete({
+        select: queryObj,
+        where: { id },
+      }),
+    ]);
 
-    return AssetTransformer.DMAssetTransformer(rawData);
+    return AssetTransformer.DMAssetTransformer(transaction[1]);
   }
 
   public static async Update(

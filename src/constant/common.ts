@@ -2,7 +2,7 @@ import { MethodType } from '@prisma/client';
 import currencyCodes from 'currency-codes-ts';
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
-import { FormOption, MenuItem, Name } from '@/types';
+import { FormOption, MenuItem, Name, SettingBase } from '@/types';
 
 export abstract class CommonConstant {
   public static readonly MSG_DIRTY_DATA: string = 'dirty data';
@@ -24,6 +24,11 @@ export abstract class CommonConstant {
   public static readonly DEFAULT_PAGE: number = 1;
 
   public static readonly BASE_CURRENCY: CurrencyCode = 'USD';
+
+  public static readonly DEFAULT_SETTING_BASE: SettingBase = {
+    comment: 'auto created',
+    name: 'Default',
+  };
 
   public static readonly DEFAULT_SELECT_OPTION: FormOption = {
     label: 'Please choose',

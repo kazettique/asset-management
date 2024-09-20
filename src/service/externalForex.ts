@@ -12,7 +12,7 @@ export abstract class ExternalForexService {
     date: Dayjs = dayjs(),
     fromCurrency: CurrencyCode = 'USD',
   ): Promise<NType<VExternalForex>> {
-    const parsedDate = Utils.GetDateTimeString(date, 'YYYY-MM-DD');
+    const parsedDate = Utils.GetDateTimeString(date);
 
     const res = await fetch(
       CommonConstant.EXTERNAL_FOREX_API_ROUTE +
