@@ -6,6 +6,12 @@ import { CommonValidator } from './common';
 
 export abstract class DashboardValidator {
   public static readonly DDashboardAggregateValidator: z.ZodSchema<DDashboardAggregate> = z.object({
+    allCategories: z
+      .object({
+        id: CommonValidator.IdValidator,
+        name: CommonValidator.NameValidator,
+      })
+      .array(),
     category: z
       .object({
         _avg: z.object({
@@ -61,6 +67,7 @@ export abstract class DashboardValidator {
           startPrice: CommonValidator.PriceValidator.nullable(),
         }),
         categoryId: CommonValidator.IdValidator,
+        categoryName: CommonValidator.NameValidator,
         count: z.object({
           categoryId: z.number().nullable(),
         }),

@@ -1,4 +1,4 @@
-import { Id, NNumber, NString, NType } from '../base';
+import { Id, Name, NNumber, NString, NType } from '../base';
 
 // export interface DDashboard {
 //   calendar: {};
@@ -27,6 +27,7 @@ export interface MDashboardRank {
 export interface MDashboardCategory {
   avg: { endPrice: NNumber; startPrice: NNumber };
   categoryId: Id;
+  categoryName: Name;
   count: { categoryId: NNumber };
   max: { endPrice: NNumber; startPrice: NNumber };
   sum: { endPrice: NNumber; startPrice: NNumber };

@@ -1,6 +1,7 @@
-import { Id, NNumber, NType } from '../base';
+import { Id, Name, NNumber, NType } from '../base';
 
 export interface DDashboardAggregate {
+  allCategories: { id: Id; name: Name }[];
   category: {
     _avg: { endPrice: NNumber; startPrice: NNumber };
     _count: { categoryId: NNumber };

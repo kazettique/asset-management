@@ -21,6 +21,8 @@ export abstract class DashboardTransformer {
       category: src.category.map((item) => ({
         avg: item._avg,
         categoryId: item.categoryId,
+        categoryName:
+          src.allCategories.find((_item) => _item.id === item.categoryId)?.name || CommonConstant.DEFAULT_EMPTY_STRING,
         count: item._count,
         max: item._max,
         sum: item._sum,
@@ -73,56 +75,56 @@ export abstract class DashboardTransformer {
         avgEndPrice: [
           ...acc.avgEndPrice,
           {
-            id: curr.categoryId || '',
-            label: curr.categoryId || '',
+            id: curr.categoryName,
+            label: curr.categoryName,
             value: curr.avg.endPrice ? Math.round(curr.avg.endPrice) : 0,
           },
         ],
         avgStartPrice: [
           ...acc.avgStartPrice,
           {
-            id: curr.categoryId || '',
-            label: curr.categoryId || '',
+            id: curr.categoryName,
+            label: curr.categoryName,
             value: curr.avg.startPrice ? Math.round(curr.avg.startPrice) : 0,
           },
         ],
         count: [
           ...acc.count,
           {
-            id: curr.categoryId || '',
-            label: curr.categoryId || '',
+            id: curr.categoryName,
+            label: curr.categoryName,
             value: curr.count.categoryId || 0,
           },
         ],
         maxEndPrice: [
           ...acc.maxEndPrice,
           {
-            id: curr.categoryId || '',
-            label: curr.categoryId || '',
+            id: curr.categoryName,
+            label: curr.categoryName,
             value: curr.max.endPrice ? Math.round(curr.max.endPrice) : 0,
           },
         ],
         maxStartPrice: [
           ...acc.maxStartPrice,
           {
-            id: curr.categoryId || '',
-            label: curr.categoryId || '',
+            id: curr.categoryName,
+            label: curr.categoryName,
             value: curr.max.startPrice ? Math.round(curr.max.startPrice) : 0,
           },
         ],
         sumEndPrice: [
           ...acc.sumEndPrice,
           {
-            id: curr.categoryId || '',
-            label: curr.categoryId || '',
+            id: curr.categoryName,
+            label: curr.categoryName,
             value: curr.sum.endPrice ? Math.round(curr.sum.endPrice) : 0,
           },
         ],
         sumStartPrice: [
           ...acc.sumStartPrice,
           {
-            id: curr.categoryId || '',
-            label: curr.categoryId || '',
+            id: curr.categoryName,
+            label: curr.categoryName,
             value: curr.sum.startPrice ? Math.round(curr.sum.startPrice) : 0,
           },
         ],

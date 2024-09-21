@@ -6,6 +6,7 @@ import BasicCalendar from '@/components/BasicCalendar';
 import Table, { ColumnProps } from '@/components/Table';
 import { VDashboardRankTable } from '@/types';
 
+import DashboardPieChart from './DashboardPieChart';
 import GeneralItem from './GeneralItem';
 import Section from './Section';
 import useDashboardData from './useDashboardData';
@@ -31,59 +32,49 @@ export default function Page() {
 
   return (
     <div>
-      <div className="h-full w-full relative overflow-y-auto">
-        <main>
-          <div className="pt-6 px-4">
-            <div className="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-              {/* <Section title="Today's Digest">hello digest</Section> */}
+      <div className="h-full w-full relative overflow-y-auto py-6 px-4">
+        <div className="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+          <Section title="Today's Digest">hello digest</Section>
 
-              <Section title="this month's digest">
-                <BasicCalendar />
-              </Section>
+          <Section title="this month's digest">
+            <BasicCalendar />
+          </Section>
 
-              <Section title="general statistics">
-                <div className="grid grid-cols-3 gap-4">
-                  <GeneralItem value={generalData.sum.startPrice} title="total cost" />
-                  <GeneralItem value={generalData.avg.startPrice} title="average buy price" />
-                  <GeneralItem value={generalData.max.startPrice} title="highest buy" />
-                  <GeneralItem value={generalData.sum.endPrice} title="total profit" />
-                  <GeneralItem value={generalData.avg.endPrice} title="average sell price" />
-                  <GeneralItem value={generalData.max.endPrice} title="highest sell" />
-                  <GeneralItem value={liveCount} title="live count" />
-                  <GeneralItem value={deadCount} title="dead count" />
-                </div>
-              </Section>
-
-              <Section title="category statistics">
-                <div className="w-full grid grid-cols-3">
-                  <div className="p-4 max-w-[200px] max-h-[200px]">
-                    <ResponsivePie
-                      data={categoryChartData.avgStartPrice}
-                      innerRadius={0.6}
-                      padAngle={0.5}
-                      cornerRadius={5}
-                    />
-                  </div>
-                  <div className="p-4 w-[200px] h-[200px]">
-                    <ResponsivePie data={categoryChartData.count} innerRadius={0.6} padAngle={0.5} cornerRadius={5} />
-                  </div>
-                  <div className="p-4 max-w-[200px] max-h-[200px]">
-                    <ResponsivePie
-                      data={categoryChartData.sumStartPrice}
-                      innerRadius={0.6}
-                      padAngle={0.5}
-                      cornerRadius={5}
-                    />
-                  </div>
-                </div>
-              </Section>
-
-              <Section title="price ranking">
-                <Table data={priceRankingList} columns={columns} hasNumber />
-              </Section>
+          <Section title="general statistics">
+            <div className="grid grid-cols-3 gap-4">
+              <GeneralItem value={generalData.sum.startPrice} title="total cost" />
+              <GeneralItem value={generalData.avg.startPrice} title="average buy price" />
+              <GeneralItem value={generalData.max.startPrice} title="highest buy" />
+              <GeneralItem value={generalData.sum.endPrice} title="total profit" />
+              <GeneralItem value={generalData.avg.endPrice} title="average sell price" />
+              <GeneralItem value={generalData.max.endPrice} title="highest sell" />
+              <GeneralItem value={liveCount} title="live count" />
+              <GeneralItem value={deadCount} title="dead count" />
             </div>
+          </Section>
 
-            <div className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <Section title="category statistics">
+            <div className="w-full grid grid-cols-3">
+              <DashboardPieChart
+                className="min-h-[200px]"
+                title="average buy price"
+                data={categoryChartData.avgStartPrice}
+              />
+              <DashboardPieChart
+                className="min-h-[200px]"
+                title="total buy price"
+                data={categoryChartData.sumStartPrice}
+              />
+              <DashboardPieChart className="min-h-[200px]" title="buy count" data={categoryChartData.count} />
+            </div>
+          </Section>
+
+          <Section title="price ranking">
+            <Table data={priceRankingList} columns={columns} hasNumber />
+          </Section>
+        </div>
+
+        {/* <div className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
@@ -138,8 +129,9 @@ export default function Page() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
+            </div> */}
+
+        {/* <div className="grid grid-cols-1 2xl:grid-cols-2 xl:gap-4 my-4">
               <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold leading-none text-gray-900">Latest Customers</h3>
@@ -403,9 +395,7 @@ export default function Page() {
                   </table>
                 </div>
               </div>
-            </div>
-          </div>
-        </main>
+            </div> */}
       </div>
     </div>
   );

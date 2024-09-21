@@ -24,6 +24,8 @@ import {
 } from '@/types';
 import { Utils } from '@/utils';
 
+import { CategoryRepository } from './category';
+
 const queryObj: Prisma.AssetSelect = {
   brand: {
     select: { id: true, name: true },
@@ -359,9 +361,13 @@ export abstract class AssetRepository {
       }),
       prisma.asset.count({ where: liveQueryObj }),
       prisma.asset.count({ where: deadQueryObj }),
+      prisma.category.findMany({
+        select: { id: true, name: true },
+      }),
     ]);
 
     const rawData: DDashboardAggregate = {
+      allCategories: transaction[4],
       category,
       deadCount: transaction[3],
       general: transaction[0],
