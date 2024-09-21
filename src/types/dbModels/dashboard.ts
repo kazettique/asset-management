@@ -6,13 +6,15 @@ export interface DDashboardAggregate {
     _count: { categoryId: NNumber };
     _max: { endPrice: NNumber; startPrice: NNumber };
     _sum: { endPrice: NNumber; startPrice: NNumber };
-    categoryId: NType<Id>;
+    categoryId: Id;
   }[];
+  deadCount: number;
   general: {
     _avg: { endPrice: NNumber; startPrice: NNumber };
     _max: { endPrice: NNumber; startPrice: NNumber };
     _sum: { endPrice: NNumber; startPrice: NNumber };
   };
+  liveCount: number;
   ranking: {
     category: { name: string };
     name: string;

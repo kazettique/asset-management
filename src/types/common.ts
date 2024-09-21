@@ -60,3 +60,9 @@ export interface AssetCommon {
   startPrice: NType<Price>;
   tags: Omit<DTag, 'comment'>[];
 }
+
+export interface ChartDatum {
+  id: string;
+  label: string;
+  value: string | number;
+}

@@ -6,12 +6,13 @@ import BasicCalendar from '@/components/BasicCalendar';
 import Table, { ColumnProps } from '@/components/Table';
 import { VDashboardRankTable } from '@/types';
 
+import GeneralItem from './GeneralItem';
 import Section from './Section';
 import useDashboardData from './useDashboardData';
 
 // ref: https://www.creative-tim.com/twcomponents/component/tailwind-css-admin-dashboard-layout
 export default function Page() {
-  const { pieChartData, priceRankingList } = useDashboardData();
+  const { categoryChartData, priceRankingList, generalData, liveCount, deadCount } = useDashboardData();
 
   const columns: ColumnProps<VDashboardRankTable>[] = [
     { key: 'name', title: 'name' },
@@ -41,33 +42,39 @@ export default function Page() {
               </Section>
 
               <Section title="general statistics">
-                {/* {data && (
-                  <div>
-                    <div>avg start price: ${data.data.general.avg.startPrice}</div>
-                    <div>sum start price: ${data.data.general.sum.startPrice}</div>
-                    <div>max start price: ${data.data.general.max.startPrice}</div>
-                  </div>
-                )} */}
+                <div className="grid grid-cols-3 gap-4">
+                  <GeneralItem value={generalData.sum.startPrice} title="total cost" />
+                  <GeneralItem value={generalData.avg.startPrice} title="average buy price" />
+                  <GeneralItem value={generalData.max.startPrice} title="highest buy" />
+                  <GeneralItem value={generalData.sum.endPrice} title="total profit" />
+                  <GeneralItem value={generalData.avg.endPrice} title="average sell price" />
+                  <GeneralItem value={generalData.max.endPrice} title="highest sell" />
+                  <GeneralItem value={liveCount} title="live count" />
+                  <GeneralItem value={deadCount} title="dead count" />
+                </div>
               </Section>
 
-              <Section title="chart">
-                <div className="p-4 h-[500px] w-full">
-                  <ResponsivePie
-                    animate
-                    activeOuterRadiusOffset={8}
-                    data={pieChartData}
-                    innerRadius={0.6}
-                    padAngle={0.5}
-                    cornerRadius={5}
-                    arcLinkLabelsColor={{
-                      from: 'color',
-                    }}
-                    arcLinkLabelsThickness={3}
-                    arcLinkLabelsTextColor={{
-                      from: 'color',
-                      modifiers: [['darker', 1.2]],
-                    }}
-                  />
+              <Section title="category statistics">
+                <div className="w-full grid grid-cols-3">
+                  <div className="p-4 max-w-[200px] max-h-[200px]">
+                    <ResponsivePie
+                      data={categoryChartData.avgStartPrice}
+                      innerRadius={0.6}
+                      padAngle={0.5}
+                      cornerRadius={5}
+                    />
+                  </div>
+                  <div className="p-4 w-[200px] h-[200px]">
+                    <ResponsivePie data={categoryChartData.count} innerRadius={0.6} padAngle={0.5} cornerRadius={5} />
+                  </div>
+                  <div className="p-4 max-w-[200px] max-h-[200px]">
+                    <ResponsivePie
+                      data={categoryChartData.sumStartPrice}
+                      innerRadius={0.6}
+                      padAngle={0.5}
+                      cornerRadius={5}
+                    />
+                  </div>
                 </div>
               </Section>
 
@@ -75,6 +82,7 @@ export default function Page() {
                 <Table data={priceRankingList} columns={columns} hasNumber />
               </Section>
             </div>
+
             <div className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
                 <div className="flex items-center">

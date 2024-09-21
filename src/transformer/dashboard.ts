@@ -1,8 +1,14 @@
 import { CommonConstant } from '@/constant';
+import { DashboardConstant } from '@/constant/dashboard';
 import {
   DDashboardAggregate,
   MDashboardAggregate,
+  NNumber,
   VDashboardAggregate,
+  VDashboardCategory,
+  VDashboardCategoryChart,
+  VDashboardGeneral,
+  VDashboardGeneralDisplay,
   VDashboardRank,
   VDashboardRankTable,
 } from '@/types';
@@ -19,11 +25,13 @@ export abstract class DashboardTransformer {
         max: item._max,
         sum: item._sum,
       })),
+      deadCount: src.deadCount,
       general: {
         avg: src.general._avg,
         max: src.general._max,
         sum: src.general._sum,
       },
+      liveCount: src.liveCount,
       ranking: src.ranking.map((item) => ({
         categoryName: item.category.name,
         name: item.name,
@@ -55,6 +63,90 @@ export abstract class DashboardTransformer {
       name: src.name,
       startDate: src.startDate ? Utils.GetDateTimeString(src.startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
       startPrice,
+    };
+  }
+
+  // view model -> chart model
+  public static VCDashboardCategoryTransformer(src: VDashboardCategory[]): VDashboardCategoryChart {
+    return src.reduce<VDashboardCategoryChart>((acc, curr, index, arr) => {
+      return {
+        avgEndPrice: [
+          ...acc.avgEndPrice,
+          {
+            id: curr.categoryId || '',
+            label: curr.categoryId || '',
+            value: curr.avg.endPrice ? Math.round(curr.avg.endPrice) : 0,
+          },
+        ],
+        avgStartPrice: [
+          ...acc.avgStartPrice,
+          {
+            id: curr.categoryId || '',
+            label: curr.categoryId || '',
+            value: curr.avg.startPrice ? Math.round(curr.avg.startPrice) : 0,
+          },
+        ],
+        count: [
+          ...acc.count,
+          {
+            id: curr.categoryId || '',
+            label: curr.categoryId || '',
+            value: curr.count.categoryId || 0,
+          },
+        ],
+        maxEndPrice: [
+          ...acc.maxEndPrice,
+          {
+            id: curr.categoryId || '',
+            label: curr.categoryId || '',
+            value: curr.max.endPrice ? Math.round(curr.max.endPrice) : 0,
+          },
+        ],
+        maxStartPrice: [
+          ...acc.maxStartPrice,
+          {
+            id: curr.categoryId || '',
+            label: curr.categoryId || '',
+            value: curr.max.startPrice ? Math.round(curr.max.startPrice) : 0,
+          },
+        ],
+        sumEndPrice: [
+          ...acc.sumEndPrice,
+          {
+            id: curr.categoryId || '',
+            label: curr.categoryId || '',
+            value: curr.sum.endPrice ? Math.round(curr.sum.endPrice) : 0,
+          },
+        ],
+        sumStartPrice: [
+          ...acc.sumStartPrice,
+          {
+            id: curr.categoryId || '',
+            label: curr.categoryId || '',
+            value: curr.sum.startPrice ? Math.round(curr.sum.startPrice) : 0,
+          },
+        ],
+      };
+    }, DashboardConstant.DEFAULT_DASHBOARD_CATEGORY_CHART);
+  }
+
+  public static VDashboardGeneralDisplayTransformer(src: VDashboardGeneral): VDashboardGeneralDisplay {
+    const transformPrice = (price: NNumber) =>
+      '$' + (price ? Utils.NumberWithCommas(Math.round(price)) : CommonConstant.DEFAULT_EMPTY_STRING);
+
+    return {
+      avg: {
+        endPrice: transformPrice(src.avg.endPrice),
+        startPrice: transformPrice(src.avg.startPrice),
+      },
+      max: {
+        endPrice: transformPrice(src.max.endPrice),
+        startPrice: transformPrice(src.max.startPrice),
+      },
+      sum: {
+        endPrice: transformPrice(src.sum.endPrice),
+        startPrice: transformPrice(src.sum.startPrice),
+      },
     };
   }
 }

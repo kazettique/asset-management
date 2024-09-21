@@ -23,9 +23,10 @@ export abstract class DashboardValidator {
           endPrice: CommonValidator.PriceValidator.nullable(),
           startPrice: CommonValidator.PriceValidator.nullable(),
         }),
-        categoryId: CommonValidator.IdValidator.nullable(),
+        categoryId: CommonValidator.IdValidator,
       })
       .array(),
+    deadCount: z.number(),
     general: z.object({
       _avg: z.object({
         endPrice: CommonValidator.PriceValidator.nullable(),
@@ -40,6 +41,7 @@ export abstract class DashboardValidator {
         startPrice: CommonValidator.PriceValidator.nullable(),
       }),
     }),
+    liveCount: z.number(),
     ranking: z
       .object({
         category: z.object({ name: z.string() }),
@@ -58,7 +60,7 @@ export abstract class DashboardValidator {
           endPrice: CommonValidator.PriceValidator.nullable(),
           startPrice: CommonValidator.PriceValidator.nullable(),
         }),
-        categoryId: CommonValidator.IdValidator.nullable(),
+        categoryId: CommonValidator.IdValidator,
         count: z.object({
           categoryId: z.number().nullable(),
         }),
@@ -72,6 +74,7 @@ export abstract class DashboardValidator {
         }),
       })
       .array(),
+    deadCount: z.number(),
     general: z.object({
       avg: z.object({
         endPrice: CommonValidator.PriceValidator.nullable(),
@@ -86,6 +89,7 @@ export abstract class DashboardValidator {
         startPrice: CommonValidator.PriceValidator.nullable(),
       }),
     }),
+    liveCount: z.number(),
     ranking: z
       .object({
         categoryName: z.string(),

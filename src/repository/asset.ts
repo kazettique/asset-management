@@ -300,25 +300,27 @@ export abstract class AssetRepository {
   }
 
   public static async FindAggregate(): Promise<MDashboardAggregate> {
-    const general = await prisma.asset.aggregate({
-      _avg: { endPrice: true, startPrice: true },
-      _max: { endPrice: true, startPrice: true },
-      _sum: { endPrice: true, startPrice: true },
-    });
+    const liveQueryObj: Prisma.AssetWhereInput = {
+      OR: [
+        {
+          endDate: { equals: null },
+        },
+        {
+          endDate: { gte: dayjs().toDate() },
+        },
+      ],
+    };
 
-    // const startCurrency = await db.asset.groupBy({
-    //   _count: { startForexId: true },
-    //   by: ['startCurrency'],
-    //   orderBy: { startCurrency: 'desc' },
-    //   where: { startCurrency: { not: null } },
-    // });
-
-    // const endCurrency = await db.asset.groupBy({
-    //   _count: { endCurrency: true },
-    //   by: ['endCurrency'],
-    //   orderBy: { endCurrency: 'desc' },
-    //   where: { endCurrency: { not: null } },
-    // });
+    const deadQueryObj: Prisma.AssetWhereInput = {
+      AND: [
+        {
+          endDate: { not: { equals: null } },
+        },
+        {
+          endDate: { lte: dayjs().toDate() },
+        },
+      ],
+    };
 
     const category = await prisma.asset.groupBy({
       _avg: { endPrice: true, startPrice: true },
@@ -329,22 +331,42 @@ export abstract class AssetRepository {
       orderBy: { categoryId: 'desc' },
     });
 
-    const ranking = await prisma.asset.findMany({
-      orderBy: { startPrice: 'desc' },
-      select: {
-        category: { select: { name: true } },
-        name: true,
-        startDate: true,
-        startForex: { select: { rate: true, targetCurrency: true } },
-        startPrice: true,
-      },
-      take: 10,
-    });
+    const transaction = await prisma.$transaction([
+      prisma.asset.aggregate({
+        _avg: { endPrice: true, startPrice: true },
+        _max: { endPrice: true, startPrice: true },
+        _sum: { endPrice: true, startPrice: true },
+      }),
+      // TODO: strange type
+      // prisma.asset.groupBy({
+      //   _avg: { endPrice: true, startPrice: true },
+      //   _count: { categoryId: true },
+      //   _max: { endPrice: true, startPrice: true },
+      //   _sum: { endPrice: true, startPrice: true },
+      //   by: ['categoryId'],
+      //   orderBy: { categoryId: 'desc' },
+      // }),
+      prisma.asset.findMany({
+        orderBy: { startPrice: 'desc' },
+        select: {
+          category: { select: { name: true } },
+          name: true,
+          startDate: true,
+          startForex: { select: { rate: true, targetCurrency: true } },
+          startPrice: true,
+        },
+        take: 10,
+      }),
+      prisma.asset.count({ where: liveQueryObj }),
+      prisma.asset.count({ where: deadQueryObj }),
+    ]);
 
     const rawData: DDashboardAggregate = {
       category,
-      general,
-      ranking,
+      deadCount: transaction[3],
+      general: transaction[0],
+      liveCount: transaction[2],
+      ranking: transaction[1],
     };
 
     return DashboardTransformer.DMDashboardAggregateTransformer(rawData);

@@ -24,18 +24,24 @@ export interface MDashboardRank {
   startPrice: NNumber;
 }
 
+export interface MDashboardCategory {
+  avg: { endPrice: NNumber; startPrice: NNumber };
+  categoryId: Id;
+  count: { categoryId: NNumber };
+  max: { endPrice: NNumber; startPrice: NNumber };
+  sum: { endPrice: NNumber; startPrice: NNumber };
+}
+
+export interface MDashboardGeneral {
+  avg: { endPrice: NNumber; startPrice: NNumber };
+  max: { endPrice: NNumber; startPrice: NNumber };
+  sum: { endPrice: NNumber; startPrice: NNumber };
+}
+
 export interface MDashboardAggregate {
-  category: {
-    avg: { endPrice: NNumber; startPrice: NNumber };
-    categoryId: NType<Id>;
-    count: { categoryId: NNumber };
-    max: { endPrice: NNumber; startPrice: NNumber };
-    sum: { endPrice: NNumber; startPrice: NNumber };
-  }[];
-  general: {
-    avg: { endPrice: NNumber; startPrice: NNumber };
-    max: { endPrice: NNumber; startPrice: NNumber };
-    sum: { endPrice: NNumber; startPrice: NNumber };
-  };
+  category: MDashboardCategory[];
+  deadCount: number;
+  general: MDashboardGeneral;
+  liveCount: number;
   ranking: MDashboardRank[];
 }
