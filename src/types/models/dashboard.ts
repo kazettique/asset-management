@@ -16,44 +16,26 @@ import { Id, NNumber, NString, NType } from '../base';
 //   };
 // }
 
+export interface MDashboardRank {
+  categoryName: string;
+  name: string;
+  startDate: NType<Date>;
+  startForex: NType<{ rate: number; targetCurrency: string }>;
+  startPrice: NNumber;
+}
+
 export interface MDashboardAggregate {
   category: {
-    avg: {
-      endPrice: NNumber;
-      startPrice: NNumber;
-    };
+    avg: { endPrice: NNumber; startPrice: NNumber };
     categoryId: NType<Id>;
-    count: {
-      categoryId: NNumber;
-    };
-    max: {
-      endPrice: NNumber;
-      startPrice: NNumber;
-    };
-    sum: {
-      endPrice: NNumber;
-      startPrice: NNumber;
-    };
+    count: { categoryId: NNumber };
+    max: { endPrice: NNumber; startPrice: NNumber };
+    sum: { endPrice: NNumber; startPrice: NNumber };
   }[];
   general: {
-    avg: {
-      endPrice: NNumber;
-      startPrice: NNumber;
-    };
-    max: {
-      endPrice: NNumber;
-      startPrice: NNumber;
-    };
-    sum: {
-      endPrice: NNumber;
-      startPrice: NNumber;
-    };
+    avg: { endPrice: NNumber; startPrice: NNumber };
+    max: { endPrice: NNumber; startPrice: NNumber };
+    sum: { endPrice: NNumber; startPrice: NNumber };
   };
-  ranking: {
-    categoryName: NString;
-    name: string;
-    startDate: NType<Date>;
-    startForex: NType<{ rate: number; targetCurrency: string }>;
-    startPrice: NNumber;
-  }[];
+  ranking: MDashboardRank[];
 }

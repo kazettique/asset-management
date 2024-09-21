@@ -1,13 +1,12 @@
 'use client';
 
-import { backendImplements } from '@/decorator';
-import { FBrand, GeneralResponse, Id, MBrand, VBrand } from '@/types';
+import { GeneralResponse, VDashboardAggregate } from '@/types';
 
 export abstract class DashboardFetcher {
-  public static async FindAggregate(): Promise<GeneralResponse<VBrand[]>> {
+  public static async FindAggregate(): Promise<GeneralResponse<VDashboardAggregate>> {
     const res = await fetch('/api/dashboard');
 
-    const data = (await res.json()) as GeneralResponse<VBrand[]>;
+    const data = (await res.json()) as GeneralResponse<VDashboardAggregate>;
 
     return data;
   }

@@ -13,6 +13,7 @@ type Props<T> = {
   className?: string;
   columns: Array<ColumnProps<T>>;
   data?: T[];
+  hasNumber?: boolean;
   isLoading?: boolean;
 };
 
@@ -20,7 +21,7 @@ type Props<T> = {
 // ref: https://www.bekk.christmas/post/2020/22/create-a-generic-table-with-react-and-typescript
 // ref: https://www.creative-tim.com/twcomponents/component/table-with-filter-and-search
 export default function Table<T>(props: Props<T>) {
-  const { data, columns, className, isLoading = false } = props;
+  const { data, columns, className, isLoading = false, hasNumber = true } = props;
 
   const headers = columns.map((column, index) => {
     return (
@@ -50,13 +51,14 @@ export default function Table<T>(props: Props<T>) {
           key={`row-${index}`}
           className="text-gray-700 dark:text-gray-200 even:bg-gray-100 dark:even:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
         >
+          {hasNumber && <td className="text-sm whitespace-nowrap text-left p-3.5">{index + 1}</td>}
           {columns.map((column, index2) => {
             const value = column.render
               ? column.render(column, row as T)
               : (row[column.key as keyof typeof row] as string);
 
             return (
-              <td key={`cell-${index2}`} className="p-2 text-sm whitespace-nowrap">
+              <td key={`cell-${index2}`} className="p-3.5 text-sm whitespace-nowrap">
                 {value}
               </td>
             );
@@ -67,10 +69,20 @@ export default function Table<T>(props: Props<T>) {
   );
 
   return (
-    <div className={`overflow-auto border border-gray-200 dark:border-gray-700 md:rounded-lg relative ${className}`}>
+    <div className={`${className}`}>
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0 shadow">
-          <tr>{headers}</tr>
+          <tr>
+            {hasNumber && (
+              <th
+                scope="col"
+                className="capitalize p-3.5 text-sm font-normal text-left text-gray-500 dark:text-gray-400"
+              >
+                #
+              </th>
+            )}
+            {headers}
+          </tr>
         </thead>
 
         <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">{rows}</tbody>

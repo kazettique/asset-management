@@ -2,7 +2,6 @@
 
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import Pagination from '@/components/Pagination';
 import Table, { ColumnProps } from '@/components/Table';
 import { CommonConstant } from '@/constant';
@@ -232,7 +231,12 @@ export default function Page() {
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
-        <Table data={tableData} columns={columns} className="h-full" isLoading={assetIsPending} />
+        <Table
+          data={tableData}
+          columns={columns}
+          className="h-full overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
+          isLoading={assetIsPending}
+        />
         {assetData && state.context.searchPayload.page && (
           <Pagination
             page={state.context.searchPayload.page}

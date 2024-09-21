@@ -101,7 +101,15 @@ export default function Page() {
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
-        {!data ? <LoadingSpinner className="h-full" /> : <Table data={tableData} columns={columns} />}
+        {!data ? (
+          <LoadingSpinner className="h-full" />
+        ) : (
+          <Table
+            className="overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
+            data={tableData}
+            columns={columns}
+          />
+        )}
       </div>
 
       <MethodModifier

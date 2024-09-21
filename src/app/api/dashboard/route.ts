@@ -3,10 +3,10 @@ import { NextResponse } from 'next/server';
 import { CommonConstant } from '@/constant/common';
 import { DashboardService } from '@/service';
 import { CommonTransformer, DashboardTransformer } from '@/transformer';
-import { HttpStatusCode } from '@/types';
+import { HttpStatusCode, VDashboardAggregate } from '@/types';
 import { DashboardValidator } from '@/validator';
 
-export async function GET(_request: Request): Promise<Response | NextResponse<any>> {
+export async function GET(_request: Request): Promise<Response | NextResponse<VDashboardAggregate>> {
   const rawData = await DashboardService.FindAggregate();
 
   const transformedData = DashboardTransformer.MVDashboardAggregateTransformer(rawData);

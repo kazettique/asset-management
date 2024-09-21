@@ -26,12 +26,6 @@ export abstract class DashboardValidator {
         categoryId: CommonValidator.IdValidator.nullable(),
       })
       .array(),
-    endCurrency: z
-      .object({
-        _count: z.object({ endCurrency: z.number().nullable() }),
-        endCurrency: z.string().nullable(),
-      })
-      .array(),
     general: z.object({
       _avg: z.object({
         endPrice: CommonValidator.PriceValidator.nullable(),
@@ -48,17 +42,11 @@ export abstract class DashboardValidator {
     }),
     ranking: z
       .object({
-        category: z.object({ name: z.string() }).nullable(),
+        category: z.object({ name: z.string() }),
         name: z.string(),
-        startCurrency: z.string().nullable(),
         startDate: z.date().nullable(),
+        startForex: z.object({ rate: z.number().positive(), targetCurrency: z.string().length(3) }).nullable(),
         startPrice: CommonValidator.PriceValidator.nullable(),
-      })
-      .array(),
-    startCurrency: z
-      .object({
-        _count: z.object({ startCurrency: z.number().nullable() }),
-        startCurrency: z.string().nullable(),
       })
       .array(),
   });
@@ -84,12 +72,6 @@ export abstract class DashboardValidator {
         }),
       })
       .array(),
-    endCurrency: z
-      .object({
-        assetCount: z.number().nullable(),
-        currencyName: z.string().nullable(),
-      })
-      .array(),
     general: z.object({
       avg: z.object({
         endPrice: CommonValidator.PriceValidator.nullable(),
@@ -106,17 +88,11 @@ export abstract class DashboardValidator {
     }),
     ranking: z
       .object({
-        categoryName: z.string().nullable(),
+        categoryName: z.string(),
         name: z.string(),
-        startCurrency: z.string().nullable(),
         startDate: z.date().nullable(),
+        startForex: z.object({ rate: z.number().positive(), targetCurrency: z.string().length(3) }).nullable(),
         startPrice: CommonValidator.PriceValidator.nullable(),
-      })
-      .array(),
-    startCurrency: z
-      .object({
-        assetCount: z.number().nullable(),
-        currencyName: z.string().nullable(),
       })
       .array(),
   });

@@ -1,107 +1,78 @@
-// `app/dashboard/page.tsx` is the UI for the `/dashboard` URL
+'use client';
 
-import dayjs from 'dayjs';
+import { ResponsivePie } from '@nivo/pie';
 
 import BasicCalendar from '@/components/BasicCalendar';
-import BasicMiniCalendar from '@/components/BasicMiniCalendar';
+import Table, { ColumnProps } from '@/components/Table';
+import { VDashboardRankTable } from '@/types';
 
 import Section from './Section';
+import useDashboardData from './useDashboardData';
 
 // ref: https://www.creative-tim.com/twcomponents/component/tailwind-css-admin-dashboard-layout
 export default function Page() {
+  const { pieChartData, priceRankingList } = useDashboardData();
+
+  const columns: ColumnProps<VDashboardRankTable>[] = [
+    { key: 'name', title: 'name' },
+    { key: 'categoryName', title: 'category' },
+    {
+      key: 'startDate',
+      render: (column, item) => <div>{item.startDate}</div>,
+      title: 'date',
+    },
+    {
+      key: 'startPrice',
+      render: (column, item) => <div>{item.startPrice}</div>,
+      title: 'price',
+    },
+  ];
+
   return (
     <div>
       <div className="h-full w-full relative overflow-y-auto">
         <main>
           <div className="pt-6 px-4">
             <div className="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+              {/* <Section title="Today's Digest">hello digest</Section> */}
+
               <Section title="this month's digest">
                 <BasicCalendar />
               </Section>
-              <Section title="Latest Transactions" subscription="This is a list of latest transactions">
-                <div className="flex flex-col mt-8">
-                  <div className="overflow-x-auto rounded-lg">
-                    <div className="align-middle inline-block min-w-full">
-                      <div className="shadow overflow-hidden sm:rounded-lg">
-                        <table className="min-w-full divide-y divide-gray-200">
-                          <thead className="bg-gray-50">
-                            <tr>
-                              <th
-                                scope="col"
-                                className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Transaction
-                              </th>
-                              <th
-                                scope="col"
-                                className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Date & Time
-                              </th>
-                              <th
-                                scope="col"
-                                className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Amount
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="bg-white">
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment from <span className="font-semibold">Bonnie Green</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">Apr 23 ,2021</td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">$2300</td>
-                            </tr>
-                            <tr className="bg-gray-50">
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                Payment refund to <span className="font-semibold">#00910</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">Apr 23 ,2021</td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">-$670</td>
-                            </tr>
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment failed from <span className="font-semibold">#087651</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">Apr 18 ,2021</td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">$234</td>
-                            </tr>
-                            <tr className="bg-gray-50">
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                Payment from <span className="font-semibold">Lana Byrd</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">Apr 15 ,2021</td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">$5000</td>
-                            </tr>
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment from <span className="font-semibold">Jese Leos</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">Apr 15 ,2021</td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">$2300</td>
-                            </tr>
-                            <tr className="bg-gray-50">
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                                Payment from <span className="font-semibold">THEMESBERG LLC</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">Apr 11 ,2021</td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">$560</td>
-                            </tr>
-                            <tr>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                Payment from <span className="font-semibold">Lana Lysle</span>
-                              </td>
-                              <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">Apr 6 ,2021</td>
-                              <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">$1437</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+
+              <Section title="general statistics">
+                {/* {data && (
+                  <div>
+                    <div>avg start price: ${data.data.general.avg.startPrice}</div>
+                    <div>sum start price: ${data.data.general.sum.startPrice}</div>
+                    <div>max start price: ${data.data.general.max.startPrice}</div>
                   </div>
+                )} */}
+              </Section>
+
+              <Section title="chart">
+                <div className="p-4 h-[500px] w-full">
+                  <ResponsivePie
+                    animate
+                    activeOuterRadiusOffset={8}
+                    data={pieChartData}
+                    innerRadius={0.6}
+                    padAngle={0.5}
+                    cornerRadius={5}
+                    arcLinkLabelsColor={{
+                      from: 'color',
+                    }}
+                    arcLinkLabelsThickness={3}
+                    arcLinkLabelsTextColor={{
+                      from: 'color',
+                      modifiers: [['darker', 1.2]],
+                    }}
+                  />
                 </div>
+              </Section>
+
+              <Section title="price ranking">
+                <Table data={priceRankingList} columns={columns} hasNumber />
               </Section>
             </div>
             <div className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
