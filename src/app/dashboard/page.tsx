@@ -15,8 +15,17 @@ import useDashboardData from './useDashboardData';
 
 // ref: https://www.creative-tim.com/twcomponents/component/tailwind-css-admin-dashboard-layout
 export default function Page() {
-  const { categoryChartData, priceRankingList, generalData, liveCount, deadCount, state, send, calendarTableData } =
-    useDashboardData();
+  const {
+    categoryChartData,
+    priceRankingList,
+    generalData,
+    liveCount,
+    deadCount,
+    state,
+    send,
+    calendarTableData,
+    totalCount,
+  } = useDashboardData();
 
   const rankTableColumns: ColumnProps<VDashboardRankTable>[] = [
     { key: 'name', title: 'name' },
@@ -58,17 +67,23 @@ export default function Page() {
               <GeneralItem value={generalData.max.endPrice} title="highest sell" />
               <GeneralItem value={liveCount} title="live count" />
               <GeneralItem value={deadCount} title="dead count" />
+              <GeneralItem value={totalCount} title="total count" />
             </div>
           </Section>
 
           <Section title="this month's digest" className="col-span-12">
             <div className="flex flex-row gap-8">
-              <Table
-                className="max-h-[300px] overflow-y-auto grow rounded-md"
-                data={calendarTableData}
-                columns={calendarTableColumns}
-                hasNumber={false}
-              />
+              <div className="grow">
+                <div className="text-sm font-semibold text-gray-600 dark:text-white capitalize py-2">
+                  birthday for this month 🎉
+                </div>
+                <Table
+                  className="max-h-[300px] overflow-y-auto rounded-md"
+                  data={calendarTableData}
+                  columns={calendarTableColumns}
+                  hasNumber={false}
+                />
+              </div>
               <BasicCalendar
                 className="w-2/5"
                 currentDate={state.context.currentDate}

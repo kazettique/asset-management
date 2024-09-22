@@ -41,6 +41,9 @@ export default function useDashboardData() {
   const deadCount: string = aggregateData
     ? Utils.NumberWithCommas(aggregateData.data.deadCount)
     : CommonConstant.DEFAULT_EMPTY_STRING;
+  const totalCount: string = aggregateData
+    ? Utils.NumberWithCommas(aggregateData.data.liveCount + aggregateData.data.deadCount)
+    : CommonConstant.DEFAULT_EMPTY_STRING;
 
   const calendarTableData: VDashboardCalendarTable[] = calendarData
     ? calendarData.data.birthday.map((item) => DashboardTransformer.VTDashboardCalendarTransformer(item))
@@ -55,5 +58,6 @@ export default function useDashboardData() {
     priceRankingList,
     send,
     state,
+    totalCount,
   };
 }
