@@ -26,6 +26,7 @@ export default function Page() {
     send,
     calendarTableData,
     totalCount,
+    todaysQuoteData,
   } = useDashboardData();
 
   const rankTableColumns: ColumnProps<VDashboardRankTable>[] = [
@@ -54,8 +55,8 @@ export default function Page() {
     <div>
       <div className="h-full w-full relative overflow-y-auto py-6 px-4">
         <div className="w-full grid grid-cols-12 gap-4">
-          <Section title="Today's Digest" className="col-span-6">
-            <BasicQuote quote="how do you turn this on" author="robin hood" />
+          <Section title="today's quote" className="col-span-6">
+            {todaysQuoteData && <BasicQuote quote={todaysQuoteData.quote} author={todaysQuoteData.author} />}
           </Section>
 
           <Section title="general statistics" className="col-span-6">

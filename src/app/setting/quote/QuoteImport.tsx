@@ -2,7 +2,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactElement, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import JSONPretty from 'react-json-pretty';
 
 import BasicButton from '@/components/BasicButton';
 import BasicDrawer from '@/components/BasicDrawer';
@@ -96,7 +95,7 @@ export default function QuoteImport(props: Props) {
             <div>
               <BasicFileReader onChange={handleFileData} label="import" />
               {isLegalFileData !== null && (
-                <div className="text-sm text-gray-700 font-semibold">
+                <div className="text-sm text-gray-700 dark:text-white font-semibold">
                   <span>File checker: file data is&nbsp;</span>
                   <span
                     data-is-legal={isLegalFileData}
@@ -116,8 +115,6 @@ export default function QuoteImport(props: Props) {
             {state === 'FINISH' && <BasicButton onClick={onDone}>Done</BasicButton>}
           </div>
         )}
-
-        <JSONPretty data={formState.errors} />
       </div>
     </BasicDrawer>
   );

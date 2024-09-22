@@ -42,6 +42,7 @@ export default function Page() {
       title: 'Brand',
     },
     {
+      className: 'whitespace-nowrap',
       key: 'startInfo',
       render: (column, item) => (
         <div className="flex gap-1">
@@ -83,6 +84,7 @@ export default function Page() {
       title: 'Start Info',
     },
     {
+      className: 'whitespace-nowrap',
       key: 'endInfo',
       render: (column, item) => (
         <div className="flex gap-1">

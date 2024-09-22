@@ -4,6 +4,7 @@ import { ReactElement } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 
 export interface ColumnProps<T> {
+  className?: string;
   key: string;
   render?: (column: ColumnProps<T>, item: T) => ReactElement;
   title: string | ReactElement;
@@ -28,7 +29,7 @@ export default function Table<T>(props: Props<T>) {
       <th
         key={`headCell-${index}`}
         scope="col"
-        className="capitalize py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
+        className={`capitalize py-3.5 px-4 text-sm font-normal text-left text-gray-500 dark:text-gray-400 ${column.className}`}
       >
         {column.title}
       </th>
@@ -51,14 +52,14 @@ export default function Table<T>(props: Props<T>) {
           key={`row-${index}`}
           className="text-gray-700 dark:text-gray-200 even:bg-gray-100 dark:even:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
         >
-          {hasNumber && <td className="text-sm whitespace-nowrap text-left p-3.5">{index + 1}</td>}
+          {hasNumber && <td className="text-sm text-left p-3.5">{index + 1}</td>}
           {columns.map((column, index2) => {
             const value = column.render
               ? column.render(column, row as T)
               : (row[column.key as keyof typeof row] as string);
 
             return (
-              <td key={`cell-${index2}`} className="p-3.5 text-sm whitespace-nowrap">
+              <td key={`cell-${index2}`} className={`p-3.5 text-sm ${column.className}`}>
                 {value}
               </td>
             );

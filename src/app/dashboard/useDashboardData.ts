@@ -3,7 +3,7 @@ import { useMachine } from '@xstate/react';
 
 import { CommonConstant } from '@/constant';
 import { DashboardConstant } from '@/constant/dashboard';
-import { DashboardFetcher } from '@/fetcher';
+import { DashboardFetcher, QuoteFetcher } from '@/fetcher';
 import { dashboardMachine } from '@/machines/dashboard';
 import { DashboardTransformer } from '@/transformer';
 import { VDashboardCalendarTable, VDashboardRankTable } from '@/types';
@@ -21,6 +21,12 @@ export default function useDashboardData() {
     placeholderData: keepPreviousData,
     queryFn: () => DashboardFetcher.FindCalendar(state.context.currentDate.toDate()),
     queryKey: ['dashboard calendar', state.context.currentDate.month(), state.context.currentDate.year()],
+  });
+
+  const { data: quoteData } = useQuery({
+    placeholderData: keepPreviousData,
+    queryFn: () => QuoteFetcher.FindRandom(),
+    queryKey: ['dashboard quote'],
   });
 
   const categoryChartData = aggregateData
@@ -49,6 +55,8 @@ export default function useDashboardData() {
     ? calendarData.data.birthday.map((item) => DashboardTransformer.VTDashboardCalendarTransformer(item))
     : [];
 
+  const todaysQuoteData = quoteData ? quoteData.data : null;
+
   return {
     calendarTableData,
     categoryChartData,
@@ -58,6 +66,7 @@ export default function useDashboardData() {
     priceRankingList,
     send,
     state,
+    todaysQuoteData,
     totalCount,
   };
 }
