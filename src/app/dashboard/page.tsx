@@ -3,6 +3,7 @@
 import { ResponsivePie } from '@nivo/pie';
 
 import BasicCalendar from '@/components/BasicCalendar';
+import BasicQuote from '@/components/BasicQuote';
 import Table, { ColumnProps } from '@/components/Table';
 import { CommonConstant } from '@/constant';
 import { VDashboardCalendarTable, VDashboardRankTable } from '@/types';
@@ -54,7 +55,7 @@ export default function Page() {
       <div className="h-full w-full relative overflow-y-auto py-6 px-4">
         <div className="w-full grid grid-cols-12 gap-4">
           <Section title="Today's Digest" className="col-span-6">
-            hello digest
+            <BasicQuote quote="how do you turn this on" author="robin hood" />
           </Section>
 
           <Section title="general statistics" className="col-span-6">
