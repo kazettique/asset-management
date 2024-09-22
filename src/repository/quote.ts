@@ -36,16 +36,19 @@ export abstract class QuoteRepository {
 
   // ref: https://github.com/prisma/prisma/discussions/5886
   // ref: https://stackoverflow.com/questions/249301/simple-random-samples-from-a-mysql-sql-database
-  public static async FindRandom(): Promise<MQuote> {
-    // const rawData: unknown = await prisma.$queryRaw`
-    //   SELECT * FROM quote ORDER BY RANDOM() LIMIT 1
-    // `;
-
-    const rawData2: unknown = await prisma.$queryRaw`
-      SELECT * FROM quote WHERE 0.01 >= RAND()
+  // ref: https://stackoverflow.com/questions/4329396/mysql-select-10-random-rows-from-600k-rows-fast
+  public static async FindRandom(): Promise<NType<MQuote>> {
+    const rawData: unknown = await prisma.$queryRaw`
+      SELECT id, quote, author FROM quote ORDER BY RAND() LIMIT 1;
     `;
 
-    return QuoteTransformer.DMQuoteTransformer(rawData2 as DQuote);
+    const getFirst = Array.isArray(rawData) && rawData.length > 0 ? rawData[0] : null;
+
+    if (getFirst === null) {
+      return getFirst;
+    } else {
+      return QuoteTransformer.DMQuoteTransformer(getFirst as DQuote);
+    }
   }
 
   public static async Create(quote: string, author: string): Promise<MQuote> {

@@ -1,7 +1,7 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { FQuote, GeneralResponse, Id, MQuote, VQuote } from '@/types';
+import { GeneralResponse, Id, MQuote, PQuote, VQuote } from '@/types';
 
 @backendImplements()
 export abstract class QuoteFetcher {
@@ -29,7 +29,7 @@ export abstract class QuoteFetcher {
     return data;
   }
 
-  public static async Create(payload: FQuote): Promise<GeneralResponse<VQuote>> {
+  public static async Create(payload: PQuote): Promise<GeneralResponse<VQuote>> {
     const res = await fetch('/api/setting/quotes', { body: JSON.stringify(payload), method: 'POST' });
 
     const data = (await res.json()) as Promise<GeneralResponse<VQuote>>;
@@ -45,7 +45,7 @@ export abstract class QuoteFetcher {
     return data;
   }
 
-  public static async Update(payload: FQuote, id: MQuote['id']): Promise<GeneralResponse<VQuote>> {
+  public static async Update(payload: PQuote, id: MQuote['id']): Promise<GeneralResponse<VQuote>> {
     const res = await fetch('/api/setting/quotes/' + id, {
       body: JSON.stringify(payload),
       method: 'PUT',

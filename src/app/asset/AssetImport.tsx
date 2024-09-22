@@ -1,6 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 import BasicButton from '@/components/BasicButton';
@@ -11,14 +11,21 @@ import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import Table, { ColumnProps } from '@/components/Table';
 import { AssetConstant, CommonConstant } from '@/constant';
-import { MachineContext, TaskStatus } from '@/machines/asset';
+import { MachineContext } from '@/machines/asset';
 import { AssetTransformer } from '@/transformer';
-import { FAssetImport, FSettingOptions, IconType, PAsset, VAssetImportItem, VAssetImportTable } from '@/types';
+import {
+  FAssetImport,
+  FSettingOptions,
+  IconType,
+  ImportTable,
+  ImportTaskStatus,
+  PAsset,
+  VAssetImportItem,
+} from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
 
 export interface Props {
-  children?: ReactElement;
   className?: string;
   importContext: MachineContext['import'];
   isOpen: boolean;
@@ -30,10 +37,10 @@ export interface Props {
 }
 
 export default function AssetImport(props: Props) {
-  const { children, className = '', isOpen, onClose, onDone, settingOptions, onImport, state, importContext } = props;
+  const { className = '', isOpen, onClose, onDone, settingOptions, onImport, state, importContext } = props;
   const [importItems, setImportItems] = useState<VAssetImportItem[]>([]);
 
-  const { register, handleSubmit, reset, control, setValue, formState } = useForm<FAssetImport>({
+  const { register, handleSubmit, control, setValue } = useForm<FAssetImport>({
     defaultValues: AssetConstant.F_ASSET_IMPORT_INITIAL_VALUES,
     mode: 'all',
     resolver: zodResolver(AssetValidator.FAssetImportValidator),
@@ -53,30 +60,28 @@ export default function AssetImport(props: Props) {
     }
   };
 
-  const tableData: VAssetImportTable[] = Object.values(importContext.tasks).map((item, index) => ({
+  const tableData: ImportTable[] = Object.values(importContext.tasks).map((item) => ({
     name: item.name,
-    no: index + 1,
     status: item.status,
   }));
 
-  const columns: ColumnProps<VAssetImportTable>[] = [
-    { key: 'no', title: '#' },
+  const columns: ColumnProps<ImportTable>[] = [
     { key: 'name', title: 'Name' },
     {
       key: 'status',
       render: (column, item) => {
         let statusIcon: IconType;
         switch (item.status) {
-          case TaskStatus.FAILED:
+          case ImportTaskStatus.FAILED:
             statusIcon = 'circle-xmark-solid';
             break;
-          case TaskStatus.PROCESSING:
+          case ImportTaskStatus.PROCESSING:
             statusIcon = 'spinner-solid';
             break;
-          case TaskStatus.QUEUE:
+          case ImportTaskStatus.QUEUE:
             statusIcon = 'circle-pause-solid';
             break;
-          case TaskStatus.DONE:
+          case ImportTaskStatus.DONE:
           default:
             statusIcon = 'circle-check-solid';
         }

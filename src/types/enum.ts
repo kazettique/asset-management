@@ -9,3 +9,10 @@ export enum AssetLifeStatus {
   DEAD = 'DEAD',
   LIVE = 'LIVE',
 }
+
+export enum ImportTaskStatus {
+  DONE = 'DONE',
+  FAILED = 'FAILED',
+  PROCESSING = 'PROCESSING',
+  QUEUE = 'QUEUED',
+}

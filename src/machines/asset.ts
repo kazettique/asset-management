@@ -10,31 +10,19 @@ import {
   FAssetFindSecondaryFilter,
   FAssetFindSort,
   Id,
+  ImportTask,
+  ImportTaskStatus,
   NNumber,
   NType,
   PAsset,
   PAssetFind,
 } from '@/types';
 
-export enum TaskStatus {
-  DONE = 'DONE',
-  FAILED = 'FAILED',
-  PROCESSING = 'PROCESSING',
-  QUEUE = 'QUEUED',
-}
-
-export interface Task {
-  id: number;
-  name: string;
-  payload: PAsset;
-  status: TaskStatus;
-}
-
 export type MachineContext = {
   import: {
     currentTaskId: NNumber;
     queue: number[];
-    tasks: Record<number, Task>;
+    tasks: Record<number, ImportTask<PAsset>>;
   };
   modifier: {
     formValues: NType<FAsset>;
@@ -48,7 +36,6 @@ type MachineEvents =
   | { formValues: FAsset; id: Id; type: 'TO_EDIT' }
   | { type: 'TO_MAIN' }
   | { type: 'TO_IMPORT' }
-  | { id: number; type: 'UPDATE_TASKS_PRIORITY' }
   | { payload: PAsset[]; type: 'IMPORT_TASK_TO_QUEUE' }
   | { payload: FAssetFindPrimaryFilter; type: 'UPDATE_SEARCH_PRIMARY_FILTER' }
   | { payload: FAssetFindSecondaryFilter; type: 'UPDATE_SEARCH_SECONDARY_FILTER' }
@@ -67,7 +54,7 @@ const INITIAL_CONTEXT: MachineContext = {
 export const assetMachine = setup({
   actions: {
     CHANGE_CURRENT_TASK_STATUS: assign({
-      import: ({ context }, params: { status: TaskStatus }) => {
+      import: ({ context }, params: { status: ImportTaskStatus }) => {
         const { currentTaskId, tasks } = context.import;
 
         if (currentTaskId === null) {
@@ -91,7 +78,7 @@ export const assetMachine = setup({
           const _id = uuidv4();
           return {
             ...acc,
-            [_id]: { id: _id, name: curr.name, payload: curr, status: TaskStatus.QUEUE },
+            [_id]: { id: _id, name: curr.name, payload: curr, status: ImportTaskStatus.QUEUE },
           };
         }, {});
 
@@ -237,19 +224,19 @@ export const assetMachine = setup({
           },
         },
         PROCESSING: {
-          entry: [{ params: { status: TaskStatus.PROCESSING }, type: 'CHANGE_CURRENT_TASK_STATUS' }],
+          entry: [{ params: { status: ImportTaskStatus.PROCESSING }, type: 'CHANGE_CURRENT_TASK_STATUS' }],
           invoke: {
             input: ({ context }) => context,
             onDone: {
               actions: [
-                { params: { status: TaskStatus.DONE }, type: 'CHANGE_CURRENT_TASK_STATUS' },
+                { params: { status: ImportTaskStatus.DONE }, type: 'CHANGE_CURRENT_TASK_STATUS' },
                 { type: 'RESET_CURRENT_TASK' },
               ],
               target: 'IDLE',
             },
             onError: {
               actions: [
-                { params: { status: TaskStatus.FAILED }, type: 'CHANGE_CURRENT_TASK_STATUS' },
+                { params: { status: ImportTaskStatus.FAILED }, type: 'CHANGE_CURRENT_TASK_STATUS' },
                 { type: 'RESET_CURRENT_TASK' },
               ],
               target: 'IDLE',

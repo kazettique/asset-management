@@ -10,7 +10,7 @@ export abstract class QuoteService {
     return await QuoteRepository.Find(id);
   }
 
-  public static async FindRandom(): Promise<MQuote> {
+  public static async FindRandom(): Promise<NType<MQuote>> {
     return await QuoteRepository.FindRandom();
   }
 

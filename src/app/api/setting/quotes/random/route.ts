@@ -9,12 +9,16 @@ import { QuoteValidator } from '@/validator';
 export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VQuote[]>> | Response> {
   const raw = await QuoteService.FindRandom();
 
-  const transformedData = QuoteTransformer.MVQuoteTransformer(raw);
-  const dataValidation = QuoteValidator.VQuoteValidator.safeParse(transformedData);
-
-  if (!dataValidation.success) {
-    return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+  if (raw === null) {
+    return new Response(raw, { status: HttpStatusCode.NO_CONTENT });
   } else {
-    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+    const transformedData = QuoteTransformer.MVQuoteTransformer(raw);
+    const dataValidation = QuoteValidator.VQuoteValidator.safeParse(transformedData);
+
+    if (!dataValidation.success) {
+      return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+    } else {
+      return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+    }
   }
 }

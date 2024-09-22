@@ -23,7 +23,8 @@ export async function GET(
     if (raw === null) {
       return new Response(null, { status: HttpStatusCode.NO_CONTENT });
     } else {
-      const dataValidation = AssetValidator.VAssetValidator.safeParse(raw);
+      const transformedData = AssetTransformer.MVAssetTransformer(raw);
+      const dataValidation = AssetValidator.VAssetValidator.safeParse(transformedData);
 
       if (dataValidation.success) {
         return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));

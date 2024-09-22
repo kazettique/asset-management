@@ -38,7 +38,7 @@ export default function Table<T>(props: Props<T>) {
   const rows = !data?.length ? (
     <tr>
       <td
-        colSpan={columns.length}
+        colSpan={hasNumber ? columns.length + 1 : columns.length}
         className="p-2 text-sm font-medium whitespace-nowrap text-center text-gray-500 dark:text-gray-400"
       >
         No data

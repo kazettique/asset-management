@@ -2,6 +2,7 @@ import { MethodType } from '@prisma/client';
 
 import { Id, Name, NString, NType, Price } from './base';
 import { DBrand, DCategory, DForex, DMethod, DOwner, DPlace, DPlatform, DTag } from './dbModels';
+import { ImportTaskStatus } from './enum';
 import { IconType } from './iconTypes';
 
 export interface GeneralResponse<T> {
@@ -70,4 +71,16 @@ export interface ChartDatum {
 export interface QuoteCommon {
   author: string;
   quote: string;
+}
+
+export interface ImportTask<T> {
+  id: number;
+  name: string;
+  payload: T;
+  status: ImportTaskStatus;
+}
+
+export interface ImportTable {
+  name: string;
+  status: ImportTaskStatus;
 }

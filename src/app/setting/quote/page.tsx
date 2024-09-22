@@ -12,6 +12,7 @@ import { quoteMachine } from '@/machines';
 import { QuoteTransformer } from '@/transformer';
 import { FQuote, Id, VQuote, VQuoteTable } from '@/types';
 
+import QuoteImport from './QuoteImport';
 import QuoteModifier from './QuoteModifier';
 
 export default function Page() {
@@ -95,9 +96,17 @@ export default function Page() {
 
   return (
     <div className="p-5">
-      <div className="flex justify-between">
-        <h2 className="text-lg font-medium text-gray-800 dark:text-white">Quotes</h2>
-        <BasicButton onClick={() => send({ type: 'TO_CREATE' })}>Create</BasicButton>
+      <div className="flex justify-between gap-x-3">
+        <h2 className="text-lg font-medium text-gray-800 dark:text-white grow">Quotes</h2>
+        <BasicButton variant="secondary" onClick={() => send({ type: 'TO_IMPORT' })} className="flex gap-x-2">
+          <BasicIcon iconType="file-import-solid" />
+          <span>Import</span>
+        </BasicButton>
+
+        <BasicButton onClick={() => send({ type: 'TO_CREATE' })} className="flex gap-x-2">
+          <BasicIcon iconType="cross" />
+          <span>Create</span>
+        </BasicButton>
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
@@ -128,8 +137,26 @@ export default function Page() {
           onItemDelete(id);
           send({ type: 'TO_MAIN' });
         }}
-        defaultValues={state.context.formValues}
-        id={state.context.id}
+        defaultValues={state.context.modifier.formValues}
+        id={state.context.modifier.id}
+      />
+
+      <QuoteImport
+        isOpen={state.matches('IMPORT')}
+        onClose={() => void send({ type: 'TO_MAIN' })}
+        onDone={() => {
+          void send({ type: 'TO_MAIN' });
+          refetch();
+        }}
+        onImport={(payload) => void send({ payload, type: 'IMPORT_TASK_TO_QUEUE' })}
+        state={
+          state.matches({ IMPORT: 'PREPARE' })
+            ? 'PREPARE'
+            : state.matches({ IMPORT: 'PROCESSING' })
+              ? 'PROCESSING'
+              : 'FINISH'
+        }
+        importContext={state.context.import}
       />
     </div>
   );
