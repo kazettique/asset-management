@@ -8,5 +8,6 @@ export * from './owner';
 export * from './ownershipHistory';
 export * from './place';
 export * from './platform';
+export * from './quote';
 export * from './setting';
 export * from './tag';

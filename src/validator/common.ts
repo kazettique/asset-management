@@ -13,6 +13,7 @@ import {
   Name,
   PFindPagination,
   Price,
+  QuoteCommon,
   SettingBase,
 } from '@/types';
 
@@ -87,5 +88,10 @@ export abstract class CommonValidator {
     startPlatform: z.object({ id: CommonValidator.IdValidator, name: z.string() }).nullable(),
     startPrice: CommonValidator.PriceValidator.nullable(),
     tags: z.object({ id: CommonValidator.IdValidator, name: CommonValidator.NameValidator }).array(),
+  });
+
+  public static readonly QuoteCommonValidator: z.ZodSchema<QuoteCommon> = z.object({
+    author: z.string().min(1),
+    quote: z.string().min(1),
   });
 }

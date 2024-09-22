@@ -66,3 +66,8 @@ export interface ChartDatum {
   label: string;
   value: string | number;
 }
+
+export interface QuoteCommon {
+  author: string;
+  quote: string;
+}

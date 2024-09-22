@@ -92,6 +92,12 @@ export abstract class CommonConstant {
           label: 'tag',
           link: '/setting/tag',
         },
+        {
+          children: [],
+          icon: 'quote-right-solid',
+          label: 'quote',
+          link: '/setting/quote',
+        },
       ],
       icon: 'gear-solid',
       label: 'setting',

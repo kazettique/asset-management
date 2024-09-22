@@ -5,4 +5,5 @@ export * from './category';
 export * from './method';
 export * from './owner';
 export * from './platform';
+export * from './quote';
 export * from './tag';
