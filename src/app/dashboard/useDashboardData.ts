@@ -1,38 +1,59 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useMachine } from '@xstate/react';
 
 import { CommonConstant } from '@/constant';
 import { DashboardConstant } from '@/constant/dashboard';
 import { DashboardFetcher } from '@/fetcher';
+import { dashboardMachine } from '@/machines/dashboard';
 import { DashboardTransformer } from '@/transformer';
-import { VDashboardRankTable } from '@/types';
+import { VDashboardCalendarTable, VDashboardRankTable } from '@/types';
 import { Utils } from '@/utils';
 
 export default function useDashboardData() {
-  const { data, isPending, refetch } = useQuery({
+  const [state, send] = useMachine(dashboardMachine, {});
+
+  const { data: aggregateData } = useQuery({
     queryFn: () => DashboardFetcher.FindAggregate(),
-    queryKey: ['dashboard'],
+    queryKey: ['dashboard aggregate'],
   });
 
-  const categoryChartData = data
-    ? DashboardTransformer.VCDashboardCategoryTransformer(data.data.category)
+  const { data: calendarData } = useQuery({
+    placeholderData: keepPreviousData,
+    queryFn: () => DashboardFetcher.FindCalendar(state.context.currentDate.toDate()),
+    queryKey: ['dashboard calendar', state.context.currentDate.month(), state.context.currentDate.year()],
+  });
+
+  const categoryChartData = aggregateData
+    ? DashboardTransformer.VCDashboardCategoryTransformer(aggregateData.data.category)
     : DashboardConstant.DEFAULT_DASHBOARD_CATEGORY_CHART;
 
-  const priceRankingList: VDashboardRankTable[] = data
-    ? data.data.ranking.map((item) => DashboardTransformer.VTDashboardRankTransformer(item))
+  const priceRankingList: VDashboardRankTable[] = aggregateData
+    ? aggregateData.data.ranking.map((item) => DashboardTransformer.VTDashboardRankTransformer(item))
     : [];
 
-  const generalData = data
-    ? DashboardTransformer.VDashboardGeneralDisplayTransformer(data.data.general)
+  const generalData = aggregateData
+    ? DashboardTransformer.VDashboardGeneralDisplayTransformer(aggregateData.data.general)
     : DashboardConstant.DEFAULT_DASHBOARD_GENERAL_DISPLAY;
 
-  const liveCount: string = data ? Utils.NumberWithCommas(data.data.liveCount) : CommonConstant.DEFAULT_EMPTY_STRING;
-  const deadCount: string = data ? Utils.NumberWithCommas(data.data.deadCount) : CommonConstant.DEFAULT_EMPTY_STRING;
+  const liveCount: string = aggregateData
+    ? Utils.NumberWithCommas(aggregateData.data.liveCount)
+    : CommonConstant.DEFAULT_EMPTY_STRING;
+  const deadCount: string = aggregateData
+    ? Utils.NumberWithCommas(aggregateData.data.deadCount)
+    : CommonConstant.DEFAULT_EMPTY_STRING;
+
+  const calendarTableData: VDashboardCalendarTable[] = calendarData
+    ? calendarData.data.birthday.map((item) => DashboardTransformer.VTDashboardCalendarTransformer(item))
+    : [];
 
   return {
+    calendarTableData,
     categoryChartData,
     deadCount,
     generalData,
     liveCount,
     priceRankingList,
+    send,
+    state,
   };
 }

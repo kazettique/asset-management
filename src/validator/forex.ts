@@ -10,7 +10,7 @@ export abstract class ForexValidator {
   public static readonly DForexValidator: z.ZodSchema<DForex> = z
     .object({
       date: z.date(),
-      rate: CommonValidator.CurrencyForexValidator,
+      rate: CommonValidator.ForexRateValidator,
       targetCurrency: z.string().length(3),
     })
     .and(CommonValidator.DbBaseValidator);
@@ -21,7 +21,7 @@ export abstract class ForexValidator {
 
   public static readonly PForexValidator: z.ZodSchema<PForex> = z.object({
     date: z.date(),
-    rate: CommonValidator.CurrencyForexValidator,
+    rate: CommonValidator.ForexRateValidator,
     targetCurrency: z.string().length(3),
   });
 }

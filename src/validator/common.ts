@@ -5,8 +5,8 @@ import { CommonConstant } from '@/constant';
 import {
   AssetCommon,
   AssetMeta,
-  CurrencyForex,
   DbBase,
+  ForexRate,
   FormOption,
   Id,
   MethodCommon,
@@ -31,7 +31,7 @@ export abstract class CommonValidator {
     pageSize: z.coerce.number().int().positive().max(CommonConstant.MAX_PAGE_SIZE).optional(),
   });
 
-  public static readonly CurrencyForexValidator: z.ZodSchema<CurrencyForex> = z.number().positive();
+  public static readonly ForexRateValidator: z.ZodSchema<ForexRate> = z.number().positive();
 
   public static readonly DbBaseValidator: z.ZodSchema<DbBase> = z.object({
     id: this.IdValidator,
@@ -65,7 +65,7 @@ export abstract class CommonValidator {
     endDate: z.date().nullable(),
     endForex: z
       .object({
-        rate: CommonValidator.CurrencyForexValidator,
+        rate: CommonValidator.ForexRateValidator,
         targetCurrency: z.string().length(3),
       })
       .nullable(),
@@ -79,7 +79,7 @@ export abstract class CommonValidator {
     startDate: z.date().nullable(),
     startForex: z
       .object({
-        rate: CommonValidator.CurrencyForexValidator,
+        rate: CommonValidator.ForexRateValidator,
         targetCurrency: z.string().length(3),
       })
       .nullable(),

@@ -1,4 +1,4 @@
-import { VDashboardCategoryChart, VDashboardGeneral, VDashboardGeneralDisplay } from '@/types';
+import { VDashboardCalendar, VDashboardCategoryChart, VDashboardGeneral, VDashboardGeneralDisplay } from '@/types';
 
 import { CommonConstant } from './common';
 
@@ -23,5 +23,9 @@ export abstract class DashboardConstant {
     avg: { endPrice: CommonConstant.DEFAULT_EMPTY_STRING, startPrice: CommonConstant.DEFAULT_EMPTY_STRING },
     max: { endPrice: CommonConstant.DEFAULT_EMPTY_STRING, startPrice: CommonConstant.DEFAULT_EMPTY_STRING },
     sum: { endPrice: CommonConstant.DEFAULT_EMPTY_STRING, startPrice: CommonConstant.DEFAULT_EMPTY_STRING },
+  };
+
+  public static readonly DEFAULT_DASHBOARD_CALENDAR: VDashboardCalendar = {
+    birthday: [],
   };
 }

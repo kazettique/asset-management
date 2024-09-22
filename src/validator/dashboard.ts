@@ -1,6 +1,13 @@
 import { z } from 'zod';
 
-import { DDashboardAggregate, MDashboardAggregate, VDashboardAggregate } from '@/types';
+import {
+  DDashboardAggregate,
+  DDashboardCalendar,
+  MDashboardAggregate,
+  MDashboardCalendar,
+  VDashboardAggregate,
+  VDashboardCalendar,
+} from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -110,4 +117,22 @@ export abstract class DashboardValidator {
 
   public static readonly VDashboardAggregateValidator: z.ZodSchema<VDashboardAggregate> =
     this.MDashboardAggregateValidator;
+
+  public static readonly DDashboardCalendarValidator: z.ZodSchema<DDashboardCalendar> = z.object({
+    birthday: z
+      .object({
+        name: z.string(),
+        rate: CommonValidator.ForexRateValidator.nullable(),
+        startDate: z.date(),
+        startPrice: CommonValidator.PriceValidator.nullable(),
+        targetCurrency: z.string().length(3).nullable(),
+      })
+      .array(),
+  });
+
+  public static readonly MDashboardCalendarValidator: z.ZodSchema<MDashboardCalendar> =
+    this.DDashboardCalendarValidator;
+
+  public static readonly VDashboardCalendarValidator: z.ZodSchema<VDashboardCalendar> =
+    this.MDashboardCalendarValidator;
 }

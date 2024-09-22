@@ -1,10 +1,17 @@
+import dayjs from 'dayjs';
+
 import { CommonConstant } from '@/constant';
 import { DashboardConstant } from '@/constant/dashboard';
 import {
   DDashboardAggregate,
+  DDashboardCalendar,
   MDashboardAggregate,
+  MDashboardCalendar,
   NNumber,
   VDashboardAggregate,
+  VDashboardCalendar,
+  VDashboardCalendarBirthday,
+  VDashboardCalendarTable,
   VDashboardCategory,
   VDashboardCategoryChart,
   VDashboardGeneral,
@@ -149,6 +156,35 @@ export abstract class DashboardTransformer {
         endPrice: transformPrice(src.sum.endPrice),
         startPrice: transformPrice(src.sum.startPrice),
       },
+    };
+  }
+
+  public static DMDashboardCalendarTransformer(src: DDashboardCalendar): MDashboardCalendar {
+    return src;
+  }
+
+  public static MVDashboardCalendarTransformer(src: MDashboardCalendar): VDashboardCalendar {
+    return src;
+  }
+
+  // view model -> table model
+  public static VTDashboardCalendarTransformer(src: VDashboardCalendarBirthday): VDashboardCalendarTable {
+    let startPrice: string = CommonConstant.DEFAULT_EMPTY_STRING;
+
+    if (src.startPrice && src.targetCurrency && src.rate) {
+      const calculatedPrice = Utils.ConvertToTargetCurrency(src.startPrice, src.rate);
+      startPrice = '(' + src.targetCurrency + ') ' + Utils.NumberWithCommas(calculatedPrice);
+    } else if (src.startPrice) {
+      startPrice = '(' + CommonConstant.BASE_CURRENCY + ') ' + Utils.NumberWithCommas(src.startPrice);
+    }
+
+    let age: string = dayjs().diff(dayjs(src.startDate), 'year') + 'yr old';
+
+    return {
+      age,
+      name: src.name,
+      startDate: src.startDate ? Utils.GetDateTimeString(src.startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
+      startPrice,
     };
   }
 }

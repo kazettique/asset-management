@@ -1,4 +1,5 @@
 import { Id, Name, NNumber, NString, NType } from '../base';
+import { DDashboardCalendar, DDashboardCalendarBirthday } from '../dbModels';
 
 // export interface DDashboard {
 //   calendar: {};
@@ -46,3 +47,7 @@ export interface MDashboardAggregate {
   liveCount: number;
   ranking: MDashboardRank[];
 }
+
+export interface MDashboardCalendarBirthday extends DDashboardCalendarBirthday {}
+
+export interface MDashboardCalendar extends DDashboardCalendar {}

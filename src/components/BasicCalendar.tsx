@@ -1,8 +1,6 @@
-'use client';
-
 import dayjs, { Dayjs } from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { Utils } from '@/utils';
 
@@ -17,14 +15,18 @@ interface CalendarUnit {
 
 export interface Props {
   className?: string;
+  currentDate: Dayjs;
+  onJumpDate: (date: Dayjs) => void;
+  onNextMonth: () => void;
+  onPrevMonth: () => void;
 }
 
 // ref: https://www.creative-tim.com/twcomponents/component/free-tailwind-css-calendar-component
 // ref: https://webdesign.tutsplus.com/learn-how-to-code-a-simple-javascript-calendar-and-datepicker--cms-108322t
 export default function BasicCalendar(props: Props) {
-  const { className = '' } = props;
+  const { className = '', currentDate, onJumpDate, onNextMonth, onPrevMonth } = props;
 
-  const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
+  const today: Dayjs = dayjs();
 
   const displayYear = useMemo<string>(() => currentDate.format('YYYY'), [currentDate]);
   const displayMonth = useMemo<string>(() => currentDate.format('MMMM'), [currentDate]);
@@ -76,28 +78,33 @@ export default function BasicCalendar(props: Props) {
   }, [currentDate]);
 
   const checkIsThisMonth = (date: Dayjs): boolean => currentDate.isSame(date, 'month');
-  const checkIsToday = (date: Dayjs): boolean => currentDate.isSame(date, 'date');
+  const checkIsCurrentDate = (date: Dayjs): boolean => currentDate.isSame(date, 'date');
+  const checkIsToday = (date: Dayjs): boolean => date.isSame(today, 'date');
 
   const weekDaysList = useMemo(() => dayjs.weekdaysMin(), []);
 
   return (
-    <div {...props} className={`${className}`} data-test-comp={BasicCalendar.name}>
-      <div className="md:p-8 p-5 dark:bg-gray-800 rounded-t">
+    <div className={`${className}`} data-test-comp={BasicCalendar.name}>
+      <div className="dark:bg-gray-800 rounded-t">
         <div className="px-4 flex items-center justify-between">
           <BasicIcon
-            onClick={() => setCurrentDate((prev) => prev.subtract(1, 'month'))}
+            onClick={onPrevMonth}
             iconType="caret-left-solid"
             className="text-xl focus:text-gray-400 hover:text-gray-400 text-gray-800 dark:text-gray-100 cursor-pointer h-10 w-10 flex justify-center items-center rounded-full hover:bg-gray-50 transition-all duration-300"
           />
 
-          <div className="focus:outline-none  text-base font-bold dark:text-gray-100 text-gray-800">
+          <button
+            type="button"
+            onClick={() => onJumpDate(today)}
+            className="focus:outline-none  text-base font-bold dark:text-gray-100 text-gray-800 hover:bg-gray-200 rounded-full px-4 py-1 transition-all duration-300"
+          >
             <span>{displayMonth}</span>
             <span>&nbsp;</span>
             <span>{displayYear}</span>
-          </div>
+          </button>
 
           <BasicIcon
-            onClick={() => setCurrentDate((prev) => prev.add(1, 'month'))}
+            onClick={onNextMonth}
             iconType="caret-right-solid"
             className="text-xl focus:text-gray-400 hover:text-gray-400 text-gray-800 dark:text-gray-100 cursor-pointer h-10 w-10 flex justify-center items-center rounded-full hover:bg-gray-50 transition-all duration-300"
           />
@@ -124,9 +131,10 @@ export default function BasicCalendar(props: Props) {
                       <div className="h-full w-full flex justify-center items-center">
                         <button
                           data-is-this-month={checkIsThisMonth(col.date)}
+                          data-is-current-date={checkIsCurrentDate(col.date)}
                           data-is-today={checkIsToday(col.date)}
-                          onClick={() => setCurrentDate(col.date)}
-                          className="dark:text-gray-100 data-[is-this-month='true']:text-gray-600 data-[is-this-month='false']:text-gray-300 data-[is-today='true']:bg-slate-100 rounded-full flex justify-center items-center w-10 h-10"
+                          onClick={() => onJumpDate(col.date)}
+                          className="dark:text-gray-100 data-[is-this-month='true']:text-gray-600 data-[is-this-month='false']:text-gray-300 data-[is-current-date='true']:bg-slate-100 data-[is-today='true']:bg-blue-200 data-[is-today='true']:font-bold rounded-full flex justify-center items-center w-10 h-10"
                         >
                           {col.display}
                         </button>

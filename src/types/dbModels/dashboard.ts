@@ -1,4 +1,4 @@
-import { Id, Name, NNumber, NType } from '../base';
+import { Id, Name, NNumber, NString, NType } from '../base';
 
 export interface DDashboardAggregate {
   allCategories: { id: Id; name: Name }[];
@@ -23,4 +23,16 @@ export interface DDashboardAggregate {
     startForex: NType<{ rate: number; targetCurrency: string }>;
     startPrice: NNumber;
   }[];
+}
+
+export interface DDashboardCalendarBirthday {
+  name: string;
+  rate: NNumber;
+  startDate: Date;
+  startPrice: NNumber;
+  targetCurrency: NString;
+}
+
+export interface DDashboardCalendar {
+  birthday: DDashboardCalendarBirthday[];
 }

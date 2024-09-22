@@ -10,11 +10,13 @@ import {
   DAsset,
   DAssetOwnership,
   DDashboardAggregate,
+  DDashboardCalendar,
   DTag,
   Id,
   MAsset,
   MAssetOwnership,
   MDashboardAggregate,
+  MDashboardCalendar,
   Name,
   NString,
   NType,
@@ -378,19 +380,15 @@ export abstract class AssetRepository {
     return DashboardTransformer.DMDashboardAggregateTransformer(rawData);
   }
 
-  public static async TimeLineData() {
-    const calendar = await prisma.asset.findMany({
-      select: {
-        endDate: true,
-        endPrice: true,
-        name: true,
-        startDate: true,
-        startPrice: true,
-      },
-      where: {
-        endDate: { gte: dayjs().startOf('month').toDate(), lte: dayjs().endOf('month').toDate() },
-        startDate: { gte: dayjs().startOf('month').toDate(), lte: dayjs().endOf('month').toDate() },
-      },
-    });
+  public static async FindAssetInMonthInterval(currentDate: Date): Promise<MDashboardCalendar> {
+    const rawData = await prisma.$queryRaw`
+    Select asset.name, asset.startDate, asset.startPrice, forex.targetCurrency, forex.rate
+    FROM asset
+    LEFT JOIN forex ON asset.startForexId = forex.id
+    WHERE MONTH(asset.startDate) = MONTH(${currentDate})
+    ORDER BY DAY(asset.startDate) ASC
+  `;
+
+    return DashboardTransformer.DMDashboardCalendarTransformer({ birthday: rawData } as DDashboardCalendar);
   }
 }
