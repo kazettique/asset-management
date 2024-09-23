@@ -1,11 +1,11 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { useMachine } from '@xstate/react';
 
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import Pagination from '@/components/Pagination';
 import Table, { ColumnProps } from '@/components/Table';
 import { QuoteFetcher } from '@/fetcher';
 import { quoteMachine } from '@/machines';
@@ -19,8 +19,9 @@ export default function Page() {
   const [state, send] = useMachine(quoteMachine, {});
 
   const { data, isPending, refetch } = useQuery({
-    queryFn: () => QuoteFetcher.FindAll(),
-    queryKey: ['quoteList'],
+    placeholderData: keepPreviousData,
+    queryFn: () => QuoteFetcher.FindMany(state.context.searchPayload),
+    queryKey: ['quoteList', state.context.searchPayload],
   });
 
   const createQuote = useMutation({
@@ -95,7 +96,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="p-5">
+    <div className="p-4 relative overflow-y-auto h-full flex flex-col">
       <div className="flex justify-between gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 dark:text-white grow">Quotes</h2>
         <BasicButton variant="secondary" onClick={() => send({ type: 'TO_IMPORT' })} className="flex gap-x-2">
@@ -110,13 +111,20 @@ export default function Page() {
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
-        {!data ? (
-          <LoadingSpinner className="h-full" />
-        ) : (
-          <Table
-            className="overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
-            data={tableData}
-            columns={columns}
+        <Table
+          className="h-full overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
+          data={tableData}
+          columns={columns}
+          isLoading={isPending}
+        />
+        {data && state.context.searchPayload.page && (
+          <Pagination
+            page={state.context.searchPayload.page}
+            totalPage={data.totalPage}
+            onNext={() => void send({ type: 'NEXT_PAGE' })}
+            onPrev={() => void send({ type: 'PREV_PAGE' })}
+            onFirst={() => void send({ payload: 1, type: 'JUMP_PAGE' })}
+            onLast={() => void send({ payload: data.totalPage, type: 'JUMP_PAGE' })}
           />
         )}
       </div>

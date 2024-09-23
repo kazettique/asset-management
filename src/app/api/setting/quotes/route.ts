@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
 import { QuoteService } from '@/service';
@@ -6,16 +6,27 @@ import { CommonTransformer, QuoteTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VQuote } from '@/types';
 import { QuoteValidator } from '@/validator';
 
-export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VQuote[]>> | Response> {
-  const raw = await QuoteService.FindAll();
+export async function GET(request: NextRequest): Promise<NextResponse<GeneralResponse<VQuote[]>> | Response> {
+  const searchParams = request.nextUrl.searchParams;
+  const page = searchParams.get('page');
+  const pageSize = searchParams.get('pageSize');
 
-  const transformedData = raw.map((item) => QuoteTransformer.MVQuoteTransformer(item));
+  const paramsValidation = QuoteValidator.PQuoteFindValidator.safeParse({ page, pageSize });
+
+  if (!paramsValidation.success) {
+    return new Response('', { status: HttpStatusCode.BAD_REQUEST });
+  }
+
+  const { page: _page, pageSize: _pageSize } = paramsValidation.data;
+  const rawData = await QuoteService.FindMany(_page, _pageSize);
+
+  const transformedData = rawData.data.map((item) => QuoteTransformer.MVQuoteTransformer(item));
   const dataValidation = QuoteValidator.VQuoteValidator.array().safeParse(transformedData);
 
   if (!dataValidation.success) {
     return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+    return NextResponse.json(rawData);
   }
 }
 

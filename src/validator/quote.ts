@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DQuote, FQuote, FQuoteImport, MQuote, PQuote, VQuote } from '@/types';
+import { DQuote, FQuote, FQuoteImport, MQuote, PQuote, PQuoteFind, VQuote } from '@/types';
 
 import { CommonValidator } from './common';
 
@@ -20,4 +20,6 @@ export abstract class QuoteValidator {
   public static readonly FQuoteImportValidator: z.ZodSchema<FQuoteImport> = z.object({
     isLegalFileData: z.literal<boolean>(true),
   });
+
+  public static readonly PQuoteFindValidator: z.ZodSchema<PQuoteFind> = CommonValidator.PFindPageValidator;
 }

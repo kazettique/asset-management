@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { assign, fromPromise, setup } from 'xstate';
 
+import { QuoteConstant } from '@/constant';
 import { QuoteFetcher } from '@/fetcher';
-import { FQuote, Id, ImportTask, ImportTaskStatus, NNumber, NType, PQuote } from '@/types';
+import { FQuote, Id, ImportTask, ImportTaskStatus, NNumber, NType, PQuote, PQuoteFind } from '@/types';
 
 export type QuoteMachineContext = {
   import: {
@@ -14,6 +15,7 @@ export type QuoteMachineContext = {
     formValues: NType<FQuote>;
     id: NType<Id>;
   };
+  searchPayload: PQuoteFind;
 };
 
 export type QuoteMachineEvents =
@@ -21,11 +23,15 @@ export type QuoteMachineEvents =
   | { formValues: FQuote; id: Id; type: 'TO_EDIT' }
   | { type: 'TO_MAIN' }
   | { type: 'TO_IMPORT' }
-  | { payload: PQuote[]; type: 'IMPORT_TASK_TO_QUEUE' };
+  | { payload: PQuote[]; type: 'IMPORT_TASK_TO_QUEUE' }
+  | { type: 'NEXT_PAGE' }
+  | { type: 'PREV_PAGE' }
+  | { payload: number; type: 'JUMP_PAGE' };
 
 const INITIAL_CONTEXT: QuoteMachineContext = {
   import: { currentTaskId: null, queue: [], tasks: {} },
   modifier: { formValues: null, id: null },
+  searchPayload: QuoteConstant.P_QUOTE_FIND_DEFAULT,
 };
 
 export const quoteMachine = setup({
@@ -51,8 +57,6 @@ export const quoteMachine = setup({
       import: ({ context }, params: { payload: PQuote[] }) => {
         const { payload } = params;
 
-        console.log('payload', payload);
-
         const _tasks = payload.reduce<QuoteMachineContext['import']['tasks']>((acc, curr, _index, _arr) => {
           const _id = uuidv4();
           return {
@@ -65,6 +69,30 @@ export const quoteMachine = setup({
           ...context.import,
           queue: Object.values(_tasks).map((item) => item.id),
           tasks: _tasks,
+        };
+      },
+    }),
+    JUMP_PAGE: assign({
+      searchPayload: ({ context }, params: { payload: number }) => {
+        return {
+          ...context.searchPayload,
+          page: params.payload,
+        };
+      },
+    }),
+    NEXT_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page + 1 : context.searchPayload.page,
+        };
+      },
+    }),
+    PREV_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page - 1 : context.searchPayload.page,
         };
       },
     }),
@@ -179,6 +207,18 @@ export const quoteMachine = setup({
     },
     MAIN: {
       on: {
+        JUMP_PAGE: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'JUMP_PAGE',
+          },
+        },
+        NEXT_PAGE: {
+          actions: { type: 'NEXT_PAGE' },
+        },
+        PREV_PAGE: {
+          actions: { type: 'PREV_PAGE' },
+        },
         TO_CREATE: { target: 'CREATE' },
         TO_EDIT: {
           actions: assign({

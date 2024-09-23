@@ -1,14 +1,18 @@
 import { Prisma } from '@prisma/client';
 
+import { CommonConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { QuoteTransformer } from '@/transformer';
-import { DQuote, Id, MQuote, NType } from '@/types';
+import { DQuote, Id, MQuote, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
 const queryObj: Prisma.QuoteSelect = {
   author: true,
   id: true,
   quote: true,
 };
+
+const sortObj: Prisma.QuoteOrderByWithRelationInput[] = [{ createdAt: Prisma.SortOrder.desc }];
 
 export abstract class QuoteRepository {
   public static async FindAll(): Promise<MQuote[]> {
@@ -32,6 +36,27 @@ export abstract class QuoteRepository {
     } else {
       return QuoteTransformer.DMQuoteTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MQuote>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.quote.count(),
+      prisma.quote.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((asset) => QuoteTransformer.DMQuoteTransformer(asset));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   // ref: https://github.com/prisma/prisma/discussions/5886

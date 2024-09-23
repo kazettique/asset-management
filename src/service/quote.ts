@@ -1,5 +1,6 @@
+import { CommonConstant } from '@/constant';
 import { QuoteRepository } from '@/repository';
-import { Id, MQuote, NType } from '@/types';
+import { Id, MQuote, NType, PaginationBase } from '@/types';
 
 export abstract class QuoteService {
   public static async FindAll(): Promise<MQuote[]> {
@@ -8,6 +9,13 @@ export abstract class QuoteService {
 
   public static async Find(id: Id): Promise<NType<MQuote>> {
     return await QuoteRepository.Find(id);
+  }
+
+  public static async FindMany(
+    page: number = CommonConstant.DEFAULT_PAGE,
+    pageSize: number = CommonConstant.DEFAULT_PAGE_SIZE,
+  ): Promise<PaginationBase<MQuote>> {
+    return await QuoteRepository.FindMany(page, pageSize);
   }
 
   public static async FindRandom(): Promise<NType<MQuote>> {

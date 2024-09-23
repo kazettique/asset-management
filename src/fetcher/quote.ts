@@ -1,7 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { GeneralResponse, Id, MQuote, PQuote, VQuote } from '@/types';
+import { QuoteTransformer } from '@/transformer';
+import { GeneralResponse, Id, MQuote, PaginationBase, PQuote, PQuoteFind, VQuote } from '@/types';
 
 @backendImplements()
 export abstract class QuoteFetcher {
@@ -17,6 +18,17 @@ export abstract class QuoteFetcher {
     const res = await fetch('/api/setting/quotes/' + id);
 
     const data = (await res.json()) as GeneralResponse<VQuote>;
+
+    return data;
+  }
+
+  public static async FindMany(payload: PQuoteFind): Promise<PaginationBase<MQuote>> {
+    const res = await fetch(
+      '/api/setting/quotes?' +
+        new URLSearchParams(QuoteTransformer.PQuoteFindQueryStringTransformer(payload)).toString(),
+    );
+
+    const data = (await res.json()) as PaginationBase<MQuote>;
 
     return data;
   }

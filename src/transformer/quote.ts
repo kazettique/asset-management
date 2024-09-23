@@ -1,4 +1,4 @@
-import { DQuote, FQuote, MQuote, VQuote, VQuoteTable } from '@/types';
+import { DQuote, FQuote, MQuote, PQuoteFind, VQuote, VQuoteTable } from '@/types';
 
 export abstract class QuoteTransformer {
   public static DMQuoteTransformer(src: DQuote): MQuote {
@@ -20,6 +20,13 @@ export abstract class QuoteTransformer {
     return {
       author: src.author,
       quote: src.quote,
+    };
+  }
+
+  public static PQuoteFindQueryStringTransformer(src: PQuoteFind): Record<string, string> {
+    return {
+      page: String(src.page),
+      pageSize: String(src.pageSize),
     };
   }
 }
