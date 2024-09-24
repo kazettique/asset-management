@@ -201,3 +201,13 @@ model Quote {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Setting {
+  id String @id @default(uuid())
+
+  key   String @db.TinyText
+  value Json   @db.Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
