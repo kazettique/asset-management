@@ -1,4 +1,4 @@
-import { MBrand, MCategory, MMethod, MOwner, MPlace, MPlatform, MTag } from '@/types';
+import { MBrand, MCategory, MMethod, MOwner, MPlace, MPlatform, MSetting, MTag } from '@/types';
 
 export interface VSettingOptions {
   brands: MBrand[];
@@ -10,3 +10,5 @@ export interface VSettingOptions {
   startMethods: MMethod[];
   tags: MTag[];
 }
+
+export type VSetting = MSetting;

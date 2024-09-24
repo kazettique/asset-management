@@ -9,3 +9,20 @@ export interface MSettingOptions {
   platforms: MPlatform[];
   tags: MTag[];
 }
+
+export type MSettingDisplayForex = {
+  key: 'displayForex';
+  value: string;
+};
+
+export type MSettingCurrencyOptionList = {
+  key: 'currencyOptionList';
+  value: string[];
+};
+
+export type MSettingShowCensorAsset = {
+  key: 'showCensorAsset';
+  value: boolean;
+};
+
+export type MSetting = MSettingDisplayForex | MSettingCurrencyOptionList | MSettingShowCensorAsset;
