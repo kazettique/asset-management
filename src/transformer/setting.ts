@@ -1,7 +1,7 @@
 import { MethodType } from '@prisma/client';
 
 import {
-  DSetting,
+  DSettingOptions,
   FSettingOptions,
   MBrand,
   MCategory,
@@ -9,9 +9,9 @@ import {
   MOwner,
   MPlace,
   MPlatform,
-  MSetting,
+  MSettingOptions,
   MTag,
-  VSetting,
+  VSettingOptions,
 } from '@/types';
 
 import { BrandTransformer } from './brand';
@@ -23,7 +23,7 @@ import { PlatformTransformer } from './platform';
 import { TagTransformer } from './tag';
 
 export abstract class SettingTransformer {
-  public static DMSettingTransformer(src: DSetting): MSetting {
+  public static DMSettingOptionsTransformer(src: DSettingOptions): MSettingOptions {
     return {
       brands: src.brands.map((item) => BrandTransformer.DMBrandTransformer(item)),
       categories: src.categories.map((item) => CategoryTransformer.DMCategoryTransformer(item)),
@@ -35,7 +35,7 @@ export abstract class SettingTransformer {
     };
   }
 
-  public static MVSettingTransformer(src: MSetting): VSetting {
+  public static MVSettingOptionsTransformer(src: MSettingOptions): VSettingOptions {
     return {
       brands: src.brands,
       categories: src.categories,
@@ -48,7 +48,7 @@ export abstract class SettingTransformer {
     };
   }
 
-  public static FSettingOptionsTransformer(src: VSetting): FSettingOptions {
+  public static FSettingOptionsTransformer(src: VSettingOptions): FSettingOptions {
     const parseOptions = (_item: MBrand | MCategory | MMethod | MOwner | MPlace | MPlatform | MTag) => ({
       label: _item.name,
       value: _item.id,

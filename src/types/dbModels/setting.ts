@@ -1,6 +1,6 @@
 import { DBrand, DCategory, DMethod, DOwner, DPlace, DTag } from '@/types';
 
-export interface DSetting {
+export interface DSettingOptions {
   brands: DBrand[];
   categories: DCategory[];
   methods: DMethod[];

@@ -16,10 +16,10 @@ import {
   PlatformTransformer,
   TagTransformer,
 } from '@/transformer';
-import { MSetting } from '@/types';
+import { MSettingOptions } from '@/types';
 
 export abstract class SettingService {
-  public static async FindAll(): Promise<MSetting> {
+  public static async FindAll(): Promise<MSettingOptions> {
     const brands = await BrandRepository.FindAll();
     const categories = await CategoryRepository.FindAll();
     const methods = await MethodRepository.FindAll();

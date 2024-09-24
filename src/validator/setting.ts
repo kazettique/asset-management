@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DSetting, MSetting, VSetting } from '@/types';
+import { DSettingOptions, MSettingOptions, VSettingOptions } from '@/types';
 
 import { BrandValidator } from './brand';
 import { CategoryValidator } from './category';
@@ -11,7 +11,7 @@ import { PlatformValidator } from './platform';
 import { TagValidator } from './tag';
 
 export abstract class SettingValidator {
-  public static readonly DSettingValidator: z.ZodSchema<DSetting> = z.object({
+  public static readonly DSettingOptionsValidator: z.ZodSchema<DSettingOptions> = z.object({
     brands: BrandValidator.DBrandValidator.array(),
     categories: CategoryValidator.DCategoryValidator.array(),
     methods: MethodValidator.DMethodValidator.array(),
@@ -20,7 +20,7 @@ export abstract class SettingValidator {
     tags: TagValidator.DTagValidator.array(),
   });
 
-  public static readonly MSettingValidator: z.ZodSchema<MSetting> = z.object({
+  public static readonly MSettingOptionsValidator: z.ZodSchema<MSettingOptions> = z.object({
     brands: BrandValidator.MBrandValidator.array(),
     categories: CategoryValidator.MCategoryValidator.array(),
     methods: MethodValidator.MMethodValidator.array(),
@@ -30,7 +30,7 @@ export abstract class SettingValidator {
     tags: TagValidator.MTagValidator.array(),
   });
 
-  public static readonly VSettingValidator: z.ZodSchema<VSetting> = z.object({
+  public static readonly VSettingOptionsValidator: z.ZodSchema<VSettingOptions> = z.object({
     brands: BrandValidator.MBrandValidator.array(),
     categories: CategoryValidator.MCategoryValidator.array(),
     endMethods: MethodValidator.MMethodValidator.array(),
