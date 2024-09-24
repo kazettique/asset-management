@@ -1,12 +1,17 @@
 import { AssetRepository } from '@/repository';
+import { DashboardTransformer } from '@/transformer';
 import { MDashboardAggregate, MDashboardCalendar } from '@/types';
 
 export abstract class DashboardService {
   public static async FindAggregate(): Promise<MDashboardAggregate> {
-    return await AssetRepository.FindAggregate();
+    const raw = await AssetRepository.FindAggregate();
+
+    return DashboardTransformer.DMDashboardAggregateTransformer(raw);
   }
 
   public static async FindAssetInMonthInterval(currentDate: Date): Promise<MDashboardCalendar> {
-    return await AssetRepository.FindAssetInMonthInterval(currentDate);
+    const raw = await AssetRepository.FindAssetInMonthInterval(currentDate);
+
+    return DashboardTransformer.DMDashboardCalendarTransformer(raw);
   }
 }

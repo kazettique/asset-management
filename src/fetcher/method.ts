@@ -1,62 +1,76 @@
 'use client';
 
+import { ofetch } from 'ofetch';
+
 import { backendImplements } from '@/decorator';
-import { CommonTransformer } from '@/transformer';
 import { FMethod, GeneralResponse, Id, MMethod, PaginationBase, PFindPagination, VMethod } from '@/types';
+
+import { FetchOptionFactory } from './factory';
+
+const API_URL: string = 'setting/methods';
 
 @backendImplements()
 export abstract class MethodFetcher {
   public static async FindAll(): Promise<GeneralResponse<VMethod[]>> {
-    const res = await fetch('/api/setting/methods');
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAll.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VMethod[]>;
-
-    return data;
+    return await ofetch<GeneralResponse<VMethod[]>>(API_URL, fetchOption);
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VMethod>> {
-    const res = await fetch('/api/setting/methods/' + id);
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Find.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VMethod>;
-
-    return data;
+    return await ofetch<GeneralResponse<VMethod>>(`${API_URL}/${id}`, fetchOption);
   }
 
-  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MMethod>> {
-    const res = await fetch(
-      '/api/setting/methods?' +
-        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
-    );
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<VMethod>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindMany.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+      query: payload,
+    });
 
-    const data = (await res.json()) as PaginationBase<MMethod>;
-
-    return data;
+    return await ofetch<PaginationBase<VMethod>>(API_URL, fetchOption);
   }
 
   public static async Create(payload: FMethod): Promise<GeneralResponse<VMethod>> {
-    const res = await fetch('/api/setting/methods', { body: JSON.stringify(payload), method: 'POST' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Create.name,
+      apiType: 'INTERNAL',
+      body: payload,
+      method: 'POST',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VMethod>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VMethod>>(API_URL, fetchOption);
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VMethod>> {
-    const res = await fetch('/api/setting/methods/' + id, { method: 'DELETE' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Delete.name,
+      apiType: 'INTERNAL',
+      method: 'DELETE',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VMethod>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VMethod>>(`${API_URL}/${id}`, fetchOption);
   }
 
   public static async Update(payload: FMethod, id: MMethod['id']): Promise<GeneralResponse<VMethod>> {
-    const res = await fetch('/api/setting/methods/' + id, {
-      body: JSON.stringify(payload),
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Update.name,
+      apiType: 'INTERNAL',
+      body: payload,
       method: 'PUT',
     });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VMethod>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VMethod>>(`${API_URL}/${id}`, fetchOption);
   }
 }

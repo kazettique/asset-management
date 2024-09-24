@@ -1,62 +1,76 @@
 'use client';
 
+import { ofetch } from 'ofetch';
+
 import { backendImplements } from '@/decorator';
-import { CommonTransformer } from '@/transformer';
 import { FBrand, GeneralResponse, Id, MBrand, PaginationBase, PFindPagination, VBrand } from '@/types';
+
+import { FetchOptionFactory } from './factory';
+
+const API_URL: string = 'setting/brands';
 
 @backendImplements()
 export abstract class BrandFetcher {
   public static async FindAll(): Promise<GeneralResponse<VBrand[]>> {
-    const res = await fetch('/api/setting/brands');
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAll.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VBrand[]>;
-
-    return data;
+    return await ofetch<GeneralResponse<VBrand[]>>(API_URL, fetchOption);
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/brands' + id);
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Find.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VBrand>;
-
-    return data;
+    return await ofetch<GeneralResponse<VBrand>>(`${API_URL}/${id}`, fetchOption);
   }
 
-  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MBrand>> {
-    const res = await fetch(
-      '/api/setting/brands?' +
-        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
-    );
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<VBrand>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindMany.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+      query: payload,
+    });
 
-    const data = (await res.json()) as PaginationBase<MBrand>;
-
-    return data;
+    return await ofetch<PaginationBase<VBrand>>(API_URL, fetchOption);
   }
 
   public static async Create(payload: FBrand): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/brands', { body: JSON.stringify(payload), method: 'POST' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Create.name,
+      apiType: 'INTERNAL',
+      body: payload,
+      method: 'POST',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VBrand>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VBrand>>(API_URL, fetchOption);
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/brands/' + id, { method: 'DELETE' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Delete.name,
+      apiType: 'INTERNAL',
+      method: 'DELETE',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VBrand>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VBrand>>(`${API_URL}/${id}`, fetchOption);
   }
 
   public static async Update(payload: FBrand, id: MBrand['id']): Promise<GeneralResponse<VBrand>> {
-    const res = await fetch('/api/setting/brands/' + id, {
-      body: JSON.stringify(payload),
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Update.name,
+      apiType: 'INTERNAL',
+      body: payload,
       method: 'PUT',
     });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VBrand>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VBrand>>(`${API_URL}/${id}`, fetchOption);
   }
 }

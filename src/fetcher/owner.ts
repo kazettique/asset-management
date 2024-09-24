@@ -1,62 +1,76 @@
 'use client';
 
+import { ofetch } from 'ofetch';
+
 import { backendImplements } from '@/decorator';
-import { CommonTransformer } from '@/transformer';
 import { FOwner, GeneralResponse, Id, MOwner, PaginationBase, PFindPagination, VOwner } from '@/types';
+
+import { FetchOptionFactory } from './factory';
+
+const API_URL: string = 'setting/owners';
 
 @backendImplements()
 export abstract class OwnerFetcher {
   public static async FindAll(): Promise<GeneralResponse<VOwner[]>> {
-    const res = await fetch('/api/setting/owners');
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAll.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VOwner[]>;
-
-    return data;
+    return await ofetch<GeneralResponse<VOwner[]>>(API_URL, fetchOption);
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VOwner>> {
-    const res = await fetch('/api/setting/owners/' + id);
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Find.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VOwner>;
-
-    return data;
+    return await ofetch<GeneralResponse<VOwner>>(`${API_URL}/${id}`, fetchOption);
   }
 
-  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MOwner>> {
-    const res = await fetch(
-      '/api/setting/owners?' +
-        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
-    );
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<VOwner>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindMany.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+      query: payload,
+    });
 
-    const data = (await res.json()) as PaginationBase<MOwner>;
-
-    return data;
+    return await ofetch<PaginationBase<VOwner>>(API_URL, fetchOption);
   }
 
   public static async Create(payload: FOwner): Promise<GeneralResponse<VOwner>> {
-    const res = await fetch('/api/setting/owners', { body: JSON.stringify(payload), method: 'POST' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Create.name,
+      apiType: 'INTERNAL',
+      body: payload,
+      method: 'POST',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VOwner>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VOwner>>(API_URL, fetchOption);
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VOwner>> {
-    const res = await fetch('/api/setting/owners/' + id, { method: 'DELETE' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Delete.name,
+      apiType: 'INTERNAL',
+      method: 'DELETE',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VOwner>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VOwner>>(`${API_URL}/${id}`, fetchOption);
   }
 
   public static async Update(payload: FOwner, id: MOwner['id']): Promise<GeneralResponse<VOwner>> {
-    const res = await fetch('/api/setting/owners/' + id, {
-      body: JSON.stringify(payload),
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Update.name,
+      apiType: 'INTERNAL',
+      body: payload,
       method: 'PUT',
     });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VOwner>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VOwner>>(`${API_URL}/${id}`, fetchOption);
   }
 }

@@ -293,7 +293,7 @@ export abstract class AssetTransformer {
     };
   }
 
-  public static PAssetFindQueryStringTransformer(src: PAssetFind): Record<string, string> {
+  public static PAssetFindQueryStringTransformer(src: PAssetFind): Record<string, any> {
     // TODO: need refactor this
     const parsedFilters = Object.entries(src.filters).reduce<string>((acc, curr, _index, _arr) => {
       const [key, value] = curr;
@@ -314,8 +314,8 @@ export abstract class AssetTransformer {
 
     return {
       filters: parsedFilters,
-      page: String(src.page),
-      pageSize: String(src.pageSize),
+      page: src.page,
+      pageSize: src.pageSize,
     };
   }
 

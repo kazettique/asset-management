@@ -3,31 +3,64 @@ import dayjs from 'dayjs';
 
 import { CommonConstant } from '@/constant';
 import { ForexRepository } from '@/repository';
-import { Id, MForex, NType, Price } from '@/types';
+import { ForexTransformer } from '@/transformer';
+import { Id, MForex, NType, PaginationBase, Price } from '@/types';
+import { Utils } from '@/utils';
 
 import { ExternalForexService } from './externalForex';
 
 export abstract class ForexService {
   public static async FindAll(): Promise<MForex[]> {
-    return await ForexRepository.FindAll();
+    const raw = await ForexRepository.FindAll();
+
+    return raw.map((forex) => ForexTransformer.DMForexTransformer(forex));
   }
 
-  // TODO: add find many later (with pagination)
+  public static async FindMany(
+    page: number = CommonConstant.DEFAULT_PAGE,
+    pageSize: number = CommonConstant.DEFAULT_PAGE_SIZE,
+  ): Promise<PaginationBase<MForex>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await ForexRepository.FindMany(pageSize, skipCount);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    return {
+      data: rawData.map((quote) => ForexTransformer.DMForexTransformer(quote)),
+      page,
+      totalCount,
+      totalPage,
+    };
+  }
 
   public static async Find(date: Date, targetCurrency: CurrencyCode): Promise<NType<MForex>> {
-    return await ForexRepository.Find(date, targetCurrency);
+    const raw = await ForexRepository.Find(date, targetCurrency);
+
+    if (raw === null) {
+      return raw;
+    } else {
+      return ForexTransformer.DMForexTransformer(raw);
+    }
   }
 
   public static async Create(date: Date, targetCurrency: string, rate: number): Promise<MForex> {
-    return await ForexRepository.Create(date, targetCurrency, rate);
+    const raw = await ForexRepository.Create(date, targetCurrency, rate);
+
+    return ForexTransformer.DMForexTransformer(raw);
   }
 
   public static async Delete(id: Id): Promise<MForex> {
-    return await ForexRepository.Delete(id);
+    const raw = await ForexRepository.Delete(id);
+
+    return ForexTransformer.DMForexTransformer(raw);
   }
 
   public static async Update(id: MForex['id'], date: Date, targetCurrency: string, rate: number): Promise<MForex> {
-    return await ForexRepository.Update(id, date, targetCurrency, rate);
+    const raw = await ForexRepository.Update(id, date, targetCurrency, rate);
+
+    return ForexTransformer.DMForexTransformer(raw);
   }
 
   public static async Search(

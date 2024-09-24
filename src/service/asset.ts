@@ -1,6 +1,8 @@
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
+import { CommonConstant } from '@/constant';
 import { AssetRepository } from '@/repository';
+import { AssetTransformer } from '@/transformer';
 import {
   AssetMeta,
   DTag,
@@ -14,25 +16,54 @@ import {
   PAssetFind,
   Price,
 } from '@/types';
+import { Utils } from '@/utils';
 
 import { ForexService } from './forex';
 import { OwnershipHistoryService } from './ownershipHistory';
 
 export abstract class AssetService {
   public static async FindAll(): Promise<MAsset[]> {
-    return await AssetRepository.FindAll();
+    const raw = await AssetRepository.FindAll();
+
+    return raw.map((asset) => AssetTransformer.DMAssetTransformer(asset));
   }
 
-  public static async FindMany(payload: PAssetFind): Promise<PaginationBase<MAsset>> {
-    return await AssetRepository.FindMany(payload);
+  public static async FindMany({
+    page = CommonConstant.DEFAULT_PAGE,
+    pageSize = CommonConstant.DEFAULT_PAGE_SIZE,
+    filters,
+    sort,
+  }: PAssetFind): Promise<PaginationBase<MAsset>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await AssetRepository.FindMany(pageSize, filters, sort, skipCount);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((asset) => AssetTransformer.DMAssetTransformer(asset));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Find(id: Id): Promise<NType<MAsset>> {
-    return await AssetRepository.Find(id);
+    const raw = await AssetRepository.Find(id);
+
+    if (raw === null) {
+      return raw;
+    } else {
+      return AssetTransformer.DMAssetTransformer(raw);
+    }
   }
 
   public static async FindOwnership(id: Id): Promise<NType<MAssetOwnership>> {
-    return await AssetRepository.FindOwnership(id);
+    const raw = await AssetRepository.FindOwnership(id);
+
+    if (raw === null) {
+      return raw;
+    } else {
+      return AssetTransformer.DMAssetOwnershipTransformer(raw);
+    }
   }
 
   public static async Create(
@@ -92,11 +123,13 @@ export abstract class AssetService {
       await OwnershipHistoryService.Create(id, owner.id, startDate);
     }
 
-    return createResponse;
+    return AssetTransformer.DMAssetTransformer(createResponse);
   }
 
   public static async Delete(id: Id): Promise<MAsset> {
-    return await AssetRepository.Delete(id);
+    const raw = await AssetRepository.Delete(id);
+
+    return AssetTransformer.DMAssetTransformer(raw[1]);
   }
 
   public static async Update(
@@ -141,7 +174,7 @@ export abstract class AssetService {
       await OwnershipHistoryService.Create(id, ownerId, startDate);
     }
 
-    return await AssetRepository.Update(
+    const raw = await AssetRepository.Update(
       id,
       brandId,
       categoryId,
@@ -163,5 +196,7 @@ export abstract class AssetService {
       startPriceInBaseCurrency,
       tags,
     );
+
+    return AssetTransformer.DMAssetTransformer(raw);
   }
 }

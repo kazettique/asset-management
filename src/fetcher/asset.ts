@@ -1,61 +1,79 @@
 'use client';
 
+import { ofetch } from 'ofetch';
+
 import { backendImplements } from '@/decorator';
 import { AssetTransformer } from '@/transformer';
 import { GeneralResponse, Id, MAsset, PaginationBase, PAsset, PAssetFind, VAsset } from '@/types';
 
+import { FetchOptionFactory } from './factory';
+
+const API_URL: string = 'assets';
+
 @backendImplements()
 export abstract class AssetFetcher {
   public static async FindAll(): Promise<GeneralResponse<VAsset[]>> {
-    const res = await fetch('/api/assets');
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAll.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VAsset[]>;
-
-    return data;
+    return await ofetch<GeneralResponse<VAsset[]>>(API_URL, fetchOption);
   }
 
-  public static async FindMany(payload: PAssetFind): Promise<PaginationBase<MAsset>> {
-    const res = await fetch(
-      '/api/assets?' + new URLSearchParams(AssetTransformer.PAssetFindQueryStringTransformer(payload)).toString(),
-    );
+  public static async FindMany(payload: PAssetFind): Promise<PaginationBase<VAsset>> {
+    const parseQueryString = AssetTransformer.PAssetFindQueryStringTransformer(payload);
 
-    const data = (await res.json()) as PaginationBase<MAsset>;
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindMany.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+      query: parseQueryString,
+    });
 
-    return data;
+    return await ofetch<PaginationBase<VAsset>>(API_URL, fetchOption);
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/assets/' + id);
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Find.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VAsset>;
-
-    return data;
+    return await ofetch<GeneralResponse<VAsset>>(`${API_URL}/${id}`, fetchOption);
   }
 
   public static async Create(payload: PAsset): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/assets', { body: JSON.stringify(payload), method: 'POST' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Create.name,
+      apiType: 'INTERNAL',
+      body: payload,
+      method: 'POST',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VAsset>>(API_URL, fetchOption);
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/assets/' + id, { method: 'DELETE' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Delete.name,
+      apiType: 'INTERNAL',
+      method: 'DELETE',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VAsset>>(`${API_URL}/${id}`, fetchOption);
   }
 
   public static async Update(payload: PAsset, id: MAsset['id']): Promise<GeneralResponse<VAsset>> {
-    const res = await fetch('/api/assets/' + id, {
-      body: JSON.stringify(payload),
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Update.name,
+      apiType: 'INTERNAL',
+      body: payload,
       method: 'PUT',
     });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VAsset>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VAsset>>(`${API_URL}/${id}`, fetchOption);
   }
 }

@@ -1,62 +1,76 @@
 'use client';
 
+import { ofetch } from 'ofetch';
+
 import { backendImplements } from '@/decorator';
-import { CommonTransformer } from '@/transformer';
-import { FPlace, GeneralResponse, Id, MPlace, MPlatform, PaginationBase, PFindPagination, VPlace } from '@/types';
+import { FPlace, GeneralResponse, Id, MPlace, PaginationBase, PFindPagination, VPlatform } from '@/types';
+
+import { FetchOptionFactory } from './factory';
+
+const API_URL: string = 'setting/platforms';
 
 @backendImplements()
 export abstract class PlatformFetcher {
-  public static async FindAll(): Promise<GeneralResponse<VPlace[]>> {
-    const res = await fetch('/api/setting/platforms');
+  public static async FindAll(): Promise<GeneralResponse<VPlatform[]>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAll.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VPlace[]>;
-
-    return data;
+    return await ofetch<GeneralResponse<VPlatform[]>>(API_URL, fetchOption);
   }
 
-  public static async Find(id: Id): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/platforms' + id);
+  public static async Find(id: Id): Promise<GeneralResponse<VPlatform>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Find.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VPlace>;
-
-    return data;
+    return await ofetch<GeneralResponse<VPlatform>>(`${API_URL}/${id}`, fetchOption);
   }
 
-  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MPlatform>> {
-    const res = await fetch(
-      '/api/setting/platforms?' +
-        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
-    );
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<VPlatform>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindMany.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+      query: payload,
+    });
 
-    const data = (await res.json()) as PaginationBase<MPlatform>;
-
-    return data;
+    return await ofetch<PaginationBase<VPlatform>>(API_URL, fetchOption);
   }
 
-  public static async Create(payload: FPlace): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/platforms', { body: JSON.stringify(payload), method: 'POST' });
+  public static async Create(payload: FPlace): Promise<GeneralResponse<VPlatform>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Create.name,
+      apiType: 'INTERNAL',
+      body: payload,
+      method: 'POST',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VPlatform>>(API_URL, fetchOption);
   }
 
-  public static async Delete(id: Id): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/platforms/' + id, { method: 'DELETE' });
+  public static async Delete(id: Id): Promise<GeneralResponse<VPlatform>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Delete.name,
+      apiType: 'INTERNAL',
+      method: 'DELETE',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VPlatform>>(`${API_URL}/${id}`, fetchOption);
   }
 
-  public static async Update(payload: FPlace, id: MPlace['id']): Promise<GeneralResponse<VPlace>> {
-    const res = await fetch('/api/setting/platforms/' + id, {
-      body: JSON.stringify(payload),
+  public static async Update(payload: FPlace, id: MPlace['id']): Promise<GeneralResponse<VPlatform>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Update.name,
+      apiType: 'INTERNAL',
+      body: payload,
       method: 'PUT',
     });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VPlace>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VPlatform>>(`${API_URL}/${id}`, fetchOption);
   }
 }

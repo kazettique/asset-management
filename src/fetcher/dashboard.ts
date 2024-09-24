@@ -1,23 +1,32 @@
 'use client';
 
+import { ofetch } from 'ofetch';
+
 import { GeneralResponse, VDashboardAggregate, VDashboardCalendar } from '@/types';
+
+import { FetchOptionFactory } from './factory';
+
+const API_URL: string = 'dashboard';
 
 export abstract class DashboardFetcher {
   public static async FindAggregate(): Promise<GeneralResponse<VDashboardAggregate>> {
-    const res = await fetch('/api/dashboard');
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAggregate.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VDashboardAggregate>;
-
-    return data;
+    return await ofetch<GeneralResponse<VDashboardAggregate>>(API_URL, fetchOption);
   }
 
   public static async FindCalendar(currentDate: Date): Promise<GeneralResponse<VDashboardCalendar>> {
-    const res = await fetch(
-      '/api/dashboard/calendar?' + new URLSearchParams({ currentDate: currentDate.toDateString() }).toString(),
-    );
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAggregate.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+      query: { currentDate: currentDate.toDateString() },
+    });
 
-    const data = (await res.json()) as GeneralResponse<VDashboardCalendar>;
-
-    return data;
+    return await ofetch<GeneralResponse<VDashboardCalendar>>(API_URL, fetchOption);
   }
 }

@@ -3,8 +3,7 @@ import { CurrencyCode } from 'currency-codes-ts/dist/types';
 import dayjs from 'dayjs';
 
 import { prisma } from '@/lib/db';
-import { ForexTransformer } from '@/transformer';
-import { DForex, Id, MForex, NType } from '@/types';
+import { DForex, Id, NType } from '@/types';
 
 const queryObj: Prisma.ForexSelect = {
   date: true,
@@ -13,21 +12,32 @@ const queryObj: Prisma.ForexSelect = {
   targetCurrency: true,
 };
 
+const sortObj: Prisma.ForexOrderByWithAggregationInput[] = [
+  { date: Prisma.SortOrder.asc },
+  { createdAt: Prisma.SortOrder.asc },
+];
+
 export abstract class ForexRepository {
-  public static async FindAll(): Promise<MForex[]> {
-    const rawData: DForex[] = await prisma.forex.findMany({
+  public static async FindAll(): Promise<DForex[]> {
+    return await prisma.forex.findMany({
       select: queryObj,
     });
-
-    const parsedData = rawData.map((forex) => ForexTransformer.DMForexTransformer(forex));
-
-    return parsedData;
   }
 
-  // TODO: add find many later (with pagination)
+  public static async FindMany(pageSize: number, skipCount: number): Promise<[number, DForex[]]> {
+    return await prisma.$transaction([
+      prisma.forex.count(),
+      prisma.forex.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+  }
 
-  public static async Find(date: Date, targetCurrency: CurrencyCode): Promise<NType<MForex>> {
-    const rawData: NType<DForex> = await prisma.forex.findFirst({
+  public static async Find(date: Date, targetCurrency: CurrencyCode): Promise<NType<DForex>> {
+    return await prisma.forex.findFirst({
       select: queryObj,
       where: {
         date: {
@@ -38,39 +48,27 @@ export abstract class ForexRepository {
         },
       },
     });
-
-    if (rawData === null) {
-      return rawData;
-    } else {
-      return ForexTransformer.DMForexTransformer(rawData);
-    }
   }
 
-  public static async Create(date: Date, targetCurrency: string, rate: number): Promise<MForex> {
-    const rawData = await prisma.forex.create({
+  public static async Create(date: Date, targetCurrency: string, rate: number): Promise<DForex> {
+    return await prisma.forex.create({
       data: { date: dayjs(date).startOf('date').toDate(), rate, targetCurrency },
       select: queryObj,
     });
-
-    return ForexTransformer.DMForexTransformer(rawData);
   }
 
-  public static async Delete(id: Id): Promise<MForex> {
-    const rawData = await prisma.forex.delete({
+  public static async Delete(id: Id): Promise<DForex> {
+    return await prisma.forex.delete({
       select: queryObj,
       where: { id },
     });
-
-    return ForexTransformer.DMForexTransformer(rawData);
   }
 
-  public static async Update(id: MForex['id'], date: Date, targetCurrency: string, rate: number): Promise<MForex> {
-    const rawData = await prisma.forex.update({
+  public static async Update(id: DForex['id'], date: Date, targetCurrency: string, rate: number): Promise<DForex> {
+    return await prisma.forex.update({
       data: { date, rate, targetCurrency },
       select: queryObj,
       where: { id },
     });
-
-    return ForexTransformer.DMForexTransformer(rawData);
   }
 }

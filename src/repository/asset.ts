@@ -1,9 +1,7 @@
 import { Prisma } from '@prisma/client';
 import dayjs from 'dayjs';
 
-import { CommonConstant } from '@/constant';
 import { prisma } from '@/lib/db';
-import { AssetTransformer, DashboardTransformer } from '@/transformer';
 import {
   AssetLifeStatus,
   AssetMeta,
@@ -13,20 +11,12 @@ import {
   DDashboardCalendar,
   DTag,
   Id,
-  MAsset,
-  MAssetOwnership,
-  MDashboardAggregate,
-  MDashboardCalendar,
   Name,
   NString,
   NType,
-  PaginationBase,
   PAssetFind,
   Price,
 } from '@/types';
-import { Utils } from '@/utils';
-
-import { CategoryRepository } from './category';
 
 const queryObj: Prisma.AssetSelect = {
   brand: {
@@ -68,25 +58,19 @@ const queryObj: Prisma.AssetSelect = {
 };
 
 export abstract class AssetRepository {
-  public static async FindAll(): Promise<MAsset[]> {
-    const rawData: DAsset[] = await prisma.asset.findMany({
+  public static async FindAll(): Promise<DAsset[]> {
+    return await prisma.asset.findMany({
       select: queryObj,
     });
-
-    const parsedData = rawData.map((asset) => AssetTransformer.DMAssetTransformer(asset));
-
-    return parsedData;
   }
 
   // ref: https://github.com/prisma/prisma/discussions/3087
-  public static async FindMany({
-    page = CommonConstant.DEFAULT_PAGE,
-    pageSize = CommonConstant.DEFAULT_PAGE_SIZE,
-    filters,
-    sort,
-  }: PAssetFind): Promise<PaginationBase<MAsset>> {
-    const skipCount = Utils.CalculateSkipCount(page, pageSize);
-
+  public static async FindMany(
+    pageSize: PAssetFind['pageSize'],
+    filters: PAssetFind['filters'],
+    sort: PAssetFind['sort'],
+    skipCount: number,
+  ): Promise<[number, DAsset[]]> {
     const {
       categories,
       brands,
@@ -138,7 +122,7 @@ export abstract class AssetRepository {
       sortObj.unshift({ [sort.key]: sort.order });
     }
 
-    const raw = await prisma.$transaction([
+    return await prisma.$transaction([
       prisma.asset.count({ where: filterObj }),
       prisma.asset.findMany({
         orderBy: sortObj,
@@ -148,39 +132,20 @@ export abstract class AssetRepository {
         where: filterObj,
       }),
     ]);
-
-    const [totalCount, rawData] = raw;
-    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
-
-    const parsedData = rawData.map((asset) => AssetTransformer.DMAssetTransformer(asset));
-
-    return { data: parsedData, page, totalCount, totalPage };
   }
 
-  public static async Find(id: Id): Promise<NType<MAsset>> {
-    const rawData: NType<DAsset> = await prisma.asset.findUnique({
+  public static async Find(id: Id): Promise<NType<DAsset>> {
+    return await prisma.asset.findUnique({
       select: queryObj,
       where: { id },
     });
-
-    if (rawData === null) {
-      return rawData;
-    } else {
-      return AssetTransformer.DMAssetTransformer(rawData);
-    }
   }
 
-  public static async FindOwnership(id: Id): Promise<NType<MAssetOwnership>> {
-    const rawData: NType<DAssetOwnership> = await prisma.asset.findUnique({
+  public static async FindOwnership(id: Id): Promise<NType<DAssetOwnership>> {
+    return await prisma.asset.findUnique({
       select: { id: true, ownerId: true },
       where: { id },
     });
-
-    if (rawData === null) {
-      return rawData;
-    } else {
-      return AssetTransformer.DMAssetOwnershipTransformer(rawData);
-    }
   }
 
   public static async Create(
@@ -206,8 +171,8 @@ export abstract class AssetRepository {
       connect: Pick<DTag, 'id'>[];
       create: { name: string }[];
     },
-  ): Promise<MAsset> {
-    const rawData = await prisma.asset.create({
+  ): Promise<DAsset> {
+    return await prisma.asset.create({
       data: {
         brandId,
         categoryId,
@@ -231,12 +196,10 @@ export abstract class AssetRepository {
       },
       select: queryObj,
     });
-
-    return AssetTransformer.DMAssetTransformer(rawData);
   }
 
-  public static async Delete(id: Id): Promise<MAsset> {
-    const transaction = await prisma.$transaction([
+  public static async Delete(id: Id): Promise<[Prisma.BatchPayload, DAsset]> {
+    return await prisma.$transaction([
       prisma.ownershipHistory.deleteMany({
         where: { assetId: id },
       }),
@@ -245,12 +208,10 @@ export abstract class AssetRepository {
         where: { id },
       }),
     ]);
-
-    return AssetTransformer.DMAssetTransformer(transaction[1]);
   }
 
   public static async Update(
-    id: MAsset['id'],
+    id: DAsset['id'],
     brandId: Id,
     categoryId: Id,
     comment: NString,
@@ -273,8 +234,8 @@ export abstract class AssetRepository {
       connect: Pick<DTag, 'id'>[];
       create: { name: string }[];
     },
-  ): Promise<MAsset> {
-    const rawData = await prisma.asset.update({
+  ): Promise<DAsset> {
+    return await prisma.asset.update({
       data: {
         brandId,
         categoryId,
@@ -299,11 +260,9 @@ export abstract class AssetRepository {
       select: queryObj,
       where: { id },
     });
-
-    return AssetTransformer.DMAssetTransformer(rawData);
   }
 
-  public static async FindAggregate(): Promise<MDashboardAggregate> {
+  public static async FindAggregate(): Promise<DDashboardAggregate> {
     const liveQueryObj: Prisma.AssetWhereInput = {
       OR: [
         {
@@ -377,10 +336,10 @@ export abstract class AssetRepository {
       ranking: transaction[1],
     };
 
-    return DashboardTransformer.DMDashboardAggregateTransformer(rawData);
+    return rawData;
   }
 
-  public static async FindAssetInMonthInterval(currentDate: Date): Promise<MDashboardCalendar> {
+  public static async FindAssetInMonthInterval(currentDate: Date): Promise<DDashboardCalendar> {
     const rawData = await prisma.$queryRaw`
     Select asset.name, asset.startDate, asset.startPrice, forex.targetCurrency, forex.rate
     FROM asset
@@ -389,6 +348,6 @@ export abstract class AssetRepository {
     ORDER BY DAY(asset.startDate) ASC
   `;
 
-    return DashboardTransformer.DMDashboardCalendarTransformer({ birthday: rawData } as DDashboardCalendar);
+    return { birthday: rawData } as DDashboardCalendar;
   }
 }

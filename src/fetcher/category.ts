@@ -1,62 +1,76 @@
 'use client';
 
+import { ofetch } from 'ofetch';
+
 import { backendImplements } from '@/decorator';
-import { CommonTransformer } from '@/transformer';
 import { FCategory, GeneralResponse, Id, MCategory, PaginationBase, PFindPagination, VCategory } from '@/types';
+
+import { FetchOptionFactory } from './factory';
+
+const API_URL: string = 'setting/categories';
 
 @backendImplements()
 export abstract class CategoryFetcher {
   public static async FindAll(): Promise<GeneralResponse<VCategory[]>> {
-    const res = await fetch('/api/setting/categories');
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindAll.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VCategory[]>;
-
-    return data;
+    return await ofetch<GeneralResponse<VCategory[]>>(API_URL, fetchOption);
   }
 
   public static async Find(id: Id): Promise<GeneralResponse<VCategory>> {
-    const res = await fetch('/api/setting/categories/' + id);
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Find.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
 
-    const data = (await res.json()) as GeneralResponse<VCategory>;
-
-    return data;
+    return await ofetch<GeneralResponse<VCategory>>(`${API_URL}/${id}`, fetchOption);
   }
 
-  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MCategory>> {
-    const res = await fetch(
-      '/api/setting/categories?' +
-        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
-    );
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<VCategory>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindMany.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+      query: payload,
+    });
 
-    const data = (await res.json()) as PaginationBase<MCategory>;
-
-    return data;
+    return await ofetch<PaginationBase<VCategory>>(API_URL, fetchOption);
   }
 
   public static async Create(payload: FCategory): Promise<GeneralResponse<VCategory>> {
-    const res = await fetch('/api/setting/categories', { body: JSON.stringify(payload), method: 'POST' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Create.name,
+      apiType: 'INTERNAL',
+      body: payload,
+      method: 'POST',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VCategory>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VCategory>>(API_URL, fetchOption);
   }
 
   public static async Delete(id: Id): Promise<GeneralResponse<VCategory>> {
-    const res = await fetch('/api/setting/categories/' + id, { method: 'DELETE' });
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Delete.name,
+      apiType: 'INTERNAL',
+      method: 'DELETE',
+    });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VCategory>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VCategory>>(`${API_URL}/${id}`, fetchOption);
   }
 
   public static async Update(payload: FCategory, id: MCategory['id']): Promise<GeneralResponse<VCategory>> {
-    const res = await fetch('/api/setting/categories/' + id, {
-      body: JSON.stringify(payload),
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.Update.name,
+      apiType: 'INTERNAL',
+      body: payload,
       method: 'PUT',
     });
 
-    const data = (await res.json()) as Promise<GeneralResponse<VCategory>>;
-
-    return data;
+    return await ofetch<GeneralResponse<VCategory>>(`${API_URL}/${id}`, fetchOption);
   }
 }

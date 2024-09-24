@@ -136,6 +136,11 @@ export abstract class Utils {
     return Math.round(price / rate);
   }
 
+  public static GetCurrentLocalISOTime(): string {
+    const tzOffset = new Date().getTimezoneOffset() * 60000; // offset in milliseconds
+    return new Date(Date.now() - tzOffset).toISOString();
+  }
+
   // public static GetCircularReplacer() {
   //   const ancestors: any[] = [];
 

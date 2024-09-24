@@ -7,6 +7,15 @@ import {
   PlatformRepository,
   TagRepository,
 } from '@/repository';
+import {
+  BrandTransformer,
+  CategoryTransformer,
+  MethodTransformer,
+  OwnerTransformer,
+  PlaceTransformer,
+  PlatformTransformer,
+  TagTransformer,
+} from '@/transformer';
 import { MSetting } from '@/types';
 
 export abstract class SettingService {
@@ -19,6 +28,14 @@ export abstract class SettingService {
     const platforms = await PlatformRepository.FindAll();
     const tags = await TagRepository.FindAll();
 
-    return { brands, categories, methods, owners, places, platforms, tags };
+    return {
+      brands: brands.map((brand) => BrandTransformer.DMBrandTransformer(brand)),
+      categories: categories.map((category) => CategoryTransformer.DMCategoryTransformer(category)),
+      methods: methods.map((method) => MethodTransformer.DMMethodTransformer(method)),
+      owners: owners.map((owner) => OwnerTransformer.DMOwnerTransformer(owner)),
+      places: places.map((place) => PlaceTransformer.DMPlaceTransformer(place)),
+      platforms: platforms.map((platform) => PlatformTransformer.DMPlatformTransformer(platform)),
+      tags: tags.map((tag) => TagTransformer.DMTagTransformer(tag)),
+    };
   }
 }
