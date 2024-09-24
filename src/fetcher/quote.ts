@@ -1,8 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { QuoteTransformer } from '@/transformer';
-import { GeneralResponse, Id, MQuote, PaginationBase, PQuote, PQuoteFind, VQuote } from '@/types';
+import { CommonTransformer, QuoteTransformer } from '@/transformer';
+import { GeneralResponse, Id, MQuote, PaginationBase, PFindPagination, PQuote, VQuote } from '@/types';
 
 @backendImplements()
 export abstract class QuoteFetcher {
@@ -22,10 +22,10 @@ export abstract class QuoteFetcher {
     return data;
   }
 
-  public static async FindMany(payload: PQuoteFind): Promise<PaginationBase<MQuote>> {
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MQuote>> {
     const res = await fetch(
       '/api/setting/quotes?' +
-        new URLSearchParams(QuoteTransformer.PQuoteFindQueryStringTransformer(payload)).toString(),
+        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
     );
 
     const data = (await res.json()) as PaginationBase<MQuote>;

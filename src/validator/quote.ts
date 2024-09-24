@@ -20,6 +20,4 @@ export abstract class QuoteValidator {
   public static readonly FQuoteImportValidator: z.ZodSchema<FQuoteImport> = z.object({
     isLegalFileData: z.literal<boolean>(true),
   });
-
-  public static readonly PQuoteFindValidator: z.ZodSchema<PQuoteFind> = CommonValidator.PFindPageValidator;
 }

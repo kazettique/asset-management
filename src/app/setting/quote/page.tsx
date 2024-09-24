@@ -1,72 +1,20 @@
 'use client';
 
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
-import { useMachine } from '@xstate/react';
-
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import Pagination from '@/components/Pagination';
 import Table, { ColumnProps } from '@/components/Table';
-import { QuoteFetcher } from '@/fetcher';
-import { quoteMachine } from '@/machines';
 import { QuoteTransformer } from '@/transformer';
-import { FQuote, Id, VQuote, VQuoteTable } from '@/types';
+import { VQuoteTable } from '@/types';
 
 import QuoteImport from './QuoteImport';
 import QuoteModifier from './QuoteModifier';
+import useQuoteData from './useQuoteData';
 
 export default function Page() {
-  const [state, send] = useMachine(quoteMachine, {});
+  const { data, isPending, onCreateSubmit, onItemDelete, onItemUpdate, refetch, send, state, tableData } =
+    useQuoteData();
 
-  const { data, isPending, refetch } = useQuery({
-    placeholderData: keepPreviousData,
-    queryFn: () => QuoteFetcher.FindMany(state.context.searchPayload),
-    queryKey: ['quoteList', state.context.searchPayload],
-  });
-
-  const createQuote = useMutation({
-    mutationFn: (payload: FQuote) => QuoteFetcher.Create(payload),
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const updateQuote = useMutation({
-    mutationFn: ({ payload, id }: { id: VQuote['id']; payload: FQuote }) => QuoteFetcher.Update(payload, id),
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const deleteQuote = useMutation({
-    mutationFn: (id: Id) => {
-      if (confirm('Confirm delete?')) {
-        return QuoteFetcher.Delete(id);
-      } else {
-        throw Error('Deletion terminated.');
-      }
-    },
-    onError: (error) => {
-      alert(error.message);
-    },
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const onItemUpdate = (quote: FQuote, id: VQuote['id']): void => {
-    updateQuote.mutate({ id, payload: quote });
-  };
-
-  const onItemDelete = (id: VQuote['id']): void => {
-    deleteQuote.mutate(id);
-  };
-
-  const onCreateSubmit = (data: FQuote) => {
-    createQuote.mutate(data);
-  };
-
-  const tableData: VQuoteTable[] = data ? data.data.map((item) => QuoteTransformer.VTQuoteTransformer(item)) : [];
   const columns: ColumnProps<VQuoteTable>[] = [
     {
       key: 'quote',
@@ -112,7 +60,7 @@ export default function Page() {
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
         <Table
-          className="h-full overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
+          className="grow overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
           data={tableData}
           columns={columns}
           isLoading={isPending}

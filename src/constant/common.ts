@@ -2,7 +2,7 @@ import { MethodType } from '@prisma/client';
 import currencyCodes from 'currency-codes-ts';
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
-import { FormOption, MenuItem, Name, SettingBase } from '@/types';
+import { FormOption, MenuItem, Name, PFindPagination, SettingBase } from '@/types';
 
 export abstract class CommonConstant {
   public static readonly MSG_DIRTY_DATA: string = 'dirty data';
@@ -122,4 +122,9 @@ export abstract class CommonConstant {
       label: item.code,
       value: item.code,
     }));
+
+  public static readonly P_FIND_PAGINATION_DEFAULT: PFindPagination = {
+    page: CommonConstant.DEFAULT_PAGE,
+    pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
+  };
 }

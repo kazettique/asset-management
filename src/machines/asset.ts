@@ -18,7 +18,7 @@ import {
   PAssetFind,
 } from '@/types';
 
-export type MachineContext = {
+export type AssetMachineContext = {
   import: {
     currentTaskId: NNumber;
     queue: number[];
@@ -31,7 +31,7 @@ export type MachineContext = {
   searchPayload: PAssetFind;
 };
 
-type MachineEvents =
+type AssetMachineEvents =
   | { type: 'TO_CREATE' }
   | { formValues: FAsset; id: Id; type: 'TO_EDIT' }
   | { type: 'TO_MAIN' }
@@ -45,7 +45,7 @@ type MachineEvents =
   | { type: 'PREV_PAGE' }
   | { payload: number; type: 'JUMP_PAGE' };
 
-const INITIAL_CONTEXT: MachineContext = {
+const INITIAL_CONTEXT: AssetMachineContext = {
   import: { currentTaskId: null, queue: [], tasks: {} },
   modifier: { formValues: null, id: null },
   searchPayload: AssetConstant.P_ASSET_FIND_DEFAULT,
@@ -74,7 +74,7 @@ export const assetMachine = setup({
       import: ({ context }, params: { payload: PAsset[] }) => {
         const { payload } = params;
 
-        const _tasks = payload.reduce<MachineContext['import']['tasks']>((acc, curr, _index, _arr) => {
+        const _tasks = payload.reduce<AssetMachineContext['import']['tasks']>((acc, curr, _index, _arr) => {
           const _id = uuidv4();
           return {
             ...acc,
@@ -153,7 +153,7 @@ export const assetMachine = setup({
     }),
   },
   actors: {
-    PROCESS_TASK: fromPromise<any, MachineContext>(async (payload) => {
+    PROCESS_TASK: fromPromise<any, AssetMachineContext>(async (payload) => {
       const { tasks, currentTaskId } = payload.input.import;
       if (currentTaskId === null) {
         throw new Error('currentTaskId must be defined');
@@ -170,8 +170,8 @@ export const assetMachine = setup({
     SHOULD_FINISH_QUEUE: ({ context }) => context.import.queue.length === 0,
   },
   types: {
-    context: {} as MachineContext,
-    events: {} as MachineEvents,
+    context: {} as AssetMachineContext,
+    events: {} as AssetMachineEvents,
   },
 }).createMachine({
   context: INITIAL_CONTEXT,

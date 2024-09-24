@@ -3,13 +3,16 @@ import { Prisma } from '@prisma/client';
 import { PlatformConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { PlatformTransformer } from '@/transformer';
-import { DPlatform, Id, MPlatform, NString, NType } from '@/types';
+import { DPlatform, Id, MPlatform, NString, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
 const queryObj: Prisma.PlatformSelect = {
   comment: true,
   id: true,
   name: true,
 };
+
+const sortObj: Prisma.PlatformOrderByWithRelationInput[] = [{ name: Prisma.SortOrder.asc }];
 
 export abstract class PlatformRepository {
   public static async FindAll(): Promise<MPlatform[]> {
@@ -33,6 +36,27 @@ export abstract class PlatformRepository {
     } else {
       return PlatformTransformer.DMPlatformTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MPlatform>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.platform.count(),
+      prisma.platform.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((quote) => PlatformTransformer.DMPlatformTransformer(quote));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Create(name: string, comment: NString): Promise<MPlatform> {

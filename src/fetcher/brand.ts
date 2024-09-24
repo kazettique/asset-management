@@ -1,7 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { FBrand, GeneralResponse, Id, MBrand, VBrand } from '@/types';
+import { BrandTransformer, CommonTransformer } from '@/transformer';
+import { FBrand, GeneralResponse, Id, MBrand, PaginationBase, PBrandFind, VBrand } from '@/types';
 
 @backendImplements()
 export abstract class BrandFetcher {
@@ -17,6 +18,17 @@ export abstract class BrandFetcher {
     const res = await fetch('/api/setting/brands' + id);
 
     const data = (await res.json()) as GeneralResponse<VBrand>;
+
+    return data;
+  }
+
+  public static async FindMany(payload: PBrandFind): Promise<PaginationBase<MBrand>> {
+    const res = await fetch(
+      '/api/setting/brands?' +
+        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
+    );
+
+    const data = (await res.json()) as PaginationBase<MBrand>;
 
     return data;
   }

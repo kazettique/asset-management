@@ -3,13 +3,16 @@ import { Prisma } from '@prisma/client';
 import { CategoryConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { CategoryTransformer } from '@/transformer';
-import { DCategory, Id, MCategory, NString, NType } from '@/types';
+import { DCategory, Id, MCategory, NString, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
 const queryObj: Prisma.CategorySelect = {
   comment: true,
   id: true,
   name: true,
 };
+
+const sortObj: Prisma.CategoryOrderByWithRelationInput[] = [{ name: Prisma.SortOrder.asc }];
 
 export abstract class CategoryRepository {
   public static async FindAll(): Promise<MCategory[]> {
@@ -33,6 +36,27 @@ export abstract class CategoryRepository {
     } else {
       return CategoryTransformer.DMCategoryTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MCategory>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.category.count(),
+      prisma.category.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((quote) => CategoryTransformer.DMCategoryTransformer(quote));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Create(name: string, comment: NString): Promise<MCategory> {

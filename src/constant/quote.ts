@@ -11,9 +11,4 @@ export abstract class QuoteConstant {
   public static readonly F_QUOTE_IMPORT_INITIAL_VALUES: FQuoteImport = {
     isLegalFileData: null,
   };
-
-  public static readonly P_QUOTE_FIND_DEFAULT: PQuoteFind = {
-    page: CommonConstant.DEFAULT_PAGE,
-    pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
-  };
 }

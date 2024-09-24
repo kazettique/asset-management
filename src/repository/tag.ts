@@ -1,12 +1,17 @@
+import { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/db';
 import { TagTransformer } from '@/transformer';
-import { DTag, Id, MTag, NString, NType } from '@/types';
+import { DTag, Id, MTag, NString, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
-const queryObj = {
+const queryObj: Prisma.TagSelect = {
   comment: true,
   id: true,
   name: true,
 };
+
+const sortObj: Prisma.TagOrderByWithRelationInput[] = [{ name: Prisma.SortOrder.asc }];
 
 export abstract class TagRepository {
   public static async FindAll(): Promise<MTag[]> {
@@ -30,6 +35,27 @@ export abstract class TagRepository {
     } else {
       return TagTransformer.DMTagTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MTag>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.tag.count(),
+      prisma.tag.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((tag) => TagTransformer.DMTagTransformer(tag));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Create(name: string, comment: NString): Promise<MTag> {

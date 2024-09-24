@@ -183,7 +183,7 @@ export abstract class AssetValidator {
       filters: this.PAssetFindFilterValidator,
       sort: this.PAssetFindSortValidator.optional(),
     })
-    .and(CommonValidator.PFindPageValidator);
+    .and(CommonValidator.PFindPaginationValidator);
 
   public static readonly FAssetFindPrimaryValidator: z.ZodSchema<FAssetFindPrimaryFilter> = z.object({
     categories: z.string().array(),
@@ -206,5 +206,5 @@ export abstract class AssetValidator {
 
   public static readonly FAssetFindSortValidator: z.ZodSchema<FAssetFindSort> = this.PAssetFindSortValidator;
 
-  public static readonly FAssetFindPagination: z.ZodSchema<FAssetFindPagination> = CommonValidator.PFindPageValidator;
+  public static readonly FAssetFindPagination: z.ZodSchema<FAssetFindPagination> = CommonValidator.PFindPaginationValidator;
 }

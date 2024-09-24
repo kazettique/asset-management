@@ -1,5 +1,6 @@
+import { CommonConstant } from '@/constant';
 import { BrandRepository } from '@/repository';
-import { Id, MBrand, NString, NType } from '@/types';
+import { Id, MBrand, NString, NType, PaginationBase } from '@/types';
 
 export abstract class BrandService {
   public static async FindAll(): Promise<MBrand[]> {
@@ -8,6 +9,13 @@ export abstract class BrandService {
 
   public static async Find(id: Id): Promise<NType<MBrand>> {
     return await BrandRepository.Find(id);
+  }
+
+  public static async FindMany(
+    page: number = CommonConstant.DEFAULT_PAGE,
+    pageSize: number = CommonConstant.DEFAULT_PAGE_SIZE,
+  ): Promise<PaginationBase<MBrand>> {
+    return await BrandRepository.FindMany(page, pageSize);
   }
 
   public static async Create(name: string, comment: NString): Promise<MBrand> {

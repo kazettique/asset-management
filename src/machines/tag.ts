@@ -1,50 +1,97 @@
 import { assign, setup } from 'xstate';
 
-import { FTag, Id, NType } from '@/types';
+import { TagConstant } from '@/constant';
+import { FTag, Id, NType, PTagFind } from '@/types';
 
-type MachineContext = {
-  formValues: NType<FTag>;
-  id: NType<Id>;
+type TagMachineContext = {
+  modifier: {
+    formValues: NType<FTag>;
+    id: NType<Id>;
+  };
+  searchPayload: PTagFind;
 };
 
-type MachineEvents = { type: 'TO_CREATE' } | { formValues: FTag; id: Id; type: 'TO_EDIT' } | { type: 'TO_MAIN' };
+type TagMachineEvents =
+  | { type: 'TO_CREATE' }
+  | { formValues: FTag; id: Id; type: 'TO_EDIT' }
+  | { type: 'TO_MAIN' }
+  | { type: 'NEXT_PAGE' }
+  | { type: 'PREV_PAGE' }
+  | { payload: number; type: 'JUMP_PAGE' };
+
+const INITIAL_CONTEXT: TagMachineContext = {
+  modifier: { formValues: null, id: null },
+  searchPayload: TagConstant.P_TAG_FIND_DEFAULT,
+};
 
 export const tagMachine = setup({
   actions: {
-    reset: assign({ formValues: null, id: null }),
+    JUMP_PAGE: assign({
+      searchPayload: ({ context }, params: { payload: number }) => {
+        return {
+          ...context.searchPayload,
+          page: params.payload,
+        };
+      },
+    }),
+    NEXT_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page + 1 : context.searchPayload.page,
+        };
+      },
+    }),
+    PREV_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page - 1 : context.searchPayload.page,
+        };
+      },
+    }),
+    RESET_CONTEXT: assign(INITIAL_CONTEXT),
   },
   types: {
-    context: {} as MachineContext,
-    events: {} as MachineEvents,
+    context: {} as TagMachineContext,
+    events: {} as TagMachineEvents,
   },
 }).createMachine({
-  context: {
-    formValues: null,
-    id: null,
-  },
+  context: INITIAL_CONTEXT,
   description: 'tag setting page',
   initial: 'MAIN',
   states: {
     CREATE: {
       on: {
         TO_MAIN: {
-          actions: ['reset'],
+          actions: ['RESET_CONTEXT'],
           target: 'MAIN',
         },
       },
     },
     EDIT: {
       on: {
-        TO_MAIN: { actions: ['reset'], target: 'MAIN' },
+        TO_MAIN: { actions: ['RESET_CONTEXT'], target: 'MAIN' },
       },
     },
     MAIN: {
       on: {
+        JUMP_PAGE: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'JUMP_PAGE',
+          },
+        },
+        NEXT_PAGE: {
+          actions: { type: 'NEXT_PAGE' },
+        },
+        PREV_PAGE: {
+          actions: { type: 'PREV_PAGE' },
+        },
         TO_CREATE: { target: 'CREATE' },
         TO_EDIT: {
           actions: assign({
-            formValues: ({ context, event }) => event.formValues,
-            id: ({ context, event }) => event.id,
+            modifier: ({ context, event }) => ({ formValues: event.formValues, id: event.id }),
           }),
           target: 'EDIT',
         },

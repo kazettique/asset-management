@@ -1,50 +1,97 @@
 import { assign, setup } from 'xstate';
 
-import { FCategory, Id, NType } from '@/types';
+import { CategoryConstant } from '@/constant';
+import { FCategory, Id, NType, PCategoryFind } from '@/types';
 
-type MachineContext = {
-  formValues: NType<FCategory>;
-  id: NType<Id>;
+type CategoryMachineContext = {
+  modifier: {
+    formValues: NType<FCategory>;
+    id: NType<Id>;
+  };
+  searchPayload: PCategoryFind;
 };
 
-type MachineEvents = { type: 'TO_CREATE' } | { formValues: FCategory; id: Id; type: 'TO_EDIT' } | { type: 'TO_MAIN' };
+type CategoryMachineEvents =
+  | { type: 'TO_CREATE' }
+  | { formValues: FCategory; id: Id; type: 'TO_EDIT' }
+  | { type: 'TO_MAIN' }
+  | { type: 'NEXT_PAGE' }
+  | { type: 'PREV_PAGE' }
+  | { payload: number; type: 'JUMP_PAGE' };
+
+const INITIAL_CONTEXT: CategoryMachineContext = {
+  modifier: { formValues: null, id: null },
+  searchPayload: CategoryConstant.P_CATEGORY_FIND_DEFAULT,
+};
 
 export const categoryMachine = setup({
   actions: {
-    reset: assign({ formValues: null, id: null }),
+    JUMP_PAGE: assign({
+      searchPayload: ({ context }, params: { payload: number }) => {
+        return {
+          ...context.searchPayload,
+          page: params.payload,
+        };
+      },
+    }),
+    NEXT_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page + 1 : context.searchPayload.page,
+        };
+      },
+    }),
+    PREV_PAGE: assign({
+      searchPayload: ({ context }) => {
+        return {
+          ...context.searchPayload,
+          page: context.searchPayload.page ? context.searchPayload.page - 1 : context.searchPayload.page,
+        };
+      },
+    }),
+    RESET_CONTEXT: assign(INITIAL_CONTEXT),
   },
   types: {
-    context: {} as MachineContext,
-    events: {} as MachineEvents,
+    context: {} as CategoryMachineContext,
+    events: {} as CategoryMachineEvents,
   },
 }).createMachine({
-  context: {
-    formValues: null,
-    id: null,
-  },
+  context: INITIAL_CONTEXT,
   description: 'category setting page',
   initial: 'MAIN',
   states: {
     CREATE: {
       on: {
         TO_MAIN: {
-          actions: ['reset'],
+          actions: ['RESET_CONTEXT'],
           target: 'MAIN',
         },
       },
     },
     EDIT: {
       on: {
-        TO_MAIN: { actions: ['reset'], target: 'MAIN' },
+        TO_MAIN: { actions: ['RESET_CONTEXT'], target: 'MAIN' },
       },
     },
     MAIN: {
       on: {
+        JUMP_PAGE: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'JUMP_PAGE',
+          },
+        },
+        NEXT_PAGE: {
+          actions: { type: 'NEXT_PAGE' },
+        },
+        PREV_PAGE: {
+          actions: { type: 'PREV_PAGE' },
+        },
         TO_CREATE: { target: 'CREATE' },
         TO_EDIT: {
           actions: assign({
-            formValues: ({ context, event }) => event.formValues,
-            id: ({ context, event }) => event.id,
+            modifier: ({ context, event }) => ({ formValues: event.formValues, id: event.id }),
           }),
           target: 'EDIT',
         },

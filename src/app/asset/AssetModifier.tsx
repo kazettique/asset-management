@@ -10,7 +10,7 @@ import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
 import { AssetConstant, CommonConstant } from '@/constant';
-import { MachineContext } from '@/machines/asset';
+import { AssetMachineContext } from '@/machines/asset';
 import { FAsset, FSettingOptions, Id } from '@/types';
 import { AssetValidator } from '@/validator';
 
@@ -18,7 +18,7 @@ interface Props {
   className?: string;
   isOpen: boolean;
   mode?: 'create' | 'edit';
-  modifierContext: MachineContext['modifier'];
+  modifierContext: AssetMachineContext['modifier'];
   onClose: () => void;
   onCreate: (data: FAsset) => void;
   onDelete: (id: Id) => void;

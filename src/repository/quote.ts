@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client';
 
-import { CommonConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { QuoteTransformer } from '@/transformer';
 import { DQuote, Id, MQuote, NType, PaginationBase } from '@/types';
@@ -54,7 +53,7 @@ export abstract class QuoteRepository {
     const [totalCount, rawData] = raw;
     const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
 
-    const parsedData = rawData.map((asset) => QuoteTransformer.DMQuoteTransformer(asset));
+    const parsedData = rawData.map((quote) => QuoteTransformer.DMQuoteTransformer(quote));
 
     return { data: parsedData, page, totalCount, totalPage };
   }

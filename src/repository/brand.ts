@@ -3,13 +3,16 @@ import { Prisma } from '@prisma/client';
 import { BrandConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { BrandTransformer } from '@/transformer';
-import { DBrand, Id, MBrand, NString, NType } from '@/types';
+import { DBrand, Id, MBrand, NString, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
 const queryObj: Prisma.BrandSelect = {
   comment: true,
   id: true,
   name: true,
 };
+
+const sortObj: Prisma.BrandOrderByWithRelationInput[] = [{ name: Prisma.SortOrder.asc }];
 
 export abstract class BrandRepository {
   public static async FindAll(): Promise<MBrand[]> {
@@ -33,6 +36,27 @@ export abstract class BrandRepository {
     } else {
       return BrandTransformer.DMBrandTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MBrand>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.brand.count(),
+      prisma.brand.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((quote) => BrandTransformer.DMBrandTransformer(quote));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Create(name: string, comment: NString): Promise<MBrand> {

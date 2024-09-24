@@ -3,7 +3,8 @@ import { MethodType, Prisma } from '@prisma/client';
 import { MethodConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { MethodTransformer } from '@/transformer';
-import { DMethod, Id, MMethod, NString, NType } from '@/types';
+import { DMethod, Id, MMethod, NString, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
 const queryObj: Prisma.MethodSelect = {
   comment: true,
@@ -11,6 +12,11 @@ const queryObj: Prisma.MethodSelect = {
   name: true,
   type: true,
 };
+
+const sortObj: Prisma.MethodOrderByWithRelationInput[] = [
+  { type: Prisma.SortOrder.asc },
+  { name: Prisma.SortOrder.asc },
+];
 
 export abstract class MethodRepository {
   public static async FindAll(): Promise<MMethod[]> {
@@ -34,6 +40,27 @@ export abstract class MethodRepository {
     } else {
       return MethodTransformer.DMMethodTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MMethod>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.method.count(),
+      prisma.method.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((quote) => MethodTransformer.DMMethodTransformer(quote));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Create(name: string, type: MethodType, comment: NString): Promise<MMethod> {

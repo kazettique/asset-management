@@ -1,7 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { FPlace, GeneralResponse, Id, MPlace, VPlace } from '@/types';
+import { CommonTransformer } from '@/transformer';
+import { FPlace, GeneralResponse, Id, MPlace, PaginationBase, PFindPagination, VPlace } from '@/types';
 
 @backendImplements()
 export abstract class PlaceFetcher {
@@ -17,6 +18,17 @@ export abstract class PlaceFetcher {
     const res = await fetch('/api/setting/places' + id);
 
     const data = (await res.json()) as GeneralResponse<VPlace>;
+
+    return data;
+  }
+
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MPlace>> {
+    const res = await fetch(
+      '/api/setting/places?' +
+        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
+    );
+
+    const data = (await res.json()) as PaginationBase<MPlace>;
 
     return data;
   }

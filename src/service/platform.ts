@@ -1,5 +1,6 @@
+import { CommonConstant } from '@/constant';
 import { PlatformRepository } from '@/repository';
-import { Id, MPlace, NString, NType } from '@/types';
+import { Id, MPlace, MPlatform, NString, NType, PaginationBase } from '@/types';
 
 export abstract class PlatformService {
   public static async FindAll(): Promise<MPlace[]> {
@@ -8,6 +9,13 @@ export abstract class PlatformService {
 
   public static async Find(id: Id): Promise<NType<MPlace>> {
     return await PlatformRepository.Find(id);
+  }
+
+  public static async FindMany(
+    page: number = CommonConstant.DEFAULT_PAGE,
+    pageSize: number = CommonConstant.DEFAULT_PAGE_SIZE,
+  ): Promise<PaginationBase<MPlatform>> {
+    return await PlatformRepository.FindMany(page, pageSize);
   }
 
   public static async Create(name: string, comment: NString): Promise<MPlace> {

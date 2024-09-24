@@ -1,5 +1,6 @@
+import { CommonConstant } from '@/constant';
 import { CategoryRepository } from '@/repository';
-import { Id, MCategory, NString, NType } from '@/types';
+import { Id, MCategory, NString, NType, PaginationBase } from '@/types';
 
 export abstract class CategoryService {
   public static async FindAll(): Promise<MCategory[]> {
@@ -8,6 +9,13 @@ export abstract class CategoryService {
 
   public static async Find(id: Id): Promise<NType<MCategory>> {
     return await CategoryRepository.Find(id);
+  }
+
+  public static async FindMany(
+    page: number = CommonConstant.DEFAULT_PAGE,
+    pageSize: number = CommonConstant.DEFAULT_PAGE_SIZE,
+  ): Promise<PaginationBase<MCategory>> {
+    return await CategoryRepository.FindMany(page, pageSize);
   }
 
   public static async Create(name: string, comment: NString): Promise<MCategory> {

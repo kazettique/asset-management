@@ -3,13 +3,16 @@ import { Prisma } from '@prisma/client';
 import { OwnerConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { OwnerTransformer } from '@/transformer';
-import { DOwner, Id, MOwner, NString, NType } from '@/types';
+import { DOwner, Id, MOwner, NString, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
 const queryObj: Prisma.OwnerSelect = {
   comment: true,
   id: true,
   name: true,
 };
+
+const sortObj: Prisma.OwnerOrderByWithRelationInput[] = [{ name: Prisma.SortOrder.asc }];
 
 export abstract class OwnerRepository {
   public static async FindAll(): Promise<MOwner[]> {
@@ -33,6 +36,27 @@ export abstract class OwnerRepository {
     } else {
       return OwnerTransformer.DMOwnerTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MOwner>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.owner.count(),
+      prisma.owner.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((quote) => OwnerTransformer.DMOwnerTransformer(quote));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Create(name: string, comment: NString): Promise<MOwner> {

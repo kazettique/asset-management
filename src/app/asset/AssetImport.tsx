@@ -11,7 +11,7 @@ import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import Table, { ColumnProps } from '@/components/Table';
 import { AssetConstant, CommonConstant } from '@/constant';
-import { MachineContext } from '@/machines/asset';
+import { AssetMachineContext } from '@/machines/asset';
 import { AssetTransformer } from '@/transformer';
 import {
   FAssetImport,
@@ -27,7 +27,7 @@ import { AssetValidator } from '@/validator';
 
 export interface Props {
   className?: string;
-  importContext: MachineContext['import'];
+  importContext: AssetMachineContext['import'];
   isOpen: boolean;
   onClose: () => void;
   onDone: () => void;

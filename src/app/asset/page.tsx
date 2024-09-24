@@ -236,7 +236,7 @@ export default function Page() {
         <Table
           data={tableData}
           columns={columns}
-          className="h-full overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
+          className="grow overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
           isLoading={assetIsPending}
         />
         {assetData && state.context.searchPayload.page && (

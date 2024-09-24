@@ -1,7 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { FOwner, GeneralResponse, Id, MOwner, VOwner } from '@/types';
+import { CommonTransformer } from '@/transformer';
+import { FOwner, GeneralResponse, Id, MOwner, PaginationBase, PFindPagination, POwner, VOwner } from '@/types';
 
 @backendImplements()
 export abstract class OwnerFetcher {
@@ -17,6 +18,17 @@ export abstract class OwnerFetcher {
     const res = await fetch('/api/setting/owners/' + id);
 
     const data = (await res.json()) as GeneralResponse<VOwner>;
+
+    return data;
+  }
+
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MOwner>> {
+    const res = await fetch(
+      '/api/setting/owners?' +
+        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
+    );
+
+    const data = (await res.json()) as PaginationBase<MOwner>;
 
     return data;
   }

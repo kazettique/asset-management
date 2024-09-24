@@ -1,70 +1,18 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useMachine } from '@xstate/react';
-
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import Pagination from '@/components/Pagination';
 import Table, { ColumnProps } from '@/components/Table';
-import { TagFetcher } from '@/fetcher';
-import { tagMachine } from '@/machines';
 import { TagTransformer } from '@/transformer';
-import { FTag, Id, VTag, VTagTable } from '@/types';
+import { VTagTable } from '@/types';
 
 import TagModifier from './TagModifier';
+import useTagData from './useTagData';
 
 export default function Page() {
-  const [state, send] = useMachine(tagMachine, {});
+  const { data, isPending, onCreateSubmit, onItemDelete, onItemUpdate, refetch, send, state, tableData } = useTagData();
 
-  const { data, isPending, refetch } = useQuery({
-    queryFn: () => TagFetcher.FindAll(),
-    queryKey: ['tagList'],
-  });
-
-  const createTag = useMutation({
-    mutationFn: (payload: FTag) => TagFetcher.Create(payload),
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const updateTag = useMutation({
-    mutationFn: ({ payload, id }: { id: VTag['id']; payload: FTag }) => TagFetcher.Update(payload, id),
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const deleteTag = useMutation({
-    mutationFn: (id: Id) => {
-      if (confirm('Confirm delete?')) {
-        return TagFetcher.Delete(id);
-      } else {
-        throw Error('Deletion terminated.');
-      }
-    },
-    onError: (error) => {
-      alert(error.message);
-    },
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const onItemUpdate = (tag: FTag, id: VTag['id']): void => {
-    updateTag.mutate({ id, payload: tag });
-  };
-
-  const onItemDelete = (id: VTag['id']): void => {
-    deleteTag.mutate(id);
-  };
-
-  const onCreateSubmit = (data: FTag) => {
-    createTag.mutate(data);
-  };
-
-  const tableData: VTagTable[] = data ? data.data.map((item) => TagTransformer.VTTagTransformer(item)) : [];
   const columns: ColumnProps<VTagTable>[] = [
     {
       key: 'name',
@@ -90,20 +38,30 @@ export default function Page() {
   ];
 
   return (
-    <div className="p-5">
+    <div className="p-4 relative overflow-y-auto h-full flex flex-col">
       <div className="flex justify-between">
         <h2 className="text-lg font-medium text-gray-800 dark:text-white">Tags</h2>
-        <BasicButton onClick={() => send({ type: 'TO_CREATE' })}>Create</BasicButton>
+        <BasicButton onClick={() => send({ type: 'TO_CREATE' })} className="flex gap-x-2">
+          <BasicIcon iconType="cross" />
+          <span>Create</span>
+        </BasicButton>
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
-        {!data ? (
-          <LoadingSpinner className="h-full" />
-        ) : (
-          <Table
-            className="overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
-            data={tableData}
-            columns={columns}
+        <Table
+          className="h-full overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
+          data={tableData}
+          columns={columns}
+          isLoading={isPending}
+        />
+        {data && state.context.searchPayload.page && (
+          <Pagination
+            page={state.context.searchPayload.page}
+            totalPage={data.totalPage}
+            onNext={() => void send({ type: 'NEXT_PAGE' })}
+            onPrev={() => void send({ type: 'PREV_PAGE' })}
+            onFirst={() => void send({ payload: 1, type: 'JUMP_PAGE' })}
+            onLast={() => void send({ payload: data.totalPage, type: 'JUMP_PAGE' })}
           />
         )}
       </div>
@@ -124,8 +82,8 @@ export default function Page() {
           onItemDelete(id);
           send({ type: 'TO_MAIN' });
         }}
-        defaultValues={state.context.formValues}
-        id={state.context.id}
+        defaultValues={state.context.modifier.formValues}
+        id={state.context.modifier.id}
       />
     </div>
   );

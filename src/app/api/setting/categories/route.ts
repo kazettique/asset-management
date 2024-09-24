@@ -1,21 +1,32 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
 import { CategoryService } from '@/service';
 import { CategoryTransformer, CommonTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VCategory } from '@/types';
-import { CategoryValidator } from '@/validator';
+import { CategoryValidator, CommonValidator } from '@/validator';
 
-export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VCategory[]>> | Response> {
-  const raw = await CategoryService.FindAll();
+export async function GET(request: NextRequest): Promise<NextResponse<GeneralResponse<VCategory[]>> | Response> {
+  const searchParams = request.nextUrl.searchParams;
+  const page = searchParams.get('page');
+  const pageSize = searchParams.get('pageSize');
 
-  const transformedData = raw.map((item) => CategoryTransformer.MVCategoryTransformer(item));
+  const paramsValidation = CommonValidator.PFindPaginationValidator.safeParse({ page, pageSize });
+
+  if (!paramsValidation.success) {
+    return new Response('', { status: HttpStatusCode.BAD_REQUEST });
+  }
+
+  const { page: _page, pageSize: _pageSize } = paramsValidation.data;
+  const rawData = await CategoryService.FindMany(_page, _pageSize);
+
+  const transformedData = rawData.data.map((item) => CategoryTransformer.MVCategoryTransformer(item));
   const dataValidation = CategoryValidator.VCategoryValidator.array().safeParse(transformedData);
 
   if (!dataValidation.success) {
     return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
   } else {
-    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
+    return NextResponse.json(rawData);
   }
 }
 

@@ -1,9 +1,8 @@
 'use client';
 
-import { Prisma } from '@prisma/client';
-
 import { backendImplements } from '@/decorator';
-import { FPlace, GeneralResponse, Id, MPlace, VPlace } from '@/types';
+import { CommonTransformer } from '@/transformer';
+import { FPlace, GeneralResponse, Id, MPlace, MPlatform, PaginationBase, PFindPagination, VPlace } from '@/types';
 
 @backendImplements()
 export abstract class PlatformFetcher {
@@ -19,6 +18,17 @@ export abstract class PlatformFetcher {
     const res = await fetch('/api/setting/platforms' + id);
 
     const data = (await res.json()) as GeneralResponse<VPlace>;
+
+    return data;
+  }
+
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MPlatform>> {
+    const res = await fetch(
+      '/api/setting/platforms?' +
+        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
+    );
+
+    const data = (await res.json()) as PaginationBase<MPlatform>;
 
     return data;
   }

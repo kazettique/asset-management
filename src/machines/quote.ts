@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { assign, fromPromise, setup } from 'xstate';
 
-import { QuoteConstant } from '@/constant';
+import { CommonConstant } from '@/constant';
 import { QuoteFetcher } from '@/fetcher';
-import { FQuote, Id, ImportTask, ImportTaskStatus, NNumber, NType, PQuote, PQuoteFind } from '@/types';
+import { FQuote, Id, ImportTask, ImportTaskStatus, NNumber, NType, PFindPagination, PQuote } from '@/types';
 
 export type QuoteMachineContext = {
   import: {
@@ -15,7 +15,7 @@ export type QuoteMachineContext = {
     formValues: NType<FQuote>;
     id: NType<Id>;
   };
-  searchPayload: PQuoteFind;
+  searchPayload: PFindPagination;
 };
 
 export type QuoteMachineEvents =
@@ -31,7 +31,7 @@ export type QuoteMachineEvents =
 const INITIAL_CONTEXT: QuoteMachineContext = {
   import: { currentTaskId: null, queue: [], tasks: {} },
   modifier: { formValues: null, id: null },
-  searchPayload: QuoteConstant.P_QUOTE_FIND_DEFAULT,
+  searchPayload: CommonConstant.P_FIND_PAGINATION_DEFAULT,
 };
 
 export const quoteMachine = setup({

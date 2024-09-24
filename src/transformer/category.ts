@@ -1,4 +1,4 @@
-import { DCategory, FCategory, MCategory, VCategory, VCategoryTable } from '@/types';
+import { DCategory, FCategory, MCategory, PCategoryFind, VCategory, VCategoryTable } from '@/types';
 
 export abstract class CategoryTransformer {
   public static DMCategoryTransformer(src: DCategory): MCategory {
@@ -21,6 +21,13 @@ export abstract class CategoryTransformer {
     return {
       comment: src.comment,
       name: src.name,
+    };
+  }
+
+  public static PCategoryFindQueryStringTransformer(src: PCategoryFind): Record<string, string> {
+    return {
+      page: String(src.page),
+      pageSize: String(src.pageSize),
     };
   }
 }

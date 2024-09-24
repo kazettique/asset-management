@@ -22,11 +22,4 @@ export abstract class QuoteTransformer {
       quote: src.quote,
     };
   }
-
-  public static PQuoteFindQueryStringTransformer(src: PQuoteFind): Record<string, string> {
-    return {
-      page: String(src.page),
-      pageSize: String(src.pageSize),
-    };
-  }
 }

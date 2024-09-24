@@ -3,13 +3,16 @@ import { Prisma } from '@prisma/client';
 import { PlaceConstant } from '@/constant';
 import { prisma } from '@/lib/db';
 import { PlaceTransformer } from '@/transformer';
-import { DPlace, Id, MPlace, NString, NType } from '@/types';
+import { DPlace, Id, MPlace, NString, NType, PaginationBase } from '@/types';
+import { Utils } from '@/utils';
 
 const queryObj: Prisma.PlaceSelect = {
   comment: true,
   id: true,
   name: true,
 };
+
+const sortObj: Prisma.PlaceOrderByWithRelationInput[] = [{ name: Prisma.SortOrder.asc }];
 
 export abstract class PlaceRepository {
   public static async FindAll(): Promise<MPlace[]> {
@@ -33,6 +36,27 @@ export abstract class PlaceRepository {
     } else {
       return PlaceTransformer.DMPlaceTransformer(rawData);
     }
+  }
+
+  public static async FindMany(page: number, pageSize: number): Promise<PaginationBase<MPlace>> {
+    const skipCount = Utils.CalculateSkipCount(page, pageSize);
+
+    const raw = await prisma.$transaction([
+      prisma.place.count(),
+      prisma.place.findMany({
+        orderBy: sortObj,
+        select: queryObj,
+        skip: skipCount,
+        take: pageSize,
+      }),
+    ]);
+
+    const [totalCount, rawData] = raw;
+    const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);
+
+    const parsedData = rawData.map((quote) => PlaceTransformer.DMPlaceTransformer(quote));
+
+    return { data: parsedData, page, totalCount, totalPage };
   }
 
   public static async Create(name: string, comment: NString): Promise<MPlace> {

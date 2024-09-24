@@ -1,15 +1,13 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { assign, setup } from 'xstate';
 
-import { FMethod, Id, NType } from '@/types';
-
-type MachineContext = {
+type DashboardMachineContext = {
   currentDate: Dayjs;
 };
 
-type MachineEvents = { type: 'NEXT_MONTH' } | { type: 'PREV_MONTH' } | { payload: Dayjs; type: 'JUMP_DATE' };
+type DashboardMachineEvents = { type: 'NEXT_MONTH' } | { type: 'PREV_MONTH' } | { payload: Dayjs; type: 'JUMP_DATE' };
 
-const INITIAL_CONTEXT: MachineContext = {
+const INITIAL_CONTEXT: DashboardMachineContext = {
   currentDate: dayjs(),
 };
 
@@ -24,11 +22,11 @@ export const dashboardMachine = setup({
     PREV_MONTH: assign({
       currentDate: ({ context }) => context.currentDate.subtract(1, 'month'),
     }),
-    RESET: assign(INITIAL_CONTEXT),
+    RESET_CONTEXT: assign(INITIAL_CONTEXT),
   },
   types: {
-    context: {} as MachineContext,
-    events: {} as MachineEvents,
+    context: {} as DashboardMachineContext,
+    events: {} as DashboardMachineEvents,
   },
 }).createMachine({
   context: INITIAL_CONTEXT,

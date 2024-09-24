@@ -1,21 +1,32 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { CommonConstant } from '@/constant';
 import { MethodService } from '@/service';
 import { CommonTransformer, MethodTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VMethod } from '@/types';
-import { MethodValidator } from '@/validator';
+import { CommonValidator, MethodValidator } from '@/validator';
 
-export async function GET(_request: Request): Promise<NextResponse<GeneralResponse<VMethod[]>> | Response> {
-  const raw = await MethodService.FindAll();
+export async function GET(request: NextRequest): Promise<NextResponse<GeneralResponse<VMethod[]>> | Response> {
+  const searchParams = request.nextUrl.searchParams;
+  const page = searchParams.get('page');
+  const pageSize = searchParams.get('pageSize');
 
-  const transformedData = raw.map((item) => MethodTransformer.DMMethodTransformer(item));
-  const dataValidation = MethodValidator.VMethodValidator.array().safeParse(transformedData);
+  const paramsValidation = CommonValidator.PFindPaginationValidator.safeParse({ page, pageSize });
 
-  if (dataValidation.success) {
-    return NextResponse.json(CommonTransformer.ResponseTransformer(dataValidation.data));
-  } else {
+  if (!paramsValidation.success) {
+    return new Response('', { status: HttpStatusCode.BAD_REQUEST });
+  }
+
+  const { page: _page, pageSize: _pageSize } = paramsValidation.data;
+  const rawData = await MethodService.FindMany(_page, _pageSize);
+
+  const transformedData = rawData.data.map((item) => MethodTransformer.MVMethodTransformer(item));
+  const dataValidation = MethodValidator.MMethodValidator.array().safeParse(transformedData);
+
+  if (!dataValidation.success) {
     return new Response(CommonConstant.MSG_DIRTY_DATA, { status: HttpStatusCode.BAD_REQUEST });
+  } else {
+    return NextResponse.json(rawData);
   }
 }
 

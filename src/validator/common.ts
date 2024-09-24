@@ -27,7 +27,7 @@ export abstract class CommonValidator {
   // TODO: add more detailed validation, ex: no symbols, no whitespace ...etc
   public static readonly NameValidator: z.ZodSchema<Name> = z.string().min(1);
 
-  public static readonly PFindPageValidator: z.ZodSchema<PFindPagination> = z.object({
+  public static readonly PFindPaginationValidator: z.ZodSchema<PFindPagination> = z.object({
     page: z.coerce.number().int().positive().optional(),
     pageSize: z.coerce.number().int().positive().max(CommonConstant.MAX_PAGE_SIZE).optional(),
   });

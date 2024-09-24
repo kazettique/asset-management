@@ -4,14 +4,14 @@ import { CommonConstant } from '@/constant';
 import { QuoteService } from '@/service';
 import { CommonTransformer, QuoteTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VQuote } from '@/types';
-import { QuoteValidator } from '@/validator';
+import { CommonValidator, QuoteValidator } from '@/validator';
 
 export async function GET(request: NextRequest): Promise<NextResponse<GeneralResponse<VQuote[]>> | Response> {
   const searchParams = request.nextUrl.searchParams;
   const page = searchParams.get('page');
   const pageSize = searchParams.get('pageSize');
 
-  const paramsValidation = QuoteValidator.PQuoteFindValidator.safeParse({ page, pageSize });
+  const paramsValidation = CommonValidator.PFindPaginationValidator.safeParse({ page, pageSize });
 
   if (!paramsValidation.success) {
     return new Response('', { status: HttpStatusCode.BAD_REQUEST });

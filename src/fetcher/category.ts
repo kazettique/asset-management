@@ -1,7 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { FCategory, GeneralResponse, Id, MCategory, VCategory } from '@/types';
+import { CommonTransformer } from '@/transformer';
+import { FCategory, GeneralResponse, Id, MCategory, PaginationBase, PFindPagination, VCategory } from '@/types';
 
 @backendImplements()
 export abstract class CategoryFetcher {
@@ -17,6 +18,17 @@ export abstract class CategoryFetcher {
     const res = await fetch('/api/setting/categories/' + id);
 
     const data = (await res.json()) as GeneralResponse<VCategory>;
+
+    return data;
+  }
+
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MCategory>> {
+    const res = await fetch(
+      '/api/setting/categories?' +
+        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
+    );
+
+    const data = (await res.json()) as PaginationBase<MCategory>;
 
     return data;
   }

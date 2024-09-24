@@ -20,7 +20,7 @@ export abstract class MethodTransformer {
 
   public static VFMethodTransformer(src: VMethod): FMethod {
     return {
-      comment: src.name,
+      comment: src.comment,
       name: src.name,
       type: src.type,
     };

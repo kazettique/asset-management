@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MethodType } from '@prisma/client';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -9,7 +8,7 @@ import BasicIcon from '@/components/BasicIcon';
 import BasicInput from '@/components/BasicInput';
 import BasicSelect from '@/components/BasicSelect';
 import { CommonConstant, MethodConstant } from '@/constant';
-import { FMethod, FormOption, Id, NType } from '@/types';
+import { FMethod, Id, NType } from '@/types';
 import { MethodValidator } from '@/validator';
 
 interface Props {

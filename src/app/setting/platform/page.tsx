@@ -1,72 +1,19 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useMachine } from '@xstate/react';
-
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import Pagination from '@/components/Pagination';
 import Table, { ColumnProps } from '@/components/Table';
-import { PlatformFetcher } from '@/fetcher';
-import { placeMachine } from '@/machines/place';
-import { PlaceTransformer, PlatformTransformer } from '@/transformer';
-import { FPlatform, Id, VPlatform, VPlatformTable } from '@/types';
+import { PlaceTransformer } from '@/transformer';
+import { VPlatformTable } from '@/types';
 
 import PlatformModifier from './PlatformModifier';
+import usePlatformData from './usePlatformData';
 
 export default function Page() {
-  const [state, send] = useMachine(placeMachine, {});
+  const { data, isPending, onCreateSubmit, onItemDelete, onItemUpdate, refetch, send, state, tableData } =
+    usePlatformData();
 
-  const { data, isPending, refetch } = useQuery({
-    queryFn: () => PlatformFetcher.FindAll(),
-    queryKey: ['platformList'],
-  });
-
-  const createPlatform = useMutation({
-    mutationFn: (payload: FPlatform) => PlatformFetcher.Create(payload),
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const updatePlatform = useMutation({
-    mutationFn: ({ payload, id }: { id: VPlatform['id']; payload: FPlatform }) => PlatformFetcher.Update(payload, id),
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const deletePlatform = useMutation({
-    mutationFn: (id: Id) => {
-      if (confirm('Confirm delete?')) {
-        return PlatformFetcher.Delete(id);
-      } else {
-        throw Error('Deletion terminated.');
-      }
-    },
-    onError: (error) => {
-      alert(error.message);
-    },
-    onSuccess: () => {
-      refetch();
-    },
-  });
-
-  const onItemUpdate = (platform: FPlatform, id: VPlatform['id']): void => {
-    updatePlatform.mutate({ id, payload: platform });
-  };
-
-  const onItemDelete = (id: VPlatform['id']): void => {
-    deletePlatform.mutate(id);
-  };
-
-  const onCreateSubmit = (data: FPlatform) => {
-    createPlatform.mutate(data);
-  };
-
-  const tableData: VPlatformTable[] = data
-    ? data.data.map((item) => PlatformTransformer.VTPlatformTransformer(item))
-    : [];
   const columns: ColumnProps<VPlatformTable>[] = [
     {
       key: 'name',
@@ -91,26 +38,28 @@ export default function Page() {
     },
   ];
 
-  const handleChange = async (event: any) => {
-    // console.log('event', event);
-    refetch();
-  };
-
   return (
-    <div className="p-5">
+    <div className="p-4 relative overflow-y-auto h-full flex flex-col">
       <div className="flex justify-between">
         <h2 className="text-lg font-medium text-gray-800 dark:text-white">Categories</h2>
         <BasicButton onClick={() => send({ type: 'TO_CREATE' })}>Create</BasicButton>
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">
-        {!data ? (
-          <LoadingSpinner className="h-full" />
-        ) : (
-          <Table
-            className="overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
-            data={tableData}
-            columns={columns}
+        <Table
+          className="grow overflow-auto border border-gray-200 dark:border-gray-700 rounded-lg relative"
+          data={tableData}
+          columns={columns}
+          isLoading={isPending}
+        />
+        {data && state.context.searchPayload.page && (
+          <Pagination
+            page={state.context.searchPayload.page}
+            totalPage={data.totalPage}
+            onNext={() => void send({ type: 'NEXT_PAGE' })}
+            onPrev={() => void send({ type: 'PREV_PAGE' })}
+            onFirst={() => void send({ payload: 1, type: 'JUMP_PAGE' })}
+            onLast={() => void send({ payload: data.totalPage, type: 'JUMP_PAGE' })}
           />
         )}
       </div>
@@ -131,8 +80,8 @@ export default function Page() {
           onItemDelete(id);
           send({ type: 'TO_MAIN' });
         }}
-        defaultValues={state.context.formValues}
-        id={state.context.id}
+        defaultValues={state.context.modifier.formValues}
+        id={state.context.modifier.id}
       />
     </div>
   );
