@@ -205,7 +205,7 @@ model Quote {
 model Setting {
   id String @id @default(uuid())
 
-  key   String @db.TinyText
+  key   String @unique @db.Char(128)
   value Json   @db.Json
 
   createdAt DateTime @default(now())
