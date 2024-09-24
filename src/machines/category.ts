@@ -1,14 +1,14 @@
 import { assign, setup } from 'xstate';
 
-import { CategoryConstant } from '@/constant';
-import { FCategory, Id, NType, PCategoryFind } from '@/types';
+import { CommonConstant } from '@/constant';
+import { FCategory, Id, NType, PFindPagination } from '@/types';
 
 type CategoryMachineContext = {
   modifier: {
     formValues: NType<FCategory>;
     id: NType<Id>;
   };
-  searchPayload: PCategoryFind;
+  searchPayload: PFindPagination;
 };
 
 type CategoryMachineEvents =
@@ -21,7 +21,7 @@ type CategoryMachineEvents =
 
 const INITIAL_CONTEXT: CategoryMachineContext = {
   modifier: { formValues: null, id: null },
-  searchPayload: CategoryConstant.P_CATEGORY_FIND_DEFAULT,
+  searchPayload: CommonConstant.P_FIND_PAGINATION_DEFAULT,
 };
 
 export const categoryMachine = setup({

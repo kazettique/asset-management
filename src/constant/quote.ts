@@ -1,6 +1,4 @@
-import { FQuote, FQuoteImport, PQuoteFind } from '@/types';
-
-import { CommonConstant } from './common';
+import { FQuote, FQuoteImport } from '@/types';
 
 export abstract class QuoteConstant {
   public static readonly F_QUOTE_INITIAL_VALUES: FQuote = {

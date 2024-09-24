@@ -1,8 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { CommonTransformer, MethodTransformer } from '@/transformer';
-import { FMethod, GeneralResponse, Id, MMethod, PaginationBase, PMethodFind, VMethod } from '@/types';
+import { CommonTransformer } from '@/transformer';
+import { FMethod, GeneralResponse, Id, MMethod, PaginationBase, PFindPagination, VMethod } from '@/types';
 
 @backendImplements()
 export abstract class MethodFetcher {
@@ -22,7 +22,7 @@ export abstract class MethodFetcher {
     return data;
   }
 
-  public static async FindMany(payload: PMethodFind): Promise<PaginationBase<MMethod>> {
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MMethod>> {
     const res = await fetch(
       '/api/setting/methods?' +
         new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),

@@ -1,4 +1,4 @@
-import { DBrand, FBrand, MBrand, PBrandFind, VBrand, VBrandTable } from '@/types';
+import { DBrand, FBrand, MBrand, VBrand, VBrandTable } from '@/types';
 
 export abstract class BrandTransformer {
   public static DMBrandTransformer(src: DBrand): MBrand {
@@ -21,13 +21,6 @@ export abstract class BrandTransformer {
     return {
       comment: src.comment,
       name: src.name,
-    };
-  }
-
-  public static PBrandFindQueryStringTransformer(src: PBrandFind): Record<string, string> {
-    return {
-      page: String(src.page),
-      pageSize: String(src.pageSize),
     };
   }
 }

@@ -1,5 +1,3 @@
-import { PFindPagination, SettingBase } from '@/types';
+import { SettingBase } from '@/types';
 
 export interface PTag extends SettingBase {}
-
-export interface PTagFind extends PFindPagination {}

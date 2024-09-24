@@ -2,7 +2,7 @@
 
 import { backendImplements } from '@/decorator';
 import { CommonTransformer } from '@/transformer';
-import { FOwner, GeneralResponse, Id, MOwner, PaginationBase, PFindPagination, POwner, VOwner } from '@/types';
+import { FOwner, GeneralResponse, Id, MOwner, PaginationBase, PFindPagination, VOwner } from '@/types';
 
 @backendImplements()
 export abstract class OwnerFetcher {

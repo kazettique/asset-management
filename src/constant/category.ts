@@ -1,4 +1,4 @@
-import { DCategory, FCategory, FormOption, Id, PCategoryFind } from '@/types';
+import { DCategory, FCategory, FormOption, Id } from '@/types';
 
 import { CommonConstant } from './common';
 
@@ -16,10 +16,5 @@ export abstract class CategoryConstant {
   public static readonly F_CATEGORY_INITIAL_VALUES: FCategory = {
     comment: '',
     name: CommonConstant.DEFAULT_NAME,
-  };
-
-  public static readonly P_CATEGORY_FIND_DEFAULT: PCategoryFind = {
-    page: CommonConstant.DEFAULT_PAGE,
-    pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
   };
 }

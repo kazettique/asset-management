@@ -1,5 +1,3 @@
-import { PFindPagination, SettingBase } from '@/types';
+import { SettingBase } from '@/types';
 
 export interface PBrand extends SettingBase {}
-
-export interface PBrandFind extends PFindPagination {}

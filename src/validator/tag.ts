@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { FTag, MTag, PTag, PTagFind, VTag } from '@/types';
+import { FTag, MTag, PTag, VTag } from '@/types';
 import { DTag } from '@/types/dbModels';
 
 import { CommonValidator } from './common';
@@ -17,6 +17,4 @@ export abstract class TagValidator {
   public static readonly PTagValidator: z.ZodSchema<PTag> = CommonValidator.SettingBaseValidator;
 
   public static readonly FTagValidator: z.ZodSchema<FTag> = this.PTagValidator;
-
-  public static readonly PTagFindValidator: z.ZodSchema<PTagFind> = CommonValidator.PFindPaginationValidator;
 }

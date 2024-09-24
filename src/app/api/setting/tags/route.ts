@@ -4,14 +4,14 @@ import { CommonConstant } from '@/constant';
 import { TagService } from '@/service';
 import { CommonTransformer, TagTransformer } from '@/transformer';
 import { GeneralResponse, HttpStatusCode, VTag } from '@/types';
-import { TagValidator } from '@/validator';
+import { CommonValidator, TagValidator } from '@/validator';
 
 export async function GET(request: NextRequest): Promise<NextResponse<GeneralResponse<VTag[]>> | Response> {
   const searchParams = request.nextUrl.searchParams;
   const page = searchParams.get('page');
   const pageSize = searchParams.get('pageSize');
 
-  const paramsValidation = TagValidator.PTagFindValidator.safeParse({ page, pageSize });
+  const paramsValidation = CommonValidator.PFindPaginationValidator.safeParse({ page, pageSize });
 
   if (!paramsValidation.success) {
     return new Response('', { status: HttpStatusCode.BAD_REQUEST });

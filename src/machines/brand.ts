@@ -1,14 +1,14 @@
 import { assign, setup } from 'xstate';
 
-import { BrandConstant } from '@/constant';
-import { FBrand, Id, NType, PBrandFind } from '@/types';
+import { CommonConstant } from '@/constant';
+import { FBrand, Id, NType, PFindPagination } from '@/types';
 
 type BrandMachineContext = {
   modifier: {
     formValues: NType<FBrand>;
     id: NType<Id>;
   };
-  searchPayload: PBrandFind;
+  searchPayload: PFindPagination;
 };
 
 type BrandMachineEvents =
@@ -21,7 +21,7 @@ type BrandMachineEvents =
 
 const INITIAL_CONTEXT: BrandMachineContext = {
   modifier: { formValues: null, id: null },
-  searchPayload: BrandConstant.P_BRAND_FIND_DEFAULT,
+  searchPayload: CommonConstant.P_FIND_PAGINATION_DEFAULT,
 };
 
 export const brandMachine = setup({

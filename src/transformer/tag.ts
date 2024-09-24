@@ -1,4 +1,4 @@
-import { DTag, FTag, MTag, PTagFind, VTag, VTagTable } from '@/types';
+import { DTag, FTag, MTag, VTag, VTagTable } from '@/types';
 
 export abstract class TagTransformer {
   public static DMTagTransformer(src: DTag): MTag {
@@ -21,13 +21,6 @@ export abstract class TagTransformer {
     return {
       comment: src.comment,
       name: src.name,
-    };
-  }
-
-  public static PTagFindQueryStringTransformer(src: PTagFind): Record<string, string> {
-    return {
-      page: String(src.page),
-      pageSize: String(src.pageSize),
     };
   }
 }

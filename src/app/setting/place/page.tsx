@@ -42,7 +42,10 @@ export default function Page() {
     <div className="p-4 relative overflow-y-auto h-full flex flex-col">
       <div className="flex justify-between">
         <h2 className="text-lg font-medium text-gray-800 dark:text-white">Places</h2>
-        <BasicButton onClick={() => send({ type: 'TO_CREATE' })}>Create</BasicButton>
+        <BasicButton onClick={() => send({ type: 'TO_CREATE' })} className="flex gap-x-2">
+          <BasicIcon iconType="cross" />
+          <span>Create</span>
+        </BasicButton>
       </div>
 
       <div className="flex flex-col mt-2 w-full overflow-auto relative grow">

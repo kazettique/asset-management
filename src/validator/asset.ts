@@ -206,5 +206,6 @@ export abstract class AssetValidator {
 
   public static readonly FAssetFindSortValidator: z.ZodSchema<FAssetFindSort> = this.PAssetFindSortValidator;
 
-  public static readonly FAssetFindPagination: z.ZodSchema<FAssetFindPagination> = CommonValidator.PFindPaginationValidator;
+  public static readonly FAssetFindPagination: z.ZodSchema<FAssetFindPagination> =
+    CommonValidator.PFindPaginationValidator;
 }

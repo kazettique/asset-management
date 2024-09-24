@@ -1,8 +1,8 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { TagTransformer } from '@/transformer';
-import { FTag, GeneralResponse, Id, MTag, PaginationBase, PTagFind, VTag } from '@/types';
+import { CommonTransformer, TagTransformer } from '@/transformer';
+import { FTag, GeneralResponse, Id, MTag, PaginationBase, PFindPagination, VTag } from '@/types';
 
 @backendImplements()
 export abstract class TagFetcher {
@@ -22,9 +22,10 @@ export abstract class TagFetcher {
     return data;
   }
 
-  public static async FindMany(payload: PTagFind): Promise<PaginationBase<MTag>> {
+  public static async FindMany(payload: PFindPagination): Promise<PaginationBase<MTag>> {
     const res = await fetch(
-      '/api/setting/tags?' + new URLSearchParams(TagTransformer.PTagFindQueryStringTransformer(payload)).toString(),
+      '/api/setting/tags?' +
+        new URLSearchParams(CommonTransformer.PFindPaginationQueryStringTransformer(payload)).toString(),
     );
 
     const data = (await res.json()) as PaginationBase<MTag>;

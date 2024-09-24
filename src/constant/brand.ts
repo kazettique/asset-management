@@ -1,4 +1,4 @@
-import { DBrand, FBrand, FormOption, Id, PBrandFind } from '@/types';
+import { DBrand, FBrand, FormOption, Id } from '@/types';
 
 import { CommonConstant } from './common';
 
@@ -16,10 +16,5 @@ export abstract class BrandConstant {
   public static readonly F_BRAND_INITIAL_VALUES: FBrand = {
     comment: '',
     name: CommonConstant.DEFAULT_NAME,
-  };
-
-  public static readonly P_BRAND_FIND_DEFAULT: PBrandFind = {
-    page: CommonConstant.DEFAULT_PAGE,
-    pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
   };
 }

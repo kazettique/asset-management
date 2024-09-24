@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DBrand, FBrand, MBrand, PBrand, PBrandFind, VBrand } from '@/types';
+import { DBrand, FBrand, MBrand, PBrand, VBrand } from '@/types';
 
 import { CommonValidator } from './common';
 

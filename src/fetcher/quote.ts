@@ -1,7 +1,7 @@
 'use client';
 
 import { backendImplements } from '@/decorator';
-import { CommonTransformer, QuoteTransformer } from '@/transformer';
+import { CommonTransformer } from '@/transformer';
 import { GeneralResponse, Id, MQuote, PaginationBase, PFindPagination, PQuote, VQuote } from '@/types';
 
 @backendImplements()

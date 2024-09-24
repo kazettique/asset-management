@@ -1,14 +1,14 @@
 import { assign, setup } from 'xstate';
 
-import { TagConstant } from '@/constant';
-import { FTag, Id, NType, PTagFind } from '@/types';
+import { CommonConstant } from '@/constant';
+import { FTag, Id, NType, PFindPagination } from '@/types';
 
 type TagMachineContext = {
   modifier: {
     formValues: NType<FTag>;
     id: NType<Id>;
   };
-  searchPayload: PTagFind;
+  searchPayload: PFindPagination;
 };
 
 type TagMachineEvents =
@@ -21,7 +21,7 @@ type TagMachineEvents =
 
 const INITIAL_CONTEXT: TagMachineContext = {
   modifier: { formValues: null, id: null },
-  searchPayload: TagConstant.P_TAG_FIND_DEFAULT,
+  searchPayload: CommonConstant.P_FIND_PAGINATION_DEFAULT,
 };
 
 export const tagMachine = setup({
