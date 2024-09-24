@@ -49,7 +49,7 @@ export abstract class QuoteFetcher {
       method: 'GET',
     });
 
-    return await ofetch<GeneralResponse<VQuote>>(API_URL, fetchOption);
+    return await ofetch<GeneralResponse<VQuote>>(`${API_URL}/random`, fetchOption);
   }
 
   public static async Create(payload: PQuote): Promise<GeneralResponse<VQuote>> {

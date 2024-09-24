@@ -21,12 +21,12 @@ export abstract class DashboardFetcher {
 
   public static async FindCalendar(currentDate: Date): Promise<GeneralResponse<VDashboardCalendar>> {
     const fetchOption = new FetchOptionFactory({
-      apiName: this.FindAggregate.name,
+      apiName: this.FindCalendar.name,
       apiType: 'INTERNAL',
       method: 'GET',
       query: { currentDate: currentDate.toDateString() },
     });
 
-    return await ofetch<GeneralResponse<VDashboardCalendar>>(API_URL, fetchOption);
+    return await ofetch<GeneralResponse<VDashboardCalendar>>(`${API_URL}/calendar`, fetchOption);
   }
 }
