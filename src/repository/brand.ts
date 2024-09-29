@@ -2,9 +2,7 @@ import { Prisma } from '@prisma/client';
 
 import { BrandConstant } from '@/constant';
 import { prisma } from '@/lib/db';
-import { BrandTransformer } from '@/transformer';
-import { DBrand, Id, NString, NType, PaginationBase } from '@/types';
-import { Utils } from '@/utils';
+import { DBrand, Id, NString, NType } from '@/types';
 
 const queryObj: Prisma.BrandSelect = {
   comment: true,
@@ -51,7 +49,7 @@ export abstract class BrandRepository {
     return await prisma.$transaction([
       prisma.asset.updateMany({
         data: {
-          brandId: BrandConstant.BRAND_DEFAULT.id,
+          brandId: BrandConstant.DEFAULT_BRAND.id,
         },
         where: {
           brandId: { equals: id },

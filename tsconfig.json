@@ -1,4 +1,4 @@
-  {
+{
   "compilerOptions": {
     "target": "ES6",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -22,8 +22,8 @@
       "@/*": ["./src/*"]
     },
     "experimentalDecorators": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
