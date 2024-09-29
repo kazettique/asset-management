@@ -16,7 +16,7 @@ export abstract class ExternalForexFetcher {
   ): Promise<VExternalForex> {
     const fetchOption = new FetchOptionFactory({
       apiName: this.Find.name,
-      apiType: 'INTERNAL',
+      apiType: 'RAPID_FOREX',
       method: 'GET',
       query: { base: fromCurrency, to: toCurrency },
     });

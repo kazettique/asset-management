@@ -1,0 +1,59 @@
+services:
+  am-db-dev:
+    image: arm64v8/mysql
+    container_name: am-db-dev
+    environment:
+      MYSQL_ROOT_PASSWORD: $DATABASE_PASSWORD
+      MYSQL_DATABASE: $DATABASE_TABLE
+      # ref: https://stackoverflow.com/questions/50456780/run-mysql-on-port-3307-using-docker-compose
+      # MYSQL_TCP_PORT: $DATABASE_INTERNAL_PORT
+    volumes:
+      - am-data-dev:/var/lib/mysql
+    ports:
+      - $DATABASE_EXTERNAL_PORT:$DATABASE_INTERNAL_PORT
+    env_file:
+      - .env.dev
+    networks:
+      - am-internal-dev
+
+  am-app-dev:
+    container_name: am-app-dev
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+
+    # Set environment variables directly in the docker-compose file
+    environment:
+      APP_EXTERNAL_PORT: $APP_EXTERNAL_PORT
+      APP_INTERNAL_PORT: $APP_INTERNAL_PORT
+      DATABASE_TABLE: $DATABASE_TABLE
+      DATABASE_USER: $DATABASE_USER
+      DATABASE_PASSWORD: $DATABASE_PASSWORD
+      DATABASE_EXTERNAL_PORT: $DATABASE_EXTERNAL_PORT
+      DATABASE_INTERNAL_PORT: $DATABASE_INTERNAL_PORT
+      DATABASE_URL: $DATABASE_URL
+      DATABASE_HOST: $DATABASE_HOST
+      RAPID_API_KEY: $RAPID_API_KEY
+
+    # Set environment variables based on the .env file
+    env_file:
+      - .env.dev
+    volumes:
+      - ./src:/app/src
+    restart: always
+    ports:
+      - $APP_EXTERNAL_PORT:$APP_INTERNAL_PORT
+    networks:
+      - am-internal-dev
+    depends_on:
+      - am-db-dev
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  am-internal-dev:
+    external: false
+    driver: bridge
+
+volumes:
+  am-data-dev:

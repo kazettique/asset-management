@@ -10,7 +10,13 @@
     "lint:eslint": "eslint --ext .ts,.js,.tsx,.jsx .",
     "db-migrate": "npx prisma migrate dev",
     "db-studio": "npx prisma studio",
-    "icon-prepare": "fantasticon --normalize true"
+    "icon-prepare": "fantasticon --normalize true",
+    "docker:dev:build": "docker compose -f docker-compose.dev.yaml build am-app-dev",
+    "docker:dev:up": "docker compose -f docker-compose.dev.yaml --env-file .env.dev up -d",
+    "docker:dev:down": "docker compose -f docker-compose.dev.yaml --env-file .env.dev down",
+    "docker:prod:build": "docker compose -f docker-compose.prod.yaml build am-app-prod",
+    "docker:prod:up": "docker compose -f docker-compose.prod.yaml --env-file .env.prod up -d",
+    "docker:prod:down": "docker compose -f docker-compose.prod.yaml --env-file .env.prod down"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.3",
@@ -19,7 +25,7 @@
     "@nivo/bar": "^0.87.0",
     "@nivo/core": "^0.87.0",
     "@nivo/pie": "^0.87.0",
-    "@prisma/client": "^5.18.0",
+    "@prisma/client": "^5.20.0",
     "@tanstack/react-form": "^0.31.0",
     "@tanstack/react-query": "^5.52.1",
     "@tanstack/zod-form-adapter": "^0.31.0",

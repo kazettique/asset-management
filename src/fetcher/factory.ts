@@ -56,8 +56,8 @@ class FetchOptionFactory
       case 'RAPID_FOREX':
         this.baseURL = CommonConstant.EXTERNAL_FOREX_API_ROUTE;
         this.headers = {
-          'x-rapidapi-key': process.env.RAPID_API_KEY,
           ...headers,
+          'x-rapidapi-key': process.env.RAPID_API_KEY,
         };
         break;
       case 'INTERNAL':

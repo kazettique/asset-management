@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DQuote, FQuote, FQuoteImport, MQuote, PQuote, PQuoteFind, VQuote } from '@/types';
+import { DQuote, FQuote, FQuoteImport, MQuote, PQuote, VQuote } from '@/types';
 
 import { CommonValidator } from './common';
 

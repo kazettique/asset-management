@@ -1,4 +1,4 @@
-import { DQuote, FQuote, MQuote, PQuoteFind, VQuote, VQuoteTable } from '@/types';
+import { DQuote, FQuote, MQuote, VQuote, VQuoteTable } from '@/types';
 
 export abstract class QuoteTransformer {
   public static DMQuoteTransformer(src: DQuote): MQuote {

@@ -43,7 +43,7 @@ export abstract class QuoteRepository {
   // ref: https://stackoverflow.com/questions/4329396/mysql-select-10-random-rows-from-600k-rows-fast
   public static async FindRandom(): Promise<NType<DQuote>> {
     const rawData: unknown = await prisma.$queryRaw`
-      SELECT id, quote, author FROM quote ORDER BY RAND() LIMIT 1;
+      SELECT id, quote, author FROM Quote ORDER BY RAND() LIMIT 1;
     `;
 
     return Array.isArray(rawData) && rawData.length > 0 ? (rawData[0] as DQuote) : null;
