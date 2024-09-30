@@ -6,12 +6,12 @@ import { CommonTransformer, SettingTransformer } from '@/transformer';
 import { HttpStatusCode, VSetting } from '@/types';
 import { SettingValidator } from '@/validator';
 
-export async function GET(_request: Request): Promise<Response | NextResponse<VSetting>> {
-  const setting = await SettingService.FindAll();
+export async function GET(_request: Request): Promise<Response | NextResponse<VSetting[]>> {
+  const settings = await SettingService.FindAll();
 
-  const transformedData = SettingTransformer.MVSettingTransformer(setting);
+  const transformedData = settings.map((setting) => SettingTransformer.MVSettingTransformer(setting));
 
-  const dataValidation = SettingValidator.VSettingValidator.safeParse(transformedData);
+  const dataValidation = SettingValidator.VSettingValidator.array().safeParse(transformedData);
 
   if (!dataValidation.success) {
     return new Response(JSON.stringify({ error: dataValidation.error, message: CommonConstant.MSG_DIRTY_DATA }), {

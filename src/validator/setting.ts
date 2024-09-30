@@ -1,6 +1,15 @@
 import { z } from 'zod';
 
-import { DSetting, DSettingOptions, MSetting, MSettingOptions, SettingKey, VSetting, VSettingOptions } from '@/types';
+import {
+  DSetting,
+  DSettingOptions,
+  FSetting,
+  MSetting,
+  MSettingOptions,
+  SettingKey,
+  VSetting,
+  VSettingOptions,
+} from '@/types';
 import { PSetting } from '@/types/payloadModels/setting';
 
 import { BrandValidator } from './brand';
@@ -49,17 +58,59 @@ export abstract class SettingValidator {
     value: z.record(z.string(), z.any()),
   });
 
-  public static readonly MSettingValidator: z.ZodSchema<MSetting> = z.object({
-    id: CommonValidator.IdValidator,
-    key: z.nativeEnum(SettingKey),
-    value: z.any(),
-  });
+  public static readonly MSettingValidator: z.ZodSchema<MSetting> = z
+    .object({
+      id: CommonValidator.IdValidator,
+      key: z.literal(SettingKey.DISPLAY_FOREX),
+      value: z.string(),
+    })
+    .or(
+      z.object({
+        id: CommonValidator.IdValidator,
+        key: z.literal(SettingKey.CURRENCY_OPTION_LIST),
+        value: z.string().array(),
+      }),
+    )
+    .or(
+      z.object({
+        id: CommonValidator.IdValidator,
+        key: z.literal(SettingKey.SHOW_CENSOR_ASSET),
+        value: z.boolean(),
+      }),
+    );
 
-  public static readonly VSettingValidator: z.ZodSchema<VSetting> = z.object({
-    [SettingKey.DISPLAY_FOREX]: z.string(),
-    [SettingKey.CURRENCY_OPTION_LIST]: z.string().array(),
-    [SettingKey.SHOW_CENSOR_ASSET]: z.boolean(),
-  });
+  public static readonly VSettingValidator: z.ZodSchema<VSetting> = this.MSettingValidator;
 
-  public static readonly PSettingValidator: z.ZodSchema<PSetting> = this.MSettingValidator;
+  public static readonly PSettingValidator: z.ZodSchema<PSetting> = z
+    .object({
+      value: z.string(),
+    })
+    .or(
+      z.object({
+        value: z.string().array(),
+      }),
+    )
+    .or(
+      z.object({
+        value: z.boolean(),
+      }),
+    );
+
+  public static readonly FSettingValidator: z.ZodSchema<FSetting> = z
+    .object({
+      key: z.literal(SettingKey.DISPLAY_FOREX),
+      value: z.string(),
+    })
+    .or(
+      z.object({
+        key: z.literal(SettingKey.CURRENCY_OPTION_LIST),
+        value: z.string().array(),
+      }),
+    )
+    .or(
+      z.object({
+        key: z.literal(SettingKey.SHOW_CENSOR_ASSET),
+        value: z.boolean(),
+      }),
+    );
 }

@@ -47,8 +47,8 @@ export abstract class SettingService {
     return raw.map((record) => SettingTransformer.DMSettingTransformer(record));
   }
 
-  public static async Update<T extends MSetting>(key: T['id'], value: T['value']) {
-    const raw = await SettingRepository.Update(key, value);
+  public static async Update<T extends MSetting>(id: T['id'], value: T['value']) {
+    const raw = await SettingRepository.Update(id, value);
 
     return SettingTransformer.DMSettingTransformer(raw);
   }

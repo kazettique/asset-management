@@ -26,11 +26,11 @@ export abstract class SettingRepository {
     });
   }
 
-  public static async Update<T extends MSetting>(key: T['id'], value: T['value']): Promise<DSetting> {
+  public static async Update<T extends MSetting>(id: T['id'], value: T['value']): Promise<DSetting> {
     return await prisma.setting.update({
       data: { value },
       select: queryObj,
-      where: { key },
+      where: { id },
     });
   }
 }

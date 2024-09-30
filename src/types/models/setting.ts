@@ -1,4 +1,15 @@
-import { Id, MBrand, MCategory, MMethod, MOwner, MPlace, MPlatform, MTag, SettingCommon, SettingKey } from '@/types';
+import {
+  DbBase,
+  MBrand,
+  MCategory,
+  MMethod,
+  MOwner,
+  MPlace,
+  MPlatform,
+  MTag,
+  SettingCommon,
+  SettingKey,
+} from '@/types';
 
 export interface MSettingOptions {
   brands: MBrand[];
@@ -10,20 +21,17 @@ export interface MSettingOptions {
   tags: MTag[];
 }
 
-export interface MSettingDisplayForex extends SettingCommon {
-  id: Id;
+export interface MSettingDisplayForex extends SettingCommon, DbBase {
   key: SettingKey.DISPLAY_FOREX;
   value: string; // TODO: need to change to CurrencyCode later
 }
 
-export interface MSettingCurrencyOptionList extends SettingCommon {
-  id: Id;
+export interface MSettingCurrencyOptionList extends SettingCommon, DbBase {
   key: SettingKey.CURRENCY_OPTION_LIST;
   value: string[]; // TODO: need to change to CurrencyCode later
 }
 
-export interface MSettingShowCensorAsset extends SettingCommon {
-  id: Id;
+export interface MSettingShowCensorAsset extends SettingCommon, DbBase {
   key: SettingKey.SHOW_CENSOR_ASSET;
   value: boolean;
 }

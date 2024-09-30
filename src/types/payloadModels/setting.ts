@@ -1,3 +1,6 @@
-import { MSetting } from '../models';
+import { MSettingCurrencyOptionList, MSettingDisplayForex, MSettingShowCensorAsset } from '../models';
 
-export type PSetting = MSetting;
+export type PSetting =
+  | Pick<MSettingDisplayForex, 'value'>
+  | Pick<MSettingCurrencyOptionList, 'value'>
+  | Pick<MSettingShowCensorAsset, 'value'>;

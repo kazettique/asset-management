@@ -1,22 +1,22 @@
 export interface Props {
+  checked: boolean;
   className?: string;
-  isChecked: boolean;
   label?: string;
   onChange: (isChecked: boolean) => void;
 }
 
 // ref: https://www.cssscript.com/realistic-ios-switch-pure-css/
 export default function BasicToggleSwitch(props: Props) {
-  const { className = '', label = '', onChange, isChecked } = props;
+  const { className = '', label = '', onChange, checked } = props;
 
   const handleChange = (): void => {
-    onChange(!isChecked);
+    onChange(!checked);
   };
 
   return (
     <label className={`toggleSwitch ${className}`} data-test-comp={BasicToggleSwitch.name}>
       <div>{label}</div>
-      <input type="checkbox" checked={isChecked} onChange={handleChange} />
+      <input type="checkbox" checked={checked} onChange={handleChange} />
       <i />
     </label>
   );

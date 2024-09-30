@@ -1,4 +1,5 @@
 import {
+  FSetting,
   FSettingOptions,
   MSettingCurrencyOptionList,
   MSettingDisplayForex,
@@ -34,5 +35,10 @@ export abstract class SettingConstant {
     id: '39e63bb6-881e-4ef6-b2be-624803357c51',
     key: SettingKey.SHOW_CENSOR_ASSET,
     value: false,
+  };
+
+  public static readonly F_SETTING_INITIAL_VALUES: FSetting = {
+    key: SettingKey.DISPLAY_FOREX,
+    value: '',
   };
 }

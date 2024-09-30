@@ -1,8 +1,10 @@
 import { MethodType } from '@prisma/client';
+import { FetchServerResponseResult } from 'next/dist/client/components/router-reducer/fetch-server-response';
 
 import {
   DSetting,
   DSettingOptions,
+  FSetting,
   FSettingOptions,
   MBrand,
   MCategory,
@@ -16,6 +18,7 @@ import {
   SettingKey,
   VSetting,
   VSettingOptions,
+  VSettingTable,
 } from '@/types';
 
 import { BrandTransformer } from './brand';
@@ -78,9 +81,22 @@ export abstract class SettingTransformer {
     };
   }
 
-  public static MVSettingTransformer(src: MSetting[]): VSetting {
-    return src.reduce<VSetting>((acc, curr, _index, _arr) => {
-      return { ...acc, [curr.key]: curr.value };
-    }, {} as VSetting);
+  public static MVSettingTransformer(src: MSetting): VSetting {
+    return src;
+  }
+
+  public static VTSettingTransformer(src: VSetting): VSettingTable {
+    return {
+      key: src.key,
+      raw: src,
+      value: src.value,
+    };
+  }
+
+  public static VFSettingTransformer(src: VSetting): FSetting {
+    return {
+      key: src.key,
+      value: src.value,
+    } as FSetting;
   }
 }

@@ -86,7 +86,6 @@ export interface ImportTable {
 }
 
 export interface SettingCommon {
-  id: Id;
   key: SettingKey;
   value: any;
 }
