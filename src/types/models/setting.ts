@@ -1,4 +1,4 @@
-import { MBrand, MCategory, MMethod, MOwner, MPlace, MPlatform, MTag } from '@/types';
+import { Id, MBrand, MCategory, MMethod, MOwner, MPlace, MPlatform, MTag, SettingCommon, SettingKey } from '@/types';
 
 export interface MSettingOptions {
   brands: MBrand[];
@@ -10,19 +10,22 @@ export interface MSettingOptions {
   tags: MTag[];
 }
 
-export type MSettingDisplayForex = {
-  key: 'displayForex';
-  value: string;
-};
+export interface MSettingDisplayForex extends SettingCommon {
+  id: Id;
+  key: SettingKey.DISPLAY_FOREX;
+  value: string; // TODO: need to change to CurrencyCode later
+}
 
-export type MSettingCurrencyOptionList = {
-  key: 'currencyOptionList';
-  value: string[];
-};
+export interface MSettingCurrencyOptionList extends SettingCommon {
+  id: Id;
+  key: SettingKey.CURRENCY_OPTION_LIST;
+  value: string[]; // TODO: need to change to CurrencyCode later
+}
 
-export type MSettingShowCensorAsset = {
-  key: 'showCensorAsset';
+export interface MSettingShowCensorAsset extends SettingCommon {
+  id: Id;
+  key: SettingKey.SHOW_CENSOR_ASSET;
   value: boolean;
-};
+}
 
 export type MSetting = MSettingDisplayForex | MSettingCurrencyOptionList | MSettingShowCensorAsset;

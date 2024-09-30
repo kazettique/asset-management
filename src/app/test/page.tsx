@@ -1,15 +1,11 @@
 'use client';
 
-import { ofetch } from 'ofetch';
-
 import BasicButton from '@/components/BasicButton';
+import { SettingFetcher } from '@/fetcher';
 
 export default function Page() {
   const test = async () => {
-    await ofetch('/api/hello', {
-      params: { id: 5566, name: 'john' },
-      query: { age: 23, nickName: 'jon' },
-    });
+    await SettingFetcher.FindAll();
   };
 
   return (

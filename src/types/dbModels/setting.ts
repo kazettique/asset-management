@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-import { DBrand, DCategory, DMethod, DOwner, DPlace, DTag } from '@/types';
+import { DBrand, DCategory, DMethod, DOwner, DPlace, DTag, Id } from '@/types';
 
 export interface DSettingOptions {
   brands: DBrand[];
@@ -12,6 +12,7 @@ export interface DSettingOptions {
 }
 
 export interface DSetting {
+  id: Id;
   key: string;
   value: Prisma.JsonValue;
 }

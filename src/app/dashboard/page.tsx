@@ -55,11 +55,11 @@ export default function Page() {
     <div>
       <div className="h-full w-full relative overflow-y-auto py-6 px-4">
         <div className="w-full grid grid-cols-12 gap-4">
-          <Section title="today's quote" className="col-span-6">
+          <Section title="today's quote" className="lg:col-span-6 col-span-12">
             {todaysQuoteData && <BasicQuote quote={todaysQuoteData.quote} author={todaysQuoteData.author} />}
           </Section>
 
-          <Section title="general statistics" className="col-span-6">
+          <Section title="general statistics" className="lg:col-span-6 col-span-12">
             <div className="grid grid-cols-3 gap-4">
               <GeneralItem value={generalData.sum.startPrice} title="total cost" />
               <GeneralItem value={generalData.avg.startPrice} title="average buy price" />
@@ -96,7 +96,7 @@ export default function Page() {
             </div>
           </Section>
 
-          <Section title="category statistics" className="col-span-6">
+          <Section title="category statistics" className="lg:col-span-6 col-span-12">
             <div className="w-full grid grid-cols-3">
               <DashboardPieChart
                 className="min-h-[200px]"
@@ -112,7 +112,7 @@ export default function Page() {
             </div>
           </Section>
 
-          <Section title="price ranking" className="col-span-6">
+          <Section title="price ranking" className="lg:col-span-6 col-span-12">
             <Table data={priceRankingList} columns={rankTableColumns} hasNumber />
           </Section>
         </div>

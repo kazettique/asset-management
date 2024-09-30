@@ -1,6 +1,7 @@
 import { MethodType } from '@prisma/client';
 
 import {
+  DSetting,
   DSettingOptions,
   FSettingOptions,
   MBrand,
@@ -9,8 +10,11 @@ import {
   MOwner,
   MPlace,
   MPlatform,
+  MSetting,
   MSettingOptions,
   MTag,
+  SettingKey,
+  VSetting,
   VSettingOptions,
 } from '@/types';
 
@@ -64,5 +68,19 @@ export abstract class SettingTransformer {
       startMethods: src.startMethods.map((item) => parseOptions(item)),
       tags: src.tags.map((item) => parseOptions(item)),
     };
+  }
+
+  public static DMSettingTransformer(src: DSetting): MSetting {
+    return {
+      id: src.id,
+      key: src.key as SettingKey,
+      value: src.value as any,
+    };
+  }
+
+  public static MVSettingTransformer(src: MSetting[]): VSetting {
+    return src.reduce<VSetting>((acc, curr, _index, _arr) => {
+      return { ...acc, [curr.key]: curr.value };
+    }, {} as VSetting);
   }
 }

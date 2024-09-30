@@ -17,7 +17,7 @@ export default function useAssetData() {
     isPending: settingIsPending,
     refetch: settingRefetch,
   } = useQuery({
-    queryFn: () => SettingFetcher.FindAll(),
+    queryFn: () => SettingFetcher.FindAllOptions(),
     queryKey: ['setting'],
   });
 
@@ -25,7 +25,7 @@ export default function useAssetData() {
     () =>
       settingData?.data
         ? SettingTransformer.FSettingOptionsTransformer(settingData.data)
-        : SettingConstant.F_SETTING_OPTIONS,
+        : SettingConstant.DEFAULT_F_SETTING_OPTIONS,
     [settingData],
   );
 

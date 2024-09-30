@@ -1,4 +1,16 @@
-import { MBrand, MCategory, MMethod, MOwner, MPlace, MPlatform, MSetting, MTag } from '@/types';
+import {
+  MBrand,
+  MCategory,
+  MMethod,
+  MOwner,
+  MPlace,
+  MPlatform,
+  MSettingCurrencyOptionList,
+  MSettingDisplayForex,
+  MSettingShowCensorAsset,
+  MTag,
+  SettingKey,
+} from '@/types';
 
 export interface VSettingOptions {
   brands: MBrand[];
@@ -11,4 +23,8 @@ export interface VSettingOptions {
   tags: MTag[];
 }
 
-export type VSetting = MSetting;
+export interface VSetting {
+  [SettingKey.DISPLAY_FOREX]: MSettingDisplayForex['value'];
+  [SettingKey.CURRENCY_OPTION_LIST]: MSettingCurrencyOptionList['value'];
+  [SettingKey.SHOW_CENSOR_ASSET]: MSettingShowCensorAsset['value'];
+}

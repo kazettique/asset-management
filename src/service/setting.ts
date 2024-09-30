@@ -7,6 +7,7 @@ import {
   PlatformRepository,
   TagRepository,
 } from '@/repository';
+import { SettingRepository } from '@/repository/setting';
 import {
   BrandTransformer,
   CategoryTransformer,
@@ -14,12 +15,13 @@ import {
   OwnerTransformer,
   PlaceTransformer,
   PlatformTransformer,
+  SettingTransformer,
   TagTransformer,
 } from '@/transformer';
-import { MSettingOptions } from '@/types';
+import { MSetting, MSettingOptions } from '@/types';
 
 export abstract class SettingService {
-  public static async FindAll(): Promise<MSettingOptions> {
+  public static async FindAllOptions(): Promise<MSettingOptions> {
     const brands = await BrandRepository.FindAll();
     const categories = await CategoryRepository.FindAll();
     const methods = await MethodRepository.FindAll();
@@ -37,5 +39,17 @@ export abstract class SettingService {
       platforms: platforms.map((platform) => PlatformTransformer.DMPlatformTransformer(platform)),
       tags: tags.map((tag) => TagTransformer.DMTagTransformer(tag)),
     };
+  }
+
+  public static async FindAll(): Promise<MSetting[]> {
+    const raw = await SettingRepository.FindAll();
+
+    return raw.map((record) => SettingTransformer.DMSettingTransformer(record));
+  }
+
+  public static async Update<T extends MSetting>(key: T['id'], value: T['value']) {
+    const raw = await SettingRepository.Update(key, value);
+
+    return SettingTransformer.DMSettingTransformer(raw);
   }
 }

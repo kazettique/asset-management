@@ -7,6 +7,7 @@ import {
   OwnerConstant,
   PlaceConstant,
   PlatformConstant,
+  SettingConstant,
 } from '@/constant';
 const prisma = new PrismaClient();
 
@@ -52,6 +53,27 @@ async function main() {
       update: {},
       where: {
         name: PlatformConstant.DEFAULT_PLATFORM.name,
+      },
+    }),
+    prisma.setting.upsert({
+      create: SettingConstant.DEFAULT_M_SETTING_DISPLAY_FOREX,
+      update: {},
+      where: {
+        key: SettingConstant.DEFAULT_M_SETTING_DISPLAY_FOREX.key,
+      },
+    }),
+    prisma.setting.upsert({
+      create: SettingConstant.DEFAULT_M_SETTING_CURRENCY_OPTION_LIST,
+      update: {},
+      where: {
+        key: SettingConstant.DEFAULT_M_SETTING_CURRENCY_OPTION_LIST.key,
+      },
+    }),
+    prisma.setting.upsert({
+      create: SettingConstant.DEFAULT_M_SETTING_SHOW_CENSOR_ASSET,
+      update: {},
+      where: {
+        key: SettingConstant.DEFAULT_M_SETTING_SHOW_CENSOR_ASSET.key,
       },
     }),
   ]);
