@@ -341,12 +341,12 @@ export abstract class AssetRepository {
 
   public static async FindAssetInMonthInterval(currentDate: Date): Promise<DDashboardCalendar> {
     const rawData = await prisma.$queryRaw`
-    Select Asset.name, Asset.startDate, Asset.startPrice, Forex.targetCurrency, Forex.rate
-    FROM Asset
-    LEFT JOIN Forex ON Asset.startForexId = Forex.id
-    WHERE MONTH(Asset.startDate) = MONTH(${currentDate})
-    ORDER BY DAY(Asset.startDate) ASC
-  `;
+      Select Asset.name, Asset.startDate, Asset.startPrice, Forex.targetCurrency, Forex.rate
+      FROM Asset
+      LEFT JOIN Forex ON Asset.startForexId = Forex.id
+      WHERE MONTH(Asset.startDate) = MONTH(${currentDate})
+      ORDER BY DAY(Asset.startDate) ASC
+    `;
 
     return { birthday: rawData } as DDashboardCalendar;
   }

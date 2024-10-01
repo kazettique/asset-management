@@ -63,6 +63,7 @@ export abstract class ForexService {
     return ForexTransformer.DMForexTransformer(raw);
   }
 
+  // TODO: need refactor
   public static async Search(
     startCurrency: NType<CurrencyCode>,
     startDate: NType<Date>,
@@ -141,5 +142,25 @@ export abstract class ForexService {
       startForexId,
       startPriceInBaseCurrency,
     };
+  }
+
+  public static async FindOrCreate(currency: CurrencyCode, date: Date = new Date()): Promise<NType<MForex>> {
+    if (currency === 'USD') return null;
+
+    const findForexData = await this.Find(date, currency);
+
+    if (findForexData !== null) {
+      return findForexData;
+    } else {
+      const externalForexData = await ExternalForexService.Find(currency, dayjs(date));
+
+      if (externalForexData && externalForexData.rate) {
+        const { updatedDate, rate } = externalForexData;
+
+        return await this.Create(updatedDate, currency, rate.rate);
+      } else {
+        return null;
+      }
+    }
   }
 }

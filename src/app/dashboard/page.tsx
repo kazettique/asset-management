@@ -1,13 +1,9 @@
 'use client';
 
-import { ResponsivePie } from '@nivo/pie';
-
 import BasicCalendar from '@/components/BasicCalendar';
 import BasicQuote from '@/components/BasicQuote';
 import Table, { ColumnProps } from '@/components/Table';
-import { CommonConstant } from '@/constant';
 import { VDashboardCalendarTable, VDashboardRankTable } from '@/types';
-import { Utils } from '@/utils';
 
 import DashboardPieChart from './DashboardPieChart';
 import GeneralItem from './GeneralItem';

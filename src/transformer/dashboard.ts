@@ -7,6 +7,7 @@ import {
   DDashboardCalendar,
   MDashboardAggregate,
   MDashboardCalendar,
+  MForex,
   NNumber,
   VDashboardAggregate,
   VDashboardCalendar,
@@ -185,6 +186,65 @@ export abstract class DashboardTransformer {
       name: src.name,
       startDate: src.startDate ? Utils.GetDateTimeString(src.startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
       startPrice,
+    };
+  }
+
+  // price convert for dashboard aggregate data
+  public static MDashboardCalculatePriceTransformer(
+    src: MDashboardAggregate,
+    displayForex: MForex,
+  ): MDashboardAggregate {
+    const rate = displayForex.rate;
+
+    return {
+      ...src,
+      category: src.category.map((item) => ({
+        ...item,
+        avg: {
+          endPrice: item.avg.endPrice ? Utils.ConvertToTargetCurrency(item.avg.endPrice, rate) : item.avg.endPrice,
+          startPrice: item.avg.startPrice
+            ? Utils.ConvertToTargetCurrency(item.avg.startPrice, rate)
+            : item.avg.endPrice,
+        },
+        max: {
+          endPrice: item.max.endPrice ? Utils.ConvertToTargetCurrency(item.max.endPrice, rate) : item.max.endPrice,
+          startPrice: item.max.startPrice
+            ? Utils.ConvertToTargetCurrency(item.max.startPrice, rate)
+            : item.max.endPrice,
+        },
+        sum: {
+          endPrice: item.sum.endPrice ? Utils.ConvertToTargetCurrency(item.sum.endPrice, rate) : item.sum.endPrice,
+          startPrice: item.sum.startPrice
+            ? Utils.ConvertToTargetCurrency(item.sum.startPrice, rate)
+            : item.avg.endPrice,
+        },
+      })),
+      general: {
+        avg: {
+          endPrice: src.general.avg.endPrice
+            ? Utils.ConvertToTargetCurrency(src.general.avg.endPrice, rate)
+            : src.general.avg.endPrice,
+          startPrice: src.general.avg.startPrice
+            ? Utils.ConvertToTargetCurrency(src.general.avg.startPrice, rate)
+            : src.general.avg.startPrice,
+        },
+        max: {
+          endPrice: src.general.max.endPrice
+            ? Utils.ConvertToTargetCurrency(src.general.max.endPrice, rate)
+            : src.general.max.endPrice,
+          startPrice: src.general.max.startPrice
+            ? Utils.ConvertToTargetCurrency(src.general.max.startPrice, rate)
+            : src.general.max.startPrice,
+        },
+        sum: {
+          endPrice: src.general.sum.endPrice
+            ? Utils.ConvertToTargetCurrency(src.general.sum.endPrice, rate)
+            : src.general.sum.endPrice,
+          startPrice: src.general.sum.startPrice
+            ? Utils.ConvertToTargetCurrency(src.general.sum.startPrice, rate)
+            : src.general.sum.startPrice,
+        },
+      },
     };
   }
 }

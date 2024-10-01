@@ -17,8 +17,6 @@ import {
   SettingBase,
 } from '@/types';
 
-import { ForexValidator } from './forex';
-
 export abstract class CommonValidator {
   public static readonly IdValidator: z.ZodSchema<Id> = z.string().uuid();
 

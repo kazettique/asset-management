@@ -2,7 +2,7 @@
 
 import { ofetch } from 'ofetch';
 
-import { FSetting, GeneralResponse, MSetting, VSetting, VSettingOptions } from '@/types';
+import { FSetting, GeneralResponse, Id, MSetting, VSetting, VSettingOptions } from '@/types';
 
 import { FetchOptionFactory } from './factory';
 
@@ -27,6 +27,16 @@ export abstract class SettingFetcher {
     });
 
     return await ofetch<GeneralResponse<VSetting[]>>(API_URL, fetchOption);
+  }
+
+  public static async FindById(id: Id): Promise<GeneralResponse<VSetting>> {
+    const fetchOption = new FetchOptionFactory({
+      apiName: this.FindById.name,
+      apiType: 'INTERNAL',
+      method: 'GET',
+    });
+
+    return await ofetch<GeneralResponse<VSetting>>(`${API_URL}/${id}`, fetchOption);
   }
 
   public static async Update(payload: FSetting, id: MSetting['id']): Promise<GeneralResponse<VSetting>> {

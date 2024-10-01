@@ -18,7 +18,7 @@ import {
   SettingTransformer,
   TagTransformer,
 } from '@/transformer';
-import { MSetting, MSettingOptions } from '@/types';
+import { MSetting, MSettingOptions, NType } from '@/types';
 
 export abstract class SettingService {
   public static async FindAllOptions(): Promise<MSettingOptions> {
@@ -45,6 +45,26 @@ export abstract class SettingService {
     const raw = await SettingRepository.FindAll();
 
     return raw.map((record) => SettingTransformer.DMSettingTransformer(record));
+  }
+
+  public static async FindById(id: MSetting['id']): Promise<NType<MSetting>> {
+    const raw = await SettingRepository.FindById(id);
+
+    if (raw === null) {
+      return raw;
+    } else {
+      return SettingTransformer.DMSettingTransformer(raw);
+    }
+  }
+
+  public static async FindByKey(key: MSetting['key']): Promise<NType<MSetting>> {
+    const raw = await SettingRepository.FindByKey(key);
+
+    if (raw === null) {
+      return raw;
+    } else {
+      return SettingTransformer.DMSettingTransformer(raw);
+    }
   }
 
   public static async Update<T extends MSetting>(id: T['id'], value: T['value']) {

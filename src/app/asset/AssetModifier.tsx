@@ -9,6 +9,7 @@ import BasicInput from '@/components/BasicInput';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
+import FormToggleSwitch from '@/components/FormToggleSwitch';
 import { AssetConstant, CommonConstant } from '@/constant';
 import { AssetMachineContext } from '@/machines/asset';
 import { FAsset, FSettingOptions, Id } from '@/types';
@@ -123,6 +124,10 @@ export default function AssetModifier(props: Props) {
                 <BasicSelect options={settingOptions.endMethods} path="endMethodId" control={control} />
                 <BasicSelect options={settingOptions.platforms} path="endPlatformId" control={control} />
               </div>
+            </div>
+
+            <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4">
+              <FormToggleSwitch register={register} path="isCensored" />
             </div>
           </div>
 

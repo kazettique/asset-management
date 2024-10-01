@@ -19,7 +19,14 @@ export abstract class SettingRepository {
     });
   }
 
-  public static async Find(key: DSetting['key']): Promise<NType<DSetting>> {
+  public static async FindById(id: DSetting['id']): Promise<NType<DSetting>> {
+    return await prisma.setting.findUnique({
+      select: queryObj,
+      where: { id },
+    });
+  }
+
+  public static async FindByKey(key: DSetting['key']): Promise<NType<DSetting>> {
     return await prisma.setting.findUnique({
       select: queryObj,
       where: { key },
