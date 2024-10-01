@@ -38,7 +38,10 @@ export default function useDashboardData() {
     : [];
 
   const generalData = aggregateData
-    ? DashboardTransformer.VDashboardGeneralDisplayTransformer(aggregateData.data.general)
+    ? DashboardTransformer.VDashboardGeneralDisplayTransformer(
+        aggregateData.data.general,
+        aggregateData.data.displayForex,
+      )
     : DashboardConstant.DEFAULT_DASHBOARD_GENERAL_DISPLAY;
 
   const liveCount: string = aggregateData

@@ -1,7 +1,7 @@
 'use client';
 
 import { Transition } from '@headlessui/react';
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 
 import BasicIcon from './BasicIcon';
 

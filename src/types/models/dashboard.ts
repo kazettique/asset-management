@@ -1,5 +1,8 @@
+import { CurrencyCode } from 'currency-codes-ts/dist/types';
+
 import { Id, Name, NNumber, NString, NType } from '../base';
 import { DDashboardCalendar, DDashboardCalendarBirthday } from '../dbModels';
+import { MForex } from './forex';
 
 // export interface DDashboard {
 //   calendar: {};
@@ -43,6 +46,7 @@ export interface MDashboardGeneral {
 export interface MDashboardAggregate {
   category: MDashboardCategory[];
   deadCount: number;
+  displayForex: string;
   general: MDashboardGeneral;
   liveCount: number;
   ranking: MDashboardRank[];

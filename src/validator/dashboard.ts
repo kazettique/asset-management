@@ -40,6 +40,7 @@ export abstract class DashboardValidator {
       })
       .array(),
     deadCount: z.number(),
+    displayForex: z.string(),
     general: z.object({
       _avg: z.object({
         endPrice: CommonValidator.PriceValidator.nullable(),
@@ -89,6 +90,7 @@ export abstract class DashboardValidator {
       })
       .array(),
     deadCount: z.number(),
+    displayForex: z.string(),
     general: z.object({
       avg: z.object({
         endPrice: CommonValidator.PriceValidator.nullable(),

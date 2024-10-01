@@ -1,6 +1,7 @@
 import { MethodType } from '@prisma/client';
 import currencyCodes from 'currency-codes-ts';
 import { CurrencyCode } from 'currency-codes-ts/dist/types';
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 import { FormOption, MenuItem, Name, PFindPagination, SettingBase } from '@/types';
 
@@ -116,7 +117,7 @@ export abstract class CommonConstant {
   ];
 
   public static readonly CURRENCY_CODE_ALL_OPTIONS: FormOption[] = currencyCodes.data.map((item) => ({
-    label: item.code,
+    label: `(${item.code})${getSymbolFromCurrency(item.code)}`,
     value: item.code,
   }));
 

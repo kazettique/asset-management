@@ -17,7 +17,7 @@ export default function useAssetData() {
     refetch: settingRefetch,
   } = useQuery({
     queryFn: () => SettingFetcher.FindAllOptions(),
-    queryKey: ['setting'],
+    queryKey: ['setting options'],
   });
 
   const settingOptions = useMemo<FSettingOptions>(

@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import React, { useForm, useWatch } from 'react-hook-form';
 import Select from 'react-select';
 
 import BasicButton from '@/components/BasicButton';

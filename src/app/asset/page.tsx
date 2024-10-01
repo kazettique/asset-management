@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import Pagination from '@/components/Pagination';

@@ -1,3 +1,5 @@
+import { CurrencyCode } from 'currency-codes-ts/dist/types';
+import getSymbolFromCurrency from 'currency-symbol-map';
 import dayjs from 'dayjs';
 
 import { CommonConstant } from '@/constant';
@@ -36,6 +38,7 @@ export abstract class DashboardTransformer {
         sum: item._sum,
       })),
       deadCount: src.deadCount,
+      displayForex: src.displayForex,
       general: {
         avg: src.general._avg,
         max: src.general._max,
@@ -63,9 +66,9 @@ export abstract class DashboardTransformer {
 
     if (src.startPrice && src.startForex) {
       const calculatedPrice = Utils.ConvertToTargetCurrency(src.startPrice, src.startForex.rate);
-      startPrice = '(' + src.startForex.targetCurrency + ') ' + Utils.NumberWithCommas(calculatedPrice);
+      startPrice = getSymbolFromCurrency(src.startForex.targetCurrency) + Utils.NumberWithCommas(calculatedPrice);
     } else if (src.startPrice) {
-      startPrice = '(' + CommonConstant.BASE_CURRENCY + ') ' + Utils.NumberWithCommas(src.startPrice);
+      startPrice = getSymbolFromCurrency(CommonConstant.BASE_CURRENCY) + Utils.NumberWithCommas(src.startPrice);
     }
 
     return {
@@ -140,9 +143,13 @@ export abstract class DashboardTransformer {
     }, DashboardConstant.DEFAULT_DASHBOARD_CATEGORY_CHART);
   }
 
-  public static VDashboardGeneralDisplayTransformer(src: VDashboardGeneral): VDashboardGeneralDisplay {
+  public static VDashboardGeneralDisplayTransformer(
+    src: VDashboardGeneral,
+    displayForex: string,
+  ): VDashboardGeneralDisplay {
     const transformPrice = (price: NNumber) =>
-      '$' + (price ? Utils.NumberWithCommas(Math.round(price)) : CommonConstant.DEFAULT_EMPTY_STRING);
+      getSymbolFromCurrency(displayForex) +
+      (price ? Utils.NumberWithCommas(Math.round(price)) : CommonConstant.DEFAULT_EMPTY_STRING);
 
     return {
       avg: {
@@ -174,9 +181,9 @@ export abstract class DashboardTransformer {
 
     if (src.startPrice && src.targetCurrency && src.rate) {
       const calculatedPrice = Utils.ConvertToTargetCurrency(src.startPrice, src.rate);
-      startPrice = '(' + src.targetCurrency + ') ' + Utils.NumberWithCommas(calculatedPrice);
+      startPrice = getSymbolFromCurrency(src.targetCurrency) + Utils.NumberWithCommas(calculatedPrice);
     } else if (src.startPrice) {
-      startPrice = '(' + CommonConstant.BASE_CURRENCY + ') ' + Utils.NumberWithCommas(src.startPrice);
+      startPrice = getSymbolFromCurrency(CommonConstant.BASE_CURRENCY) + Utils.NumberWithCommas(src.startPrice);
     }
 
     let age: string = dayjs().diff(dayjs(src.startDate), 'year') + 'yr old';

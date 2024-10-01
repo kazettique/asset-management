@@ -51,11 +51,11 @@ export default function Page() {
     <div>
       <div className="h-full w-full relative overflow-y-auto py-6 px-4">
         <div className="w-full grid grid-cols-12 gap-4">
-          <Section title="today's quote" className="lg:col-span-6 col-span-12">
+          <Section title="today's quote" className="lg:col-span-5 col-span-12">
             {todaysQuoteData && <BasicQuote quote={todaysQuoteData.quote} author={todaysQuoteData.author} />}
           </Section>
 
-          <Section title="general statistics" className="lg:col-span-6 col-span-12">
+          <Section title="general statistics" className="lg:col-span-7 col-span-12">
             <div className="grid grid-cols-3 gap-4">
               <GeneralItem value={generalData.sum.startPrice} title="total cost" />
               <GeneralItem value={generalData.avg.startPrice} title="average buy price" />

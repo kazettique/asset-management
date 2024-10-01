@@ -1,3 +1,4 @@
+import React from 'react';
 import { Control, FieldValues, Path, UseFormRegister, useWatch } from 'react-hook-form';
 
 import { FormOption } from '@/types';
