@@ -2,14 +2,13 @@ import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { useMachine } from '@xstate/react';
 import { useMemo } from 'react';
 
-import { SettingConstant } from '@/constant';
+import { CommonConstant, SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
 import { assetMachine } from '@/machines';
 import { AssetTransformer, SettingTransformer } from '@/transformer';
-import { FAsset, FSettingOptions, Id, VAsset, VAssetTable } from '@/types';
+import { FAsset, FormOption, FSettingOptions, Id, SettingKey, VAsset, VAssetTable } from '@/types';
 
 export default function useAssetData() {
-  // const [page, setPage] = useState<number>(1);
   const [state, send] = useMachine(assetMachine, {});
 
   const {
@@ -82,6 +81,21 @@ export default function useAssetData() {
     createAsset.mutate(data);
   };
 
+  const { data: settingCurrencyOptionListData } = useQuery({
+    queryFn: () => SettingFetcher.FindById(SettingConstant.DEFAULT_M_SETTING_CURRENCY_OPTION_LIST.id),
+    queryKey: ['setting currency option list'],
+  });
+
+  const currencyOptions = useMemo<FormOption[]>(
+    () =>
+      CommonConstant.CURRENCY_CODE_ALL_OPTIONS.filter((option) =>
+        settingCurrencyOptionListData && settingCurrencyOptionListData.data.key === SettingKey.CURRENCY_OPTION_LIST
+          ? settingCurrencyOptionListData.data.value.includes(option.value)
+          : [],
+      ),
+    [settingCurrencyOptionListData],
+  );
+
   const tableData: VAssetTable[] = assetData
     ? assetData.data.map((item) => AssetTransformer.VTAssetTransformer(item))
     : [];
@@ -90,6 +104,7 @@ export default function useAssetData() {
     assetData,
     assetIsPending,
     assetRefetch,
+    currencyOptions,
     onCreateSubmit,
     onItemDelete,
     onItemUpdate,

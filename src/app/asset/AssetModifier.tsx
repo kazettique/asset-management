@@ -10,13 +10,14 @@ import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTextArea from '@/components/BasicTextArea';
 import FormToggleSwitch from '@/components/FormToggleSwitch';
-import { AssetConstant, CommonConstant } from '@/constant';
+import { AssetConstant } from '@/constant';
 import { AssetMachineContext } from '@/machines/asset';
-import { FAsset, FSettingOptions, Id } from '@/types';
+import { FAsset, FormOption, FSettingOptions, Id } from '@/types';
 import { AssetValidator } from '@/validator';
 
 interface Props {
   className?: string;
+  currencyOptions: FormOption[];
   isOpen: boolean;
   mode?: 'create' | 'edit';
   modifierContext: AssetMachineContext['modifier'];
@@ -38,6 +39,7 @@ export default function AssetModifier(props: Props) {
     onDelete,
     onUpdate,
     settingOptions,
+    currencyOptions,
   } = props;
 
   const _defaultValues = useMemo(() => {
@@ -102,7 +104,7 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="startDate" />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="startCurrency" control={control} />
+                  <BasicSelect options={currencyOptions} path="startCurrency" control={control} />
                   <BasicInput register={register} path="startPrice" />
                 </div>
 
@@ -117,7 +119,7 @@ export default function AssetModifier(props: Props) {
                 <BasicInput type="date" register={register} path="endDate" />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="endCurrency" control={control} />
+                  <BasicSelect options={currencyOptions} path="endCurrency" control={control} />
                   <BasicInput register={register} path="endPrice" />
                 </div>
 

@@ -10,11 +10,12 @@ import BasicIcon from '@/components/BasicIcon';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
 import Table, { ColumnProps } from '@/components/Table';
-import { AssetConstant, CommonConstant } from '@/constant';
+import { AssetConstant } from '@/constant';
 import { AssetMachineContext } from '@/machines/asset';
 import { AssetTransformer } from '@/transformer';
 import {
   FAssetImport,
+  FormOption,
   FSettingOptions,
   IconType,
   ImportTable,
@@ -27,6 +28,7 @@ import { AssetValidator } from '@/validator';
 
 export interface Props {
   className?: string;
+  currencyOptions: FormOption[];
   importContext: AssetMachineContext['import'];
   isOpen: boolean;
   onClose: () => void;
@@ -37,7 +39,17 @@ export interface Props {
 }
 
 export default function AssetImport(props: Props) {
-  const { className = '', isOpen, onClose, onDone, settingOptions, onImport, state, importContext } = props;
+  const {
+    className = '',
+    isOpen,
+    onClose,
+    onDone,
+    settingOptions,
+    currencyOptions,
+    onImport,
+    state,
+    importContext,
+  } = props;
   const [importItems, setImportItems] = useState<VAssetImportItem[]>([]);
 
   const { register, handleSubmit, control, setValue } = useForm<FAssetImport>({
@@ -134,10 +146,10 @@ export default function AssetImport(props: Props) {
               </div>
 
               <div className="grid grid-cols-3 gap-4">
-                <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="startCurrency" control={control} />
+                <BasicSelect options={currencyOptions} path="startCurrency" control={control} />
                 <BasicSelect options={settingOptions.platforms} path="startPlatformId" control={control} />
                 <BasicSelect options={settingOptions.startMethods} path="startMethodId" control={control} />
-                <BasicSelect options={CommonConstant.CURRENCY_CODE_OPTIONS} path="endCurrency" control={control} />
+                <BasicSelect options={currencyOptions} path="endCurrency" control={control} />
                 <BasicSelect options={settingOptions.platforms} path="endPlatformId" control={control} />
                 <BasicSelect options={settingOptions.endMethods} path="endMethodId" control={control} />
               </div>

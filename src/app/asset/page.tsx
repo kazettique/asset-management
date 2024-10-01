@@ -4,7 +4,6 @@ import BasicButton from '@/components/BasicButton';
 import BasicIcon from '@/components/BasicIcon';
 import Pagination from '@/components/Pagination';
 import Table, { ColumnProps } from '@/components/Table';
-import { CommonConstant } from '@/constant';
 import { AssetTransformer } from '@/transformer';
 import { VAssetTable } from '@/types';
 
@@ -25,6 +24,7 @@ export default function Page() {
     state,
     send,
     assetIsPending,
+    currencyOptions,
   } = useAssetData();
 
   const columns: ColumnProps<VAssetTable>[] = [
@@ -184,11 +184,7 @@ export default function Page() {
           iconType="pen-to-square-solid"
           onClick={() =>
             void send({
-              formValues: AssetTransformer.VFAssetTransformer(
-                item.raw,
-                settingOptions,
-                CommonConstant.CURRENCY_CODE_OPTIONS,
-              ),
+              formValues: AssetTransformer.VFAssetTransformer(item.raw, settingOptions, currencyOptions),
               id: item.raw.id,
               type: 'TO_EDIT',
             })
@@ -268,6 +264,7 @@ export default function Page() {
           send({ type: 'TO_MAIN' });
         }}
         settingOptions={settingOptions}
+        currencyOptions={currencyOptions}
         modifierContext={state.context.modifier}
       />
 
@@ -280,6 +277,7 @@ export default function Page() {
         }}
         onImport={(payload) => void send({ payload, type: 'IMPORT_TASK_TO_QUEUE' })}
         settingOptions={settingOptions}
+        currencyOptions={currencyOptions}
         state={
           state.matches({ IMPORT: 'PREPARE' })
             ? 'PREPARE'

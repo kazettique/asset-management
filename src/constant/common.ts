@@ -115,14 +115,6 @@ export abstract class CommonConstant {
     },
   ];
 
-  // TODO: filter by setting
-  public static readonly CURRENCY_CODE_OPTIONS: FormOption[] = currencyCodes.data
-    .filter((item) => ['TWD', 'USD', 'JPY'].includes(item.code))
-    .map((item) => ({
-      label: item.code,
-      value: item.code,
-    }));
-
   public static readonly CURRENCY_CODE_ALL_OPTIONS: FormOption[] = currencyCodes.data.map((item) => ({
     label: item.code,
     value: item.code,
