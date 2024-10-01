@@ -16,6 +16,7 @@ import {
   NType,
   PAssetFind,
   Price,
+  SettingKey,
 } from '@/types';
 
 const queryObj: Prisma.AssetSelect = {
@@ -56,6 +57,8 @@ const queryObj: Prisma.AssetSelect = {
   startPrice: true,
   tags: { select: { id: true, name: true } },
 };
+
+const sortObj: Prisma.AssetOrderByWithRelationInput[] = [{ createdAt: Prisma.SortOrder.desc }];
 
 export abstract class AssetRepository {
   public static async FindAll(): Promise<DAsset[]> {
@@ -115,8 +118,6 @@ export abstract class AssetRepository {
         lte: startPriceRange !== undefined && startPriceRange[1] !== null ? startPriceRange[1] : undefined,
       },
     };
-
-    const sortObj: Prisma.AssetOrderByWithRelationInput[] = [{ createdAt: Prisma.SortOrder.desc }];
 
     if (sort) {
       sortObj.unshift({ [sort.key]: sort.order });
@@ -325,12 +326,19 @@ export abstract class AssetRepository {
       prisma.category.findMany({
         select: { id: true, name: true },
       }),
+      prisma.setting.findUnique({
+        select: { value: true },
+        where: {
+          key: SettingKey.DISPLAY_FOREX,
+        },
+      }),
     ]);
 
     const rawData: DDashboardAggregate = {
       allCategories: transaction[4],
       category,
       deadCount: transaction[3],
+      displayForex: transaction[5] && typeof transaction[5].value === 'string' ? transaction[5].value : '',
       general: transaction[0],
       liveCount: transaction[2],
       ranking: transaction[1],
@@ -349,5 +357,26 @@ export abstract class AssetRepository {
     `;
 
     return { birthday: rawData } as DDashboardCalendar;
+  }
+
+  public static async FindAssetInTimeInterval(startDate: Date, endDate: Date): Promise<any> {
+    const filterObj: Prisma.AssetWhereInput = {
+      endDate: { lte: endDate },
+      startDate: { gte: startDate },
+    };
+
+    // const rawData = await prisma.asset.findMany({
+    //   orderBy: sortObj,
+    //   where: filterObj,
+    // });
+
+    const rawData = await prisma.$queryRaw`
+      SELECT name, startPrice, startDate
+      FROM Asset
+      WHERE Asset.startDate BETWEEN ${startDate} AND ${endDate}
+      GROUP BY YEAR(Asset.startDate), MONTH(Asset.startDate)
+    `;
+
+    return rawData;
   }
 }
