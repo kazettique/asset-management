@@ -43,8 +43,8 @@ export abstract class AssetValidator {
 
   public static readonly PAssetValidator: z.ZodSchema<PAsset> = z
     .object({
-      brandId: CommonValidator.IdValidator,
-      categoryId: CommonValidator.IdValidator,
+      brandId: CommonValidator.IdValidator.nullable(),
+      categoryId: CommonValidator.IdValidator.nullable(),
       comment: z.string().nullable(),
       endCurrency: z.string().nullable(),
       endDate: z.coerce.date().nullable(),
@@ -54,6 +54,10 @@ export abstract class AssetValidator {
       isCensored: z.boolean(),
       meta: CommonValidator.AssetMetaValidator,
       name: CommonValidator.NameValidator,
+      newBrand: z.string().nullable(),
+      newCategory: z.string().nullable(),
+      newEndPlatform: z.string().nullable(),
+      newStartPlatform: z.string().nullable(),
       ownerId: CommonValidator.IdValidator,
       placeId: CommonValidator.IdValidator,
       startCurrency: z.string().nullable(),

@@ -1,14 +1,28 @@
-import { MBrand, MCategory, MMethod, MOwner, MPlace, MPlatform, MSetting, MTag } from '@/types';
+import {
+  MSetting,
+  MSettingCurrencyOptionList,
+  NType,
+  VBrand,
+  VCategory,
+  VForex,
+  VMethod,
+  VOwner,
+  VPlace,
+  VPlatform,
+  VTag,
+} from '@/types';
 
 export interface VSettingOptions {
-  brands: MBrand[];
-  categories: MCategory[];
-  endMethods: MMethod[];
-  owners: MOwner[];
-  places: MPlace[];
-  platforms: MPlatform[];
-  startMethods: MMethod[];
-  tags: MTag[];
+  brands: VBrand[];
+  categories: VCategory[];
+  currencyOptionList: MSettingCurrencyOptionList['value'];
+  displayForex: NType<VForex>;
+  endMethods: VMethod[];
+  owners: VOwner[];
+  places: VPlace[];
+  platforms: VPlatform[];
+  startMethods: VMethod[];
+  tags: VTag[];
 }
 
 export type VSetting = MSetting;

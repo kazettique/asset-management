@@ -1,3 +1,4 @@
+import getSymbolFromCurrency from 'currency-symbol-map';
 import dayjs, { Dayjs } from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -22,7 +23,6 @@ import {
   FSettingOptions,
   MAsset,
   MAssetOwnership,
-  NNumber,
   NString,
   NType,
   PAsset,
@@ -31,6 +31,7 @@ import {
   VAsset,
   VAssetImportItem,
   VAssetTable,
+  VForex,
 } from '@/types';
 import { Utils } from '@/utils';
 import { AssetValidator } from '@/validator';
@@ -119,23 +120,26 @@ export abstract class AssetTransformer {
 
   // form model -> request model
   public static FPAssetTransformer(src: FAsset): PAsset {
-    const convertEmptyStringToNull = (option: NType<FormOption>): NString =>
-      option === null ? null : String(option.value);
+    const convertEmptyStringToNull = (option: NType<FormOption>): NString => (option === null ? null : option.value);
 
     return {
       ...src,
-      brandId: src.brandId.value,
-      categoryId: src.categoryId.value,
+      brandId: src.brandId.__isNew__ ? null : src.brandId.value,
+      categoryId: src.categoryId.__isNew__ ? null : src.categoryId.value,
       endCurrency: src.endCurrency !== null ? src.endCurrency.value : null,
       endMethodId: convertEmptyStringToNull(src.endMethodId),
-      endPlatformId: convertEmptyStringToNull(src.endPlatformId),
+      endPlatformId: src.endPlatformId?.__isNew__ ? null : convertEmptyStringToNull(src.endPlatformId),
       endPrice: src.endPrice.length > 0 ? Number(src.endPrice) : null,
       meta: src.meta ?? [],
+      newBrand: src.brandId.__isNew__ ? src.brandId.value : null,
+      newCategory: src.categoryId.__isNew__ ? src.categoryId.value : null,
+      newEndPlatform: src.endPlatformId?.__isNew__ ? src.endPlatformId.value : null,
+      newStartPlatform: src.startPlatformId?.__isNew__ ? src.startPlatformId.value : null,
       ownerId: src.ownerId.value,
       placeId: src.placeId.value,
       startCurrency: src.startCurrency !== null ? src.startCurrency.value : null,
       startMethodId: convertEmptyStringToNull(src.startMethodId),
-      startPlatformId: convertEmptyStringToNull(src.startPlatformId),
+      startPlatformId: src.startPlatformId?.__isNew__ ? null : convertEmptyStringToNull(src.startPlatformId),
       startPrice: src.startPrice.length > 0 ? Number(src.startPrice) : null,
       tags: {
         connect: src.tags.filter((item) => !item.__isNew__).map((item) => ({ id: String(item.value) })),
@@ -145,52 +149,76 @@ export abstract class AssetTransformer {
   }
 
   // view model -> table model
-  public static VTAssetTransformer(src: VAsset): VAssetTable {
+  public static VTAssetTransformer(src: VAsset, displayForex: NType<VForex>): VAssetTable {
     // startDate
     const _startDate: NType<Dayjs> = src.startDate !== null ? dayjs(src.startDate) : null;
     // endDate
     const _endDate: NType<Dayjs> = src.endDate !== null ? dayjs(src.endDate) : null;
 
-    const _priceDifference: number = src.endPrice && src.startPrice ? Math.round(src.startPrice - src.endPrice) : 0;
+    let _priceDifference: number = 0;
 
-    let monthlyCost: string = '';
+    if (src.startPrice !== null && src.endPrice !== null) {
+      const priceDiffInUsd: number = src.startPrice - src.endPrice;
+      const convertToTargetCurrency = displayForex
+        ? Utils.ConvertToTargetCurrency(priceDiffInUsd, displayForex.rate)
+        : priceDiffInUsd;
+      _priceDifference = Math.round(convertToTargetCurrency);
+    } else if (src.startPrice !== null) {
+      const priceDiffInUsd: number = src.startPrice;
+      const convertToTargetCurrency = displayForex
+        ? Utils.ConvertToTargetCurrency(priceDiffInUsd, displayForex.rate)
+        : priceDiffInUsd;
+      _priceDifference = Math.round(convertToTargetCurrency);
+    } else if (src.endPrice !== null) {
+      const priceDiffInUsd: number = -src.endPrice;
+      const convertToTargetCurrency = displayForex
+        ? Utils.ConvertToTargetCurrency(priceDiffInUsd, displayForex.rate)
+        : priceDiffInUsd;
+      _priceDifference = Math.round(convertToTargetCurrency);
+    }
 
-    if (src.startForex) {
-      const endDate: Dayjs = src.endDate !== null ? dayjs(src.endDate) : dayjs();
-      const startDate: Dayjs = dayjs(src.startDate);
-      const monthCount: number = endDate.diff(startDate, 'month');
+    let monthlyCost: number = 0;
 
-      if (monthCount > 0) {
-        const calculateMonthlyCost = Utils.NumberWithCommas(Math.round(_priceDifference / monthCount));
-        monthlyCost = `(${src.startForex.targetCurrency}) ${calculateMonthlyCost}`;
-      } else {
-        const calculateMonthlyCost = Utils.NumberWithCommas(_priceDifference);
-        monthlyCost = `(${src.startForex.targetCurrency}) ${calculateMonthlyCost}`;
-      }
+    const endDate: Dayjs = src.endDate !== null ? dayjs(src.endDate) : dayjs();
+    const startDate: Dayjs = dayjs(src.startDate);
+    const monthCount: number = endDate.diff(startDate, 'month');
+
+    if (monthCount > 0) {
+      monthlyCost = Math.round(_priceDifference / monthCount);
+    } else {
+      monthlyCost = _priceDifference;
     }
 
     let displayEndPrice: string = CommonConstant.DEFAULT_EMPTY_STRING;
 
-    if (src.endPrice) {
+    if (src.endPrice !== null) {
       if (src.endForex) {
         const calculatedEndPrice: number = Utils.ConvertToTargetCurrency(src.endPrice, src.endForex.rate);
-        displayEndPrice = `(${src.endForex.targetCurrency}) ${Utils.NumberWithCommas(calculatedEndPrice)}`;
+        displayEndPrice = `${getSymbolFromCurrency(src.endForex.targetCurrency)} ${Utils.NumberWithCommas(calculatedEndPrice)}`;
       } else {
         const calculatedEndPrice: number = Utils.ConvertToTargetCurrency(src.endPrice);
-        displayEndPrice = `(${CommonConstant.BASE_CURRENCY}) ${Utils.NumberWithCommas(calculatedEndPrice)}`;
+        displayEndPrice = `${getSymbolFromCurrency(CommonConstant.BASE_CURRENCY)} ${Utils.NumberWithCommas(calculatedEndPrice)}`;
       }
     }
 
     let displayStartPrice: string = CommonConstant.DEFAULT_EMPTY_STRING;
 
-    if (src.startPrice) {
+    if (src.startPrice !== null) {
       if (src.startForex) {
         const calculatedStartPrice: number = Utils.ConvertToTargetCurrency(src.startPrice, src.startForex.rate);
-        displayStartPrice = `(${src.startForex.targetCurrency}) ${Utils.NumberWithCommas(calculatedStartPrice)}`;
+        displayStartPrice = `${getSymbolFromCurrency(src.startForex.targetCurrency)} ${Utils.NumberWithCommas(calculatedStartPrice)}`;
       } else {
         const calculatedStartPrice: number = Utils.ConvertToTargetCurrency(src.startPrice);
-        displayStartPrice = `(${CommonConstant.BASE_CURRENCY}) ${Utils.NumberWithCommas(calculatedStartPrice)}`;
+        displayStartPrice = `${getSymbolFromCurrency(CommonConstant.BASE_CURRENCY)} ${Utils.NumberWithCommas(calculatedStartPrice)}`;
       }
+    }
+
+    let usageTime: string = CommonConstant.DEFAULT_EMPTY_STRING;
+
+    if (_startDate && _endDate) {
+      usageTime = Utils.DetailedRelativeTime(_startDate, _endDate);
+    } else if (_startDate) {
+      usageTime = Utils.DetailedRelativeTime(_startDate, dayjs());
     }
 
     return {
@@ -204,11 +232,17 @@ export abstract class AssetTransformer {
         endPrice: displayEndPrice,
       },
       meta: src.meta ?? [],
-      monthlyCost,
+      monthlyCost:
+        (displayForex
+          ? getSymbolFromCurrency(displayForex.targetCurrency)
+          : getSymbolFromCurrency(CommonConstant.BASE_CURRENCY)) + Utils.NumberWithCommas(monthlyCost),
       name: src.name,
       owner: src.owner ? src.owner.name : CommonConstant.DEFAULT_EMPTY_STRING,
       place: src.place ? src.place.name : CommonConstant.DEFAULT_EMPTY_STRING,
-      priceDifference: Utils.NumberWithCommas(_priceDifference),
+      priceDifference:
+        (displayForex
+          ? getSymbolFromCurrency(displayForex.targetCurrency)
+          : getSymbolFromCurrency(CommonConstant.BASE_CURRENCY)) + Utils.NumberWithCommas(_priceDifference),
       raw: src,
       startInfo: {
         startDate: _startDate ? Utils.GetDateTimeString(_startDate) : CommonConstant.DEFAULT_EMPTY_STRING,
@@ -217,8 +251,7 @@ export abstract class AssetTransformer {
         startPrice: displayStartPrice,
       },
       tags: src.tags.map((item) => item.name),
-      usageTime:
-        _startDate && _endDate ? Utils.DetailedRelativeTime(_startDate, _endDate) : CommonConstant.DEFAULT_EMPTY_STRING,
+      usageTime,
     };
   }
 

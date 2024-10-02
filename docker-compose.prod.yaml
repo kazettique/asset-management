@@ -6,11 +6,11 @@ services:
       MYSQL_ROOT_PASSWORD: $DATABASE_PASSWORD
       MYSQL_DATABASE: $DATABASE_TABLE
       # ref: https://stackoverflow.com/questions/50456780/run-mysql-on-port-3307-using-docker-compose
-      MYSQL_TCP_PORT: $DATABASE_PORT
+      # MYSQL_TCP_PORT: $DATABASE_INTERNAL_PORT
     volumes:
       - am-data-prod:/var/lib/mysql
     ports:
-      - $DATABASE_PORT:$DATABASE_PORT
+      - $DATABASE_EXTERNAL_PORT:$DATABASE_INTERNAL_PORT
     env_file:
       - .env.prod
     networks:
@@ -20,14 +20,17 @@ services:
     container_name: am-app-prod
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
 
     # Set environment variables directly in the docker-compose file
     environment:
+      APP_EXTERNAL_PORT: $APP_EXTERNAL_PORT
+      APP_INTERNAL_PORT: $APP_INTERNAL_PORT
       DATABASE_TABLE: $DATABASE_TABLE
       DATABASE_USER: $DATABASE_USER
       DATABASE_PASSWORD: $DATABASE_PASSWORD
-      DATABASE_PORT: $DATABASE_PORT
+      DATABASE_EXTERNAL_PORT: $DATABASE_EXTERNAL_PORT
+      DATABASE_INTERNAL_PORT: $DATABASE_INTERNAL_PORT
       DATABASE_URL: $DATABASE_URL
       DATABASE_HOST: $DATABASE_HOST
       RAPID_API_KEY: $RAPID_API_KEY
@@ -36,12 +39,10 @@ services:
     env_file:
       - .env.prod
     volumes:
-      # - ./src:/app/src
-      # - ./public:/app/public
-      - ./:/app
+      - ./src:/app/src
     restart: always
     ports:
-      - 3000:3000
+      - $APP_EXTERNAL_PORT:$APP_INTERNAL_PORT
     networks:
       - am-internal-prod
     depends_on:

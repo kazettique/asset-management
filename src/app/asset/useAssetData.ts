@@ -6,13 +6,13 @@ import { CommonConstant, SettingConstant } from '@/constant';
 import { AssetFetcher, SettingFetcher } from '@/fetcher';
 import { assetMachine } from '@/machines';
 import { AssetTransformer, SettingTransformer } from '@/transformer';
-import { FAsset, FormOption, FSettingOptions, Id, SettingKey, VAsset, VAssetTable } from '@/types';
+import { FAsset, FormOption, FSettingOptions, Id, VAsset, VAssetTable } from '@/types';
 
 export default function useAssetData() {
   const [state, send] = useMachine(assetMachine, {});
 
   const {
-    data: settingData,
+    data: settingOptionsData,
     isPending: settingIsPending,
     refetch: settingRefetch,
   } = useQuery({
@@ -22,10 +22,10 @@ export default function useAssetData() {
 
   const settingOptions = useMemo<FSettingOptions>(
     () =>
-      settingData?.data
-        ? SettingTransformer.FSettingOptionsTransformer(settingData.data)
+      settingOptionsData?.data
+        ? SettingTransformer.FSettingOptionsTransformer(settingOptionsData.data)
         : SettingConstant.DEFAULT_F_SETTING_OPTIONS,
-    [settingData],
+    [settingOptionsData],
   );
 
   const {
@@ -42,6 +42,7 @@ export default function useAssetData() {
     mutationFn: (payload: FAsset) => AssetFetcher.Create(AssetTransformer.FPAssetTransformer(payload)),
     onSuccess: () => {
       assetRefetch();
+      settingRefetch();
     },
   });
 
@@ -50,6 +51,7 @@ export default function useAssetData() {
       AssetFetcher.Update(AssetTransformer.FPAssetTransformer(payload), id),
     onSuccess: () => {
       assetRefetch();
+      settingRefetch();
     },
   });
 
@@ -81,23 +83,18 @@ export default function useAssetData() {
     createAsset.mutate(data);
   };
 
-  const { data: settingCurrencyOptionListData } = useQuery({
-    queryFn: () => SettingFetcher.FindById(SettingConstant.DEFAULT_M_SETTING_CURRENCY_OPTION_LIST.id),
-    queryKey: ['setting currency option list'],
-  });
-
   const currencyOptions = useMemo<FormOption[]>(
     () =>
       CommonConstant.CURRENCY_CODE_ALL_OPTIONS.filter((option) =>
-        settingCurrencyOptionListData && settingCurrencyOptionListData.data.key === SettingKey.CURRENCY_OPTION_LIST
-          ? settingCurrencyOptionListData.data.value.includes(option.value)
-          : [],
+        settingOptionsData ? settingOptionsData.data.currencyOptionList.includes(option.value) : [],
       ),
-    [settingCurrencyOptionListData],
+    [settingOptionsData],
   );
 
   const tableData: VAssetTable[] = assetData
-    ? assetData.data.map((item) => AssetTransformer.VTAssetTransformer(item))
+    ? assetData.data.map((item) =>
+        AssetTransformer.VTAssetTransformer(item, settingOptionsData?.data.displayForex || null),
+      )
     : [];
 
   return {
@@ -110,6 +107,7 @@ export default function useAssetData() {
     onItemUpdate,
     send,
     settingOptions,
+    settingRefetch,
     state,
     tableData,
   };

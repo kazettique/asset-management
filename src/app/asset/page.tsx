@@ -27,6 +27,7 @@ export default function Page() {
     send,
     assetIsPending,
     currencyOptions,
+    settingRefetch,
   } = useAssetData();
 
   const columns: ColumnProps<VAssetTable>[] = [
@@ -144,6 +145,7 @@ export default function Page() {
       title: 'owner',
     },
     {
+      className: 'min-w-[150px]',
       key: 'meta',
       render: (column, item) => (
         <>
@@ -276,6 +278,7 @@ export default function Page() {
         onDone={() => {
           void send({ type: 'TO_MAIN' });
           assetRefetch();
+          settingRefetch();
         }}
         onImport={(payload) => void send({ payload, type: 'IMPORT_TASK_TO_QUEUE' })}
         settingOptions={settingOptions}

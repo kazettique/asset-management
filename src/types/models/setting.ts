@@ -2,11 +2,13 @@ import {
   DbBase,
   MBrand,
   MCategory,
+  MForex,
   MMethod,
   MOwner,
   MPlace,
   MPlatform,
   MTag,
+  NType,
   SettingCommon,
   SettingKey,
 } from '@/types';
@@ -14,6 +16,8 @@ import {
 export interface MSettingOptions {
   brands: MBrand[];
   categories: MCategory[];
+  currencyOptionList: MSettingCurrencyOptionList['value'];
+  displayForex: NType<MForex>;
   methods: MMethod[];
   owners: MOwner[];
   places: MPlace[];

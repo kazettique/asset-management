@@ -83,7 +83,7 @@ export abstract class ForexService {
     let endPriceInBaseCurrency: NType<Price> = endPrice;
 
     // start
-    if (startCurrency && startDate && startPrice && startCurrency !== CommonConstant.BASE_CURRENCY) {
+    if (startCurrency && startDate && startPrice !== null && startCurrency !== CommonConstant.BASE_CURRENCY) {
       // step 1: check if forex existed in database
       const findForexData = await this.Find(startDate, startCurrency);
 
@@ -110,7 +110,7 @@ export abstract class ForexService {
     }
 
     // end
-    if (endCurrency && endDate && endPrice && endCurrency !== CommonConstant.BASE_CURRENCY) {
+    if (endCurrency && endDate && endPrice !== null && endCurrency !== CommonConstant.BASE_CURRENCY) {
       // step 1: check if forex existed in database
       const findForexData = await this.Find(endDate, endCurrency);
 

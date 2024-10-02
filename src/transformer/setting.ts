@@ -1,9 +1,7 @@
 import { MethodType } from '@prisma/client';
-import { FetchServerResponseResult } from 'next/dist/client/components/router-reducer/fetch-server-response';
 
 import {
   DSetting,
-  DSettingOptions,
   FSetting,
   FSettingOptions,
   MBrand,
@@ -21,31 +19,13 @@ import {
   VSettingTable,
 } from '@/types';
 
-import { BrandTransformer } from './brand';
-import { CategoryTransformer } from './category';
-import { MethodTransformer } from './method';
-import { OwnerTransformer } from './owner';
-import { PlaceTransformer } from './place';
-import { PlatformTransformer } from './platform';
-import { TagTransformer } from './tag';
-
 export abstract class SettingTransformer {
-  public static DMSettingOptionsTransformer(src: DSettingOptions): MSettingOptions {
-    return {
-      brands: src.brands.map((item) => BrandTransformer.DMBrandTransformer(item)),
-      categories: src.categories.map((item) => CategoryTransformer.DMCategoryTransformer(item)),
-      methods: src.methods.map((item) => MethodTransformer.DMMethodTransformer(item)),
-      owners: src.owners.map((item) => OwnerTransformer.DMOwnerTransformer(item)),
-      places: src.places.map((item) => PlaceTransformer.DMPlaceTransformer(item)),
-      platforms: src.places.map((item) => PlatformTransformer.DMPlatformTransformer(item)),
-      tags: src.tags.map((item) => TagTransformer.DMTagTransformer(item)),
-    };
-  }
-
   public static MVSettingOptionsTransformer(src: MSettingOptions): VSettingOptions {
     return {
       brands: src.brands,
       categories: src.categories,
+      currencyOptionList: src.currencyOptionList,
+      displayForex: src.displayForex,
       endMethods: src.methods.filter((item) => item.type !== MethodType.START),
       owners: src.owners,
       places: src.places,

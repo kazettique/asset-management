@@ -11,11 +11,11 @@ export abstract class DashboardService {
   public static async FindAggregate(): Promise<MDashboardAggregate> {
     const raw = await AssetRepository.FindAggregate();
 
-    const displayForexSetting = await SettingService.FindByKey(SettingKey.DISPLAY_FOREX);
+    const settingDisplayForex = await SettingService.FindByKey(SettingKey.DISPLAY_FOREX);
 
     let displayForex: NType<MForex> = null;
-    if (displayForexSetting) {
-      displayForex = await ForexService.FindOrCreate(displayForexSetting.value as CurrencyCode);
+    if (settingDisplayForex) {
+      displayForex = await ForexService.FindOrCreate(settingDisplayForex.value as CurrencyCode);
     }
 
     const data = DashboardTransformer.DMDashboardAggregateTransformer(raw);

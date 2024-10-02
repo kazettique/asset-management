@@ -1,5 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMachine } from '@xstate/react';
+import { CurrencyCode } from 'currency-codes-ts/dist/types';
 
 import { CommonConstant } from '@/constant';
 import { DashboardConstant } from '@/constant/dashboard';
@@ -37,12 +38,15 @@ export default function useDashboardData() {
     ? aggregateData.data.ranking.map((item) => DashboardTransformer.VTDashboardRankTransformer(item))
     : [];
 
-  const generalData = aggregateData
-    ? DashboardTransformer.VDashboardGeneralDisplayTransformer(
-        aggregateData.data.general,
-        aggregateData.data.displayForex,
-      )
-    : DashboardConstant.DEFAULT_DASHBOARD_GENERAL_DISPLAY;
+  const generalData =
+    aggregateData && aggregateData.data.displayForex
+      ? DashboardTransformer.VDashboardGeneralDisplayTransformer(
+          aggregateData.data.general,
+          aggregateData.data.displayForex as CurrencyCode,
+        )
+      : aggregateData
+        ? DashboardTransformer.VDashboardGeneralDisplayTransformer(aggregateData.data.general)
+        : DashboardConstant.DEFAULT_DASHBOARD_GENERAL_DISPLAY;
 
   const liveCount: string = aggregateData
     ? Utils.NumberWithCommas(aggregateData.data.liveCount)

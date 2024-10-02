@@ -10,7 +10,7 @@ export interface DDashboardAggregate {
     categoryId: Id;
   }[];
   deadCount: number;
-  displayForex: string;
+  displayForex: NString;
   general: {
     _avg: { endPrice: NNumber; startPrice: NNumber };
     _max: { endPrice: NNumber; startPrice: NNumber };

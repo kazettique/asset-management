@@ -145,7 +145,7 @@ export abstract class DashboardTransformer {
 
   public static VDashboardGeneralDisplayTransformer(
     src: VDashboardGeneral,
-    displayForex: string,
+    displayForex: CurrencyCode = 'USD',
   ): VDashboardGeneralDisplay {
     const transformPrice = (price: NNumber) =>
       getSymbolFromCurrency(displayForex) +

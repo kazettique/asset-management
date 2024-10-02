@@ -41,5 +41,3 @@ CMD \
   elif [ -f pnpm-lock.yaml ]; then pnpm dev; \
   else npm run dev; \
   fi
-
-# CMD npm run dev

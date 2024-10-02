@@ -13,10 +13,10 @@
     "db-seed": "npx prisma db seed",
     "db-reset": "npx prisma migrate reset",
     "icon-prepare": "fantasticon --normalize true",
-    "docker:dev:build": "docker compose -f docker-compose.dev.yaml build am-app-dev",
+    "docker:dev:build": "docker compose -f docker-compose.dev.yaml --env-file .env.dev build am-app-dev",
     "docker:dev:up": "docker compose -f docker-compose.dev.yaml --env-file .env.dev up -d",
     "docker:dev:down": "docker compose -f docker-compose.dev.yaml --env-file .env.dev down",
-    "docker:prod:build": "docker compose -f docker-compose.prod.yaml build am-app-prod",
+    "docker:prod:build": "docker compose -f docker-compose.prod.yaml --env-file .env.prod build am-app-prod",
     "docker:prod:up": "docker compose -f docker-compose.prod.yaml --env-file .env.prod up -d",
     "docker:prod:down": "docker compose -f docker-compose.prod.yaml --env-file .env.prod down"
   },

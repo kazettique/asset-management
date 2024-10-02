@@ -15,6 +15,7 @@ import { PSetting } from '@/types/payloadModels/setting';
 import { BrandValidator } from './brand';
 import { CategoryValidator } from './category';
 import { CommonValidator } from './common';
+import { ForexValidator } from './forex';
 import { MethodValidator } from './method';
 import { OwnerValidator } from './owner';
 import { PlaceValidator } from './place';
@@ -34,6 +35,8 @@ export abstract class SettingValidator {
   public static readonly MSettingOptionsValidator: z.ZodSchema<MSettingOptions> = z.object({
     brands: BrandValidator.MBrandValidator.array(),
     categories: CategoryValidator.MCategoryValidator.array(),
+    currencyOptionList: z.string().array(),
+    displayForex: ForexValidator.MForexValidator.nullable(),
     methods: MethodValidator.MMethodValidator.array(),
     owners: OwnerValidator.MOwnerValidator.array(),
     places: PlaceValidator.MPlaceValidator.array(),
@@ -44,6 +47,8 @@ export abstract class SettingValidator {
   public static readonly VSettingOptionsValidator: z.ZodSchema<VSettingOptions> = z.object({
     brands: BrandValidator.MBrandValidator.array(),
     categories: CategoryValidator.MCategoryValidator.array(),
+    currencyOptionList: z.string().array(),
+    displayForex: ForexValidator.MForexValidator.nullable(),
     endMethods: MethodValidator.MMethodValidator.array(),
     owners: OwnerValidator.MOwnerValidator.array(),
     places: PlaceValidator.MPlaceValidator.array(),

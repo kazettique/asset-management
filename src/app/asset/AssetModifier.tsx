@@ -65,8 +65,7 @@ export default function AssetModifier(props: Props) {
           onSubmit={handleSubmit((data) => {
             if (mode === 'create') onCreate(data);
             if (mode === 'edit' && modifierContext.id) onUpdate(data, modifierContext.id);
-            reset();
-            onClose();
+            reset(AssetConstant.F_ASSET_INITIAL_VALUES);
           })}
         >
           <div className="flex flex-col gap-4">
@@ -74,17 +73,23 @@ export default function AssetModifier(props: Props) {
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">basic info</div>
               <BasicInput register={register} path="name" />
               <div className="flex gap-2">
-                <BasicSelect className="grow" options={settingOptions.brands} path="brandId" control={control} />
-                <BasicSelect className="grow" options={settingOptions.categories} path="categoryId" control={control} />
-              </div>
-              <div className="flex gap-2">
                 <BasicSelect
                   className="grow"
-                  options={settingOptions.owners}
-                  path="ownerId"
-                  control={control}
+                  options={settingOptions.brands}
                   isCreatable
+                  path="brandId"
+                  control={control}
                 />
+                <BasicSelect
+                  className="grow"
+                  options={settingOptions.categories}
+                  isCreatable
+                  path="categoryId"
+                  control={control}
+                />
+              </div>
+              <div className="flex gap-2">
+                <BasicSelect className="grow" options={settingOptions.owners} path="ownerId" control={control} />
                 <BasicSelect className="grow" options={settingOptions.places} path="placeId" control={control} />
               </div>
               <BasicSelect options={settingOptions.tags} isCreatable isMulti path="tags" control={control} />
@@ -109,7 +114,7 @@ export default function AssetModifier(props: Props) {
                 </div>
 
                 <BasicSelect options={settingOptions.startMethods} path="startMethodId" control={control} />
-                <BasicSelect options={settingOptions.platforms} path="startPlatformId" control={control} />
+                <BasicSelect options={settingOptions.platforms} path="startPlatformId" isCreatable control={control} />
               </div>
             </div>
 
@@ -124,7 +129,7 @@ export default function AssetModifier(props: Props) {
                 </div>
 
                 <BasicSelect options={settingOptions.endMethods} path="endMethodId" control={control} />
-                <BasicSelect options={settingOptions.platforms} path="endPlatformId" control={control} />
+                <BasicSelect options={settingOptions.platforms} path="endPlatformId" isCreatable control={control} />
               </div>
             </div>
 

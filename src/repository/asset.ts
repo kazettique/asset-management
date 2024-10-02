@@ -338,7 +338,7 @@ export abstract class AssetRepository {
       allCategories: transaction[4],
       category,
       deadCount: transaction[3],
-      displayForex: transaction[5] && typeof transaction[5].value === 'string' ? transaction[5].value : '',
+      displayForex: transaction[5] && typeof transaction[5].value === 'string' ? transaction[5].value : null,
       general: transaction[0],
       liveCount: transaction[2],
       ranking: transaction[1],

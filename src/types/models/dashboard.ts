@@ -46,7 +46,7 @@ export interface MDashboardGeneral {
 export interface MDashboardAggregate {
   category: MDashboardCategory[];
   deadCount: number;
-  displayForex: string;
+  displayForex: NString;
   general: MDashboardGeneral;
   liveCount: number;
   ranking: MDashboardRank[];
