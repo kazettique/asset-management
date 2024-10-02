@@ -1,5 +1,6 @@
 'use client';
 
+import debounce from 'lodash.debounce';
 import React from 'react';
 
 import BasicButton from '@/components/BasicButton';
@@ -218,16 +219,15 @@ export default function Page() {
             onUpdatePrimaryFilter={(payload) => void send({ payload, type: 'UPDATE_SEARCH_PRIMARY_FILTER' })}
             onUpdateSecondaryFilter={(payload) => void send({ payload, type: 'UPDATE_SEARCH_SECONDARY_FILTER' })}
             onResetSearchCondition={() => void send({ type: 'RESET_SEARCH_CONDITION' })}
+            onUpdateSearch={debounce((event) => void send({ payload: event, type: 'UPDATE_SEARCH' }), 500)}
           />
 
           <BasicButton variant="secondary" onClick={() => send({ type: 'TO_IMPORT' })} className="flex gap-x-2">
             <BasicIcon iconType="file-import-solid" />
-            <span>Import</span>
           </BasicButton>
 
           <BasicButton onClick={() => send({ type: 'TO_CREATE' })} className="flex gap-x-2">
             <BasicIcon iconType="cross" />
-            <span>Create</span>
           </BasicButton>
         </div>
       </div>

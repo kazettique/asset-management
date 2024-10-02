@@ -36,10 +36,11 @@ export abstract class AssetService {
     pageSize = CommonConstant.DEFAULT_PAGE_SIZE,
     filters,
     sort,
+    search,
   }: PAssetFind): Promise<PaginationBase<MAsset>> {
     const skipCount = Utils.CalculateSkipCount(page, pageSize);
 
-    const raw = await AssetRepository.FindMany(pageSize, filters, sort, skipCount);
+    const raw = await AssetRepository.FindMany(pageSize, filters, sort, skipCount, search);
 
     const [totalCount, rawData] = raw;
     const totalPage: number = Utils.CalculateTotalPage(totalCount, pageSize);

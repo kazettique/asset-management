@@ -1,7 +1,7 @@
 import { Name, NType } from '../base';
 import { AssetMeta } from '../common';
 import { AssetLifeStatus } from '../enum';
-import { PAssetFindSort } from '../payloadModels';
+import { PAssetFindSort, PAssetSearch } from '../payloadModels';
 import { FFindPagination, FormOption } from './common';
 
 // no null type in all properties
@@ -10,7 +10,7 @@ export interface FAsset {
   categoryId: FormOption;
   comment: string;
   endCurrency: NType<FormOption>;
-  endDate: string;
+  endDate: NType<Date>;
   endMethodId: NType<FormOption>;
   endPlatformId: NType<FormOption>;
   endPrice: string;
@@ -20,7 +20,7 @@ export interface FAsset {
   ownerId: FormOption;
   placeId: FormOption;
   startCurrency: NType<FormOption>;
-  startDate: string;
+  startDate: NType<Date>;
   startMethodId: NType<FormOption>;
   startPlatformId: NType<FormOption>;
   startPrice: string;
@@ -50,13 +50,15 @@ export interface FAssetFindSecondaryFilter {
   startPriceRange: [string, string];
 }
 
+export interface FAssetSearch extends PAssetSearch {}
+
 export interface FAssetFindFilter extends FAssetFindPrimaryFilter, FAssetFindSecondaryFilter {}
 
 export interface FAssetFindSort extends PAssetFindSort {}
 
 export interface FAssetFindPagination extends FFindPagination {}
 
-export interface FAssetFind extends FAssetFindPagination {
+export interface FAssetFind extends FAssetFindPagination, FAssetSearch {
   filters: FAssetFindFilter;
   sort?: FAssetFindSort;
 }

@@ -73,6 +73,7 @@ export abstract class AssetRepository {
     filters: PAssetFind['filters'],
     sort: PAssetFind['sort'],
     skipCount: number,
+    search: string | undefined,
   ): Promise<[number, DAsset[]]> {
     const {
       categories,
@@ -91,6 +92,13 @@ export abstract class AssetRepository {
     } = filters;
 
     const filterObj: Prisma.AssetWhereInput = {
+      AND: {
+        OR: [
+          { name: { contains: search } },
+          { comment: { contains: search } },
+          { tags: { some: { name: { contains: search } } } },
+        ],
+      },
       brandId: { in: brands },
       categoryId: { in: categories },
       endDate: {

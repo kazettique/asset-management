@@ -13,9 +13,10 @@ export async function GET(request: NextRequest): Promise<NextResponse<Pagination
   const pageSize = searchParams.get('pageSize');
   const filters = searchParams.get('filters');
   const sort = searchParams.get('sort');
+  const search = searchParams.get('search');
 
   // params validation
-  const parseParams = AssetTransformer.PAssetFindTransformer({ filters, page, pageSize, sort });
+  const parseParams = AssetTransformer.PAssetFindTransformer({ filters, page, pageSize, search, sort });
   const paramsValidation = AssetValidator.PAssetFindValidator.safeParse(parseParams);
 
   // params error

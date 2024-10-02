@@ -9,6 +9,7 @@ import {
   FAssetFindPrimaryFilter,
   FAssetFindSecondaryFilter,
   FAssetFindSort,
+  FAssetSearch,
   Id,
   ImportTask,
   ImportTaskStatus,
@@ -40,6 +41,7 @@ type AssetMachineEvents =
   | { payload: FAssetFindPrimaryFilter; type: 'UPDATE_SEARCH_PRIMARY_FILTER' }
   | { payload: FAssetFindSecondaryFilter; type: 'UPDATE_SEARCH_SECONDARY_FILTER' }
   | { payload: FAssetFindSort; type: 'UPDATE_SEARCH_SORT' }
+  | { payload: FAssetSearch; type: 'UPDATE_SEARCH' }
   | { type: 'RESET_SEARCH_CONDITION' }
   | { type: 'NEXT_PAGE' }
   | { type: 'PREV_PAGE' }
@@ -47,7 +49,7 @@ type AssetMachineEvents =
 
 const INITIAL_CONTEXT: AssetMachineContext = {
   import: { currentTaskId: null, queue: [], tasks: {} },
-  modifier: { formValues: null, id: null },
+  modifier: { formValues: AssetConstant.F_ASSET_INITIAL_VALUES, id: null },
   searchPayload: AssetConstant.P_ASSET_FIND_DEFAULT,
 };
 
@@ -127,12 +129,20 @@ export const assetMachine = setup({
         queue: context.import.queue.slice(1),
       }),
     }),
+    UPDATE_SEARCH: assign({
+      searchPayload: ({ context }, params: { payload: FAssetSearch }) => {
+        return {
+          ...context.searchPayload,
+          search: params.payload.search,
+        };
+      },
+    }),
     UPDATE_SEARCH_PRIMARY_FILTER: assign({
       searchPayload: ({ context }, params: { payload: FAssetFindPrimaryFilter }) => {
         const transformedPayload = AssetTransformer.FPAssetFindPrimaryFilterTransformer(params.payload);
 
         return {
-          ...AssetConstant.P_ASSET_FIND_DEFAULT,
+          ...context.searchPayload,
           filters: { ...context.searchPayload.filters, ...transformedPayload },
         };
       },
@@ -141,7 +151,7 @@ export const assetMachine = setup({
       searchPayload: ({ context }, params: { payload: FAssetFindSecondaryFilter }) => {
         const transformedPayload = AssetTransformer.FPAssetFindSecondaryFilterTransformer(params.payload);
         return {
-          ...AssetConstant.P_ASSET_FIND_DEFAULT,
+          ...context.searchPayload,
           filters: { ...context.searchPayload.filters, ...transformedPayload },
         };
       },
@@ -273,6 +283,12 @@ export const assetMachine = setup({
           target: 'EDIT',
         },
         TO_IMPORT: { target: 'IMPORT' },
+        UPDATE_SEARCH: {
+          actions: {
+            params: ({ context, event }) => ({ payload: event.payload }),
+            type: 'UPDATE_SEARCH',
+          },
+        },
         UPDATE_SEARCH_PRIMARY_FILTER: {
           actions: {
             params: ({ context, event }) => ({ payload: event.payload }),

@@ -12,11 +12,13 @@ import {
   FAssetFindSecondaryFilter,
   FAssetFindSort,
   FAssetImport,
+  FAssetSearch,
   MAsset,
   PAsset,
   PAssetFind,
   PAssetFindFilter,
   PAssetFindSort,
+  PAssetSearch,
   VAsset,
   VAssetImportItem,
 } from '@/types';
@@ -182,9 +184,14 @@ export abstract class AssetValidator {
     order: z.nativeEnum(Prisma.SortOrder),
   });
 
+  public static readonly PAssetSearchValidator: z.ZodSchema<PAssetSearch> = z.object({
+    search: z.string().optional(),
+  });
+
   public static readonly PAssetFindValidator: z.ZodSchema<PAssetFind> = z
     .object({
       filters: this.PAssetFindFilterValidator,
+      search: z.string().optional(),
       sort: this.PAssetFindSortValidator.optional(),
     })
     .and(CommonValidator.PFindPaginationValidator);
@@ -193,6 +200,7 @@ export abstract class AssetValidator {
     categories: z.string().array(),
     lifeStatus: z.nativeEnum(AssetLifeStatus),
     owners: z.string().array(),
+    search: z.string(),
   });
 
   public static readonly FAssetFindSecondaryFilter: z.ZodSchema<FAssetFindSecondaryFilter> = z.object({
@@ -207,6 +215,8 @@ export abstract class AssetValidator {
     startPlatforms: CommonValidator.FormOptionValidator.array(),
     startPriceRange: z.tuple([z.string(), z.string()]),
   });
+
+  public static readonly FAssetSearchValidator: z.ZodSchema<FAssetSearch> = this.PAssetSearchValidator;
 
   public static readonly FAssetFindSortValidator: z.ZodSchema<FAssetFindSort> = this.PAssetFindSortValidator;
 

@@ -10,11 +10,13 @@ import BasicInput from '@/components/BasicInput';
 import BasicSelect from '@/components/BasicSelect';
 import BasicTabGroup from '@/components/BasicTabGroup';
 import ChipGroup from '@/components/ChipGroup';
+import SearchInput from '@/components/SearchInput';
 import { AssetConstant } from '@/constant';
 import {
   AssetLifeStatus,
   FAssetFindPrimaryFilter,
   FAssetFindSecondaryFilter,
+  FAssetSearch,
   FormOption,
   FSettingOptions,
 } from '@/types';
@@ -24,6 +26,7 @@ export interface Props {
   className?: string;
   onResetSearchCondition: () => void;
   onUpdatePrimaryFilter: (payload: FAssetFindPrimaryFilter) => void;
+  onUpdateSearch: (payload: FAssetSearch) => void;
   onUpdateSecondaryFilter: (payload: FAssetFindSecondaryFilter) => void;
   settingOptions: FSettingOptions;
 }
@@ -41,11 +44,11 @@ export default function AssetSearchBar(props: Props) {
     onUpdatePrimaryFilter,
     onUpdateSecondaryFilter,
     onResetSearchCondition,
+    onUpdateSearch,
   } = props;
 
   const {
     register: primaryRegister,
-    handleSubmit: primaryHandleSubmit,
     reset: primaryReset,
     control: primaryControl,
   } = useForm<FAssetFindPrimaryFilter>({
@@ -63,6 +66,15 @@ export default function AssetSearchBar(props: Props) {
     resolver: zodResolver(AssetValidator.FAssetFindSecondaryFilter),
   });
 
+  const {
+    register: searchRegister,
+    reset: searchReset,
+    control: searchControl,
+  } = useForm<FAssetSearch>({
+    defaultValues: AssetConstant.F_ASSET_SEARCH_INITIAL_VALUES,
+    resolver: zodResolver(AssetValidator.FAssetSearchValidator),
+  });
+
   const primaryValues = useWatch({ control: primaryControl });
 
   useEffect(() => {
@@ -70,10 +82,18 @@ export default function AssetSearchBar(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [primaryValues]);
 
+  const searchValues = useWatch({ control: searchControl });
+
+  useEffect(() => {
+    onUpdateSearch(searchValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValues]);
+
   const handleResetCondition = () => {
     onResetSearchCondition();
     primaryReset();
     secondaryReset();
+    searchReset();
   };
 
   return (
@@ -100,6 +120,8 @@ export default function AssetSearchBar(props: Props) {
           control={primaryControl}
           path="owners"
         />
+
+        <SearchInput register={searchRegister} path="search" control={searchControl} />
 
         <Popover className="relative">
           <PopoverButton>

@@ -100,7 +100,7 @@ export abstract class AssetTransformer {
       categoryId: findCategory || CategoryConstant.DEFAULT_CATEGORY_OPTION,
       comment: src.comment ?? '',
       endCurrency: findEndCurrency ?? null,
-      endDate: src.endDate !== null ? Utils.GetDateTimeString(src.endDate) : '',
+      endDate: src.endDate,
       endMethodId: findEndMethod || null,
       endPlatformId: findEndPlatform || null,
       endPrice,
@@ -110,7 +110,7 @@ export abstract class AssetTransformer {
       ownerId: findOwner || OwnerConstant.DEFAULT_OWNER_OPTION,
       placeId: findPlace || PlaceConstant.DEFAULT_PLACE_OPTION,
       startCurrency: findStartCurrency ?? null,
-      startDate: src.startDate !== null ? Utils.GetDateTimeString(src.startDate) : '',
+      startDate: src.startDate,
       startMethodId: findStartMethod || null,
       startPlatformId: findStartPlatform || null,
       startPrice,
@@ -261,9 +261,9 @@ export abstract class AssetTransformer {
     const asset: FAsset = {
       ...importItem,
       ...importFormValues,
-      endDate: importItem.endDate,
+      endDate: importItem.endDate ? dayjs(importItem.endDate).toDate() : null,
       endPrice: importItem.endPrice,
-      startDate: importItem.startDate,
+      startDate: importItem.startDate ? dayjs(importItem.startDate).toDate() : null,
       startPrice: importItem.startPrice,
     };
 
@@ -274,6 +274,7 @@ export abstract class AssetTransformer {
     filters: NString;
     page: NString;
     pageSize: NString;
+    search: NString;
     sort: NString;
   }): PAssetFind {
     const parsedFilters: PAssetFind['filters'] =
@@ -324,6 +325,7 @@ export abstract class AssetTransformer {
       filters: parsedFilters,
       page: src.page === null ? AssetConstant.P_ASSET_FIND_DEFAULT.page : Number(src.page),
       pageSize: src.pageSize === null ? AssetConstant.P_ASSET_FIND_DEFAULT.pageSize : Number(src.pageSize),
+      search: src.search ?? undefined,
       sort: parsedSort,
     };
   }
@@ -351,6 +353,7 @@ export abstract class AssetTransformer {
       filters: parsedFilters,
       page: src.page,
       pageSize: src.pageSize,
+      search: src.search,
     };
   }
 

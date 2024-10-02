@@ -1,11 +1,10 @@
-import dayjs from 'dayjs';
-
 import {
   AssetLifeStatus,
   FAsset,
   FAssetFindPrimaryFilter,
   FAssetFindSecondaryFilter,
   FAssetImport,
+  FAssetSearch,
   PAssetFind,
 } from '@/types';
 
@@ -31,7 +30,7 @@ export abstract class AssetConstant {
     ownerId: OwnerConstant.DEFAULT_OWNER_OPTION,
     placeId: PlaceConstant.DEFAULT_PLACE_OPTION,
     startCurrency: null,
-    startDate: dayjs().toDate(),
+    startDate: null,
     startMethodId: null,
     startPlatformId: null,
     startPrice: '',
@@ -61,6 +60,7 @@ export abstract class AssetConstant {
     },
     page: CommonConstant.DEFAULT_PAGE,
     pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
+    search: undefined,
   };
 
   public static readonly F_ASSET_FIND_PRIMARY_FILTER_INITIAL_VALUES: FAssetFindPrimaryFilter = {
@@ -80,5 +80,9 @@ export abstract class AssetConstant {
     startMethods: [],
     startPlatforms: [],
     startPriceRange: ['', ''],
+  };
+
+  public static readonly F_ASSET_SEARCH_INITIAL_VALUES: FAssetSearch = {
+    search: '',
   };
 }

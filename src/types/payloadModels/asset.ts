@@ -58,7 +58,11 @@ export interface PAssetFindSort {
   order: Prisma.SortOrder;
 }
 
-export interface PAssetFind extends PFindPagination {
+export interface PAssetSearch {
+  search?: string;
+}
+
+export interface PAssetFind extends PFindPagination, PAssetSearch {
   filters: PAssetFindFilter;
   sort?: PAssetFindSort;
 }
