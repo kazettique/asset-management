@@ -10,7 +10,7 @@ export interface FAsset {
   categoryId: FormOption;
   comment: string;
   endCurrency: NType<FormOption>;
-  endDate: NType<Date>;
+  endDate: string;
   endMethodId: NType<FormOption>;
   endPlatformId: NType<FormOption>;
   endPrice: string;
@@ -20,7 +20,7 @@ export interface FAsset {
   ownerId: FormOption;
   placeId: FormOption;
   startCurrency: NType<FormOption>;
-  startDate: NType<Date>;
+  startDate: string;
   startMethodId: NType<FormOption>;
   startPlatformId: NType<FormOption>;
   startPrice: string;
