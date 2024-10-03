@@ -380,23 +380,58 @@ export abstract class AssetRepository {
   }
 
   public static async FindAssetInTimeInterval(startDate: Date, endDate: Date): Promise<any> {
-    const filterObj: Prisma.AssetWhereInput = {
-      endDate: { lte: endDate },
-      startDate: { gte: startDate },
+    // const filterObj: Prisma.AssetWhereInput = {
+    //   endDate: { lte: endDate },
+    //   startDate: { gte: startDate },
+    // };
+
+    // const rawData = await prisma.$queryRaw`
+    //   SELECT name, startPrice, startDate
+    //   FROM Asset
+    //   WHERE Asset.startDate BETWEEN ${startDate} AND ${endDate}
+    //   GROUP BY YEAR(Asset.startDate), MONTH(Asset.startDate)
+    // `;
+
+    const transaction = await prisma.$transaction([
+      prisma.$queryRaw`
+        SET sql_mode = '';
+        SELECT COUNT(*) AS count, DATE_FORMAT(startDate, '%Y-%m-01 00:00:00') AS date
+        FROM Asset
+        WHERE startPrice IS NOT NULL AND startDate IS NOT NULL
+        GROUP BY YEAR(startDate), MONTH(startDate)
+        ORDER BY date DESC;
+      `,
+      //   prisma.$queryRaw`
+      //   SET sql_mode = '';
+      //   SELECT SUM(startPrice) AS sum, DATE_FORMAT(startDate, '%Y-%m-01 00:00:00') AS date
+      //   FROM Asset
+      //   WHERE startPrice IS NOT NULL AND startDate IS NOT NULL
+      //   GROUP BY YEAR(startDate), MONTH(startDate)
+      //   ORDER BY date DESC;
+      // `,
+      //   prisma.$queryRaw`
+      //   SET sql_mode = '';
+      //   SELECT COUNT(*) AS count, DATE_FORMAT(endDate, '%Y-%m-01 00:00:00') AS date
+      //   FROM Asset
+      //   WHERE endPrice IS NOT NULL AND endDate IS NOT NULL
+      //   GROUP BY YEAR(endDate), MONTH(endDate)
+      //   ORDER BY date DESC;
+      // `,
+      //   prisma.$queryRaw`
+      //   SET sql_mode = '';
+      //   SELECT SUM(endPrice) AS sum, DATE_FORMAT(endDate, '%Y-%m-01 00:00:00') AS date
+      //   FROM Asset
+      //   WHERE endPrice IS NOT NULL AND endDate IS NOT NULL
+      //   GROUP BY YEAR(endDate), MONTH(endDate)
+      //   ORDER BY date DESC;
+      // `,
+    ]);
+
+    return {
+      buyCountTimeline: transaction[0],
+      // buyPriceSumTimeline: transaction[1],
+      // sellCountTimeline: transaction[2],
+      // sellPriceSumTimeline: transaction[3],
     };
-
-    // const rawData = await prisma.asset.findMany({
-    //   orderBy: sortObj,
-    //   where: filterObj,
-    // });
-
-    const rawData = await prisma.$queryRaw`
-      SELECT name, startPrice, startDate
-      FROM Asset
-      WHERE Asset.startDate BETWEEN ${startDate} AND ${endDate}
-      GROUP BY YEAR(Asset.startDate), MONTH(Asset.startDate)
-    `;
-
-    return rawData;
   }
 }
