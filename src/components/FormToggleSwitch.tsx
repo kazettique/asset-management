@@ -13,14 +13,14 @@ interface Props<T extends FieldValues>
 
 // ref: https://www.cssscript.com/realistic-ios-switch-pure-css/
 export default function FormToggleSwitch<T extends FieldValues>(props: Props<T>) {
-  const { className = '', label = '', path, register } = props;
+  const { className = '', label = '', path, register, disabled } = props;
 
   return (
     <label className={`toggleSwitch ${className}`} data-test-comp={BasicToggleSwitch.name}>
       <label className="block dark:text-gray-50 text-gray-700" htmlFor={path}>
         {label || path}
       </label>
-      <input type="checkbox" {...register(path)} />
+      <input type="checkbox" {...register(path)} disabled={disabled} />
       <i />
     </label>
   );

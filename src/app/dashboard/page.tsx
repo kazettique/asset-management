@@ -29,6 +29,7 @@ export default function Page() {
     { key: 'name', title: 'name' },
     { key: 'categoryName', title: 'category' },
     {
+      className: 'min-w-[130px]',
       key: 'startDate',
       render: (column, item) => <div>{item.startDate}</div>,
       title: 'date',
@@ -93,7 +94,7 @@ export default function Page() {
           </Section>
 
           <Section title="category statistics" className="lg:col-span-6 col-span-12">
-            <div className="w-full grid grid-cols-3">
+            <div className="w-full grid grid-cols-2 gap-10">
               <DashboardPieChart
                 className="min-h-[200px]"
                 title="average buy price"
@@ -108,7 +109,7 @@ export default function Page() {
             </div>
           </Section>
 
-          <Section title="price ranking" className="lg:col-span-6 col-span-12">
+          <Section title="price ranking 💸" className="lg:col-span-6 col-span-12">
             <Table data={priceRankingList} columns={rankTableColumns} hasNumber />
           </Section>
         </div>

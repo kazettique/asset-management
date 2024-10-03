@@ -7,6 +7,7 @@ export interface Props<Values extends FieldValues> {
   children?: ReactElement;
   className?: string;
   control: Control<Values>;
+  isDisabled?: boolean;
   label?: string;
   newItemDefaultValue: FieldArray<Values, ArrayPath<Values>>;
   path: ArrayPath<Values>;
@@ -14,7 +15,7 @@ export interface Props<Values extends FieldValues> {
 }
 
 export default function Component<Values extends FieldValues>(props: Props<Values>) {
-  const { children, className = '', control, path, label, register, newItemDefaultValue } = props;
+  const { children, className = '', control, path, label, register, newItemDefaultValue, isDisabled = false } = props;
 
   const { fields, append, remove } = useFieldArray<Values, ArrayPath<Values>>({
     control,
@@ -40,22 +41,27 @@ export default function Component<Values extends FieldValues>(props: Props<Value
                   className={`block grow h-10 border mt-1 rounded px-4 w-full bg-gray-50 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-50 ${className}`}
                   key={_index}
                   {...register(`${path}.${index}.${_item}` as Path<Values>)}
+                  disabled={isDisabled}
                 />
               ))}
-            <button className="bg-red-100 hover:bg-red-200 rounded p-1" type="button">
-              <BasicIcon className="text-red-500" iconType="xmark-solid" onClick={() => remove(index)} />
-            </button>
+            {!isDisabled && (
+              <button className="bg-red-100 hover:bg-red-200 rounded p-1" type="button">
+                <BasicIcon className="text-red-500" iconType="xmark-solid" onClick={() => remove(index)} />
+              </button>
+            )}
           </div>
         );
       })}
 
-      <button
-        type="button"
-        className="bg-slate-100 rounded my-1 hover:bg-slate-200"
-        onClick={() => append(newItemDefaultValue)}
-      >
-        <BasicIcon iconType="cross" className="text-2xl" />
-      </button>
+      {!isDisabled && (
+        <button
+          type="button"
+          className="bg-slate-100 rounded my-1 hover:bg-slate-200"
+          onClick={() => append(newItemDefaultValue)}
+        >
+          <BasicIcon iconType="cross" className="text-2xl" />
+        </button>
+      )}
     </label>
   );
 }

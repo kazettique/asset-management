@@ -14,6 +14,7 @@ export interface Props<
   className?: string;
   control: Control<Values>;
   isCreatable?: boolean;
+  isDisabled?: boolean;
   isMulti?: IsMulti;
   label?: string;
   options: OptionsOrGroups<Option, Group>;
@@ -38,6 +39,7 @@ export default function BasicSelect<
     isCreatable = false,
     control,
     showLabel = true,
+    isDisabled = false,
     ...rest
   } = props;
 
@@ -59,9 +61,23 @@ export default function BasicSelect<
               <label className="block text-gray-700 dark:text-gray-50" htmlFor={path}>
                 {showLabel && <span className="mb-1">{label || path}</span>}
                 {isCreatable ? (
-                  <CreatableSelect {...field} id={id} isMulti={isMulti} options={options} placeholder={placeholder} />
+                  <CreatableSelect
+                    {...field}
+                    id={id}
+                    isMulti={isMulti}
+                    options={options}
+                    placeholder={placeholder}
+                    isDisabled={isDisabled}
+                  />
                 ) : (
-                  <Select {...field} id={id} isMulti={isMulti} options={options} placeholder={placeholder} />
+                  <Select
+                    {...field}
+                    id={id}
+                    isMulti={isMulti}
+                    options={options}
+                    placeholder={placeholder}
+                    isDisabled={isDisabled}
+                  />
                 )}
               </label>
               {/* <ErrorMessage errors={formState.errors} name="hello" /> */}

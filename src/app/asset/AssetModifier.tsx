@@ -19,7 +19,7 @@ interface Props {
   className?: string;
   currencyOptions: FormOption[];
   isOpen: boolean;
-  mode?: 'create' | 'edit';
+  mode?: 'create' | 'edit' | 'view';
   modifierContext: AssetMachineContext['modifier'];
   onClose: () => void;
   onCreate: (data: FAsset) => void;
@@ -58,8 +58,15 @@ export default function AssetModifier(props: Props) {
 
   const title = useMemo<string>(() => (mode ? `${mode} asset` : ''), [mode]);
 
+  const isViewMode = useMemo<boolean>(() => mode === 'view', [mode]);
+
+  const handleClose = (): void => {
+    onClose();
+    reset(_defaultValues);
+  };
+
   return (
-    <BasicDrawer isOpen={isOpen} onClose={onClose} title={title}>
+    <BasicDrawer isOpen={isOpen} onClose={handleClose} title={title}>
       <div className={`p-4 flex flex-col gap-y-4 bg-gray-50 dark:bg-gray-800 w-[500px] ${className}`}>
         <form
           onSubmit={handleSubmit((data) => {
@@ -71,7 +78,7 @@ export default function AssetModifier(props: Props) {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4">
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">basic info</div>
-              <BasicInput register={register} path="name" />
+              <BasicInput register={register} path="name" disabled={isViewMode} />
               <div className="flex gap-2">
                 <BasicSelect
                   className="grow"
@@ -79,6 +86,7 @@ export default function AssetModifier(props: Props) {
                   isCreatable
                   path="brandId"
                   control={control}
+                  isDisabled={isViewMode}
                 />
                 <BasicSelect
                   className="grow"
@@ -86,60 +94,108 @@ export default function AssetModifier(props: Props) {
                   isCreatable
                   path="categoryId"
                   control={control}
+                  isDisabled={isViewMode}
                 />
               </div>
               <div className="flex gap-2">
-                <BasicSelect className="grow" options={settingOptions.owners} path="ownerId" control={control} />
-                <BasicSelect className="grow" options={settingOptions.places} path="placeId" control={control} />
+                <BasicSelect
+                  className="grow"
+                  options={settingOptions.owners}
+                  path="ownerId"
+                  control={control}
+                  isDisabled={isViewMode}
+                />
+                <BasicSelect
+                  className="grow"
+                  options={settingOptions.places}
+                  path="placeId"
+                  control={control}
+                  isDisabled={isViewMode}
+                />
               </div>
-              <BasicSelect options={settingOptions.tags} isCreatable isMulti path="tags" control={control} />
+              <BasicSelect
+                options={settingOptions.tags}
+                isCreatable
+                isMulti
+                path="tags"
+                control={control}
+                isDisabled={isViewMode}
+              />
               <BasicInputList
                 control={control}
                 path="meta"
                 register={register}
                 newItemDefaultValue={{ key: '', value: '' }}
+                isDisabled={isViewMode}
               />
 
-              <BasicTextArea register={register} path="comment" rows={5} />
+              <BasicTextArea register={register} path="comment" rows={5} disabled={isViewMode} />
             </div>
 
             <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4">
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">start info</div>
               <div className="grid grid-cols-2 gap-2">
-                <BasicInput type="date" register={register} path="startDate" />
+                <BasicInput type="date" register={register} path="startDate" disabled={isViewMode} />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={currencyOptions} path="startCurrency" control={control} />
-                  <BasicInput register={register} path="startPrice" />
+                  <BasicSelect
+                    options={currencyOptions}
+                    path="startCurrency"
+                    control={control}
+                    isDisabled={isViewMode}
+                  />
+                  <BasicInput register={register} path="startPrice" disabled={isViewMode} />
                 </div>
 
-                <BasicSelect options={settingOptions.startMethods} path="startMethodId" control={control} />
-                <BasicSelect options={settingOptions.platforms} path="startPlatformId" isCreatable control={control} />
+                <BasicSelect
+                  options={settingOptions.startMethods}
+                  path="startMethodId"
+                  control={control}
+                  isDisabled={isViewMode}
+                />
+                <BasicSelect
+                  options={settingOptions.platforms}
+                  path="startPlatformId"
+                  isCreatable
+                  control={control}
+                  isDisabled={isViewMode}
+                />
               </div>
             </div>
 
             <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4">
               <div className="text-slate-700 dark:text-slate-100 text-xl capitalize">end info</div>
               <div className="grid grid-cols-2 gap-2">
-                <BasicInput type="date" register={register} path="endDate" />
+                <BasicInput type="date" register={register} path="endDate" disabled={isViewMode} />
 
                 <div className="flex gap-2">
-                  <BasicSelect options={currencyOptions} path="endCurrency" control={control} />
-                  <BasicInput register={register} path="endPrice" />
+                  <BasicSelect options={currencyOptions} path="endCurrency" control={control} isDisabled={isViewMode} />
+                  <BasicInput register={register} path="endPrice" disabled={isViewMode} />
                 </div>
 
-                <BasicSelect options={settingOptions.endMethods} path="endMethodId" control={control} />
-                <BasicSelect options={settingOptions.platforms} path="endPlatformId" isCreatable control={control} />
+                <BasicSelect
+                  options={settingOptions.endMethods}
+                  path="endMethodId"
+                  control={control}
+                  isDisabled={isViewMode}
+                />
+                <BasicSelect
+                  options={settingOptions.platforms}
+                  path="endPlatformId"
+                  isCreatable
+                  control={control}
+                  isDisabled={isViewMode}
+                />
               </div>
             </div>
 
             <div className="flex flex-col gap-x-2 bg-white dark:bg-gray-900 rounded-md shadow-md p-4">
-              <FormToggleSwitch register={register} path="isCensored" />
+              <FormToggleSwitch register={register} path="isCensored" disabled={isViewMode} />
             </div>
           </div>
 
           <div className="flex gap-2 mt-4 w-fit ml-auto mr-0">
-            {mode && (
+            {mode && !isViewMode && (
               <BasicButton type="submit" className="grow">
                 {mode === 'create' ? 'create' : 'update'}
               </BasicButton>

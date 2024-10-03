@@ -58,7 +58,7 @@ const queryObj: Prisma.AssetSelect = {
   tags: { select: { id: true, name: true } },
 };
 
-const sortObj: Prisma.AssetOrderByWithRelationInput[] = [{ createdAt: Prisma.SortOrder.desc }];
+const sortObj: Prisma.AssetOrderByWithRelationInput[] = [{ startDate: Prisma.SortOrder.desc }];
 
 export abstract class AssetRepository {
   public static async FindAll(): Promise<DAsset[]> {
@@ -244,31 +244,41 @@ export abstract class AssetRepository {
       create: { name: string }[];
     },
   ): Promise<DAsset> {
-    return await prisma.asset.update({
-      data: {
-        brandId,
-        categoryId,
-        comment,
-        endDate,
-        endForexId,
-        endMethodId,
-        endPlatformId,
-        endPrice,
-        isCensored,
-        meta,
-        name,
-        ownerId,
-        placeId,
-        startDate,
-        startForexId,
-        startMethodId,
-        startPlatformId,
-        startPrice,
-        tags,
-      },
-      select: queryObj,
-      where: { id },
-    });
+    const transaction = await prisma.$transaction([
+      prisma.asset.update({
+        data: {
+          tags: { set: [] },
+        },
+        where: { id },
+      }),
+      prisma.asset.update({
+        data: {
+          brandId,
+          categoryId,
+          comment,
+          endDate,
+          endForexId,
+          endMethodId,
+          endPlatformId,
+          endPrice,
+          isCensored,
+          meta,
+          name,
+          ownerId,
+          placeId,
+          startDate,
+          startForexId,
+          startMethodId,
+          startPlatformId,
+          startPrice,
+          tags,
+        },
+        select: queryObj,
+        where: { id },
+      }),
+    ]);
+
+    return transaction[1];
   }
 
   public static async FindAggregate(): Promise<DDashboardAggregate> {
@@ -357,10 +367,12 @@ export abstract class AssetRepository {
 
   public static async FindAssetInMonthInterval(currentDate: Date): Promise<DDashboardCalendar> {
     const rawData = await prisma.$queryRaw`
-      Select Asset.name, Asset.startDate, Asset.startPrice, Forex.targetCurrency, Forex.rate
+      SELECT Asset.name, Asset.startDate, Asset.startPrice, Forex.targetCurrency, Forex.rate
       FROM Asset
       LEFT JOIN Forex ON Asset.startForexId = Forex.id
       WHERE MONTH(Asset.startDate) = MONTH(${currentDate})
+      AND Asset.endDate IS NULL
+      AND Asset.endPrice IS NULL
       ORDER BY DAY(Asset.startDate) ASC
     `;
 

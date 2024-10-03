@@ -27,7 +27,7 @@ export interface FAsset {
   tags: FormOption[];
 }
 
-export type FAssetImport = Omit<FAsset, 'name' | 'startDate' | 'startPrice' | 'endDate' | 'endPrice' | 'comment'> & {
+export type FAssetImport = Omit<FAsset, 'name' | 'startDate' | 'startPrice' | 'endDate' | 'endPrice'> & {
   isLegalFileData: boolean | null;
 };
 

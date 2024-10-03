@@ -35,6 +35,7 @@ export type AssetMachineContext = {
 type AssetMachineEvents =
   | { type: 'TO_CREATE' }
   | { formValues: FAsset; id: Id; type: 'TO_EDIT' }
+  | { formValues: FAsset; id: Id; type: 'TO_VIEW' }
   | { type: 'TO_MAIN' }
   | { type: 'TO_IMPORT' }
   | { payload: PAsset[]; type: 'IMPORT_TASK_TO_QUEUE' }
@@ -191,12 +192,12 @@ export const assetMachine = setup({
   states: {
     CREATE: {
       on: {
-        TO_MAIN: { actions: ['RESET_CONTEXT'], target: 'MAIN' },
+        TO_MAIN: { target: 'MAIN' },
       },
     },
     EDIT: {
       on: {
-        TO_MAIN: { actions: ['RESET_CONTEXT'], target: 'MAIN' },
+        TO_MAIN: { target: 'MAIN' },
       },
     },
     IMPORT: {
@@ -283,6 +284,12 @@ export const assetMachine = setup({
           target: 'EDIT',
         },
         TO_IMPORT: { target: 'IMPORT' },
+        TO_VIEW: {
+          actions: assign({
+            modifier: ({ context, event }) => ({ formValues: event.formValues, id: event.id }),
+          }),
+          target: 'VIEW',
+        },
         UPDATE_SEARCH: {
           actions: {
             params: ({ context, event }) => ({ payload: event.payload }),
@@ -307,6 +314,11 @@ export const assetMachine = setup({
             type: 'UPDATE_SEARCH_SORT',
           },
         },
+      },
+    },
+    VIEW: {
+      on: {
+        TO_MAIN: { target: 'MAIN' },
       },
     },
   },

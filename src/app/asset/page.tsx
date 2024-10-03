@@ -34,17 +34,39 @@ export default function Page() {
   const columns: ColumnProps<VAssetTable>[] = [
     {
       key: 'name',
-      render: (column, item) => <div className="w-[200px] whitespace-pre-wrap">{item.name}</div>,
+      render: (column, item) => <div className="w-[150px] whitespace-pre-wrap">{item.name}</div>,
       title: 'Name',
     },
     {
-      key: 'category',
-      title: 'Category',
+      key: 'category/brand',
+      render: (column, item) => (
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1">
+            <BasicIcon
+              iconType="layer-group-solid"
+              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+            />
+            <div>{item.category}</div>
+          </div>
+          <div className="flex items-center gap-1">
+            <BasicIcon
+              iconType="building-shield-solid"
+              className="text-xs flex items-center justify-center rounded-sm bg-blue-100 dark:bg-blue-900 p-1 w-5"
+            />
+            <div>{item.brand}</div>
+          </div>
+        </div>
+      ),
+      title: 'category/brand',
     },
-    {
-      key: 'brand',
-      title: 'Brand',
-    },
+    // {
+    //   key: 'category',
+    //   title: 'Category',
+    // },
+    // {
+    //   key: 'brand',
+    //   title: 'Brand',
+    // },
     {
       className: 'whitespace-nowrap',
       key: 'startInfo',
@@ -129,72 +151,85 @@ export default function Page() {
       ),
       title: 'End Info',
     },
-    {
-      key: 'priceDifference',
-      title: 'Price Diff',
-    },
+    // {
+    //   key: 'priceDifference',
+    //   title: 'Price Diff',
+    // },
     {
       key: 'usageTime',
-      title: 'Usage Time',
+      title: 'Lifespan',
     },
     {
       key: 'monthlyCost',
-      title: 'monthlyCost',
+      title: 'Monthly Cost',
     },
     {
       key: 'owner',
       title: 'owner',
     },
-    {
-      className: 'min-w-[150px]',
-      key: 'meta',
-      render: (column, item) => (
-        <>
-          {item.meta.map((_item, index) => {
-            const { key, value } = _item;
-            return (
-              <div key={index}>
-                {key}: {value}
-              </div>
-            );
-          })}
-        </>
-      ),
-      title: 'Meta',
-    },
-    {
-      key: 'tags',
-      render: (column, item) => (
-        <div>
-          {item.tags.map((_item, _index) => (
-            <div key={_index}>
-              <span>#</span>
-              <span>{_item}</span>
-            </div>
-          ))}
-        </div>
-      ),
-      title: 'tags',
-    },
-    {
-      key: 'comment',
-      render: (column, item) => <div className="w-[100px] whitespace-pre-wrap">{item.comment}</div>,
-      title: 'Comment',
-    },
+    // {
+    //   className: 'min-w-[150px]',
+    //   key: 'meta',
+    //   render: (column, item) => (
+    //     <>
+    //       {item.meta.map((_item, index) => {
+    //         const { key, value } = _item;
+    //         return (
+    //           <div key={index}>
+    //             {key}: {value}
+    //           </div>
+    //         );
+    //       })}
+    //     </>
+    //   ),
+    //   title: 'Meta',
+    // },
+    // {
+    //   key: 'tags',
+    //   render: (column, item) => (
+    //     <div>
+    //       {item.tags.map((_item, _index) => (
+    //         <div key={_index}>
+    //           <span>#</span>
+    //           <span>{_item}</span>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   ),
+    //   title: 'tags',
+    // },
+    // {
+    //   key: 'comment',
+    //   render: (column, item) => <div className="w-[100px] whitespace-pre-wrap">{item.comment}</div>,
+    //   title: 'Comment',
+    // },
     {
       key: 'action',
       render: (column, item) => (
-        <BasicIcon
-          className="bg-slate-500 shadow-slate-500/20 hover:shadow-slate-500/40 p-2 rounded-md text-white cursor-pointer"
-          iconType="pen-to-square-solid"
-          onClick={() =>
-            void send({
-              formValues: AssetTransformer.VFAssetTransformer(item.raw, settingOptions, currencyOptions),
-              id: item.raw.id,
-              type: 'TO_EDIT',
-            })
-          }
-        />
+        <div className="flex gap-x-2">
+          <BasicIcon
+            className="bg-blue-100 dark:bg-blue-900 shadow-blue-100/20 hover:shadow-blue-100/40 p-2 rounded-md dark:text-white cursor-pointer"
+            iconType="eye-fill"
+            onClick={() =>
+              void send({
+                formValues: AssetTransformer.VFAssetTransformer(item.raw, settingOptions, currencyOptions),
+                id: item.raw.id,
+                type: 'TO_VIEW',
+              })
+            }
+          />
+          <BasicIcon
+            className="bg-slate-400 shadow-slate-400/20 hover:shadow-slate-500/40 p-2 rounded-md text-white cursor-pointer"
+            iconType="pen-to-square-solid"
+            onClick={() =>
+              void send({
+                formValues: AssetTransformer.VFAssetTransformer(item.raw, settingOptions, currencyOptions),
+                id: item.raw.id,
+                type: 'TO_EDIT',
+              })
+            }
+          />
+        </div>
       ),
       title: 'Action',
     },
@@ -252,9 +287,17 @@ export default function Page() {
       </div>
 
       <AssetModifier
-        isOpen={state.matches('EDIT') || state.matches('CREATE')}
+        isOpen={state.matches('EDIT') || state.matches('CREATE') || state.matches('VIEW')}
         onClose={() => void send({ type: 'TO_MAIN' })}
-        mode={state.matches('EDIT') ? 'edit' : state.matches('CREATE') ? 'create' : undefined}
+        mode={
+          state.matches('EDIT')
+            ? 'edit'
+            : state.matches('CREATE')
+              ? 'create'
+              : state.matches('VIEW')
+                ? 'view'
+                : undefined
+        }
         onUpdate={(data, id) => {
           onItemUpdate(data, id);
           send({ type: 'TO_MAIN' });

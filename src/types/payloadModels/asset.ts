@@ -59,7 +59,7 @@ export interface PAssetFindSort {
 }
 
 export interface PAssetSearch {
-  search?: string;
+  search: string;
 }
 
 export interface PAssetFind extends PFindPagination, PAssetSearch {

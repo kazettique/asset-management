@@ -9,6 +9,7 @@ import BasicFileReader from '@/components/BasicFileReader';
 import BasicIcon from '@/components/BasicIcon';
 import BasicInputList from '@/components/BasicInputList';
 import BasicSelect from '@/components/BasicSelect';
+import BasicTextArea from '@/components/BasicTextArea';
 import Table, { ColumnProps } from '@/components/Table';
 import { AssetConstant } from '@/constant';
 import { AssetMachineContext } from '@/machines/asset';
@@ -161,6 +162,8 @@ export default function AssetImport(props: Props) {
                 register={register}
                 newItemDefaultValue={{ key: '', value: '' }}
               />
+
+              <BasicTextArea register={register} path="comment" />
             </div>
 
             <BasicButton type="submit">Import</BasicButton>

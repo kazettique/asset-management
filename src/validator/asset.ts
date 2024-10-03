@@ -145,6 +145,7 @@ export abstract class AssetValidator {
   public static readonly FAssetImportValidator: z.ZodSchema<FAssetImport> = z.object({
     brandId: CommonValidator.FormOptionValidator,
     categoryId: CommonValidator.FormOptionValidator,
+    comment: z.string(),
     endCurrency: CommonValidator.FormOptionValidator.nullable(),
     endMethodId: CommonValidator.FormOptionValidator.nullable(),
     endPlatformId: CommonValidator.FormOptionValidator.nullable(),
@@ -185,13 +186,13 @@ export abstract class AssetValidator {
   });
 
   public static readonly PAssetSearchValidator: z.ZodSchema<PAssetSearch> = z.object({
-    search: z.string().optional(),
+    search: z.string(),
   });
 
   public static readonly PAssetFindValidator: z.ZodSchema<PAssetFind> = z
     .object({
       filters: this.PAssetFindFilterValidator,
-      search: z.string().optional(),
+      search: z.string(),
       sort: this.PAssetFindSortValidator.optional(),
     })
     .and(CommonValidator.PFindPaginationValidator);

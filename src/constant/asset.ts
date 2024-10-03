@@ -40,6 +40,7 @@ export abstract class AssetConstant {
   public static readonly F_ASSET_IMPORT_INITIAL_VALUES: FAssetImport = {
     brandId: BrandConstant.DEFAULT_BRAND_OPTION,
     categoryId: CategoryConstant.DEFAULT_CATEGORY_OPTION,
+    comment: '',
     endCurrency: null,
     endMethodId: null,
     endPlatformId: null,
@@ -60,7 +61,7 @@ export abstract class AssetConstant {
     },
     page: CommonConstant.DEFAULT_PAGE,
     pageSize: CommonConstant.DEFAULT_PAGE_SIZE,
-    search: undefined,
+    search: '',
   };
 
   public static readonly F_ASSET_FIND_PRIMARY_FILTER_INITIAL_VALUES: FAssetFindPrimaryFilter = {

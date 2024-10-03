@@ -186,7 +186,7 @@ export abstract class DashboardTransformer {
       startPrice = getSymbolFromCurrency(CommonConstant.BASE_CURRENCY) + Utils.NumberWithCommas(src.startPrice);
     }
 
-    let age: string = dayjs().diff(dayjs(src.startDate), 'year') + 'yr old';
+    let age: string = dayjs().diff(dayjs(src.startDate), 'year') + 1 + 'yr old';
 
     return {
       age,
