@@ -1,6 +1,8 @@
+import dayjs from 'dayjs';
 import { z } from 'zod';
 
-import { MExternalForex, VExternalForex } from '@/types';
+import { CommonConstant } from '@/constant';
+import { MExternalForex, PExternalForexRestriction, VExternalForex } from '@/types';
 
 export abstract class ExternalForexValidator {
   public static readonly MExternalForexValidator: z.ZodSchema<MExternalForex> = z.object({
@@ -32,5 +34,9 @@ export abstract class ExternalForexValidator {
       .nullable(),
     status: z.string(),
     updatedDate: z.date(),
+  });
+
+  public static readonly PExternalForexRestriction: z.ZodSchema<PExternalForexRestriction> = z.object({
+    date: z.coerce.date().min(dayjs('2010-01-01').toDate(), CommonConstant.MSG_CURRENCY_CONVERTER_DATE_RESTRICTION),
   });
 }

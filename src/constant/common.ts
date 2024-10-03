@@ -8,6 +8,7 @@ import { FormOption, MenuItem, Name, PFindPagination, SettingBase } from '@/type
 export abstract class CommonConstant {
   public static readonly MSG_DIRTY_DATA: string = 'dirty data';
   public static readonly MSG_CURRENCY_PRICE_PAIR: string = 'price and currency should both exist or not.';
+  public static readonly MSG_CURRENCY_CONVERTER_DATE_RESTRICTION: string = 'The historical data starts from 2010-01-01';
 
   public static readonly EXTERNAL_FOREX_API_ROUTE: string =
     'https://currency-converter5.p.rapidapi.com/currency/historical';

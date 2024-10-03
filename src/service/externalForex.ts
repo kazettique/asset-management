@@ -14,6 +14,14 @@ export abstract class ExternalForexService {
   ): Promise<NType<VExternalForex>> {
     const parsedDate = Utils.GetDateTimeString(date);
 
+    const payloadValidation = ExternalForexValidator.PExternalForexRestriction.safeParse({ date: date });
+
+    if (!payloadValidation.success) {
+      console.error(payloadValidation.error);
+
+      return null;
+    }
+
     const raw = await ExternalForexFetcher.Find(toCurrency, fromCurrency, parsedDate);
 
     const validation = ExternalForexValidator.VExternalForexValidator.safeParse(raw);
